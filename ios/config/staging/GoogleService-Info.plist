@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>654346927094-2hsg066lpb1m35tnbm5a7vgrbm3l2ple.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.654346927094-2hsg066lpb1m35tnbm5a7vgrbm3l2ple</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDHqwp0WDvbXl2LAF-uqdSU6pl_aYdMDNA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>654346927094</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tbrgroup.mint.stg</string>
+	<key>PROJECT_ID</key>
+	<string>mint-staging-f1c32</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mint-staging-f1c32.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:654346927094:ios:1b0c2b4e67ad96ffcba5d7</string>
+</dict>
+</plist>

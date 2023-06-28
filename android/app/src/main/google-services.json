@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "777399551016",
+    "project_id": "mint-production-45ea6",
+    "storage_bucket": "mint-production-45ea6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777399551016:android:9f88dcf498c7857a53211d",
+        "android_client_info": {
+          "package_name": "com.tbrgroup.mint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777399551016-j7ucguhsqas013e2cg0rvcc043nlkpu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAROPEB_EmKnzTs0JjYhr5AZ5d4LiaA5YU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777399551016-j7ucguhsqas013e2cg0rvcc043nlkpu1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "777399551016-rng4vmtedf2feo07u8cvqvtsrpf4ubs4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tbrgroup.mint"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
