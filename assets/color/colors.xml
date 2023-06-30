@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="primaryBlueColor">#007AFF</color>
+    <color name="buttonDisabledColor">#A3CEFD</color>
+    <color name="scaffoldLight">#F5F6F8</color>
+    <color name="scaffoldDark">#121212</color>
+    <color name="backgroundLight">#FFFFFF</color>
+    <color name="backgroundDark">#1C1C1C</color>
+    <color name="backgroundFillDark">#2C2C2E</color>
+    <color name="fillSecondaryLight">#DEE8F3</color>
+    <color name="fillSecondaryDark">#AFD0F3</color>
+    <color name="error">#FF3B30</color>
+    <color name="greyLight">#3C3C43</color>
+    <color name="greyDark">#EBEBF5</color>
+    <color name="grey1">#8E8E93</color>
+    <color name="quarternary1">#4D4D52</color>
+    <color name="additionalViolet">#876CD1</color>
 </resources>
