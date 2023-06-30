@@ -36,7 +36,7 @@ class MintBackButton extends StatelessWidget {
             alignment: Alignment.center,
             child: _getIcon(context).svg(),
           ),
-          Text(context.l10n.back, style: MintTextStyles.body)
+          Text(context.l10n.back, style: MintTextStyles.body),
         ],
       ),
     );
