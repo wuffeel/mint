@@ -8,6 +8,7 @@
     "clickSignIn": "Click Sign in",
     "enterCode": "Введіть код",
     "theCodeWasSentTo": "Код було надіслано на",
-    "youWillBeAbleToResendIn": "You will able to re-send a code in",
-    "resendCode": "Re-send a code"
+    "youWillBeAbleToResendIn": "Ви зможете надіслати код повторно через",
+    "resendCode": "Надіслати код повторно",
+    "back": "Назад"
 }
