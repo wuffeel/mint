@@ -30,6 +30,7 @@ class App extends StatelessWidget {
           child: MaterialApp.router(
             theme: ThemeData(
               fontFamily: MintFontFamily.inter,
+              primaryColor: Colors.black,
               appBarTheme: MintThemeData.appBarThemeLight,
               colorScheme: MintThemeData.colorSchemeLight,
               textTheme: MintThemeData.textThemeLight,
@@ -40,6 +41,7 @@ class App extends StatelessWidget {
             ),
             darkTheme: ThemeData(
               fontFamily: MintFontFamily.inter,
+              primaryColor: Colors.white,
               appBarTheme: MintThemeData.appBarThemeDark,
               colorScheme: MintThemeData.colorSchemeDark,
               textTheme: MintThemeData.textThemeDark,
