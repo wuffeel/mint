@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/theme/mint_text_styles.dart';
@@ -11,16 +12,7 @@ class OtpCodeSentText extends StatelessWidget {
   /// For [phoneNumber] with pattern like '+380123456789' will return the
   /// '+380 12 345 67 89' formatted string
   String _formatPhoneNumber(String phoneNumber) {
-    final formattedNumberBuffer = StringBuffer();
-
-    for (var i = 0; i < phoneNumber.length; i++) {
-      if (i == 4 || i == 6 || i == 9 || i == 11) {
-        formattedNumberBuffer.write(' ');
-      }
-      formattedNumberBuffer.write(phoneNumber[i]);
-    }
-
-    return formattedNumberBuffer.toString();
+    return formatNumberSync(phoneNumber);
   }
 
   @override
