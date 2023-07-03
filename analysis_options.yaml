@@ -22,6 +22,15 @@ analyzer:
     # test_coverage
     - test/.test_coverage.dart
 
+    # bootstrap
+    - 'lib/bootstrap.dart'
+
+    # injectable
+    - 'lib/injector/*.dart'
+
+    # l10n
+    - 'lib/l10n/*.dart'
+
   # Dart Code Metrics plugin (https://dartcodemetrics.dev/) provides many additional rules
   # that helped to automate some pieces of our internal team code style based on the best
   # industry practices.
@@ -59,7 +68,7 @@ dart_code_metrics:
     - avoid-unrelated-type-assertions
     - avoid-unused-parameters
     - double-literal-format
-    - member-ordering-extended:
+    - member-ordering:
         order:
           - constructors
           - fields
