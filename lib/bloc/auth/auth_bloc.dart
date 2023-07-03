@@ -3,7 +3,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/entity/phone_code_sent_data.dart';
-import 'package:mint/domain/service/abstract/phone_auth_service.dart';
+import 'package:mint/domain/usecase/verify_otp_use_case.dart';
+import 'package:mint/domain/usecase/verify_phone_use_case.dart';
 
 part 'auth_event.dart';
 
@@ -11,7 +12,10 @@ part 'auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(this._phoneAuthService) : super(AuthInitial()) {
+  AuthBloc(
+    this._verifyPhoneUseCase,
+    this._verifyOtpUseCase,
+  ) : super(AuthInitial()) {
     on<AuthPhoneVerificationRequested>(
       _onPhoneVerificationRequested,
       transformer: droppable(),
@@ -26,7 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  final PhoneAuthService _phoneAuthService;
+  final VerifyPhoneUseCase _verifyPhoneUseCase;
+  final VerifyOtpUseCase _verifyOtpUseCase;
 
   Future<void> _onPhoneVerificationRequested(
     AuthPhoneVerificationRequested event,
@@ -34,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthPhoneVerificationLoading());
     try {
-      final phoneCodeSentData = await _phoneAuthService.verifyPhoneNumber(
+      final phoneCodeSentData = await _verifyPhoneUseCase(
         phoneNumber: event.phoneNumber,
       );
       emit(AuthPhoneVerificationSuccess(event.phoneNumber, phoneCodeSentData));
@@ -66,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     try {
-      await _phoneAuthService.verifyOtpCode(
+      await _verifyOtpUseCase(
         otpCode: event.otpCode,
         verificationId: localState.phoneCodeSentData.verificationId,
       );
@@ -107,7 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     try {
-      final phoneCodeSentData = await _phoneAuthService.verifyPhoneNumber(
+      final phoneCodeSentData = await _verifyPhoneUseCase(
         phoneNumber: localState.phoneNumber,
         resendToken: localState.phoneCodeSentData.resendToken,
       );
