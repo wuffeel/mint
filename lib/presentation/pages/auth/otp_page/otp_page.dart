@@ -63,7 +63,7 @@ class _OtpPageState extends State<OtpPage> {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {
         final seconds = _countdownDuration.inSeconds - 1;
-        if (seconds <= 0) {
+        if (seconds < 0) {
           _stopCountdown();
           _resendCodeEnabled = true;
         } else {
