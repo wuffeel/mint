@@ -108,10 +108,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       final phoneCodeSentData = await _phoneAuthService.verifyPhoneNumber(
-        phoneNumber: event.phoneNumber,
+        phoneNumber: localState.phoneNumber,
         resendToken: localState.phoneCodeSentData.resendToken,
       );
-      emit(AuthPhoneVerificationSuccess(event.phoneNumber, phoneCodeSentData));
+      emit(AuthOtpResendSuccess(localState.phoneNumber, phoneCodeSentData));
     } catch (_) {
       emit(
         AuthOtpResendFailure(

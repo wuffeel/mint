@@ -7,6 +7,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/enter_phone_sign_in_text.dart';
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/enter_phone_terms_text.dart';
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/phone_text_field.dart';
+import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_elevated_button.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
@@ -28,7 +29,8 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   /// Used to check if "Sign Up" button should be available
   bool _validatePhoneNumber(String phoneNumber) {
     final regex = RegExp(
-      r'^\(?(\+[0-9]{1,3})\)? ?-?[0-9]{1,3} ?-?[0-9]{3,5} ?-?[0-9]{4}( ?-?[0-9]{3})? ?(\w{1,10}\s?\d{1,6})?$',
+      r'^\(?(\+[0-9]{1,3})\)? ?-?[0-9]{1,3} ?-?[0-9]{3,5} ?-?[0-9]{4}'
+      r'( ?-?[0-9]{3})? ?(\w{1,10}\s?\d{1,6})?$',
     );
 
     return regex.hasMatch(phoneNumber);
@@ -40,8 +42,10 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
         );
   }
 
-  void _navigateToOtp() {
-    context.router.push(const OtpRoute());
+  void _phoneListener(BuildContext context, AuthState state) {
+    if (state is AuthPhoneVerificationSuccess) {
+      context.router.navigate(const OtpRoute());
+    }
   }
 
   @override
@@ -51,9 +55,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthPhoneVerificationSuccess) _navigateToOtp();
-          },
+          listener: _phoneListener,
           builder: (context, state) {
             return CustomScrollView(
               slivers: <Widget>[
@@ -89,7 +91,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                               title: l10n.signUp,
                             )
                           else
-                            const Center(child: CircularProgressIndicator()),
+                            const Center(child: LoadingIndicator()),
                           SizedBox(height: 8.h),
                           const Center(child: EnterPhoneTermsText()),
                         ],

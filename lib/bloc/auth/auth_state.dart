@@ -38,6 +38,10 @@ class AuthOtpResendLoading extends AuthPhoneVerificationSuccess {
   AuthOtpResendLoading(super.phoneNumber, super.phoneCodeSentData);
 }
 
+class AuthOtpResendSuccess extends AuthPhoneVerificationSuccess {
+  AuthOtpResendSuccess(super.phoneNumber, super.phoneCodeSentData);
+}
+
 class AuthOtpResendFailure extends AuthPhoneVerificationSuccess {
   AuthOtpResendFailure(
     this.error,

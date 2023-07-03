@@ -15,8 +15,4 @@ class AuthOtpVerificationRequested extends AuthEvent {
   final String otpCode;
 }
 
-class AuthOtpResendRequested extends AuthEvent {
-  AuthOtpResendRequested(this.phoneNumber);
-
-  final String phoneNumber;
-}
+class AuthOtpResendRequested extends AuthEvent {}

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +9,8 @@ import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/auth/otp_page/widgets/otp_code_field.dart';
 import 'package:mint/presentation/pages/auth/otp_page/widgets/otp_code_sent_text.dart';
+import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
-import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 @RoutePage()
@@ -22,19 +24,71 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   final _otpController = TextEditingController();
 
-  void _authListener(BuildContext context, AuthState state) {
-    if (state is AuthOtpVerificationSuccess) {
-      context.router.replaceAll([const NavigationWrapperRoute()]);
+  /// Flag used to display a resend code button
+  bool _resendCodeEnabled = false;
+
+  late Timer _timer;
+  late Duration _countdownDuration;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
+
+  /// Listens to resend code event to reset a [_timer]
+  void _authListener(AuthState state) {
+    if (state is AuthOtpResendSuccess) {
+      setState(() {
+        _resendCodeEnabled = false;
+        if (_timer.isActive) _stopCountdown();
+        _startCountdown();
+      });
     }
   }
 
+  /// Launch [otpCode] verification with AuthBloc
   void _verifyOtp(String otpCode) {
     context.read<AuthBloc>().add(AuthOtpVerificationRequested(otpCode));
+  }
+
+  /// Launch code resend with AuthBloc
+  void _resendCode() {
+    context.read<AuthBloc>().add(AuthOtpResendRequested());
+  }
+
+  /// Starts the countdown [_timer] for [_countdownDuration]
+  void _startCountdown() {
+    _countdownDuration = const Duration(minutes: 1);
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        final seconds = _countdownDuration.inSeconds - 1;
+        if (seconds < 0) {
+          _stopCountdown();
+          _resendCodeEnabled = true;
+        } else {
+          _countdownDuration = Duration(seconds: seconds);
+        }
+      });
+    });
+  }
+
+  /// Stop countdown [_timer]
+  void _stopCountdown() => _timer.cancel();
+
+  String strDigits(int n) => n.toString().padLeft(2, '0');
+
+  /// Get a time left String to resend a code
+  String _getResendRemainingTime(AppLocalizations l10n) {
+    final minutes = strDigits(_countdownDuration.inMinutes.remainder(60));
+    final seconds = strDigits(_countdownDuration.inSeconds.remainder(60));
+    return '${l10n.youWillBeAbleToResendIn} $minutes:$seconds';
   }
 
   @override
   void dispose() {
     _otpController.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -44,7 +98,7 @@ class _OtpPageState extends State<OtpPage> {
     return Scaffold(
       appBar: const MintAppBar(),
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: _authListener,
+        listener: (_, state) => _authListener(state),
         builder: (context, state) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -80,23 +134,38 @@ class _OtpPageState extends State<OtpPage> {
                               onCompleted: _verifyOtp,
                             ),
                             if (state is AuthOtpVerificationLoading)
-                              const Center(child: CircularProgressIndicator()),
+                              const Center(child: LoadingIndicator())
+                            else if (_countdownDuration.inSeconds > 0) ...[
+                              SizedBox(height: 32.h),
+                              Text(
+                                _getResendRemainingTime(l10n),
+                                style: MintTextStyles.caption1.copyWith(
+                                  color: Theme.of(context)
+                                      .hintColor
+                                      .withOpacity(0.6),
+                                ),
+                              )
+                            ],
                           ],
                         ),
                       ),
                       const Spacer(),
                       SizedBox(height: 20.h),
-                      if (state is! AuthOtpResendLoading)
+                      if (state is AuthOtpResendLoading)
+                        const Center(child: LoadingIndicator())
+                      else if (!_resendCodeEnabled ||
+                          state is AuthOtpVerificationLoading)
+                        const SizedBox.shrink()
+                      else
                         InkWell(
+                          onTap: _resendCode,
                           child: Text(
                             l10n.resendCode,
                             style: MintTextStyles.buttonsHuge.copyWith(
                               color: MintColors.primaryBlueColor,
                             ),
                           ),
-                        )
-                      else
-                        const Center(child: CircularProgressIndicator()),
+                        ),
                       SizedBox(height: 37.h),
                     ],
                   ),

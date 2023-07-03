@@ -13,11 +13,10 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<UserBloc>()..add(UserDataRequested()),
-
       child: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserLogOutSuccess) {
-            context.router.replace(const SignUpWrapperRoute());
+            context.router.replaceAll([const SignUpWrapperRoute()]);
           }
         },
         child: this,
