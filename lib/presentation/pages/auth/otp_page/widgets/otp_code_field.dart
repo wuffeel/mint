@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 import 'package:pinput/pinput.dart';
 
@@ -8,14 +9,14 @@ class OtpCodeField extends StatefulWidget {
     super.key,
     required this.length,
     required this.controller,
+    required this.isError,
     this.onCompleted,
-    this.errorText,
   });
 
   final int length;
   final TextEditingController controller;
   final void Function(String)? onCompleted;
-  final String? errorText;
+  final bool isError;
 
   @override
   State<OtpCodeField> createState() => _OtpCodeFieldState();
@@ -42,6 +43,17 @@ class _OtpCodeFieldState extends State<OtpCodeField> {
       ),
     );
 
+    final errorPinTheme = defaultPinTheme.copyWith(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(
+          color: MintColors.error,
+          width: 1.w,
+        ),
+      ),
+    );
+
     final cursor = Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -65,7 +77,8 @@ class _OtpCodeFieldState extends State<OtpCodeField> {
       focusedPinTheme: defaultPinTheme,
       cursor: cursor,
       onCompleted: widget.onCompleted,
-      errorText: widget.errorText,
+      errorPinTheme: errorPinTheme,
+      forceErrorState: widget.isError,
     );
   }
 }

@@ -63,7 +63,7 @@ class _OtpPageState extends State<OtpPage> {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {
         final seconds = _countdownDuration.inSeconds - 1;
-        if (seconds < 0) {
+        if (seconds <= 0) {
           _stopCountdown();
           _resendCodeEnabled = true;
         } else {
@@ -128,14 +128,12 @@ class _OtpPageState extends State<OtpPage> {
                             OtpCodeField(
                               controller: _otpController,
                               length: 6,
-                              errorText: state is AuthOtpVerificationFailure
-                                  ? state.error
-                                  : null,
+                              isError: state is AuthOtpVerificationFailure,
                               onCompleted: _verifyOtp,
                             ),
                             if (state is AuthOtpVerificationLoading)
                               const Center(child: LoadingIndicator())
-                            else if (_countdownDuration.inSeconds > 0) ...[
+                            else if (!_resendCodeEnabled) ...[
                               SizedBox(height: 32.h),
                               Text(
                                 _getResendRemainingTime(l10n),
@@ -151,6 +149,15 @@ class _OtpPageState extends State<OtpPage> {
                       ),
                       const Spacer(),
                       SizedBox(height: 20.h),
+                      if (state is AuthOtpVerificationFailure) ...[
+                        Text(
+                          state.error,
+                          style: MintTextStyles.buttonsHuge.copyWith(
+                            color: MintColors.error,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                      ],
                       if (state is AuthOtpResendLoading)
                         const Center(child: LoadingIndicator())
                       else if (!_resendCodeEnabled ||

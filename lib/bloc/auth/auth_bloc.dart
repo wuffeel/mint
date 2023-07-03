@@ -75,7 +75,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (error.toString().contains('invalid-verification-code')) {
         emit(
           AuthOtpVerificationFailure(
-            'Wrong verification code',
+            'Wrong code, please try again',
             localState.phoneNumber,
             localState.phoneCodeSentData,
           ),
