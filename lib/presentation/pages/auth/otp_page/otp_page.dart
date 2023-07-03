@@ -10,7 +10,6 @@ import 'package:mint/presentation/pages/auth/otp_page/widgets/otp_code_sent_text
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
-import 'package:pinput/pinput.dart';
 
 @RoutePage()
 class OtpPage extends StatefulWidget {
@@ -24,14 +23,6 @@ class _OtpPageState extends State<OtpPage> {
   final _otpController = TextEditingController();
 
   void _authListener(BuildContext context, AuthState state) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (state is AuthPhoneVerificationSuccess) {
-        final otpCode = state.phoneCodeSentData.otpCode;
-        if (otpCode != null) {
-          _otpController.setText(otpCode);
-        }
-      }
-    });
     if (state is AuthOtpVerificationSuccess) {
       context.router.replaceAll([const NavigationWrapperRoute()]);
     }
