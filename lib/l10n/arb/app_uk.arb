@@ -10,5 +10,6 @@
     "theCodeWasSentTo": "Код було надіслано на",
     "youWillBeAbleToResendIn": "Ви зможете надіслати код повторно через",
     "resendCode": "Надіслати код повторно",
-    "back": "Назад"
+    "back": "Назад",
+    "logOut": "Вийти"
 }

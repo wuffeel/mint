@@ -8,10 +8,14 @@ class OtpCodeField extends StatefulWidget {
     super.key,
     required this.length,
     required this.controller,
+    this.onCompleted,
+    this.errorText,
   });
 
   final int length;
   final TextEditingController controller;
+  final void Function(String)? onCompleted;
+  final String? errorText;
 
   @override
   State<OtpCodeField> createState() => _OtpCodeFieldState();
@@ -56,10 +60,12 @@ class _OtpCodeFieldState extends State<OtpCodeField> {
       controller: widget.controller,
       focusNode: _focusNode,
       defaultPinTheme: defaultPinTheme,
-      separator: const SizedBox(width: 16),
+      separator: SizedBox(width: 10.w),
       pinAnimationType: PinAnimationType.fade,
       focusedPinTheme: defaultPinTheme,
       cursor: cursor,
+      onCompleted: widget.onCompleted,
+      errorText: widget.errorText,
     );
   }
 }

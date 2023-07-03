@@ -5,7 +5,19 @@ import 'package:mint/routes/app_router.gr.dart';
 class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
-    AutoRoute(initial: true, page: EnterPhoneRoute.page),
-    AutoRoute(page: OtpRoute.page),
-  ];
+        AutoRoute(initial: true, page: LogInCheckRoute.page),
+        AutoRoute(
+          page: SignUpWrapperRoute.page,
+          children: [
+            AutoRoute(path: '', page: EnterPhoneRoute.page),
+            AutoRoute(page: OtpRoute.page),
+          ],
+        ),
+        AutoRoute(
+          page: NavigationWrapperRoute.page,
+          children: [
+            AutoRoute(path: '', page: NavigationRoute.page),
+          ],
+        ),
+      ];
 }

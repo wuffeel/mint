@@ -10,5 +10,6 @@
     "theCodeWasSentTo": "The code was sent to",
     "youWillBeAbleToResendIn": "You will able to re-send a code in",
     "resendCode": "Re-send a code",
-    "back": "Back"
+    "back": "Back",
+    "logOut": "Log Out"
 }

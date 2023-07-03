@@ -1,7 +1,8 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/auth/auth_bloc.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/enter_phone_sign_in_text.dart';
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/enter_phone_terms_text.dart';
@@ -33,8 +34,14 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     return regex.hasMatch(phoneNumber);
   }
 
+  void _verifyPhone() {
+    context.read<AuthBloc>().add(
+          AuthPhoneVerificationRequested(_phoneController.text),
+        );
+  }
+
   void _navigateToOtp() {
-    context.router.push(OtpRoute(phoneNumber: _phoneController.text));
+    context.router.push(const OtpRoute());
   }
 
   @override
@@ -43,44 +50,62 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: MediaQuery.paddingOf(context).top + 172.h),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthPhoneVerificationSuccess) _navigateToOtp();
+          },
+          builder: (context, state) {
+            return CustomScrollView(
+              slivers: <Widget>[
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
                     children: <Widget>[
-                      Text(l10n.signUp, style: MintTextStyles.largeTitle),
-                      SizedBox(height: 44.h),
-                      PhoneTextField(
-                        controller: _phoneController,
-                        onChanged: (phoneNumber) {
-                          setState(() {
-                            _isPhoneValid = _validatePhoneNumber(phoneNumber);
-                          });
-                        },
+                      SizedBox(
+                        height: MediaQuery.paddingOf(context).top + 172.h,
                       ),
-                      SizedBox(height: 16.h),
-                      MintElevatedButton(
-                        onPressed: _isPhoneValid ? _navigateToOtp : null,
-                        title: l10n.signUp,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(l10n.signUp, style: MintTextStyles.largeTitle),
+                          SizedBox(height: 44.h),
+                          PhoneTextField(
+                            controller: _phoneController,
+                            onChanged: (phoneNumber) {
+                              setState(() {
+                                _isPhoneValid =
+                                    _validatePhoneNumber(phoneNumber);
+                              });
+                            },
+                            errorText: state is AuthPhoneVerificationFailure
+                                ? state.error
+                                : null,
+                          ),
+                          SizedBox(height: 16.h),
+                          if (state is! AuthPhoneVerificationLoading)
+                            MintElevatedButton(
+                              onPressed: _isPhoneValid ? _verifyPhone : null,
+                              title: l10n.signUp,
+                            )
+                          else
+                            const Center(child: CircularProgressIndicator()),
+                          SizedBox(height: 8.h),
+                          const Center(child: EnterPhoneTermsText()),
+                        ],
                       ),
-                      SizedBox(height: 8.h),
-                      const Center(child: EnterPhoneTermsText()),
+                      const Spacer(),
+                      SizedBox(height: 20.h),
+                      const EnterPhoneSignInText(),
+                      SizedBox(
+                        height: MediaQuery.paddingOf(context).bottom + 20.h,
+                      ),
                     ],
                   ),
-                  const Spacer(),
-                  SizedBox(height: 20.h),
-                  const EnterPhoneSignInText(),
-                  SizedBox(height: MediaQuery.paddingOf(context).bottom + 20.h),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

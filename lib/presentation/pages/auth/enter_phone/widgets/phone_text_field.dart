@@ -9,10 +9,12 @@ class PhoneTextField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.onChanged,
+    this.errorText,
   });
 
   final TextEditingController controller;
   final void Function(String) onChanged;
+  final String? errorText;
 
   @override
   State<PhoneTextField> createState() => _PhoneTextFieldState();
@@ -37,6 +39,8 @@ class _PhoneTextFieldState extends State<PhoneTextField> {
           vertical: 14.h,
           horizontal: 16.w,
         ),
+        errorText: widget.errorText,
+        errorStyle: MintTextStyles.caption1,
         hintText: l10n.phoneNumber,
         hintStyle: MintTextStyles.body.copyWith(
           color: Theme.of(context).hintColor.withOpacity(0.3),
