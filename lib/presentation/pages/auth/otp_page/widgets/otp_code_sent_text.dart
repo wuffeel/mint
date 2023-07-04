@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
-import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -29,7 +28,7 @@ class OtpCodeSentText extends StatelessWidget {
           TextSpan(
             text: _formatPhoneNumber(phoneNumber),
             style: MintTextStyles.captionSemiBold.copyWith(
-              color: MintColors.primaryBlueColor,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],

@@ -26,7 +26,10 @@ class MintColors {
   static const Color backgroundLight = Color(0xFFFFFFFF);
 
   /// Color: #A3CEFD
-  static const Color buttonDisabledColor = Color(0xFFA3CEFD);
+  static const Color buttonDisabledDarkColor = Color(0xFFA3CEFD);
+
+  /// Color: #9BCAFF
+  static const Color buttonDisabledLightColor = Color(0xFF9BCAFF);
 
   /// Color: #FF3B30
   static const Color error = Color(0xFFFF3B30);
@@ -58,8 +61,11 @@ class MintColors {
   /// Color: #E8E8ED
   static const Color pinGreyLight = Color(0xFFE8E8ED);
 
+  /// Color: #0A84FF
+  static const Color primaryDarkBlueColor = Color(0xFF0A84FF);
+
   /// Color: #007AFF
-  static const Color primaryBlueColor = Color(0xFF007AFF);
+  static const Color primaryLightBlueColor = Color(0xFF007AFF);
 
   /// Color: #4D4D52
   static const Color quarternary1 = Color(0xFF4D4D52);

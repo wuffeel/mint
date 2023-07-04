@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
+import 'package:mint/theme/mint_text_styles.dart';
 
 class MintThemeData {
   static const appBarThemeLight = AppBarTheme(
@@ -17,17 +18,17 @@ class MintThemeData {
     foregroundColor: Colors.white,
   );
 
-  static final colorSchemeLight = ColorScheme.fromSwatch(
-    accentColor: Colors.white,
-    backgroundColor: MintColors.backgroundLight,
-    errorColor: MintColors.error,
+  static const colorSchemeLight = ColorScheme.light(
+    primary: MintColors.primaryLightBlueColor,
+    secondary: Colors.white,
+    error: MintColors.error,
   );
 
-  static final colorSchemeDark = ColorScheme.fromSwatch(
-    brightness: Brightness.dark,
-    accentColor: MintColors.backgroundFillDark,
-    backgroundColor: MintColors.backgroundDark,
-    errorColor: MintColors.error,
+  static const colorSchemeDark = ColorScheme.dark(
+    primary: MintColors.primaryDarkBlueColor,
+    secondary: MintColors.backgroundFillDark,
+    background: MintColors.backgroundDark,
+    error: MintColors.error,
   );
 
   static final textThemeLight = const TextTheme().apply(
@@ -44,15 +45,47 @@ class MintThemeData {
 
   static const iconThemeDark = IconThemeData(color: Colors.white);
 
-  static final elevatedButtonThemeData = ElevatedButtonThemeData(
+  static final elevatedButtonLight = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       elevation: 0,
       minimumSize: Size.fromHeight(50.h),
-      backgroundColor: MintColors.primaryBlueColor,
-      disabledBackgroundColor: MintColors.buttonDisabledColor,
+      backgroundColor: MintColors.primaryLightBlueColor,
+      disabledBackgroundColor: MintColors.buttonDisabledLightColor,
       foregroundColor: Colors.white,
       disabledForegroundColor: MintColors.scaffoldLight,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
     ),
+  );
+
+  static final elevatedButtonDark = ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 0,
+      minimumSize: Size.fromHeight(50.h),
+      backgroundColor: MintColors.primaryDarkBlueColor,
+      disabledBackgroundColor: MintColors.buttonDisabledDarkColor,
+      foregroundColor: Colors.white,
+      disabledForegroundColor: MintColors.scaffoldLight,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+    ),
+  );
+
+  static final bottomNavigationBarLight = BottomNavigationBarThemeData(
+    backgroundColor: MintColors.scaffoldLight,
+    unselectedItemColor: MintColors.greyLight.withOpacity(0.6),
+    selectedItemColor: MintColors.primaryLightBlueColor.withOpacity(0.6),
+    showSelectedLabels: true,
+    showUnselectedLabels: true,
+    selectedLabelStyle: MintTextStyles.tab,
+    unselectedLabelStyle: MintTextStyles.tab,
+  );
+
+  static final bottomNavigationBarDark = BottomNavigationBarThemeData(
+    backgroundColor: MintColors.scaffoldDark,
+    unselectedItemColor: MintColors.greyDark.withOpacity(0.6),
+    selectedItemColor: MintColors.primaryDarkBlueColor.withOpacity(0.6),
+    showSelectedLabels: true,
+    showUnselectedLabels: true,
+    selectedLabelStyle: MintTextStyles.tab,
+    unselectedLabelStyle: MintTextStyles.tab,
   );
 }

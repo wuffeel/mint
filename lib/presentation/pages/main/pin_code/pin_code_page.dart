@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
-import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pin_code/widgets/pin_code_widget.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
@@ -112,7 +111,7 @@ class _PinCodePageState extends State<PinCodePage> {
                     child: Text(
                       _getBottomButtonTitle(state),
                       style: MintTextStyles.buttonsHuge.copyWith(
-                        color: MintColors.primaryBlueColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

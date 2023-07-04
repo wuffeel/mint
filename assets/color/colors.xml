@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryBlueColor">#007AFF</color>
-    <color name="buttonDisabledColor">#A3CEFD</color>
+    <color name="primaryLightBlueColor">#007AFF</color>
+    <color name="primaryDarkBlueColor">#0A84FF</color>
+    <color name="buttonDisabledLightColor">#9BCAFF</color>
+    <color name="buttonDisabledDarkColor">#A3CEFD</color>
     <color name="scaffoldLight">#F5F6F8</color>
     <color name="scaffoldDark">#121212</color>
     <color name="backgroundLight">#FFFFFF</color>

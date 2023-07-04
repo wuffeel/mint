@@ -1,6 +1,4 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -21,12 +19,8 @@ class EnterPhoneSignInText extends StatelessWidget {
           TextSpan(
             text: l10n.clickSignIn,
             style: MintTextStyles.footnote.copyWith(
-              color: MintColors.primaryBlueColor,
+              color: Theme.of(context).colorScheme.primary,
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // TODO(wuffel): navigate user to SignIn page
-              },
           ),
         ],
       ),

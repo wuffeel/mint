@@ -92,6 +92,11 @@ class MintTextStyles {
     letterSpacing: 0.03,
   );
 
+  static final tab = TextStyle(
+    fontSize: 10.sp,
+    height: 1.2,
+  );
+
   static final tab16 = TextStyle(
     fontSize: 16.sp,
     height: 1.31,

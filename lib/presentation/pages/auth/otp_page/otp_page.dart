@@ -169,7 +169,7 @@ class _OtpPageState extends State<OtpPage> {
                           child: Text(
                             l10n.resendCode,
                             style: MintTextStyles.buttonsHuge.copyWith(
-                              color: MintColors.primaryBlueColor,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ),
