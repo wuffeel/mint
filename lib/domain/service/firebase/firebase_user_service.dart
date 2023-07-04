@@ -21,6 +21,11 @@ class FirebaseUserService implements UserService {
   }
 
   @override
+  Future<void> changePinCode(String userUid, String? pinCode) {
+    return _userRepository.changePinCode(userUid, pinCode);
+  }
+
+  @override
   Future<void> logOut() async {
     await _userRepository.logOut();
   }

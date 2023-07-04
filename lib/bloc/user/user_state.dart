@@ -5,13 +5,17 @@ abstract class UserState {}
 
 class UserLoading extends UserState {}
 
-class UserDataFetchSuccess extends UserState {
-  UserDataFetchSuccess(this.user);
+class UserUnauthenticated extends UserState {}
+
+class UserAuthenticated extends UserState {}
+
+class UserFetchSuccess extends UserState {
+  UserFetchSuccess(this.user);
 
   final UserModel user;
 }
 
-class UserDataFetchFailure extends UserState {}
+class UserFetchFailure extends UserState {}
 
 class UserLogOutSuccess extends UserState {}
 

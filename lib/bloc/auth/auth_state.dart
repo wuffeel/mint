@@ -53,3 +53,5 @@ class AuthOtpResendFailure extends AuthPhoneVerificationSuccess {
 }
 
 class AuthOtpVerificationSuccess extends AuthState {}
+
+class AuthForgotPinLoading extends AuthState {}

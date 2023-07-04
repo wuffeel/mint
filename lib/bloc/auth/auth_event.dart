@@ -16,3 +16,5 @@ class AuthOtpVerificationRequested extends AuthEvent {
 }
 
 class AuthOtpResendRequested extends AuthEvent {}
+
+class AuthForgotPinRequested extends AuthEvent {}

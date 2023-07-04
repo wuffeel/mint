@@ -9,6 +9,7 @@ class UserModelFromDto implements Factory<UserModel, UserModelDto> {
   UserModel create(UserModelDto param) => UserModel(
         id: param.id,
         phoneNumber: param.phoneNumber,
+        pinCode: param.pinCode,
         nameTag: param.nameTag,
         firstName: param.firstName,
         lastName: param.lastName,

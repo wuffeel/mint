@@ -40,6 +40,11 @@ class FirebaseUserRepository implements UserRepository{
   }
 
   @override
+  Future<void> changePinCode(String userUid, String? pinCode) async {
+    return _userCollectionRef.doc(userUid).update({'pinCode': pinCode});
+  }
+
+  @override
   Future<void> logOut() async {
     await _firebaseAuth.signOut();
   }

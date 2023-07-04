@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/domain/controller/user_controller.dart';
 import 'package:mint/domain/entity/phone_code_sent_data.dart';
+import 'package:mint/domain/entity/user_model.dart';
 import 'package:mint/domain/usecase/verify_otp_use_case.dart';
 import 'package:mint/domain/usecase/verify_phone_use_case.dart';
 
@@ -15,7 +19,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
     this._verifyPhoneUseCase,
     this._verifyOtpUseCase,
+    this._userController,
   ) : super(AuthInitial()) {
+    _subscribeToUserChange();
     on<AuthPhoneVerificationRequested>(
       _onPhoneVerificationRequested,
       transformer: droppable(),
@@ -28,10 +34,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _onOtpResendRequested,
       transformer: droppable(),
     );
+    on<AuthForgotPinRequested>(
+      _onForgotPinRequested,
+      transformer: droppable(),
+    );
   }
 
   final VerifyPhoneUseCase _verifyPhoneUseCase;
   final VerifyOtpUseCase _verifyOtpUseCase;
+
+  UserModel? _currentUser;
+  final UserController _userController;
+  late final StreamSubscription<UserModel?> _userSubscription;
+
+  void _subscribeToUserChange() {
+    _userSubscription = _userController.user.listen((user) {
+      _currentUser = user;
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    await _userSubscription.cancel();
+    return super.close();
+  }
 
   Future<void> _onPhoneVerificationRequested(
     AuthPhoneVerificationRequested event,
@@ -123,6 +149,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'Something went wrong. Please try again',
           localState.phoneNumber,
           localState.phoneCodeSentData,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onForgotPinRequested(
+    AuthForgotPinRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final user = _currentUser;
+    final phoneNumber = user?.phoneNumber;
+    if (user == null || phoneNumber == null) return;
+
+    emit(AuthForgotPinLoading());
+    try {
+      final phoneCodeSentData = await _verifyPhoneUseCase(
+        phoneNumber: phoneNumber,
+      );
+      emit(AuthPhoneVerificationSuccess(phoneNumber, phoneCodeSentData));
+    } catch (error) {
+      emit(
+        AuthPhoneVerificationFailure(
+          'Something went wrong. Please try again',
         ),
       );
     }

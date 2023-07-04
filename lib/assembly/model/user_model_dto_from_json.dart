@@ -9,6 +9,7 @@ class UserModelDtoFromJson
   UserModelDto create(Map<String, dynamic> param) => UserModelDto(
         id: param['id'] as String,
         phoneNumber: param['phoneNumber'] as String?,
+        pinCode: param['pinCode'] as String?,
         nameTag: param['nameTag'] as String?,
         firstName: param['firstName'] as String?,
         lastName: param['lastName'] as String?,
