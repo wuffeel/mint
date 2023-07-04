@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/presentation/widgets/mint_back_button.dart';
 
 class MintAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -29,13 +28,9 @@ class MintAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       backgroundColor: Colors.transparent,
       elevation: 0,
-      bottom: PreferredSize(
-        preferredSize: Size.fromHeight(0.5.h),
-        child: Divider(height: 0.5.h, color: MintColors.grey1),
-      ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + 0.5.h);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
