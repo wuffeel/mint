@@ -1,0 +1,131 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
+import 'package:mint/gen/colors.gen.dart';
+import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/pin_code/widgets/pin_code_keyboard.dart';
+import 'package:mint/theme/mint_text_styles.dart';
+
+class PinCodeWidget extends StatefulWidget {
+  const PinCodeWidget({
+    super.key,
+    required this.length,
+    required this.onCompleted,
+  });
+
+  final int length;
+
+  /// Function that is called when pin-code entered reaches [length]
+  final void Function(String) onCompleted;
+
+  @override
+  State<PinCodeWidget> createState() => _PinCodeWidgetState();
+}
+
+class _PinCodeWidgetState extends State<PinCodeWidget> {
+  /// Current pin-code typed
+  String _pinCode = '';
+
+  /// Sets the [_pinCode] to empty string dependent on [state]
+  void _pinCodeListener(PinCodeState state) {
+    if (state is PinCodeMismatch ||
+        state is PinCodeFailure ||
+        state is PinCodeFieldReset) {
+      setState(() {
+        _pinCode = '';
+      });
+    }
+  }
+
+  /// Returns a color for obscured PIN, considering whether it typed,
+  /// disabled or error
+  Color _getPinColor(int index, bool isError) {
+    final theme = Theme.of(context);
+    final themeMode = theme.brightness;
+
+    final disabledColor = themeMode == Brightness.dark
+        ? MintColors.pinGreyDark
+        : MintColors.pinGreyLight;
+
+    return index < _pinCode.length
+        ? theme.primaryColor
+        : isError
+            ? MintColors.error.withOpacity(0.6)
+            : disabledColor;
+  }
+
+  /// Update current [_pinCode] to [newPinCode]
+  ///
+  /// Calls [PinCodeWidget.onCompleted] function if [_pinCode] length reaches
+  /// [PinCodeWidget.length]
+  void _updatePinCode(String newPinCode) {
+    setState(() {
+      _pinCode = newPinCode;
+      if (_pinCode.length == widget.length) {
+        widget.onCompleted(_pinCode);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<PinCodeBloc, PinCodeState>(
+      listener: (_, state) => _pinCodeListener(state),
+      builder: (context, state) {
+        final isError = state is PinCodeFailure || state is PinCodeMismatch;
+        return Column(
+          children: <Widget>[
+            Wrap(
+              spacing: 6.w,
+              children: List.generate(
+                widget.length,
+                (index) => Container(
+                  width: 28.w,
+                  height: 28.h,
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 13.w,
+                    height: 13.h,
+                    decoration: BoxDecoration(
+                      color: _getPinColor(index, isError),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (isError) SizedBox(height: 6.h),
+            if (state is PinCodeMismatch)
+              Text(
+                context.l10n.enteredPinCodesDoNotMatch,
+                style: MintTextStyles.caption1.copyWith(
+                  color: MintColors.error,
+                ),
+              )
+            else if (state is PinCodeFailure)
+              Text(
+                context.l10n.somethingWentWrongTryAgain,
+                style: MintTextStyles.caption1.copyWith(
+                  color: MintColors.error,
+                ),
+              ),
+            SizedBox(height: isError ? 41.h : 63.h),
+            PinCodeKeyboard(
+              onNumTap: (number) {
+                if (_pinCode.length < widget.length) {
+                  _updatePinCode('$_pinCode$number');
+                }
+              },
+              onBackspace: () {
+                if (_pinCode.isNotEmpty) {
+                  _updatePinCode(_pinCode.substring(0, _pinCode.length - 1));
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

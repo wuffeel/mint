@@ -15,7 +15,7 @@ import 'package:mint/assembly/entity/user_model_from_dto.dart' as _i6;
 import 'package:mint/assembly/factory.dart' as _i3;
 import 'package:mint/assembly/model/user_model_dto_from_json.dart' as _i7;
 import 'package:mint/bloc/auth/auth_bloc.dart' as _i19;
-import 'package:mint/bloc/log_in/log_in_cubit.dart' as _i21;
+import 'package:mint/bloc/pin_code/pin_code_bloc.dart' as _i24;
 import 'package:mint/bloc/user/user_bloc.dart' as _i23;
 import 'package:mint/data/model/user_model_dto.dart' as _i5;
 import 'package:mint/data/repository/abstract/phone_auth_repository.dart'
@@ -34,7 +34,8 @@ import 'package:mint/domain/service/firebase/firebase_phone_auth_service.dart'
 import 'package:mint/domain/service/firebase/firebase_user_service.dart'
     as _i16;
 import 'package:mint/domain/usecase/get_current_user_use_case.dart' as _i20;
-import 'package:mint/domain/usecase/log_out_use_case.dart' as _i22;
+import 'package:mint/domain/usecase/log_out_use_case.dart' as _i21;
+import 'package:mint/domain/usecase/pin_code_change_use_case.dart' as _i22;
 import 'package:mint/domain/usecase/verify_otp_use_case.dart' as _i17;
 import 'package:mint/domain/usecase/verify_phone_use_case.dart' as _i18;
 
@@ -70,16 +71,22 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i19.AuthBloc>(() => _i19.AuthBloc(
           gh<_i18.VerifyPhoneUseCase>(),
           gh<_i17.VerifyOtpUseCase>(),
+          gh<_i12.UserController>(),
         ));
     gh.factory<_i20.GetCurrentUserUseCase>(
         () => _i20.GetCurrentUserUseCase(gh<_i15.UserService>()));
-    gh.factory<_i21.LogInCubit>(
-        () => _i21.LogInCubit(gh<_i20.GetCurrentUserUseCase>()));
-    gh.factory<_i22.LogOutUseCase>(
-        () => _i22.LogOutUseCase(gh<_i15.UserService>()));
+    gh.factory<_i21.LogOutUseCase>(
+        () => _i21.LogOutUseCase(gh<_i15.UserService>()));
+    gh.factory<_i22.PinCodeChangeUseCase>(
+        () => _i22.PinCodeChangeUseCase(gh<_i15.UserService>()));
     gh.factory<_i23.UserBloc>(() => _i23.UserBloc(
           gh<_i20.GetCurrentUserUseCase>(),
-          gh<_i22.LogOutUseCase>(),
+          gh<_i21.LogOutUseCase>(),
+          gh<_i12.UserController>(),
+        ));
+    gh.factory<_i24.PinCodeBloc>(() => _i24.PinCodeBloc(
+          gh<_i12.UserController>(),
+          gh<_i22.PinCodeChangeUseCase>(),
         ));
     return this;
   }

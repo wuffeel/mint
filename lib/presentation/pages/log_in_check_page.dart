@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mint/bloc/log_in/log_in_cubit.dart';
+import 'package:mint/bloc/user/user_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/routes/app_router.gr.dart';
 
@@ -13,18 +13,18 @@ class LogInCheckPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => getIt<LogInCubit>()..checkLogIn(),
-        child: BlocConsumer<LogInCubit, LogInState>(
+        create: (context) => getIt<UserBloc>()..add(UserLogInCheckRequested()),
+        child: BlocConsumer<UserBloc, UserState>(
           listener: (context, state) {
-            if (state is LogInUnauthenticated) {
+            if (state is UserUnauthenticated) {
               context.router.replace(const SignUpWrapperRoute());
             }
-            if (state is LogInAuthenticated) {
+            if (state is UserAuthenticated) {
               context.router.replace(const NavigationWrapperRoute());
             }
           },
           builder: (context, state) {
-            if (state is LogInLoading) {
+            if (state is UserLoading) {
               return const Center(child: CircularProgressIndicator());
             }
             return const SizedBox.shrink();
