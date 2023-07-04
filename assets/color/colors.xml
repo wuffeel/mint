@@ -13,6 +13,10 @@
     <color name="greyLight">#3C3C43</color>
     <color name="greyDark">#EBEBF5</color>
     <color name="grey1">#8E8E93</color>
+    <color name="numberLight">#EEEEEE</color>
+    <color name="numberDark">#232323</color>
+    <color name="pinGreyLight">#E8E8ED</color>
+    <color name="pinGreyDark">#2C2C2E</color>
     <color name="quarternary1">#4D4D52</color>
     <color name="additionalViolet">#876CD1</color>
 </resources>

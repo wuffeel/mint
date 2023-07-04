@@ -62,6 +62,10 @@ flutter:
     - assets/fonts/
 
   fonts:
+    - family: SfProDisplay
+      fonts:
+        - asset: assets/fonts/sf_pro_display/SFProDisplay-Regular.ttf
+          weight: 400
     - family: Inter
       fonts:
         - asset: assets/fonts/inter/Inter-Thin.ttf

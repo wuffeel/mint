@@ -22,8 +22,17 @@ class $AssetsSvgGen {
   SvgGenImage get arrowBackIos =>
       const SvgGenImage('assets/svg/arrow_back_ios.svg');
 
+  /// File path: assets/svg/backspace_icon.svg
+  SvgGenImage get backspaceIcon =>
+      const SvgGenImage('assets/svg/backspace_icon.svg');
+
+  /// File path: assets/svg/backspace_icon_dark.svg
+  SvgGenImage get backspaceIconDark =>
+      const SvgGenImage('assets/svg/backspace_icon_dark.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [arrowBackAndroid, arrowBackIos];
+  List<SvgGenImage> get values =>
+      [arrowBackAndroid, arrowBackIos, backspaceIcon, backspaceIconDark];
 }
 
 class Assets {

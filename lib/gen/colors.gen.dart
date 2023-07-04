@@ -46,6 +46,18 @@ class MintColors {
   /// Color: #3C3C43
   static const Color greyLight = Color(0xFF3C3C43);
 
+  /// Color: #232323
+  static const Color numberDark = Color(0xFF232323);
+
+  /// Color: #EEEEEE
+  static const Color numberLight = Color(0xFFEEEEEE);
+
+  /// Color: #2C2C2E
+  static const Color pinGreyDark = Color(0xFF2C2C2E);
+
+  /// Color: #E8E8ED
+  static const Color pinGreyLight = Color(0xFFE8E8ED);
+
   /// Color: #007AFF
   static const Color primaryBlueColor = Color(0xFF007AFF);
 
