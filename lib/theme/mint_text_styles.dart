@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/gen/fonts.gen.dart';
 
 class MintTextStyles {
+  static final sfProDisplay37Regular400 = TextStyle(
+    fontFamily: MintFontFamily.sfProDisplay,
+    fontSize: 37.sp,
+    height: 1.1,
+    letterSpacing: 0.37,
+  );
+
   static final largeTitle = TextStyle(
     fontSize: 34.sp,
     fontWeight: FontWeight.w700,
