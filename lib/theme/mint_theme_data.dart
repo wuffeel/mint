@@ -72,7 +72,7 @@ class MintThemeData {
   static final bottomNavigationBarLight = BottomNavigationBarThemeData(
     backgroundColor: MintColors.scaffoldLight,
     unselectedItemColor: MintColors.greyLight.withOpacity(0.6),
-    selectedItemColor: MintColors.primaryLightBlueColor.withOpacity(0.6),
+    selectedItemColor: MintColors.primaryLightBlueColor,
     showSelectedLabels: true,
     showUnselectedLabels: true,
     selectedLabelStyle: MintTextStyles.tab,
@@ -82,7 +82,7 @@ class MintThemeData {
   static final bottomNavigationBarDark = BottomNavigationBarThemeData(
     backgroundColor: MintColors.scaffoldDark,
     unselectedItemColor: MintColors.greyDark.withOpacity(0.6),
-    selectedItemColor: MintColors.primaryDarkBlueColor.withOpacity(0.6),
+    selectedItemColor: MintColors.primaryDarkBlueColor,
     showSelectedLabels: true,
     showUnselectedLabels: true,
     selectedLabelStyle: MintTextStyles.tab,
