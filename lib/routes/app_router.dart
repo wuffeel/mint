@@ -21,7 +21,15 @@ class AppRouter extends $AppRouter {
               page: ForgotPinOtpWrapperRoute.page,
               children: [AutoRoute(page: OtpRoute.page)],
             ),
-            AutoRoute(page: NavigationRoute.page),
+            AutoRoute(
+              page: NavigationRoute.page,
+              children: [
+                AutoRoute(page: HomeRoute.page),
+                AutoRoute(page: SpecialistsRoute.page),
+                AutoRoute(page: SessionsRoute.page),
+                AutoRoute(page: ProfileRoute.page),
+              ],
+            ),
           ],
         ),
       ];

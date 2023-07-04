@@ -1,10 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
-import 'package:mint/bloc/user/user_bloc.dart';
-import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/navigation/widgets/mint_bottom_navigation.dart';
 import 'package:mint/routes/app_router.gr.dart';
 
 @RoutePage()
@@ -13,27 +9,17 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                context.read<PinCodeBloc>().add(PinCodeChangeRequested());
-                context.router.push(const PinCodeRoute());
-              },
-              child: Text(context.l10n.changePinCode),
-            ),
-            SizedBox(height: 12.h),
-            ElevatedButton(
-              onPressed: () =>
-                  context.read<UserBloc>().add(UserLogOutRequested()),
-              child: Text(context.l10n.logOut),
-            ),
-          ],
-        ),
-      ),
+    return AutoTabsScaffold(
+      routes: const [
+        HomeRoute(),
+        SpecialistsRoute(),
+        SessionsRoute(),
+        ProfileRoute(),
+      ],
+      animationDuration: Duration.zero,
+      bottomNavigationBuilder: (_, tabsRouter) {
+        return MintBottomNavigation(tabsRouter: tabsRouter);
+      },
     );
   }
 }

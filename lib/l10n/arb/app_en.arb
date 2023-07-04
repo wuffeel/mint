@@ -21,5 +21,9 @@
     "enterOtherPinCode": "Enter other pin-code",
     "changePinCode": "Change Pin-code",
     "somethingWentWrongTryAgain": "Something went wrong. Please try again",
-    "enteredPinCodesDoNotMatch": "Entered PIN codes do not match"
+    "enteredPinCodesDoNotMatch": "Entered PIN codes do not match",
+    "home": "Home",
+    "specialists": "Specialists",
+    "sessions": "Sessions",
+    "profile": "Profile"
 }

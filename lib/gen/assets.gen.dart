@@ -30,9 +30,32 @@ class $AssetsSvgGen {
   SvgGenImage get backspaceIconDark =>
       const SvgGenImage('assets/svg/backspace_icon_dark.svg');
 
+  /// File path: assets/svg/home_icon.svg
+  SvgGenImage get homeIcon => const SvgGenImage('assets/svg/home_icon.svg');
+
+  /// File path: assets/svg/profile_icon.svg
+  SvgGenImage get profileIcon =>
+      const SvgGenImage('assets/svg/profile_icon.svg');
+
+  /// File path: assets/svg/sessions_icon.svg
+  SvgGenImage get sessionsIcon =>
+      const SvgGenImage('assets/svg/sessions_icon.svg');
+
+  /// File path: assets/svg/specialists_icon.svg
+  SvgGenImage get specialistsIcon =>
+      const SvgGenImage('assets/svg/specialists_icon.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [arrowBackAndroid, arrowBackIos, backspaceIcon, backspaceIconDark];
+  List<SvgGenImage> get values => [
+        arrowBackAndroid,
+        arrowBackIos,
+        backspaceIcon,
+        backspaceIconDark,
+        homeIcon,
+        profileIcon,
+        sessionsIcon,
+        specialistsIcon
+      ];
 }
 
 class Assets {

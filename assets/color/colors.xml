@@ -21,4 +21,6 @@
     <color name="pinGreyDark">#2C2C2E</color>
     <color name="quarternary1">#4D4D52</color>
     <color name="additionalViolet">#876CD1</color>
+    <color name="separatorLight">#E6E6E6</color>
+    <color name="separatorDark">#545458</color>
 </resources>

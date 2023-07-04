@@ -8,12 +8,13 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i10;
+import 'package:auto_route/auto_route.dart' as _i14;
 import 'package:mint/presentation/pages/auth/enter_phone/enter_phone_page.dart'
     as _i3;
 import 'package:mint/presentation/pages/auth/otp_page/otp_page.dart' as _i2;
 import 'package:mint/presentation/pages/auth/sign_up_wrapper_page.dart' as _i1;
 import 'package:mint/presentation/pages/log_in_check_page.dart' as _i4;
+import 'package:mint/presentation/pages/main/home/home_page.dart' as _i11;
 import 'package:mint/presentation/pages/main/navigation/navigation_page.dart'
     as _i6;
 import 'package:mint/presentation/pages/main/navigation/navigation_wrapper_page.dart'
@@ -24,64 +25,93 @@ import 'package:mint/presentation/pages/main/pin_code/pin_code_page.dart'
     as _i5;
 import 'package:mint/presentation/pages/main/pin_code/pin_code_wrapper_page.dart'
     as _i8;
+import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i10;
+import 'package:mint/presentation/pages/main/sessions/sessions_page.dart'
+    as _i13;
+import 'package:mint/presentation/pages/main/specialists/specialists_page.dart'
+    as _i12;
 
-abstract class $AppRouter extends _i10.RootStackRouter {
+abstract class $AppRouter extends _i14.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i10.PageFactory> pagesMap = {
+  final Map<String, _i14.PageFactory> pagesMap = {
     SignUpWrapperRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i10.WrappedRoute(child: const _i1.SignUpWrapperPage()),
+        child: _i14.WrappedRoute(child: const _i1.SignUpWrapperPage()),
       );
     },
     OtpRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i2.OtpPage(),
       );
     },
     EnterPhoneRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i3.EnterPhonePage(),
       );
     },
     LogInCheckRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i4.LogInCheckPage(),
       );
     },
     PinCodeRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i5.PinCodePage(),
       );
     },
     NavigationRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i6.NavigationPage(),
       );
     },
     NavigationWrapperRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i10.WrappedRoute(child: const _i7.NavigationWrapperPage()),
+        child: _i14.WrappedRoute(child: const _i7.NavigationWrapperPage()),
       );
     },
     PinCodeWrapperRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i10.WrappedRoute(child: const _i8.PinCodeWrapperPage()),
+        child: _i14.WrappedRoute(child: const _i8.PinCodeWrapperPage()),
       );
     },
     ForgotPinOtpWrapperRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i10.WrappedRoute(child: const _i9.ForgotPinOtpWrapperPage()),
+        child: _i14.WrappedRoute(child: const _i9.ForgotPinOtpWrapperPage()),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i10.ProfilePage(),
+      );
+    },
+    HomeRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i11.HomePage(),
+      );
+    },
+    SpecialistsRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i12.SpecialistsPage(),
+      );
+    },
+    SessionsRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i13.SessionsPage(),
       );
     },
   };
@@ -89,8 +119,8 @@ abstract class $AppRouter extends _i10.RootStackRouter {
 
 /// generated route for
 /// [_i1.SignUpWrapperPage]
-class SignUpWrapperRoute extends _i10.PageRouteInfo<void> {
-  const SignUpWrapperRoute({List<_i10.PageRouteInfo>? children})
+class SignUpWrapperRoute extends _i14.PageRouteInfo<void> {
+  const SignUpWrapperRoute({List<_i14.PageRouteInfo>? children})
       : super(
           SignUpWrapperRoute.name,
           initialChildren: children,
@@ -98,13 +128,13 @@ class SignUpWrapperRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'SignUpWrapperRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i2.OtpPage]
-class OtpRoute extends _i10.PageRouteInfo<void> {
-  const OtpRoute({List<_i10.PageRouteInfo>? children})
+class OtpRoute extends _i14.PageRouteInfo<void> {
+  const OtpRoute({List<_i14.PageRouteInfo>? children})
       : super(
           OtpRoute.name,
           initialChildren: children,
@@ -112,13 +142,13 @@ class OtpRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'OtpRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i3.EnterPhonePage]
-class EnterPhoneRoute extends _i10.PageRouteInfo<void> {
-  const EnterPhoneRoute({List<_i10.PageRouteInfo>? children})
+class EnterPhoneRoute extends _i14.PageRouteInfo<void> {
+  const EnterPhoneRoute({List<_i14.PageRouteInfo>? children})
       : super(
           EnterPhoneRoute.name,
           initialChildren: children,
@@ -126,13 +156,13 @@ class EnterPhoneRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'EnterPhoneRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i4.LogInCheckPage]
-class LogInCheckRoute extends _i10.PageRouteInfo<void> {
-  const LogInCheckRoute({List<_i10.PageRouteInfo>? children})
+class LogInCheckRoute extends _i14.PageRouteInfo<void> {
+  const LogInCheckRoute({List<_i14.PageRouteInfo>? children})
       : super(
           LogInCheckRoute.name,
           initialChildren: children,
@@ -140,13 +170,13 @@ class LogInCheckRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'LogInCheckRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i5.PinCodePage]
-class PinCodeRoute extends _i10.PageRouteInfo<void> {
-  const PinCodeRoute({List<_i10.PageRouteInfo>? children})
+class PinCodeRoute extends _i14.PageRouteInfo<void> {
+  const PinCodeRoute({List<_i14.PageRouteInfo>? children})
       : super(
           PinCodeRoute.name,
           initialChildren: children,
@@ -154,13 +184,13 @@ class PinCodeRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'PinCodeRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i6.NavigationPage]
-class NavigationRoute extends _i10.PageRouteInfo<void> {
-  const NavigationRoute({List<_i10.PageRouteInfo>? children})
+class NavigationRoute extends _i14.PageRouteInfo<void> {
+  const NavigationRoute({List<_i14.PageRouteInfo>? children})
       : super(
           NavigationRoute.name,
           initialChildren: children,
@@ -168,13 +198,13 @@ class NavigationRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'NavigationRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i7.NavigationWrapperPage]
-class NavigationWrapperRoute extends _i10.PageRouteInfo<void> {
-  const NavigationWrapperRoute({List<_i10.PageRouteInfo>? children})
+class NavigationWrapperRoute extends _i14.PageRouteInfo<void> {
+  const NavigationWrapperRoute({List<_i14.PageRouteInfo>? children})
       : super(
           NavigationWrapperRoute.name,
           initialChildren: children,
@@ -182,13 +212,13 @@ class NavigationWrapperRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'NavigationWrapperRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i8.PinCodeWrapperPage]
-class PinCodeWrapperRoute extends _i10.PageRouteInfo<void> {
-  const PinCodeWrapperRoute({List<_i10.PageRouteInfo>? children})
+class PinCodeWrapperRoute extends _i14.PageRouteInfo<void> {
+  const PinCodeWrapperRoute({List<_i14.PageRouteInfo>? children})
       : super(
           PinCodeWrapperRoute.name,
           initialChildren: children,
@@ -196,13 +226,13 @@ class PinCodeWrapperRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'PinCodeWrapperRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i9.ForgotPinOtpWrapperPage]
-class ForgotPinOtpWrapperRoute extends _i10.PageRouteInfo<void> {
-  const ForgotPinOtpWrapperRoute({List<_i10.PageRouteInfo>? children})
+class ForgotPinOtpWrapperRoute extends _i14.PageRouteInfo<void> {
+  const ForgotPinOtpWrapperRoute({List<_i14.PageRouteInfo>? children})
       : super(
           ForgotPinOtpWrapperRoute.name,
           initialChildren: children,
@@ -210,5 +240,61 @@ class ForgotPinOtpWrapperRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'ForgotPinOtpWrapperRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i10.ProfilePage]
+class ProfileRoute extends _i14.PageRouteInfo<void> {
+  const ProfileRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          ProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
+
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i11.HomePage]
+class HomeRoute extends _i14.PageRouteInfo<void> {
+  const HomeRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRoute';
+
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i12.SpecialistsPage]
+class SpecialistsRoute extends _i14.PageRouteInfo<void> {
+  const SpecialistsRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          SpecialistsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SpecialistsRoute';
+
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i13.SessionsPage]
+class SessionsRoute extends _i14.PageRouteInfo<void> {
+  const SessionsRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          SessionsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SessionsRoute';
+
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }

@@ -75,4 +75,10 @@ class MintColors {
 
   /// Color: #F5F6F8
   static const Color scaffoldLight = Color(0xFFF5F6F8);
+
+  /// Color: #545458
+  static const Color separatorDark = Color(0xFF545458);
+
+  /// Color: #E6E6E6
+  static const Color separatorLight = Color(0xFFE6E6E6);
 }

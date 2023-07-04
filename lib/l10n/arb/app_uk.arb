@@ -21,5 +21,9 @@
     "enterOtherPinCode": "Ввести інший пін-код",
     "changePinCode": "Змінити пін-код",
     "somethingWentWrongTryAgain": "Щось пішло не так. Спробуйте ще раз",
-    "enteredPinCodesDoNotMatch": "Введені пін-коди не співпадають"
+    "enteredPinCodesDoNotMatch": "Введені пін-коди не співпадають",
+    "home": "Головна",
+    "specialists": "Спеціалісти",
+    "sessions": "Сессії",
+    "profile": "Профіль"
 }
