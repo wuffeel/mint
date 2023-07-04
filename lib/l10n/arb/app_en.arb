@@ -11,5 +11,15 @@
     "youWillBeAbleToResendIn": "You will able to re-send a code in",
     "resendCode": "Re-send a code",
     "back": "Back",
-    "logOut": "Log Out"
+    "logOut": "Log Out",
+    "enterPinCode": "Enter a pin-code",
+    "enterNewPinCode": "Enter a new pin-code",
+    "enterCurrentPinCode": "Enter the current pin-code",
+    "confirmPinCode": "Confirm a pin-code",
+    "confirmNewPinCode": "Confirm a new pin-code",
+    "forgotPinCode": "Forgot a pin-code?",
+    "enterOtherPinCode": "Enter other pin-code",
+    "changePinCode": "Change Pin-code",
+    "somethingWentWrongTryAgain": "Something went wrong. Please try again",
+    "enteredPinCodesDoNotMatch": "Entered PIN codes do not match"
 }

@@ -11,5 +11,15 @@
     "youWillBeAbleToResendIn": "Ви зможете надіслати код повторно через",
     "resendCode": "Надіслати код повторно",
     "back": "Назад",
-    "logOut": "Вийти"
+    "logOut": "Вийти",
+    "enterPinCode": "Введіть пін-код",
+    "enterNewPinCode": "Введіть новий пін-код",
+    "enterCurrentPinCode": "Введіть поточний пін-код",
+    "confirmPinCode": "Підтвердіть пін-код",
+    "confirmNewPinCode": "Підтвердіть новий пін-код",
+    "forgotPinCode": "Забули пін-код?",
+    "enterOtherPinCode": "Ввести інший пін-код",
+    "changePinCode": "Змінити пін-код",
+    "somethingWentWrongTryAgain": "Щось пішло не так. Спробуйте ще раз",
+    "enteredPinCodesDoNotMatch": "Введені пін-коди не співпадають"
 }
