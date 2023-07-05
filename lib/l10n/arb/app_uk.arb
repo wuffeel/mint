@@ -25,5 +25,10 @@
     "home": "Головна",
     "specialists": "Спеціалісти",
     "sessions": "Сессії",
-    "profile": "Профіль"
+    "profile": "Профіль",
+    "pickUpSpecialist": "Підібрати спеціаліста",
+    "doctorsOnline": "Лікарі онлайн",
+    "psychologist": "Психолог",
+    "experienceYear": "рік",
+    "experienceYears": "років"
 }

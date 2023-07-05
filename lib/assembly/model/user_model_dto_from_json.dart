@@ -11,6 +11,7 @@ class UserModelDtoFromJson
         phoneNumber: param['phoneNumber'] as String?,
         pinCode: param['pinCode'] as String?,
         nameTag: param['nameTag'] as String?,
+        photo: param['photo'] as String?,
         firstName: param['firstName'] as String?,
         lastName: param['lastName'] as String?,
         dateOfBirth: param['dateOfBirth'] as DateTime?,

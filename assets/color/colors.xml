@@ -15,6 +15,7 @@
     <color name="greyLight">#3C3C43</color>
     <color name="greyDark">#EBEBF5</color>
     <color name="grey1">#8E8E93</color>
+    <color name="elementsGreyDark">#636366</color>
     <color name="numberLight">#EEEEEE</color>
     <color name="numberDark">#232323</color>
     <color name="pinGreyLight">#E8E8ED</color>
@@ -23,4 +24,6 @@
     <color name="additionalViolet">#876CD1</color>
     <color name="separatorLight">#E6E6E6</color>
     <color name="separatorDark">#545458</color>
+    <color name="imageBackgroundLight">#696969</color>
+    <color name="imageBackgroundDark">#E3E3E3</color>
 </resources>

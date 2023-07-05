@@ -30,12 +30,30 @@ class $AssetsSvgGen {
   SvgGenImage get backspaceIconDark =>
       const SvgGenImage('assets/svg/backspace_icon_dark.svg');
 
+  /// File path: assets/svg/bell_icon.svg
+  SvgGenImage get bellIcon => const SvgGenImage('assets/svg/bell_icon.svg');
+
+  /// File path: assets/svg/heart_icon.svg
+  SvgGenImage get heartIcon => const SvgGenImage('assets/svg/heart_icon.svg');
+
+  /// File path: assets/svg/heart_icon_filled.svg
+  SvgGenImage get heartIconFilled =>
+      const SvgGenImage('assets/svg/heart_icon_filled.svg');
+
   /// File path: assets/svg/home_icon.svg
   SvgGenImage get homeIcon => const SvgGenImage('assets/svg/home_icon.svg');
+
+  /// File path: assets/svg/pick_up_specialist.svg
+  SvgGenImage get pickUpSpecialist =>
+      const SvgGenImage('assets/svg/pick_up_specialist.svg');
 
   /// File path: assets/svg/profile_icon.svg
   SvgGenImage get profileIcon =>
       const SvgGenImage('assets/svg/profile_icon.svg');
+
+  /// File path: assets/svg/question_mark.svg
+  SvgGenImage get questionMark =>
+      const SvgGenImage('assets/svg/question_mark.svg');
 
   /// File path: assets/svg/sessions_icon.svg
   SvgGenImage get sessionsIcon =>
@@ -45,16 +63,35 @@ class $AssetsSvgGen {
   SvgGenImage get specialistsIcon =>
       const SvgGenImage('assets/svg/specialists_icon.svg');
 
+  /// File path: assets/svg/star_icon.svg
+  SvgGenImage get starIcon => const SvgGenImage('assets/svg/star_icon.svg');
+
+  /// File path: assets/svg/star_icon_filled.svg
+  SvgGenImage get starIconFilled =>
+      const SvgGenImage('assets/svg/star_icon_filled.svg');
+
+  /// File path: assets/svg/user_placeholder.svg
+  SvgGenImage get userPlaceholder =>
+      const SvgGenImage('assets/svg/user_placeholder.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         arrowBackAndroid,
         arrowBackIos,
         backspaceIcon,
         backspaceIconDark,
+        bellIcon,
+        heartIcon,
+        heartIconFilled,
         homeIcon,
+        pickUpSpecialist,
         profileIcon,
+        questionMark,
         sessionsIcon,
-        specialistsIcon
+        specialistsIcon,
+        starIcon,
+        starIconFilled,
+        userPlaceholder
       ];
 }
 

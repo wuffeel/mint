@@ -25,5 +25,10 @@
     "home": "Home",
     "specialists": "Specialists",
     "sessions": "Sessions",
-    "profile": "Profile"
+    "profile": "Profile",
+    "pickUpSpecialist": "Pick up a specialist",
+    "doctorsOnline": "Doctors online",
+    "psychologist": "Psychologist",
+    "experienceYear": "year",
+    "experienceYears": "years"
 }

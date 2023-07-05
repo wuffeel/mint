@@ -19,6 +19,10 @@ dependencies:
   flutter_libphonenumber: ^2.1.4
   flutter_localizations:
     sdk: flutter
+  flutter_rating_bar:
+    git:
+      url: https://github.com/wuffeel/flutter_rating_bar.git
+      ref: master
   flutter_screenutil: ^5.8.4
   flutter_svg: ^2.0.7
   get_it: ^7.6.0

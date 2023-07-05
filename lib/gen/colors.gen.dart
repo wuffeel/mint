@@ -31,6 +31,9 @@ class MintColors {
   /// Color: #9BCAFF
   static const Color buttonDisabledLightColor = Color(0xFF9BCAFF);
 
+  /// Color: #636366
+  static const Color elementsGreyDark = Color(0xFF636366);
+
   /// Color: #FF3B30
   static const Color error = Color(0xFFFF3B30);
 
@@ -48,6 +51,12 @@ class MintColors {
 
   /// Color: #3C3C43
   static const Color greyLight = Color(0xFF3C3C43);
+
+  /// Color: #E3E3E3
+  static const Color imageBackgroundDark = Color(0xFFE3E3E3);
+
+  /// Color: #696969
+  static const Color imageBackgroundLight = Color(0xFF696969);
 
   /// Color: #232323
   static const Color numberDark = Color(0xFF232323);

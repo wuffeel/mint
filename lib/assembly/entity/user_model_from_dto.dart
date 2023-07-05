@@ -11,6 +11,7 @@ class UserModelFromDto implements Factory<UserModel, UserModelDto> {
         phoneNumber: param.phoneNumber,
         pinCode: param.pinCode,
         nameTag: param.nameTag,
+        photo: param.photo,
         firstName: param.firstName,
         lastName: param.lastName,
         dateOfBirth: param.dateOfBirth,

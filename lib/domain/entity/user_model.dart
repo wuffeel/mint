@@ -4,6 +4,7 @@ class UserModel {
     this.phoneNumber,
     this.pinCode,
     this.nameTag,
+    this.photo,
     this.firstName,
     this.lastName,
     this.dateOfBirth,
@@ -12,6 +13,7 @@ class UserModel {
   final String id;
   final String? phoneNumber;
   final String? pinCode;
+  final String? photo;
   final String? nameTag;
   final String? firstName;
   final String? lastName;
