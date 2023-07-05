@@ -71,13 +71,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthPhoneVerificationSuccess(event.phoneNumber, phoneCodeSentData));
     } catch (error) {
       if (error.toString().contains('invalid-phone-number')) {
-        emit(AuthPhoneVerificationFailure('Invalid phone number'));
+        emit(AuthPhoneVerificationInvalidPhone());
       } else {
-        emit(
-          AuthPhoneVerificationFailure(
-            'Something went wrong. Please try again',
-          ),
-        );
+        emit(AuthPhoneVerificationFailure());
       }
     }
   }
@@ -105,8 +101,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (error) {
       if (error.toString().contains('invalid-verification-code')) {
         emit(
-          AuthOtpVerificationFailure(
-            'Wrong code, please try again',
+          AuthOtpVerificationMismatch(
             localState.phoneNumber,
             localState.phoneCodeSentData,
           ),
@@ -114,7 +109,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(
           AuthOtpVerificationFailure(
-            'Something went wrong. Please try again',
             localState.phoneNumber,
             localState.phoneCodeSentData,
           ),
@@ -146,7 +140,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (_) {
       emit(
         AuthOtpResendFailure(
-          'Something went wrong. Please try again',
           localState.phoneNumber,
           localState.phoneCodeSentData,
         ),
@@ -169,11 +162,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthPhoneVerificationSuccess(phoneNumber, phoneCodeSentData));
     } catch (error) {
-      emit(
-        AuthPhoneVerificationFailure(
-          'Something went wrong. Please try again',
-        ),
-      );
+      emit(AuthPhoneVerificationFailure());
     }
   }
 }

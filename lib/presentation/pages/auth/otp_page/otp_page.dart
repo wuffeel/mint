@@ -85,6 +85,15 @@ class _OtpPageState extends State<OtpPage> {
     return '${l10n.youWillBeAbleToResendIn} $minutes:$seconds';
   }
 
+  String _getErrorText(AuthState state) {
+    if (state is AuthOtpVerificationMismatch) {
+      return context.l10n.wrongVerificationCode;
+    } else if (state is AuthOtpVerificationFailure) {
+      return context.l10n.somethingWentWrongTryAgain;
+    }
+    return '';
+  }
+
   @override
   void dispose() {
     _otpController.dispose();
@@ -149,9 +158,10 @@ class _OtpPageState extends State<OtpPage> {
                       ),
                       const Spacer(),
                       SizedBox(height: 20.h),
-                      if (state is AuthOtpVerificationFailure) ...[
+                      if (state is AuthOtpVerificationFailure ||
+                          state is AuthOtpVerificationMismatch) ...[
                         Text(
-                          state.error,
+                          _getErrorText(state),
                           style: MintTextStyles.buttonsHuge.copyWith(
                             color: MintColors.error,
                           ),

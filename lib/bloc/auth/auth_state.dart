@@ -7,6 +7,10 @@ class AuthInitial extends AuthState {}
 
 class AuthPhoneVerificationLoading extends AuthState {}
 
+class AuthPhoneVerificationInvalidPhone extends AuthState {}
+
+class AuthPhoneVerificationFailure extends AuthState {}
+
 class AuthPhoneVerificationSuccess extends AuthState {
   AuthPhoneVerificationSuccess(this.phoneNumber, this.phoneCodeSentData);
 
@@ -14,24 +18,16 @@ class AuthPhoneVerificationSuccess extends AuthState {
   final PhoneCodeSentData phoneCodeSentData;
 }
 
-class AuthPhoneVerificationFailure extends AuthState {
-  AuthPhoneVerificationFailure(this.error);
-
-  final String error;
-}
-
 class AuthOtpVerificationLoading extends AuthPhoneVerificationSuccess {
   AuthOtpVerificationLoading(super.phoneNumber, super.phoneCodeSentData);
 }
 
-class AuthOtpVerificationFailure extends AuthPhoneVerificationSuccess {
-  AuthOtpVerificationFailure(
-    this.error,
-    super.phoneNumber,
-    super.phoneCodeSentData,
-  );
+class AuthOtpVerificationMismatch extends AuthPhoneVerificationSuccess {
+  AuthOtpVerificationMismatch(super.phoneNumber, super.phoneCodeSentData);
+}
 
-  final String error;
+class AuthOtpVerificationFailure extends AuthPhoneVerificationSuccess {
+  AuthOtpVerificationFailure(super.phoneNumber, super.phoneCodeSentData);
 }
 
 class AuthOtpResendLoading extends AuthPhoneVerificationSuccess {
@@ -43,13 +39,7 @@ class AuthOtpResendSuccess extends AuthPhoneVerificationSuccess {
 }
 
 class AuthOtpResendFailure extends AuthPhoneVerificationSuccess {
-  AuthOtpResendFailure(
-    this.error,
-    super.phoneNumber,
-    super.phoneCodeSentData,
-  );
-
-  final String error;
+  AuthOtpResendFailure(super.phoneNumber, super.phoneCodeSentData);
 }
 
 class AuthOtpVerificationSuccess extends AuthState {}

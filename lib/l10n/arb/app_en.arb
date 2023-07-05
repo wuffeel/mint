@@ -22,6 +22,8 @@
     "changePinCode": "Change Pin-code",
     "somethingWentWrongTryAgain": "Something went wrong. Please try again",
     "enteredPinCodesDoNotMatch": "Entered PIN codes do not match",
+    "invalidPhoneNumber": "Invalid phone number",
+    "wrongVerificationCode": "Wrong verification code",
     "home": "Home",
     "specialists": "Specialists",
     "sessions": "Sessions",

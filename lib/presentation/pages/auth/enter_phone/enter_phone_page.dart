@@ -36,6 +36,15 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     return regex.hasMatch(phoneNumber);
   }
 
+  String? _getErrorText(AuthState state) {
+    if (state is AuthPhoneVerificationInvalidPhone) {
+      return context.l10n.invalidPhoneNumber;
+    } else if (state is AuthPhoneVerificationFailure) {
+      return context.l10n.somethingWentWrongTryAgain;
+    }
+    return null;
+  }
+
   void _verifyPhone() {
     context.read<AuthBloc>().add(
           AuthPhoneVerificationRequested(_phoneController.text),
@@ -80,9 +89,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                                     _validatePhoneNumber(phoneNumber);
                               });
                             },
-                            errorText: state is AuthPhoneVerificationFailure
-                                ? state.error
-                                : null,
+                            errorText: _getErrorText(state),
                           ),
                           SizedBox(height: 16.h),
                           if (state is! AuthPhoneVerificationLoading)

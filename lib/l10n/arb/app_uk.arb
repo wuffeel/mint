@@ -22,6 +22,8 @@
     "changePinCode": "Змінити пін-код",
     "somethingWentWrongTryAgain": "Щось пішло не так. Спробуйте ще раз",
     "enteredPinCodesDoNotMatch": "Введені пін-коди не співпадають",
+    "invalidPhoneNumber": "Invalid phone number",
+    "wrongVerificationCode": "Wrong verification code",
     "home": "Головна",
     "specialists": "Спеціалісти",
     "sessions": "Сессії",
