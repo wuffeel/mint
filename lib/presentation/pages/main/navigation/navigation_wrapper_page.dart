@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mint/bloc/favorite/favorite_bloc.dart';
 import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
 import 'package:mint/bloc/user/user_bloc.dart';
 import 'package:mint/injector/injector.dart';
@@ -20,6 +21,10 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
         BlocProvider(
           create: (context) =>
               getIt<PinCodeBloc>()..add(PinCodeExistCheckRequested()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<FavoriteBloc>()..add(FavoriteFetchRequested()),
         ),
       ],
       child: MultiBlocListener(

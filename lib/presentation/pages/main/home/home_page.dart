@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/specialist_catalogue/specialist_catalogue_bloc.dart';
 import 'package:mint/bloc/user/user_bloc.dart';
+import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/home/widgets/home_app_bar.dart';
 import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_button.dart';
@@ -12,6 +14,19 @@ import 'package:mint/theme/mint_text_styles.dart';
 @RoutePage()
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<SpecialistCatalogueBloc>()
+        ..add(SpecialistCatalogueFetchRequested()),
+      child: const _HomePageView(),
+    );
+  }
+}
+
+class _HomePageView extends StatelessWidget {
+  const _HomePageView();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +44,8 @@ class HomePage extends StatelessWidget {
                 child: const PickUpSpecialistButton(),
               ),
               Expanded(
-                child: DecoratedBox(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.only(
@@ -37,36 +53,48 @@ class HomePage extends StatelessWidget {
                       topRight: Radius.circular(10.r),
                     ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 32.h),
-                        Text(
-                          l10n.doctorsOnline,
-                          style: MintTextStyles.title1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 32.h),
+                      Text(
+                        l10n.doctorsOnline,
+                        style: MintTextStyles.title1,
+                      ),
+                      SizedBox(height: 8.h),
+                      Expanded(
+                        child: CustomScrollView(
+                          slivers: <Widget>[
+                            BlocBuilder<SpecialistCatalogueBloc,
+                                SpecialistCatalogueState>(
+                              builder: (context, state) {
+                                if (state is SpecialistCatalogueLoading) {
+                                  return const SliverToBoxAdapter(
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                if (state is SpecialistCatalogueFetchSuccess) {
+                                  return SliverList.builder(
+                                    itemCount: state.specialistList.length,
+                                    itemBuilder: (context, index) {
+                                      return DoctorCardTile(
+                                        specialistModel:
+                                            state.specialistList[index],
+                                      );
+                                    },
+                                  );
+                                }
+                                return const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8.h),
-                        Expanded(
-                          child: CustomScrollView(
-                            slivers: <Widget>[
-                              SliverList.builder(
-                                itemCount: 1,
-                                itemBuilder: (context, index) =>
-                                    const DoctorCardTile(
-                                  fullName: 'Dmitry Semenov',
-                                  experience: 3,
-                                  price: 1000,
-                                  rating: 3.5,
-                                  isFavorite: false,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               )

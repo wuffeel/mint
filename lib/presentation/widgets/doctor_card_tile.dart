@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/favorite/favorite_bloc.dart';
+import 'package:mint/domain/entity/specialist_model.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -7,22 +10,9 @@ import 'package:mint/presentation/widgets/mint_rating_bar.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class DoctorCardTile extends StatelessWidget {
-  const DoctorCardTile({
-    super.key,
-    required this.fullName,
-    required this.experience,
-    required this.price,
-    required this.rating,
-    required this.isFavorite,
-    this.photoUrl,
-  });
+  const DoctorCardTile({super.key, required this.specialistModel});
 
-  final String fullName;
-  final int experience;
-  final int price;
-  final double rating;
-  final bool isFavorite;
-  final String? photoUrl;
+  final SpecialistModel specialistModel;
 
   Color _getBackgroundColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
@@ -30,17 +20,31 @@ class DoctorCardTile extends StatelessWidget {
         : MintColors.imageBackgroundLight.withOpacity(0.06);
   }
 
+  String _getFullName() {
+    return '${specialistModel.firstName} ${specialistModel.lastName}';
+  }
+
   String _getExperienceString(BuildContext context) {
     final l10n = context.l10n;
-    final experienceString = experience == 1
-        ? '$experience ${l10n.experienceYear}'
-        : '$experience ${l10n.experienceYears}';
+    final experienceString = specialistModel.experience == 1
+        ? '${specialistModel.experience} ${l10n.experienceYear}'
+        : '${specialistModel.experience} ${l10n.experienceYears}';
     return '${l10n.psychologist}, $experienceString';
+  }
+
+  void _toggleFavorite(BuildContext context, bool isFavorite) {
+    isFavorite
+        ? context
+            .read<FavoriteBloc>()
+            .add(FavoriteRemoveRequested(specialistModel))
+        : context
+            .read<FavoriteBloc>()
+            .add(FavoriteAddRequested(specialistModel));
   }
 
   @override
   Widget build(BuildContext context) {
-    final photo = photoUrl;
+    final photo = specialistModel.photoUrl;
     return Container(
       height: 106.h,
       alignment: Alignment.center,
@@ -79,7 +83,7 @@ class DoctorCardTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      fullName,
+                      _getFullName(),
                       style: MintTextStyles.headline1,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -96,43 +100,62 @@ class DoctorCardTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                MintRatingBar(rating: rating, itemSize: 16.r),
+                MintRatingBar(
+                  rating: specialistModel.rating.toDouble(),
+                  itemSize: 16.r,
+                ),
               ],
             ),
           ),
           SizedBox(width: 8.w),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              if (isFavorite)
-                Assets.svg.heartIconFilled.svg(
-                  width: 24.w,
-                  height: 24.h,
-                  fit: BoxFit.scaleDown,
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).iconTheme.color ?? Colors.white,
-                    BlendMode.srcIn,
-                  ),
-                )
-              else
-                Assets.svg.heartIcon.svg(
-                  width: 24.w,
-                  height: 24.h,
-                  fit: BoxFit.scaleDown,
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).iconTheme.color ?? Colors.white,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              Text(
-                '₴$price',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
+          BlocBuilder<FavoriteBloc, FavoriteState>(
+            builder: (context, state) {
+              if (state is FavoriteFetchSuccess) {
+                final isFavorite = state.favoriteList.any(
+                  (specialist) => specialist.id == specialistModel.id,
+                );
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    if (isFavorite)
+                      InkWell(
+                        onTap: () => _toggleFavorite(context, isFavorite),
+                        child: Assets.svg.heartIconFilled.svg(
+                          width: 24.w,
+                          height: 24.h,
+                          fit: BoxFit.scaleDown,
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).iconTheme.color ?? Colors.white,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      )
+                    else
+                      InkWell(
+                        onTap: () => _toggleFavorite(context, isFavorite),
+                        child: Assets.svg.heartIcon.svg(
+                          width: 24.w,
+                          height: 24.h,
+                          fit: BoxFit.scaleDown,
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).iconTheme.color ?? Colors.white,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    Text(
+                      '₴${specialistModel.price}',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ],
       ),
