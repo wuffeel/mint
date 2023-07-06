@@ -10,7 +10,9 @@ class PickUpSpecialistButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        // TODO(wuffeel): proceed to pick up a specialist
+      },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
