@@ -1,26 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mint/assembly/factory.dart';
-import 'package:mint/data/model/user_model_dto.dart';
+import 'package:mint/data/model/user_model_dto/user_model_dto.dart';
 import 'package:mint/data/repository/abstract/user_repository.dart';
 
 @Injectable(as: UserRepository)
-class FirebaseUserRepository implements UserRepository{
-  FirebaseUserRepository(this._userModelFromJson);
-
-  final Factory<UserModelDto, Map<String, dynamic>> _userModelFromJson;
+class FirebaseUserRepository implements UserRepository {
+  FirebaseUserRepository();
 
   static const _userCollection = 'users';
 
   final _firebaseAuth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-
   CollectionReference get _userCollectionRef {
     return _firestore.collection(_userCollection);
   }
-
 
   @override
   Future<UserModelDto?> getCurrentUser() async {
@@ -36,7 +31,7 @@ class FirebaseUserRepository implements UserRepository{
       return UserModelDto(id: user.uid, phoneNumber: user.phoneNumber);
     }
     userData['id'] = user.uid;
-    return _userModelFromJson.create(userData);
+    return UserModelDto.fromJson(userData);
   }
 
   @override

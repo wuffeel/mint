@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:mint/assembly/factory.dart';
-import 'package:mint/data/model/user_model_dto.dart';
+import 'package:mint/data/model/user_model_dto/user_model_dto.dart';
 import 'package:mint/data/repository/abstract/user_repository.dart';
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:mint/domain/service/abstract/user_service.dart';
 
 @Injectable(as: UserService)

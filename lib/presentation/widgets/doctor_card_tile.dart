@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/favorite/favorite_bloc.dart';
-import 'package:mint/domain/entity/specialist_model.dart';
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -101,7 +101,7 @@ class DoctorCardTile extends StatelessWidget {
                   ],
                 ),
                 MintRatingBar(
-                  rating: specialistModel.rating.toDouble(),
+                  rating: specialistModel.rating,
                   itemSize: 16.r,
                 ),
               ],

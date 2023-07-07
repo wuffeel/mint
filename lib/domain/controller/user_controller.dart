@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 @lazySingleton

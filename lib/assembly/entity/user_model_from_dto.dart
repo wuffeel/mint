@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:mint/assembly/factory.dart';
-import 'package:mint/data/model/user_model_dto.dart';
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/data/model/user_model_dto/user_model_dto.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 
 @Injectable(as: Factory<UserModel, UserModelDto>)
 class UserModelFromDto implements Factory<UserModel, UserModelDto> {

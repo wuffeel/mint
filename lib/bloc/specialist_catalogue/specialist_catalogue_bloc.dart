@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:mint/domain/entity/specialist_model.dart';
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/usecase/fetch_specialists_online_use_case.dart';
 
 part 'specialist_catalogue_event.dart';

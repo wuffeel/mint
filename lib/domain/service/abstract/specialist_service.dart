@@ -1,4 +1,4 @@
-import 'package:mint/domain/entity/specialist_model.dart';
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 
 abstract class SpecialistService {
   Future<List<SpecialistModel>> getSpecialistsOnline();

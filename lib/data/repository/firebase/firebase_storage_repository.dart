@@ -1,8 +1,8 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/storage_repository.dart';
-import 'package:mint/domain/entity/specialist_model.dart';
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 
 @Injectable(as: StorageRepository)
 class FirebaseStorageRepository implements StorageRepository {

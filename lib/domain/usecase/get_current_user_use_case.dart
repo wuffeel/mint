@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:mint/domain/service/abstract/user_service.dart';
 
 @injectable

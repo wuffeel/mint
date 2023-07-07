@@ -1,4 +1,4 @@
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 
 abstract class UserService {
   Future<UserModel?> getCurrentUser();

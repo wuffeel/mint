@@ -26,9 +26,11 @@ dependencies:
       ref: master
   flutter_screenutil: ^5.8.4
   flutter_svg: ^2.0.7
+  freezed_annotation: ^2.2.0
   get_it: ^7.6.0
   injectable: ^2.1.2
   intl: ^0.18.0
+  json_annotation: ^4.8.1
   meta: ^1.9.1
   pinput: ^2.2.31
   rxdart: ^0.27.7
@@ -41,7 +43,9 @@ dev_dependencies:
   flutter_gen_runner: ^5.3.1
   flutter_test:
     sdk: flutter
+  freezed: ^2.3.5
   injectable_generator: ^2.1.6
+  json_serializable: ^6.7.1
   mocktail: ^0.3.0
   very_good_analysis: ^5.0.0
 

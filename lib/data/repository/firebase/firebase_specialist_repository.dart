@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mint/assembly/factory.dart';
-import 'package:mint/data/model/specialist_model_dto.dart';
+import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
 import 'package:mint/data/repository/abstract/specialist_repository.dart';
 
 @Injectable(as: SpecialistRepository)
 class FirebaseSpecialistRepository implements SpecialistRepository {
-  FirebaseSpecialistRepository(this._specialistFromJson);
-
-  final Factory<SpecialistModelDto, Map<String, dynamic>> _specialistFromJson;
+  FirebaseSpecialistRepository();
 
   final _firestoreInstance = FirebaseFirestore.instance;
+
+  static const _orderByDate = 'createdAt';
 
   static const _specialistCollection = 'specialists';
   static const _favoriteCollection = 'favorites';
@@ -32,7 +31,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
           if (data == null) return null;
           data['id'] = doc.id;
 
-          return _specialistFromJson.create(data);
+          return SpecialistModelDto.fromJson(data);
         })
         .whereType<SpecialistModelDto>()
         .toList();
@@ -40,8 +39,10 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
 
   @override
   Future<List<SpecialistModelDto>> getFavoriteSpecialists(String userId) async {
-    final favoriteSnapshot =
-        await _favoriteCollectionRef.where('userId', isEqualTo: userId).get();
+    final favoriteSnapshot = await _favoriteCollectionRef
+        .where('userId', isEqualTo: userId)
+        .orderBy(_orderByDate)
+        .get();
 
     final favoriteIds = favoriteSnapshot.docs
         .map((doc) => (doc.data() as Map<String, dynamic>?)?['specialistId'])
@@ -50,9 +51,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
 
     if (favoriteIds.isEmpty) return [];
 
-    final specialistSnapshot = await _specialistCollectionRef
-        .where('id', whereIn: favoriteIds)
-        .get();
+    final specialistSnapshot =
+        await _specialistCollectionRef.where('id', whereIn: favoriteIds).get();
 
     return specialistSnapshot.docs
         .map((doc) {
@@ -60,7 +60,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
           if (data == null) return null;
           data['id'] = doc.id;
 
-          return _specialistFromJson.create(data);
+          return SpecialistModelDto.fromJson(data);
         })
         .whereType<SpecialistModelDto>()
         .toList();
@@ -71,6 +71,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     return _favoriteCollectionRef.doc('$userId-$specialistId').set({
       'userId': userId,
       'specialistId': specialistId,
+      'createdAt': DateTime.now(),
     });
   }
 

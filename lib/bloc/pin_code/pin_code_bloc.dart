@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/user_controller.dart';
-import 'package:mint/domain/entity/user_model.dart';
+import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:mint/domain/usecase/pin_code_change_use_case.dart';
 
 part 'pin_code_event.dart';
