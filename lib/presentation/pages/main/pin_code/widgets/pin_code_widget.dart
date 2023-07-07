@@ -7,6 +7,8 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pin_code/widgets/pin_code_keyboard.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
+import '../../../../widgets/shake_widget.dart';
+
 class PinCodeWidget extends StatefulWidget {
   const PinCodeWidget({
     super.key,
@@ -24,6 +26,8 @@ class PinCodeWidget extends StatefulWidget {
 }
 
 class _PinCodeWidgetState extends State<PinCodeWidget> {
+  final _shakeWidgetKey = GlobalKey<ShakeWidgetState>();
+
   /// Current pin-code typed
   String _pinCode = '';
 
@@ -33,6 +37,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
         state is PinCodeFailure ||
         state is PinCodeFieldReset) {
       setState(() {
+        _shakeWidgetKey.currentState?.shake();
         _pinCode = '';
       });
     }
@@ -40,7 +45,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
 
   /// Returns a color for obscured PIN, considering whether it typed,
   /// disabled or error
-  Color _getPinColor(int index, bool isError) {
+  Color _getPinColor(int index) {
     final theme = Theme.of(context);
     final themeMode = theme.brightness;
 
@@ -48,11 +53,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
         ? MintColors.pinGreyDark
         : MintColors.pinGreyLight;
 
-    return index < _pinCode.length
-        ? theme.primaryColor
-        : isError
-            ? MintColors.error.withOpacity(0.6)
-            : disabledColor;
+    return index < _pinCode.length ? theme.primaryColor : disabledColor;
   }
 
   /// Update current [_pinCode] to [newPinCode]
@@ -76,20 +77,23 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
         final isError = state is PinCodeFailure || state is PinCodeMismatch;
         return Column(
           children: <Widget>[
-            Wrap(
-              spacing: 6.w,
-              children: List.generate(
-                widget.length,
-                (index) => Container(
-                  width: 28.w,
-                  height: 28.h,
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 13.w,
-                    height: 13.h,
-                    decoration: BoxDecoration(
-                      color: _getPinColor(index, isError),
-                      shape: BoxShape.circle,
+            ShakeWidget(
+              key: _shakeWidgetKey,
+              child: Wrap(
+                spacing: 6.w,
+                children: List.generate(
+                  widget.length,
+                  (index) => Container(
+                    width: 28.w,
+                    height: 28.h,
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 13.w,
+                      height: 13.h,
+                      decoration: BoxDecoration(
+                        color: _getPinColor(index),
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
                 ),
