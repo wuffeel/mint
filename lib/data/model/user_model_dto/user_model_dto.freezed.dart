@@ -23,7 +23,7 @@ mixin _$UserModelDto {
   String get id => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   String? get pinCode => throw _privateConstructorUsedError;
-  String? get photo => throw _privateConstructorUsedError;
+  String? get photoUrl => throw _privateConstructorUsedError;
   String? get nameTag => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName =>
@@ -47,7 +47,7 @@ abstract class $UserModelDtoCopyWith<$Res> {
       {String id,
       String? phoneNumber,
       String? pinCode,
-      String? photo,
+      String? photoUrl,
       String? nameTag,
       String? firstName,
       String? lastName,
@@ -70,7 +70,7 @@ class _$UserModelDtoCopyWithImpl<$Res, $Val extends UserModelDto>
     Object? id = null,
     Object? phoneNumber = freezed,
     Object? pinCode = freezed,
-    Object? photo = freezed,
+    Object? photoUrl = freezed,
     Object? nameTag = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
@@ -89,9 +89,9 @@ class _$UserModelDtoCopyWithImpl<$Res, $Val extends UserModelDto>
           ? _value.pinCode
           : pinCode // ignore: cast_nullable_to_non_nullable
               as String?,
-      photo: freezed == photo
-          ? _value.photo
-          : photo // ignore: cast_nullable_to_non_nullable
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       nameTag: freezed == nameTag
           ? _value.nameTag
@@ -125,7 +125,7 @@ abstract class _$$_UserModelDtoCopyWith<$Res>
       {String id,
       String? phoneNumber,
       String? pinCode,
-      String? photo,
+      String? photoUrl,
       String? nameTag,
       String? firstName,
       String? lastName,
@@ -146,7 +146,7 @@ class __$$_UserModelDtoCopyWithImpl<$Res>
     Object? id = null,
     Object? phoneNumber = freezed,
     Object? pinCode = freezed,
-    Object? photo = freezed,
+    Object? photoUrl = freezed,
     Object? nameTag = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
@@ -165,9 +165,9 @@ class __$$_UserModelDtoCopyWithImpl<$Res>
           ? _value.pinCode
           : pinCode // ignore: cast_nullable_to_non_nullable
               as String?,
-      photo: freezed == photo
-          ? _value.photo
-          : photo // ignore: cast_nullable_to_non_nullable
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       nameTag: freezed == nameTag
           ? _value.nameTag
@@ -196,7 +196,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
       {required this.id,
       this.phoneNumber,
       this.pinCode,
-      this.photo,
+      this.photoUrl,
       this.nameTag,
       this.firstName,
       this.lastName,
@@ -212,7 +212,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
   @override
   final String? pinCode;
   @override
-  final String? photo;
+  final String? photoUrl;
   @override
   final String? nameTag;
   @override
@@ -226,7 +226,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModelDto(id: $id, phoneNumber: $phoneNumber, pinCode: $pinCode, photo: $photo, nameTag: $nameTag, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth)';
+    return 'UserModelDto(id: $id, phoneNumber: $phoneNumber, pinCode: $pinCode, photoUrl: $photoUrl, nameTag: $nameTag, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth)';
   }
 
   @override
@@ -237,7 +237,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('pinCode', pinCode))
-      ..add(DiagnosticsProperty('photo', photo))
+      ..add(DiagnosticsProperty('photoUrl', photoUrl))
       ..add(DiagnosticsProperty('nameTag', nameTag))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName))
@@ -253,7 +253,8 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
             (identical(other.pinCode, pinCode) || other.pinCode == pinCode) &&
-            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
             (identical(other.nameTag, nameTag) || other.nameTag == nameTag) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
@@ -265,8 +266,8 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, phoneNumber, pinCode, photo,
-      nameTag, firstName, lastName, dateOfBirth);
+  int get hashCode => Object.hash(runtimeType, id, phoneNumber, pinCode,
+      photoUrl, nameTag, firstName, lastName, dateOfBirth);
 
   @JsonKey(ignore: true)
   @override
@@ -287,7 +288,7 @@ abstract class _UserModelDto implements UserModelDto {
       {required final String id,
       final String? phoneNumber,
       final String? pinCode,
-      final String? photo,
+      final String? photoUrl,
       final String? nameTag,
       final String? firstName,
       final String? lastName,
@@ -304,7 +305,7 @@ abstract class _UserModelDto implements UserModelDto {
   @override
   String? get pinCode;
   @override
-  String? get photo;
+  String? get photoUrl;
   @override
   String? get nameTag;
   @override

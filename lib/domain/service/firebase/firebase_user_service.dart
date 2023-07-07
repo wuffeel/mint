@@ -9,7 +9,7 @@ import 'package:mint/domain/service/abstract/user_service.dart';
 class FirebaseUserService implements UserService {
   FirebaseUserService(this._userRepository, this._userModelFromDto);
 
-  final Factory<UserModel, UserModelDto> _userModelFromDto;
+  final Factory<Future<UserModel>, UserModelDto> _userModelFromDto;
 
   final UserRepository _userRepository;
 

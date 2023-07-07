@@ -9,7 +9,7 @@ class UserModel with _$UserModel {
     required String id,
     String? phoneNumber,
     String? pinCode,
-    String? photo,
+    String? photoUrl,
     String? nameTag,
     String? firstName,
     String? lastName,

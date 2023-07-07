@@ -34,7 +34,7 @@ class _HomePageView extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         final user = state is UserFetchSuccess ? state.user : null;
-        final photo = user?.photo;
+        final photo = user?.photoUrl;
         return Scaffold(
           appBar: HomeAppBar(photo: photo, nameTag: user?.nameTag),
           body: Column(

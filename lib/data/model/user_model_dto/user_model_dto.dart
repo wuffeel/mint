@@ -12,7 +12,7 @@ class UserModelDto with _$UserModelDto {
     required String id,
     String? phoneNumber,
     String? pinCode,
-    String? photo,
+    String? photoUrl,
     String? nameTag,
     String? firstName,
     String? lastName,
