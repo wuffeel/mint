@@ -2,20 +2,20 @@ import 'package:injectable/injectable.dart';
 import 'package:mint/assembly/factory.dart';
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
 import 'package:mint/data/repository/abstract/specialist_repository.dart';
-import 'package:mint/data/repository/abstract/storage_repository.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/service/abstract/specialist_service.dart';
+import 'package:mint/domain/service/abstract/storage_service.dart';
 
 @Injectable(as: SpecialistService)
 class FirebaseSpecialistService implements SpecialistService {
   FirebaseSpecialistService(
     this._specialistRepository,
-    this._storageRepository,
+    this._storageService,
     this._specialistModelFromDto,
   );
 
   final SpecialistRepository _specialistRepository;
-  final StorageRepository _storageRepository;
+  final StorageService _storageService;
   final Factory<SpecialistModel, SpecialistModelDto> _specialistModelFromDto;
 
   @override
@@ -47,7 +47,7 @@ class FirebaseSpecialistService implements SpecialistService {
     final specialistList =
         specialistModelDtoList.map(_specialistModelFromDto.create).toList();
     final specialistFutures =
-        specialistList.map(_storageRepository.getSpecialistPhoto);
+        specialistList.map(_storageService.getSpecialistPhoto);
     return Future.wait(specialistFutures);
   }
 }
