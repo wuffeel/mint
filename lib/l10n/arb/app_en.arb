@@ -32,5 +32,12 @@
     "doctorsOnline": "Doctors online",
     "psychologist": "Psychologist",
     "experienceYear": "year",
-    "experienceYears": "years"
+    "experienceYears": "years",
+    "helpUsMatchYou": "Help us match you to the right therapist",
+    "whoWillCommunicate": "Who will communicate with therapist?",
+    "haveYouEverBeenToTherapy": "Have you ever been to therapy before?",
+    "howMuchCanIPay": "How much can I pay for a session?",
+    "whichTopicsAreYouInterestedIn": "Which topics are you interested in?",
+    "somethingWentWrongSendingCode": "Something went wrong sending a code to phone. Try again later",
+    "tooMuchRequests": "Too much phone verification requests. Try again later"
 }

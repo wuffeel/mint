@@ -11,6 +11,8 @@ class AuthPhoneVerificationInvalidPhone extends AuthState {}
 
 class AuthPhoneVerificationFailure extends AuthState {}
 
+class AuthPhoneVerificationTooMuchRequests extends AuthState {}
+
 class AuthPhoneVerificationSuccess extends AuthState {
   AuthPhoneVerificationSuccess(this.phoneNumber, this.phoneCodeSentData);
 

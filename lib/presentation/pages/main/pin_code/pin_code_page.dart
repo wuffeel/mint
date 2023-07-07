@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/auth/auth_bloc.dart';
 import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pin_code/widgets/pin_code_widget.dart';
@@ -9,16 +10,33 @@ import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
+import '../../../../gen/colors.gen.dart';
+import '../../../../injector/injector.dart';
+
 @RoutePage()
-class PinCodePage extends StatefulWidget {
+class PinCodePage extends StatelessWidget {
   const PinCodePage({super.key});
 
-  @override
-  State<PinCodePage> createState() => _PinCodePageState();
-}
+  void _phoneVerificationListener(BuildContext context, AuthState state) {
+    if (state is AuthPhoneVerificationFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.somethingWentWrongSendingCode),
+          backgroundColor: MintColors.error,
+        ),
+      );
+    }
+    if (state is AuthPhoneVerificationTooMuchRequests) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.tooMuchRequests),
+          backgroundColor: MintColors.error,
+        ),
+      );
+    }
+  }
 
-class _PinCodePageState extends State<PinCodePage> {
-  void _pinCodePageListener(BuildContext context, PinCodeState state) {
+  void _pinCodeListener(BuildContext context, PinCodeState state) {
     if (state is PinCodeSignUpConfirmSuccess ||
         state is PinCodeSignInConfirmSuccess) {
       context.router.replace(const NavigationRoute());
@@ -27,6 +45,33 @@ class _PinCodePageState extends State<PinCodePage> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<AuthBloc>(),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<PinCodeBloc, PinCodeState>(
+            listener: _pinCodeListener,
+          ),
+          BlocListener<AuthBloc, AuthState>(
+            listener: _phoneVerificationListener,
+          )
+        ],
+        child: const _PinCodeView(),
+      ),
+    );
+  }
+}
+
+class _PinCodeView extends StatefulWidget {
+  const _PinCodeView();
+
+  @override
+  State<_PinCodeView> createState() => _PinCodeViewState();
+}
+
+class _PinCodeViewState extends State<_PinCodeView> {
   /// Calls [PinCodeEntered] event that will call appropriate event considering
   /// current [PinCodeBloc] state
   void _onPinComplete(String pinCode) {
@@ -61,6 +106,7 @@ class _PinCodePageState extends State<PinCodePage> {
   /// current PinCodeBloc [state]
   void _getBottomButtonCallback(PinCodeState state) {
     if (state is PinCodeSignInInitial) {
+      context.read<AuthBloc>().add(AuthForgotPinRequested());
       context.router.push(const ForgotPinOtpWrapperRoute());
     } else if (state is PinCodeSignUpEnterSuccess) {
       context.read<PinCodeBloc>().add(PinCodeSignUpRequested());
@@ -88,8 +134,7 @@ class _PinCodePageState extends State<PinCodePage> {
       appBar: const MintAppBar(),
       body: SizedBox(
         width: double.infinity,
-        child: BlocConsumer<PinCodeBloc, PinCodeState>(
-          listener: _pinCodePageListener,
+        child: BlocBuilder<PinCodeBloc, PinCodeState>(
           builder: (context, state) {
             return Column(
               children: <Widget>[
@@ -111,7 +156,10 @@ class _PinCodePageState extends State<PinCodePage> {
                     child: Text(
                       _getBottomButtonTitle(state),
                       style: MintTextStyles.buttonsHuge.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .primary,
                       ),
                     ),
                   ),

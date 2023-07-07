@@ -72,6 +72,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (error) {
       if (error.toString().contains('invalid-phone-number')) {
         emit(AuthPhoneVerificationInvalidPhone());
+      } else if (error.toString().contains('too-many-requests')) {
+        emit(AuthPhoneVerificationTooMuchRequests());
       } else {
         emit(AuthPhoneVerificationFailure());
       }

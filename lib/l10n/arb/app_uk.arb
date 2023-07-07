@@ -32,5 +32,12 @@
     "doctorsOnline": "Лікарі онлайн",
     "psychologist": "Психолог",
     "experienceYear": "рік",
-    "experienceYears": "років"
+    "experienceYears": "років",
+    "helpUsMatchYou": "Допоможіть нам підібрати для вас необхідного спеціаліста",
+    "whoWillCommunicate": "Хто буде спілукватись зі спеціалістом?",
+    "haveYouEverBeenToTherapy": "Чи відвідували ви коли-небудь терапію раніше?",
+    "howMuchCanIPay": "Скільки я готовий платити за сеанс?",
+    "whichTopicsAreYouInterestedIn": "Які теми вас цікавлять?",
+    "somethingWentWrongSendingCode": "Під час надсилання коду на телефон сталася помилка. Спробуйте ще раз пізніше",
+    "tooMuchRequests": "Забагато запитів на підтвердження телефону. Спробуйте ще раз пізніше"
 }
