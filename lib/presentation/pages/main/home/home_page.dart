@@ -63,20 +63,18 @@ class _HomePageView extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       Expanded(
-                        child: CustomScrollView(
-                          slivers: <Widget>[
-                            BlocBuilder<SpecialistCatalogueBloc,
-                                SpecialistCatalogueState>(
-                              builder: (context, state) {
-                                if (state is SpecialistCatalogueLoading) {
-                                  return const SliverToBoxAdapter(
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                }
-                                if (state is SpecialistCatalogueFetchSuccess) {
-                                  return SliverList.builder(
+                        child: BlocBuilder<SpecialistCatalogueBloc,
+                            SpecialistCatalogueState>(
+                          builder: (context, state) {
+                            if (state is SpecialistCatalogueLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (state is SpecialistCatalogueFetchSuccess) {
+                              return CustomScrollView(
+                                slivers: <Widget>[
+                                  SliverList.builder(
                                     itemCount: state.specialistList.length,
                                     itemBuilder: (context, index) {
                                       return DoctorCardTile(
@@ -84,14 +82,12 @@ class _HomePageView extends StatelessWidget {
                                             state.specialistList[index],
                                       );
                                     },
-                                  );
-                                }
-                                return const SliverToBoxAdapter(
-                                  child: SizedBox.shrink(),
-                                );
-                              },
-                            ),
-                          ],
+                                  ),
+                                ],
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
                         ),
                       ),
                     ],
