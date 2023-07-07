@@ -47,9 +47,8 @@ class FirebaseAuthRepository implements PhoneAuthRepository {
   @override
   Future<void> verifyOtpCode({
     required String otpCode,
-    String? verificationId,
+    required String verificationId,
   }) async {
-    if (verificationId == null) return;
     final phoneCredential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: otpCode,

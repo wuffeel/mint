@@ -9,7 +9,7 @@ class VerifyOtpUseCase {
 
   Future<void> call({
     required String otpCode,
-    String? verificationId,
+    required String verificationId,
   }) =>
       _service.verifyOtpCode(
         otpCode: otpCode,

@@ -6,5 +6,8 @@ abstract class PhoneAuthService {
     int? resendToken,
   });
 
-  Future<void> verifyOtpCode({required String otpCode, String? verificationId});
+  Future<void> verifyOtpCode({
+    required String otpCode,
+    required String verificationId,
+  });
 }

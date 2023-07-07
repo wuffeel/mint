@@ -23,7 +23,7 @@ class FirebasePhoneAuthService implements PhoneAuthService {
   @override
   Future<void> verifyOtpCode({
     required String otpCode,
-    String? verificationId,
+    required String verificationId,
   }) async {
     return _phoneAuthRepository.verifyOtpCode(
       otpCode: otpCode,
