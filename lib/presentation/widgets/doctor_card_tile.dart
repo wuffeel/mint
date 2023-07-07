@@ -42,6 +42,10 @@ class DoctorCardTile extends StatelessWidget {
             .add(FavoriteAddRequested(specialistModel));
   }
 
+  SvgGenImage _getFavoriteIconAsset(bool isFavorite) {
+    return isFavorite ? Assets.svg.heartIconFilled : Assets.svg.heartIcon;
+  }
+
   @override
   Widget build(BuildContext context) {
     final photo = specialistModel.photoUrl;
@@ -118,32 +122,18 @@ class DoctorCardTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    if (isFavorite)
-                      InkWell(
-                        onTap: () => _toggleFavorite(context, isFavorite),
-                        child: Assets.svg.heartIconFilled.svg(
-                          width: 24.w,
-                          height: 24.h,
-                          fit: BoxFit.scaleDown,
-                          colorFilter: ColorFilter.mode(
-                            Theme.of(context).iconTheme.color ?? Colors.white,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      )
-                    else
-                      InkWell(
-                        onTap: () => _toggleFavorite(context, isFavorite),
-                        child: Assets.svg.heartIcon.svg(
-                          width: 24.w,
-                          height: 24.h,
-                          fit: BoxFit.scaleDown,
-                          colorFilter: ColorFilter.mode(
-                            Theme.of(context).iconTheme.color ?? Colors.white,
-                            BlendMode.srcIn,
-                          ),
+                    InkWell(
+                      onTap: () => _toggleFavorite(context, isFavorite),
+                      child: _getFavoriteIconAsset(isFavorite).svg(
+                        width: 24.w,
+                        height: 24.h,
+                        fit: BoxFit.scaleDown,
+                        colorFilter: ColorFilter.mode(
+                          Theme.of(context).iconTheme.color ?? Colors.white,
+                          BlendMode.srcIn,
                         ),
                       ),
+                    ),
                     Text(
                       '₴${specialistModel.price}',
                       style: TextStyle(
