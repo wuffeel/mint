@@ -5,14 +5,13 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/data/model/phone_code_sent_data.dart';
 import 'package:mint/domain/controller/user_controller.dart';
-import 'package:mint/domain/entity/phone_code_sent_data.dart';
 import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:mint/domain/usecase/verify_otp_use_case.dart';
 import 'package:mint/domain/usecase/verify_phone_use_case.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 @injectable

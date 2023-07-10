@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
+import 'package:mint/data/model/phone_code_sent_data.dart';
 import 'package:mint/data/repository/abstract/phone_auth_repository.dart';
-import 'package:mint/domain/entity/phone_code_sent_data.dart';
 import 'package:mint/domain/service/abstract/phone_auth_service.dart';
 
 @Injectable(as: PhoneAuthService)
