@@ -53,6 +53,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     return super.close();
   }
 
+  /// Checks if user has the pin-code in database
   void _onPinCodeExistCheck(
     PinCodeExistCheckRequested event,
     Emitter<PinCodeState> emit,
@@ -66,6 +67,10 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
         : emit(PinCodeInitial(PinCodeStatusInitial.signUp));
   }
 
+  /// Called when pin code is entered
+  ///
+  /// If method called when user is on sign in screen/change-pin previous
+  /// check screen, calls confirmation event
   void _onPinCodeEntered(
     PinCodeEntered event,
     Emitter<PinCodeState> emit,
@@ -86,6 +91,11 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     }
   }
 
+  /// Check if previous pin code equal to confirmation pin code
+  ///
+  /// If equal, update user's pin code in database
+  ///
+  /// If unequal, emit mismatch state
   Future<void> _onPinCodeConfirmRequest(
     PinCodeConfirmRequested event,
     Emitter<PinCodeState> emit,
@@ -104,6 +114,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
           emit(PinCodeSignInConfirmSuccess());
           return;
         } else if (status == PinCodeStatusEntered.changePrevious) {
+          // If entered pin code matches current pin, let write new pin-code
           emit(PinCodeInitial(PinCodeStatusInitial.changeNew));
           return;
         }
@@ -126,6 +137,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     }
   }
 
+  /// Emit state to confirm user's previous pin code
   void _onPinCodeChangeRequest(
     PinCodeChangeRequested event,
     Emitter<PinCodeState> emit,
@@ -136,6 +148,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     emit(PinCodeEnterSuccess(PinCodeStatusEntered.changePrevious, pin));
   }
 
+  /// Reset user's pin code in database
   Future<void> _onPinCodeReset(
     PinCodeResetRequested event,
     Emitter<PinCodeState> emit,
