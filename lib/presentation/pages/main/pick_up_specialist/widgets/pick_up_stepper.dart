@@ -11,6 +11,7 @@ class PickUpStepper extends StatefulWidget {
     required this.currentStep,
     required this.onNextStep,
     required this.onPreviousStep,
+    required this.onFinish,
   }) : assert(
           0 <= currentStep && currentStep < steps.length,
           'Current step do not fit in bounds from 0 to ${steps.length}',
@@ -18,8 +19,9 @@ class PickUpStepper extends StatefulWidget {
 
   final List<Widget> steps;
   final int currentStep;
-  final VoidCallback onNextStep;
-  final VoidCallback onPreviousStep;
+  final VoidCallback? onNextStep;
+  final VoidCallback? onPreviousStep;
+  final VoidCallback? onFinish;
 
   @override
   State<PickUpStepper> createState() => _PickUpStepperState();
@@ -68,7 +70,9 @@ class _PickUpStepperState extends State<PickUpStepper> {
           child: widget.steps[widget.currentStep],
         ),
         ElevatedButton(
-          onPressed: widget.onNextStep,
+          onPressed: widget.currentStep + 1 < widget.steps.length
+              ? widget.onNextStep
+              : widget.onFinish,
           child: Text(context.l10n.next),
         ),
         SizedBox(height: 26.h),

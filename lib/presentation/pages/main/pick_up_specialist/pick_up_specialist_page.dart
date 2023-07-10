@@ -59,6 +59,20 @@ class _PickUpSpecialistPageState extends State<PickUpSpecialistPage> {
     'Finance',
   ];
 
+  bool _isNextAvailable(int index) {
+    switch (index) {
+      case 0:
+        return _selectedCommunication != null;
+      case 1:
+        return _selectedHaveYouBeenToTherapy != null;
+      case 2:
+        return _selectedPayForSession != null;
+      case 3:
+        return _selectedSpecialities.isNotEmpty;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,8 +123,11 @@ class _PickUpSpecialistPageState extends State<PickUpSpecialistPage> {
             ),
           ],
           currentStep: _currentStep,
-          onNextStep: () => setState(() => _currentStep += 1),
+          onNextStep: _isNextAvailable(_currentStep)
+              ? () => setState(() => _currentStep += 1)
+              : null,
           onPreviousStep: () => setState(() => _currentStep -= 1),
+          onFinish: _isNextAvailable(_currentStep) ? context.router.pop : null,
         ),
       ),
     );
