@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/routes/app_router.gr.dart';
 
 class PickUpSpecialistButton extends StatelessWidget {
   const PickUpSpecialistButton({super.key});
@@ -10,9 +12,7 @@ class PickUpSpecialistButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ElevatedButton(
-      onPressed: () {
-        // TODO(wuffeel): proceed to pick up a specialist
-      },
+      onPressed: () => context.router.push(const PickUpSpecialistRoute()),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

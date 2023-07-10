@@ -46,6 +46,9 @@ class MintColors {
   /// Color: #8E8E93
   static const Color grey1 = Color(0xFF8E8E93);
 
+  /// Color: #AEAEB2
+  static const Color grey2 = Color(0xFFAEAEB2);
+
   /// Color: #EBEBF5
   static const Color greyDark = Color(0xFFEBEBF5);
 

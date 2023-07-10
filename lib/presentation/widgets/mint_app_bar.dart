@@ -20,10 +20,10 @@ class MintAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leadingWidth: leadingWidth ?? (context.router.canPop() ? 80.w : null),
-      leading: context.router.canPop() && leading == null
-          ? const MintBackButton()
-          : leading,
+      leadingWidth: leadingWidth ??
+          (leading == null && context.router.canPop() ? 80.w : null),
+      leading:
+          leading ?? (context.router.canPop() ? const MintBackButton() : null),
       title: title,
       actions: actions,
       backgroundColor: Colors.transparent,
