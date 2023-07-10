@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context.read<PinCodeBloc>().add(PinCodeChangeRequested());
-                context.router.push(const PinCodeRoute());
+                context.router.push(const PinCodeWrapperRoute());
               },
               child: Text(context.l10n.changePinCode),
             ),

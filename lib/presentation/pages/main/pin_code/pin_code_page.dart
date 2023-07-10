@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/backbone/pin_code_status_entered.dart';
+import 'package:mint/backbone/pin_code_status_initial.dart';
 import 'package:mint/bloc/auth/auth_bloc.dart';
 import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -10,56 +12,24 @@ import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
-import '../../../../gen/colors.gen.dart';
-import '../../../../injector/injector.dart';
-
 @RoutePage()
 class PinCodePage extends StatelessWidget {
   const PinCodePage({super.key});
-
-  void _phoneVerificationListener(BuildContext context, AuthState state) {
-    if (state is AuthPhoneVerificationFailure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.somethingWentWrongSendingCode),
-          backgroundColor: MintColors.error,
-        ),
-      );
-    }
-    if (state is AuthPhoneVerificationTooMuchRequests) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.tooMuchRequests),
-          backgroundColor: MintColors.error,
-        ),
-      );
-    }
-  }
 
   void _pinCodeListener(BuildContext context, PinCodeState state) {
     if (state is PinCodeSignUpConfirmSuccess ||
         state is PinCodeSignInConfirmSuccess) {
       context.router.replace(const NavigationRoute());
-    } else if (state is PinCodeChangeConfirmSuccess) {
+    } else if (state is PinCodeNewConfirmSuccess) {
       context.router.navigate(const NavigationRoute());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthBloc>(),
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<PinCodeBloc, PinCodeState>(
-            listener: _pinCodeListener,
-          ),
-          BlocListener<AuthBloc, AuthState>(
-            listener: _phoneVerificationListener,
-          )
-        ],
-        child: const _PinCodeView(),
-      ),
+    return BlocListener<PinCodeBloc, PinCodeState>(
+      listener: _pinCodeListener,
+      child: const _PinCodeView(),
     );
   }
 }
@@ -80,49 +50,69 @@ class _PinCodeViewState extends State<_PinCodeView> {
 
   /// Returns a corresponding title according to current PinCodeBloc [state]
   String _getPageTitle(PinCodeState state) {
-    if (state is PinCodeSignInInitial) {
-      return context.l10n.enterPinCode;
-    } else if (state is PinCodeChangePreviousInitial) {
-      return context.l10n.enterCurrentPinCode;
-    } else if (state is PinCodeSignUpInitial || state is PinCodeChangeInitial) {
-      return context.l10n.enterNewPinCode;
-    } else if (state is PinCodeSignUpEnterSuccess) {
-      return context.l10n.confirmPinCode;
-    } else if (state is PinCodeChangeEnterSuccess) {
-      return context.l10n.confirmNewPinCode;
+    final l10n = context.l10n;
+    if (state is PinCodeInitial) {
+      final status = state.status;
+      if (status == PinCodeStatusInitial.signUp ||
+          status == PinCodeStatusInitial.changeNew) {
+        return l10n.enterNewPinCode;
+      }
+    }
+    if (state is PinCodeEnterSuccess) {
+      final status = state.status;
+
+      if (status == PinCodeStatusEntered.signIn) return l10n.enterPinCode;
+      if (status == PinCodeStatusEntered.changePrevious) {
+        return l10n.enterCurrentPinCode;
+      }
+      if (status == PinCodeStatusEntered.signUp) return l10n.confirmPinCode;
+      if (status == PinCodeStatusEntered.changeNew) {
+        return l10n.confirmNewPinCode;
+      }
     }
     return '';
   }
 
   /// Whether to show bottom button according to current PinCodeBloc [state]
   bool _isBottomButtonShown(PinCodeState state) {
-    if (state is PinCodeSignInInitial ||
-        state is PinCodeSignUpEnterSuccess ||
-        state is PinCodeChangeEnterSuccess) return true;
+    if (state is PinCodeEnterSuccess) {
+      final status = state.status;
+      if (status == PinCodeStatusEntered.signIn ||
+          status == PinCodeStatusEntered.signUp ||
+          status == PinCodeStatusEntered.changeNew) {
+        return true;
+      }
+    }
+
     return false;
   }
 
   /// Launch a corresponding void callback according to
   /// current PinCodeBloc [state]
   void _getBottomButtonCallback(PinCodeState state) {
-    if (state is PinCodeSignInInitial) {
-      context.read<AuthBloc>().add(AuthForgotPinRequested());
-      context.router.push(const ForgotPinOtpWrapperRoute());
-    } else if (state is PinCodeSignUpEnterSuccess) {
-      context.read<PinCodeBloc>().add(PinCodeSignUpRequested());
-    } else if (state is PinCodeChangeEnterSuccess) {
-      context.read<PinCodeBloc>().add(PinCodeChangeOtherRequested());
+    if (state is PinCodeEnterSuccess) {
+      if (state.status == PinCodeStatusEntered.signIn) {
+        context.read<AuthBloc>().add(AuthForgotPinRequested());
+        context.router.push(const ForgotPinOtpWrapperRoute());
+      } else if (state.status == PinCodeStatusEntered.signUp) {
+        context.read<PinCodeBloc>().add(PinCodeSignUpOtherRequested());
+      } else if (state.status == PinCodeStatusEntered.changeNew) {
+        context.read<PinCodeBloc>().add(PinCodeChangeOtherRequested());
+      }
     }
   }
 
   /// Returns a corresponding bottom button title according to
   /// current PinCodeBloc [state]
   String _getBottomButtonTitle(PinCodeState state) {
-    if (state is PinCodeSignInInitial) {
-      return context.l10n.forgotPinCode;
-    } else if (state is PinCodeSignUpEnterSuccess ||
-        state is PinCodeChangeEnterSuccess) {
-      return context.l10n.enterOtherPinCode;
+    if (state is PinCodeEnterSuccess) {
+      final status = state.status;
+      if (state.status == PinCodeStatusEntered.signIn) {
+        return context.l10n.forgotPinCode;
+      } else if (status == PinCodeStatusEntered.signUp ||
+          status == PinCodeStatusEntered.changeNew) {
+        return context.l10n.enterOtherPinCode;
+      }
     }
     return '';
   }
@@ -156,10 +146,7 @@ class _PinCodeViewState extends State<_PinCodeView> {
                     child: Text(
                       _getBottomButtonTitle(state),
                       style: MintTextStyles.buttonsHuge.copyWith(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

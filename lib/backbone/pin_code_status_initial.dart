@@ -1,0 +1,4 @@
+enum PinCodeStatusInitial {
+  signUp,
+  changeNew,
+}

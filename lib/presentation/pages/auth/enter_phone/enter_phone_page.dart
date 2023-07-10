@@ -39,6 +39,8 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   String? _getErrorText(AuthState state) {
     if (state is AuthPhoneVerificationInvalidPhone) {
       return context.l10n.invalidPhoneNumber;
+    } else if (state is AuthPhoneVerificationTooManyRequests) {
+      return context.l10n.tooMuchRequests;
     } else if (state is AuthPhoneVerificationFailure) {
       return context.l10n.somethingWentWrongTryAgain;
     }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint/bloc/auth/auth_bloc.dart';
 import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
+import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 
@@ -20,7 +21,8 @@ class ForgotPinOtpWrapperPage extends StatelessWidget
             if (state is AuthPhoneVerificationSuccess) {
               context.router.navigate(const OtpRoute());
             }
-            if (state is AuthPhoneVerificationFailure) {
+            if (state is AuthPhoneVerificationFailure ||
+                state is AuthPhoneVerificationTooManyRequests) {
               context.router.pop();
             }
             if (state is AuthOtpVerificationSuccess) {
@@ -32,6 +34,15 @@ class ForgotPinOtpWrapperPage extends StatelessWidget
           listener: (context, state) {
             if (state is PinCodeResetSuccess) {
               context.router.pop();
+            }
+            if (state is PinCodeResetFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    context.l10n.somethingWentWrongTryAgain,
+                  ),
+                ),
+              );
             }
           },
         )

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -70,10 +71,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthPhoneVerificationSuccess(event.phoneNumber, phoneCodeSentData));
     } catch (error) {
+      log('PhoneVerificationFailure: $error');
       if (error.toString().contains('invalid-phone-number')) {
         emit(AuthPhoneVerificationInvalidPhone());
       } else if (error.toString().contains('too-many-requests')) {
-        emit(AuthPhoneVerificationTooMuchRequests());
+        emit(AuthPhoneVerificationTooManyRequests());
       } else {
         emit(AuthPhoneVerificationFailure());
       }
@@ -101,6 +103,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthOtpVerificationSuccess());
     } catch (error) {
+      log('OtpVerificationError: $error');
       if (error.toString().contains('invalid-verification-code')) {
         emit(
           AuthOtpVerificationMismatch(
@@ -139,7 +142,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         resendToken: localState.phoneCodeSentData.resendToken,
       );
       emit(AuthOtpResendSuccess(localState.phoneNumber, phoneCodeSentData));
-    } catch (_) {
+    } catch (error) {
+      log('OtpResendFailure: $error');
       emit(
         AuthOtpResendFailure(
           localState.phoneNumber,
@@ -164,7 +168,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthPhoneVerificationSuccess(phoneNumber, phoneCodeSentData));
     } catch (error) {
-      emit(AuthPhoneVerificationFailure());
+      log('ForgotPinPhoneFailure: $error');
+      if (error.toString().contains('too-many-requests')) {
+        emit(AuthPhoneVerificationTooManyRequests());
+      } else {
+        emit(AuthPhoneVerificationFailure());
+      }
     }
   }
 }

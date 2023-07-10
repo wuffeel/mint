@@ -16,10 +16,16 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: NavigationWrapperRoute.page,
           children: [
-            AutoRoute(path: '', page: PinCodeRoute.page),
             AutoRoute(
-              page: ForgotPinOtpWrapperRoute.page,
-              children: [AutoRoute(page: OtpRoute.page)],
+              path: '',
+              page: PinCodeWrapperRoute.page,
+              children: [
+                AutoRoute(path: '', page: PinCodeRoute.page),
+                AutoRoute(
+                  page: ForgotPinOtpWrapperRoute.page,
+                  children: [AutoRoute(page: OtpRoute.page)],
+                ),
+              ],
             ),
             AutoRoute(
               page: NavigationRoute.page,

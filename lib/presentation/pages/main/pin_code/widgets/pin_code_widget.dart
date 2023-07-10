@@ -7,6 +7,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pin_code/widgets/pin_code_keyboard.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
+import '../../../../../backbone/pin_code_status_initial.dart';
 import '../../../../widgets/shake_widget.dart';
 
 class PinCodeWidget extends StatefulWidget {
@@ -33,11 +34,15 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
 
   /// Sets the [_pinCode] to empty string dependent on [state]
   void _pinCodeListener(PinCodeState state) {
-    if (state is PinCodeMismatch ||
-        state is PinCodeFailure ||
-        state is PinCodeFieldReset) {
+    if (state is PinCodeMismatch || state is PinCodeFailure) {
       setState(() {
         _shakeWidgetKey.currentState?.shake();
+        _pinCode = '';
+      });
+    } else if (state is PinCodeEnterSuccess ||
+        (state is PinCodeInitial &&
+            state.status == PinCodeStatusInitial.changeNew)) {
+      setState(() {
         _pinCode = '';
       });
     }
@@ -67,6 +72,15 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
         widget.onCompleted(_pinCode);
       }
     });
+  }
+
+  String _getErrorText(PinCodeState state) {
+    if (state is PinCodeMismatch) {
+      return context.l10n.enteredPinCodesDoNotMatch;
+    } else if (state is PinCodeFailure) {
+      return context.l10n.somethingWentWrongTryAgain;
+    }
+    return '';
   }
 
   @override
@@ -100,16 +114,9 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
               ),
             ),
             if (isError) SizedBox(height: 6.h),
-            if (state is PinCodeMismatch)
+            if (state is PinCodeMismatch || state is PinCodeFailure)
               Text(
-                context.l10n.enteredPinCodesDoNotMatch,
-                style: MintTextStyles.caption1.copyWith(
-                  color: MintColors.error,
-                ),
-              )
-            else if (state is PinCodeFailure)
-              Text(
-                context.l10n.somethingWentWrongTryAgain,
+                _getErrorText(state),
                 style: MintTextStyles.caption1.copyWith(
                   color: MintColors.error,
                 ),

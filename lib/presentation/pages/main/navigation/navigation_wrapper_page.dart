@@ -39,7 +39,7 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
           BlocListener<PinCodeBloc, PinCodeState>(
             listener: (context, state) {
               if (state is PinCodeSignUpConfirmSuccess ||
-                  state is PinCodeChangeConfirmSuccess) {
+                  state is PinCodeNewConfirmSuccess) {
                 context.read<UserBloc>().add(UserDataRequested());
               }
             },

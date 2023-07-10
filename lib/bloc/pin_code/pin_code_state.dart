@@ -3,83 +3,33 @@ part of 'pin_code_bloc.dart';
 @immutable
 abstract class PinCodeState {}
 
-class PinCodeInitial extends PinCodeState {}
+class PinCodeInitial extends PinCodeState {
+  PinCodeInitial(this.status);
 
-mixin PinCodeMismatch on PinCodeState {}
+  final PinCodeStatusInitial status;
+}
 
-mixin PinCodeFailure on PinCodeState {}
+class PinCodeEnterSuccess extends PinCodeState {
+  PinCodeEnterSuccess(this.status, this.pinCode);
 
-mixin PinCodeFieldReset on PinCodeState {}
-
-class PinCodeSignInInitial extends PinCodeState with PinCodeFieldReset {
-  PinCodeSignInInitial(this.pinCode);
-
+  final PinCodeStatusEntered status;
   final String pinCode;
 }
 
-class PinCodeSignInConfirmFailure extends PinCodeSignInInitial
-    with PinCodeFailure {
-  PinCodeSignInConfirmFailure(super.pinCode);
+class PinCodeMismatch extends PinCodeEnterSuccess {
+  PinCodeMismatch(super.status, super.pinCode);
 }
 
-class PinCodeSignInConfirmMismatch extends PinCodeSignInInitial
-    with PinCodeMismatch {
-  PinCodeSignInConfirmMismatch(super.pinCode);
+class PinCodeFailure extends PinCodeEnterSuccess {
+  PinCodeFailure(super.status, super.pinCode);
 }
 
 class PinCodeSignInConfirmSuccess extends PinCodeState {}
 
-class PinCodeResetSuccess extends PinCodeSignUpInitial with PinCodeFieldReset {}
-
-class PinCodeResetFailure extends PinCodeState with PinCodeFailure {}
-
-class PinCodeSignUpInitial extends PinCodeState with PinCodeFieldReset {}
-
-class PinCodeSignUpEnterSuccess extends PinCodeState with PinCodeFieldReset {
-  PinCodeSignUpEnterSuccess(this.pinCode);
-
-  final String pinCode;
-}
-
-class PinCodeSignUpConfirmMismatch extends PinCodeSignUpEnterSuccess
-    with PinCodeMismatch {
-  PinCodeSignUpConfirmMismatch(super.pinCode);
-}
-
-class PinCodeSignUpConfirmFailure extends PinCodeSignUpEnterSuccess
-    with PinCodeFailure {
-  PinCodeSignUpConfirmFailure(super.pinCode);
-}
-
 class PinCodeSignUpConfirmSuccess extends PinCodeState {}
 
-class PinCodeChangePreviousInitial extends PinCodeState with PinCodeFieldReset {
-  PinCodeChangePreviousInitial(this.pinCode);
+class PinCodeNewConfirmSuccess extends PinCodeState {}
 
-  final String pinCode;
-}
+class PinCodeResetSuccess extends PinCodeState {}
 
-class PinCodeChangePreviousMismatch extends PinCodeChangePreviousInitial
-    with PinCodeMismatch {
-  PinCodeChangePreviousMismatch(super.pinCode);
-}
-
-class PinCodeChangeInitial extends PinCodeState with PinCodeFieldReset {}
-
-class PinCodeChangeEnterSuccess extends PinCodeState with PinCodeFieldReset {
-  PinCodeChangeEnterSuccess(this.pinCode);
-
-  final String pinCode;
-}
-
-class PinCodeChangeConfirmFailure extends PinCodeChangeEnterSuccess
-    with PinCodeFailure {
-  PinCodeChangeConfirmFailure(super.pinCode);
-}
-
-class PinCodeChangeConfirmMismatch extends PinCodeChangeEnterSuccess
-    with PinCodeMismatch {
-  PinCodeChangeConfirmMismatch(super.pinCode);
-}
-
-class PinCodeChangeConfirmSuccess extends PinCodeState {}
+class PinCodeResetFailure extends PinCodeState {}
