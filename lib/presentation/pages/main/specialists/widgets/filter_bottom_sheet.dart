@@ -53,6 +53,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       _priceRangeValues.start != _minPrice ||
       _priceRangeValues.end != _maxPrice;
 
+  void _onClear() {
+    setState(() {
+      _priceRangeValues = RangeValues(_minPrice, _maxPrice);
+      _selectedSpecialities.clear();
+      _selectedExperience = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -62,11 +70,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: FilterAppBar(
-              onClear: () {
-                // TODO(wuffeel): add onClear callback
-              },
-            ),
+            child: FilterAppBar(onClear: _onClear),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -124,9 +128,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: ElevatedButton(
-              onPressed: _isFilterApplied ? () {
-                // TODO(wuffeel): apply filters
-              } : null,
+              onPressed: _isFilterApplied
+                  ? () {
+                      // TODO(wuffeel): apply filters
+                    }
+                  : null,
               child: Text(l10n.applyFilters),
             ),
           ),
