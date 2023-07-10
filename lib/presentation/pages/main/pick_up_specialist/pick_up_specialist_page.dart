@@ -2,11 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_multi_item_selection.dart';
 import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_radio_button_list.dart';
 import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_step_title.dart';
 import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_stepper.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
+
+import '../../../widgets/mint_multi_item_selection.dart';
 
 @RoutePage()
 class PickUpSpecialistPage extends StatefulWidget {
@@ -96,7 +97,7 @@ class _PickUpSpecialistPageState extends State<PickUpSpecialistPage> {
                 ),
               ),
             ),
-            PickUpMultiItemSelection(
+            MintMultiItemSelection(
               items: _specialities,
               selectedItems: _selectedSpecialities,
               onAdd: (speciality) => setState(

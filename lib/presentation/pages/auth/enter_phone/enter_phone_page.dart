@@ -8,7 +8,6 @@ import 'package:mint/presentation/pages/auth/enter_phone/widgets/enter_phone_sig
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/enter_phone_terms_text.dart';
 import 'package:mint/presentation/pages/auth/enter_phone/widgets/phone_text_field.dart';
 import 'package:mint/presentation/widgets/loading_indicator.dart';
-import 'package:mint/presentation/widgets/mint_elevated_button.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -95,9 +94,9 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                           ),
                           SizedBox(height: 16.h),
                           if (state is! AuthPhoneVerificationLoading)
-                            MintElevatedButton(
+                            ElevatedButton(
                               onPressed: _isPhoneValid ? _verifyPhone : null,
-                              title: l10n.signUp,
+                              child: Text(l10n.signUp),
                             )
                           else
                             const Center(child: LoadingIndicator()),

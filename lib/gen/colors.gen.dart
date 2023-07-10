@@ -25,6 +25,9 @@ class MintColors {
   /// Color: #FFFFFF
   static const Color backgroundLight = Color(0xFFFFFFFF);
 
+  /// Color: #E0E0E0
+  static const Color bottomSheetTopLine = Color(0xFFE0E0E0);
+
   /// Color: #A3CEFD
   static const Color buttonDisabledDarkColor = Color(0xFFA3CEFD);
 
@@ -33,6 +36,9 @@ class MintColors {
 
   /// Color: #636366
   static const Color elementsGreyDark = Color(0xFF636366);
+
+  /// Color: #D1D1D6
+  static const Color elementsGreyLight = Color(0xFFD1D1D6);
 
   /// Color: #FF3B30
   static const Color error = Color(0xFFFF3B30);

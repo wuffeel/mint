@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
 
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../theme/mint_text_styles.dart';
 
 class PickUpStepper extends StatefulWidget {
@@ -27,12 +26,6 @@ class PickUpStepper extends StatefulWidget {
 }
 
 class _PickUpStepperState extends State<PickUpStepper> {
-  Color _getUnselectedColor() {
-    return Theme.of(context).brightness == Brightness.dark
-        ? MintColors.separatorDark
-        : MintColors.separatorLight;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,7 +44,7 @@ class _PickUpStepperState extends State<PickUpStepper> {
                   borderRadius: BorderRadius.circular(10.r),
                   color: widget.currentStep == index
                       ? Theme.of(context).colorScheme.primary
-                      : _getUnselectedColor(),
+                      : Theme.of(context).dividerColor,
                 ),
               ),
             ),
@@ -76,10 +69,7 @@ class _PickUpStepperState extends State<PickUpStepper> {
         ),
         ElevatedButton(
           onPressed: widget.onNextStep,
-          child: Text(
-            'Next',
-            style: MintTextStyles.headline,
-          ),
+          child: Text(context.l10n.next),
         ),
         SizedBox(height: 26.h),
       ],
@@ -91,7 +81,7 @@ extension ExtendedWidgetList on List<Widget> {
   /// Insert [widget] between each member of this list
   List<Widget> insertBetween(Widget widget) {
     if (length > 1) {
-      for (var i = length - 1; i > 0 ; i--) {
+      for (var i = length - 1; i > 0; i--) {
         insert(i, widget);
       }
     }

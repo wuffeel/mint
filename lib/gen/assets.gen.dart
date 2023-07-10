@@ -36,6 +36,12 @@ class $AssetsSvgGen {
   /// File path: assets/svg/check_mark.svg
   SvgGenImage get checkMark => const SvgGenImage('assets/svg/check_mark.svg');
 
+  /// File path: assets/svg/cross_icon.svg
+  SvgGenImage get crossIcon => const SvgGenImage('assets/svg/cross_icon.svg');
+
+  /// File path: assets/svg/filter_icon.svg
+  SvgGenImage get filterIcon => const SvgGenImage('assets/svg/filter_icon.svg');
+
   /// File path: assets/svg/heart_icon.svg
   SvgGenImage get heartIcon => const SvgGenImage('assets/svg/heart_icon.svg');
 
@@ -85,6 +91,8 @@ class $AssetsSvgGen {
         backspaceIconDark,
         bellIcon,
         checkMark,
+        crossIcon,
+        filterIcon,
         heartIcon,
         heartIconFilled,
         homeIcon,

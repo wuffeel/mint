@@ -39,6 +39,8 @@ class App extends StatelessWidget {
               elevatedButtonTheme: MintThemeData.elevatedButtonLight,
               scaffoldBackgroundColor: MintColors.scaffoldLight,
               bottomNavigationBarTheme: MintThemeData.bottomNavigationBarLight,
+              dividerColor: MintColors.separatorLight,
+              sliderTheme: MintThemeData.sliderThemeLight,
             ),
             darkTheme: ThemeData(
               fontFamily: MintFontFamily.inter,
@@ -51,6 +53,8 @@ class App extends StatelessWidget {
               elevatedButtonTheme: MintThemeData.elevatedButtonDark,
               scaffoldBackgroundColor: MintColors.scaffoldDark,
               bottomNavigationBarTheme: MintThemeData.bottomNavigationBarDark,
+              dividerColor: MintColors.separatorDark.withOpacity(0.6),
+              sliderTheme: MintThemeData.sliderThemeDark,
             ),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

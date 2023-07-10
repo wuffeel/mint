@@ -54,6 +54,7 @@ class MintThemeData {
       foregroundColor: Colors.white,
       disabledForegroundColor: MintColors.scaffoldLight,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+      textStyle: MintTextStyles.headline,
     ),
   );
 
@@ -62,10 +63,12 @@ class MintThemeData {
       elevation: 0,
       minimumSize: Size.fromHeight(50.h),
       backgroundColor: MintColors.primaryDarkBlueColor,
-      disabledBackgroundColor: MintColors.buttonDisabledDarkColor,
+      disabledBackgroundColor:
+          MintColors.buttonDisabledDarkColor.withOpacity(0.8),
       foregroundColor: Colors.white,
       disabledForegroundColor: MintColors.scaffoldLight,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+      textStyle: MintTextStyles.headline,
     ),
   );
 
@@ -87,5 +90,19 @@ class MintThemeData {
     showUnselectedLabels: true,
     selectedLabelStyle: MintTextStyles.tab,
     unselectedLabelStyle: MintTextStyles.tab,
+  );
+
+  static const sliderThemeLight = SliderThemeData(
+    activeTrackColor: MintColors.primaryLightBlueColor,
+    thumbColor: MintColors.primaryLightBlueColor,
+    inactiveTrackColor: MintColors.elementsGreyLight,
+    trackHeight: 2,
+  );
+
+  static const sliderThemeDark = SliderThemeData(
+    activeTrackColor: MintColors.primaryDarkBlueColor,
+    thumbColor: MintColors.primaryDarkBlueColor,
+    inactiveTrackColor: MintColors.elementsGreyDark,
+    trackHeight: 2,
   );
 }

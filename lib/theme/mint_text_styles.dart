@@ -103,17 +103,17 @@ class MintTextStyles {
     height: 1.31,
   );
 
-  static final tabBig = TextStyle(
+  static final tagBig = TextStyle(
     fontSize: 16.sp,
     height: 1.3,
   );
 
-  static final tabMedium = TextStyle(
+  static final tagMedium = TextStyle(
     fontSize: 15.sp,
     height: 1.33,
   );
 
-  static final tabSmall = TextStyle(
+  static final tagSmall = TextStyle(
     fontSize: 13.sp,
     height: 1.38,
   );

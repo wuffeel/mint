@@ -39,5 +39,13 @@
     "howMuchCanIPay": "How much can I pay for a session?",
     "whichTopicsAreYouInterestedIn": "Which topics are you interested in?",
     "somethingWentWrongSendingCode": "Something went wrong sending a code to phone. Try again later",
-    "tooMuchRequests": "Too many phone verification requests. Try again later"
+    "tooMuchRequests": "Too many phone verification requests. Try again later",
+    "filterTitle": "Filter",
+    "clear": "Clear",
+    "allFilter": "All",
+    "experience": "Experience",
+    "specialities": "Specialities",
+    "price": "Price",
+    "applyFilters": "Apply filters",
+    "next": "Next"
 }

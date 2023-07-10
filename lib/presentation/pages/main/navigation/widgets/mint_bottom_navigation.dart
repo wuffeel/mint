@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:mint/gen/assets.gen.dart';
-import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 
 class MintBottomNavigation extends StatelessWidget {
@@ -80,18 +79,12 @@ class MintBottomNavigation extends StatelessWidget {
     ];
   }
 
-  Color _getTopBorderColor(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? MintColors.separatorDark
-        : MintColors.separatorLight;
-  }
-
   @override
   Widget build(BuildContext context) {
     // ignore: use_decorated_box
     return Container(
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: _getTopBorderColor(context),)),
+        border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

@@ -9,6 +9,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/home/widgets/home_app_bar.dart';
 import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_button.dart';
 import 'package:mint/presentation/widgets/doctor_card_tile.dart';
+import 'package:mint/presentation/widgets/specialist_catalogue_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 @RoutePage()
@@ -44,15 +45,7 @@ class _HomePageView extends StatelessWidget {
                 child: const PickUpSpecialistButton(),
               ),
               Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.r),
-                      topRight: Radius.circular(10.r),
-                    ),
-                  ),
+                child: SpecialistCatalogueContainer(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

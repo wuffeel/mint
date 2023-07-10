@@ -34,7 +34,12 @@ class MintBackButton extends StatelessWidget {
             width: 28.w,
             height: 28.h,
             alignment: Alignment.center,
-            child: _getIcon(context).svg(),
+            child: _getIcon(context).svg(
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).iconTheme.color ?? Colors.white,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
           Text(context.l10n.back, style: MintTextStyles.body),
         ],
