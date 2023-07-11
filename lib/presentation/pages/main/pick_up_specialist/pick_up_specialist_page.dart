@@ -111,14 +111,17 @@ class _PickUpSpecialistPageState extends State<PickUpSpecialistPage> {
                 ),
               ),
             ),
-            MintMultiItemSelection(
-              items: _specialities,
-              selectedItems: _selectedSpecialities,
-              onAdd: (speciality) => setState(
-                () => _selectedSpecialities.add(speciality),
-              ),
-              onRemove: (speciality) => setState(
-                () => _selectedSpecialities.remove(speciality),
+            PickUpStepTitle(
+              title: context.l10n.whichTopicsAreYouInterestedIn,
+              child: MintMultiItemSelection(
+                items: _specialities,
+                selectedItems: _selectedSpecialities,
+                onAdd: (speciality) => setState(
+                  () => _selectedSpecialities.add(speciality),
+                ),
+                onRemove: (speciality) => setState(
+                  () => _selectedSpecialities.remove(speciality),
+                ),
               ),
             ),
           ],
