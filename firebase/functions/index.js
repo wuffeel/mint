@@ -39,3 +39,37 @@ exports.updateSpecialistRating = functions.firestore
         reviewCount: reviewCount,
       });
     });
+
+exports.updateSpecialistFilter = functions.firestore
+    .document("specialists/{specialistId}")
+    .onWrite(async (change, context) => {
+      const specialistsSnapshot = await firestore
+          .collection("specialists").get();
+
+      const prices = specialistsSnapshot.docs.map(
+          (specialist) => specialist.data().price,
+      );
+
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+
+      const uniqueSpecializations = new Set();
+
+      specialistsSnapshot.forEach((specialist) => {
+        const specializationsArray = specialist.data().specializations;
+        specializationsArray.forEach((specialization) => {
+          uniqueSpecializations.add(specialization);
+        });
+      });
+
+      const specializations = Array.from(uniqueSpecializations);
+
+      return firestore
+          .collection("filter")
+          .doc("specialist_filter")
+          .update({
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            specializations: specializations,
+          });
+    });
