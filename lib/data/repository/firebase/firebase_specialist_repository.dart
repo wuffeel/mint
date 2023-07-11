@@ -25,16 +25,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     final querySnapshot =
         await _specialistCollectionRef.where('isOnline', isEqualTo: true).get();
 
-    return querySnapshot.docs
-        .map((doc) {
-          final data = doc.data() as Map<String, dynamic>?;
-          if (data == null) return null;
-          data['id'] = doc.id;
-
-          return SpecialistModelDto.fromJson(data);
-        })
-        .whereType<SpecialistModelDto>()
-        .toList();
+    return _specialistDtoListFromSnapshot(querySnapshot);
   }
 
   @override
@@ -54,16 +45,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     final specialistSnapshot =
         await _specialistCollectionRef.where('id', whereIn: favoriteIds).get();
 
-    return specialistSnapshot.docs
-        .map((doc) {
-          final data = doc.data() as Map<String, dynamic>?;
-          if (data == null) return null;
-          data['id'] = doc.id;
-
-          return SpecialistModelDto.fromJson(data);
-        })
-        .whereType<SpecialistModelDto>()
-        .toList();
+    return _specialistDtoListFromSnapshot(specialistSnapshot);
   }
 
   @override
@@ -81,5 +63,22 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     String specialistId,
   ) {
     return _favoriteCollectionRef.doc('$userId-$specialistId').delete();
+  }
+
+  SpecialistModelDto? _specialistDtoFromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>?;
+    if (data == null) return null;
+    data['id'] = snapshot.id;
+
+    return SpecialistModelDto.fromJson(data);
+  }
+
+  List<SpecialistModelDto> _specialistDtoListFromSnapshot(
+    QuerySnapshot snapshot,
+  ) {
+    return snapshot.docs
+        .map(_specialistDtoFromSnapshot)
+        .whereType<SpecialistModelDto>()
+        .toList();
   }
 }
