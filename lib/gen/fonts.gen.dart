@@ -12,4 +12,7 @@ class MintFontFamily {
 
   /// Font family: Inter
   static const String inter = 'Inter';
+
+  /// Font family: SfProDisplay
+  static const String sfProDisplay = 'SfProDisplay';
 }
