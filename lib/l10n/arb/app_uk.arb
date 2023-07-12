@@ -47,5 +47,6 @@
     "specialities": "Спеціалізації",
     "price": "Ціна",
     "applyFilters": "Застосувати фільтри",
-    "next": "Далі"
+    "next": "Далі",
+    "lessThanYear": "Менше 1 року"
 }

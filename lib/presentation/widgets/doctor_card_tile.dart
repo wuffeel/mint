@@ -26,9 +26,23 @@ class DoctorCardTile extends StatelessWidget {
 
   String _getExperienceString(BuildContext context) {
     final l10n = context.l10n;
-    final experienceString = specialistModel.experience == 1
-        ? '${specialistModel.experience} ${l10n.experienceYear}'
-        : '${specialistModel.experience} ${l10n.experienceYears}';
+    final experience = specialistModel.experience;
+    final currentDate = DateTime.now();
+    var yearDifference = currentDate.year - experience.year;
+
+    if (currentDate.month < experience.month ||
+        (currentDate.month == experience.month &&
+            currentDate.day < experience.day)) {
+      yearDifference--;
+    }
+
+    if (yearDifference == 0) {
+      return '${l10n.psychologist}, ${l10n.lessThanYear}';
+    }
+
+    final experienceString = yearDifference == 1
+        ? '$yearDifference ${l10n.experienceYear}'
+        : '$yearDifference ${l10n.experienceYears}';
     return '${l10n.psychologist}, $experienceString';
   }
 

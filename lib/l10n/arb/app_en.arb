@@ -47,5 +47,6 @@
     "specialities": "Specialities",
     "price": "Price",
     "applyFilters": "Apply filters",
-    "next": "Next"
+    "next": "Next",
+    "lessThanYear": "Less than 1 year"
 }
