@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/bloc/favorite/favorite_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/gen/colors.gen.dart';
@@ -25,16 +23,6 @@ class SpecialistCardTile extends StatelessWidget {
 
   String _getFullName() {
     return '${specialistModel.firstName} ${specialistModel.lastName}';
-  }
-
-  void _toggleFavorite(BuildContext context, bool isFavorite) {
-    isFavorite
-        ? context
-            .read<FavoriteBloc>()
-            .add(FavoriteRemoveRequested(specialistModel))
-        : context
-            .read<FavoriteBloc>()
-            .add(FavoriteAddRequested(specialistModel));
   }
 
   @override
@@ -61,7 +49,6 @@ class SpecialistCardTile extends StatelessWidget {
                     ? DecorationImage(
                         image: NetworkImage(photo),
                         fit: BoxFit.cover,
-
                       )
                     : null,
               ),
@@ -106,32 +93,19 @@ class SpecialistCardTile extends StatelessWidget {
               ),
             ),
             SizedBox(width: 8.w),
-            BlocBuilder<FavoriteBloc, FavoriteState>(
-              builder: (context, state) {
-                if (state is FavoriteFetchSuccess) {
-                  final isFavorite = state.favoriteList.any(
-                    (specialist) => specialist.id == specialistModel.id,
-                  );
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      FavoriteButton(
-                        onTap: () => _toggleFavorite(context, isFavorite),
-                        isFavorite: isFavorite,
-                      ),
-                      Text(
-                        '₴${specialistModel.price}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-                return const SizedBox.shrink();
-              },
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                FavoriteButton(specialistModel: specialistModel),
+                Text(
+                  '₴${specialistModel.price}',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

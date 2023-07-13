@@ -52,10 +52,9 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
                   forceElevated: innerBoxIsScrolled,
                   actions: [
                     FavoriteButton(
-                      onTap: () {},
-                      isFavorite: false,
+                      specialistModel: widget.specialistModel,
                       isActionButton: true,
-                    )
+                    ),
                   ],
                   flexibleSpace: Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
