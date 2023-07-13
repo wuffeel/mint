@@ -4,6 +4,8 @@ import 'package:mint/presentation/widgets/favorite_icon.dart';
 import 'package:mint/presentation/widgets/mint_rating_bar.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../theme/mint_text_styles.dart';
+
 class SpecialistCardTileSkeleton extends StatelessWidget {
   const SpecialistCardTileSkeleton({super.key});
 
@@ -36,22 +38,11 @@ class SpecialistCardTileSkeleton extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        width: 100.w,
-                        height: 17.sp * 1.29,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2.r),
-                          color: Colors.white,
-                        ),
-                      ),
+                      Text('----------------', style: MintTextStyles.headline1),
                       SizedBox(height: 4.h),
-                      Container(
-                        width: 130.w,
-                        height: 13.sp,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2.r),
-                          color: Colors.white,
-                        ),
+                      Text(
+                        '----------------',
+                        style: TextStyle(fontSize: 13.sp),
                       ),
                     ],
                   ),
@@ -65,12 +56,11 @@ class SpecialistCardTileSkeleton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 const FavoriteIcon(),
-                Container(
-                  width: 50.w,
-                  height: 15.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.r),
-                    color: Colors.white,
+                Text(
+                  '₴ -----',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
