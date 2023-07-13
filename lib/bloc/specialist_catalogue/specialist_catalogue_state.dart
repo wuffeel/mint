@@ -3,14 +3,27 @@ part of 'specialist_catalogue_bloc.dart';
 @immutable
 abstract class SpecialistCatalogueState {}
 
-class SpecialistCatalogueInitial extends SpecialistCatalogueState {}
-
-class SpecialistCatalogueLoading extends SpecialistCatalogueState {}
-
-class SpecialistCatalogueFetchSuccess extends SpecialistCatalogueState {
-  SpecialistCatalogueFetchSuccess(this.specialistList);
+class SpecialistCatalogueInitial extends SpecialistCatalogueState {
+  SpecialistCatalogueInitial({
+    this.specialistList = const [],
+    this.preferences = FilterPreferences.empty,
+  });
 
   final List<SpecialistModel> specialistList;
+  final FilterPreferences preferences;
 }
 
-class SpecialistCatalogueFetchFailure extends SpecialistCatalogueState {}
+class SpecialistCatalogueLoading extends SpecialistCatalogueInitial {
+  SpecialistCatalogueLoading({super.specialistList, super.preferences});
+}
+
+class SpecialistCatalogueFetchSuccess extends SpecialistCatalogueInitial {
+  SpecialistCatalogueFetchSuccess({
+    required super.specialistList,
+    super.preferences,
+  });
+}
+
+class SpecialistCatalogueFetchFailure extends SpecialistCatalogueInitial {
+  SpecialistCatalogueFetchFailure({super.specialistList, super.preferences});
+}
