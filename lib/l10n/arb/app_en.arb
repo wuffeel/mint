@@ -48,5 +48,9 @@
     "price": "Price",
     "applyFilters": "Apply filters",
     "next": "Next",
-    "lessThanYear": "Less than 1 year"
+    "lessThanYear": "Less than 1 year",
+    "tryAgainQuestion": "Try again",
+    "oopsSomethingWentWrong": "Oops, something went wrong",
+    "noSpecialistsFound": "No specialists found",
+    "tryToSearchWithDifferentFilter": "Try to search with different filter"
 }

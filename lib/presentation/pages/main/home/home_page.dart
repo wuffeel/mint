@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/bloc/specialist_catalogue/specialist_catalogue_bloc.dart';
+import 'package:mint/bloc/specialist_online/specialist_online_bloc.dart';
 import 'package:mint/bloc/user/user_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -19,8 +19,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<SpecialistCatalogueBloc>()
-        ..add(SpecialistCatalogueFetchRequested()),
+      create: (context) => getIt<SpecialistOnlineBloc>()
+        ..add(SpecialistOnlineFetchRequested()),
       child: const _HomePageView(),
     );
   }
@@ -56,15 +56,15 @@ class _HomePageView extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       Expanded(
-                        child: BlocBuilder<SpecialistCatalogueBloc,
-                            SpecialistCatalogueState>(
+                        child: BlocBuilder<SpecialistOnlineBloc,
+                            SpecialistOnlineState>(
                           builder: (context, state) {
-                            if (state is SpecialistCatalogueLoading) {
+                            if (state is SpecialistOnlineLoading) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             }
-                            if (state is SpecialistCatalogueFetchSuccess) {
+                            if (state is SpecialistOnlineFetchSuccess) {
                               return CustomScrollView(
                                 slivers: <Widget>[
                                   SliverList.builder(

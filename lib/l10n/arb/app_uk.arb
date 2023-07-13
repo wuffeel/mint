@@ -48,5 +48,9 @@
     "price": "Ціна",
     "applyFilters": "Застосувати фільтри",
     "next": "Далі",
-    "lessThanYear": "Менше 1 року"
+    "lessThanYear": "Менше 1 року",
+    "tryAgainQuestion": "Спробувати знову",
+    "oopsSomethingWentWrong": "Упс, щось пішло не так",
+    "noSpecialistsFound": "Спеціалістів не було знайдено",
+    "tryToSearchWithDifferentFilter": "Спробуйте пошук з іншими фільтрами"
 }

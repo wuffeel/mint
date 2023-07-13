@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/presentation/widgets/check_mark_circle.dart';
 
-class MintSelectionButton extends StatelessWidget {
+class MintSelectionButton<T> extends StatelessWidget {
   const MintSelectionButton({
     super.key,
+    required this.value,
     required this.title,
     required this.isSelected,
     this.hasCheckMark = false,
     this.onSelect,
   });
 
+  final T value;
   final String title;
   final bool isSelected;
   final bool hasCheckMark;
-  final VoidCallback? onSelect;
+  final void Function(T)? onSelect;
 
   @override
   Widget build(BuildContext context) {
+    final onSelectLocal = onSelect;
     return InkWell(
-      onTap: onSelect,
+      onTap: onSelectLocal != null ? () => onSelectLocal(value) : null,
       borderRadius: BorderRadius.circular(10.r),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
