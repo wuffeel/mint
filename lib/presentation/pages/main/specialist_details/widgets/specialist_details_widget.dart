@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialization_tile.dart';
 
 import '../../../../../domain/entity/specialist_model/specialist_model.dart';
@@ -16,8 +17,18 @@ class SpecialistDetailsWidget extends StatelessWidget {
   String get _fullName =>
       '${specialistModel.firstName} ${specialistModel.lastName}';
 
+  String _getReviewCountString(BuildContext context) {
+    final l10n = context.l10n;
+    final reviews = specialistModel.reviewCount;
+    return reviews == 1
+        ? '($reviews) ${l10n.reviewSingleCount}'
+        : '($reviews) ${l10n.reviewsMultipleCount}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     final photo = specialistModel.photoUrl;
     final specializations = specialistModel.specializations;
     return ColoredBox(
@@ -80,7 +91,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                           style: MintTextStyles.caption4,
                         ),
                         Text(
-                          'per visit',
+                          l10n.perVisit,
                           style: MintTextStyles.footnote.copyWith(
                             color: Theme.of(context).hintColor.withOpacity(0.6),
                           ),
@@ -108,7 +119,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                     ),
                     SizedBox(width: 6.w),
                     Text(
-                      '(${specialistModel.reviewCount}) reviews',
+                      _getReviewCountString(context),
                       style: MintTextStyles.footnote.copyWith(
                         color: Theme.of(context).hintColor.withOpacity(0.6),
                       ),
@@ -117,7 +128,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 23.h),
                 Text(
-                  'Specializations',
+                  l10n.specializations,
                   style: MintTextStyles.headline1,
                 ),
                 SizedBox(height: 12.h),

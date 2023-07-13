@@ -52,5 +52,12 @@
     "tryAgainQuestion": "Try again",
     "oopsSomethingWentWrong": "Oops, something went wrong",
     "noSpecialistsFound": "No specialists found",
-    "tryToSearchWithDifferentFilter": "Try to search with different filter"
+    "tryToSearchWithDifferentFilter": "Try to search with different filter",
+    "about": "About",
+    "education": "Education",
+    "reviews": "Reviews",
+    "perVisit": "per visit",
+    "reviewSingleCount": "review",
+    "reviewsMultipleCount": "reviews",
+    "specializations": "Specializations"
 }

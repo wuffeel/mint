@@ -52,5 +52,8 @@
     "tryAgainQuestion": "Спробувати знову",
     "oopsSomethingWentWrong": "Упс, щось пішло не так",
     "noSpecialistsFound": "Спеціалістів не було знайдено",
-    "tryToSearchWithDifferentFilter": "Спробуйте пошук з іншими фільтрами"
+    "tryToSearchWithDifferentFilter": "Спробуйте пошук з іншими фільтрами",
+    "about": "Про себе",
+    "education": "Освіта",
+    "reviews": "Відгуки"
 }

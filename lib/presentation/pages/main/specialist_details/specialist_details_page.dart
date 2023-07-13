@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
@@ -22,7 +23,11 @@ class SpecialistDetailsPage extends StatefulWidget {
 }
 
 class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
-  final tabs = ['About', 'Education', 'Reviews'];
+  late final tabs = [
+    context.l10n.about,
+    context.l10n.education,
+    context.l10n.reviews,
+  ];
   final _scrollController = ScrollController();
 
   @override
@@ -35,8 +40,9 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                  context,
+                ),
                 sliver: SpecialistSliverAppBar(
                   scrollController: _scrollController,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -57,13 +63,12 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
                       specialistModel: widget.specialistModel,
                     ),
                   ),
-                  bottom: const OpaqueTabBar(
+                  bottom: OpaqueTabBar(
                     tabBar: TabBar(
-                      tabs: <Widget>[
-                        Tab(child: Text('About')),
-                        Tab(child: Text('Education')),
-                        Tab(child: Text('Reviews')),
-                      ],
+                      tabs: List.generate(
+                        tabs.length,
+                        (index) => Tab(child: Text(tabs[index])),
+                      ),
                     ),
                   ),
                 ),
