@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_tab_bar_delegate.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
+import 'package:mint/presentation/widgets/specialist_card_tile.dart';
 
 import '../../../../theme/mint_text_styles.dart';
 import '../../../widgets/mint_back_button.dart';
@@ -22,6 +23,7 @@ class SpecialistDetailsPage extends StatefulWidget {
 
 class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
   final tabs = ['About', 'Education', 'Reviews'];
+  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,33 +31,40 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
       length: 3,
       child: Scaffold(
         body: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: ExtendedSliverAppbar(
+                sliver: SpecialistSliverAppBar(
+                  scrollController: _scrollController,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  pinned: true,
                   leading: const MintBackButton(),
-                  actions: FavoriteButton(
-                    onTap: () {},
-                    isFavorite: false,
-                    isActionButton: true,
+                  leadingWidth: 80.w,
+                  forceElevated: innerBoxIsScrolled,
+                  actions: [
+                    FavoriteButton(
+                      onTap: () {},
+                      isFavorite: false,
+                      isActionButton: true,
+                    )
+                  ],
+                  flexibleSpace: Padding(
+                    padding: EdgeInsets.only(bottom: 24.h),
+                    child: SpecialistDetailsWidget(
+                      specialistModel: widget.specialistModel,
+                    ),
                   ),
-                  toolBarColor: Theme.of(context).scaffoldBackgroundColor,
-                  background: SpecialistDetailsWidget(
-                    specialistModel: widget.specialistModel,
-                  ),
-                ),
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: SpecialistTabBarDelegate(
-                  const TabBar(
-                    tabs: <Widget>[
-                      Tab(child: Text('About')),
-                      Tab(child: Text('Education')),
-                      Tab(child: Text('Reviews')),
-                    ],
+                  bottom: const OpaqueTabBar(
+                    tabBar: TabBar(
+                      tabs: <Widget>[
+                        Tab(child: Text('About')),
+                        Tab(child: Text('Education')),
+                        Tab(child: Text('Reviews')),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -94,6 +103,18 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
                               child: Text(
                                 widget.specialistModel.education ?? '',
                                 style: MintTextStyles.body1,
+                              ),
+                            ),
+                          ),
+                        if (index == 2)
+                          SliverPadding(
+                            padding: EdgeInsets.all(16.r),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) => SpecialistCardTile(
+                                  specialistModel: widget.specialistModel,
+                                ),
+                                childCount: 10,
                               ),
                             ),
                           ),
