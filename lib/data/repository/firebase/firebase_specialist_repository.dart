@@ -74,16 +74,31 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
       return _specialistDtoListFromSnapshot(specialistSnapshot);
     }
 
-    final query = _specialistCatalogueQuery(filter);
+    final queries =
+        _getSpecializationsQueries(_specialistCollectionRef, filter);
+
+    final queryResults = <List<SpecialistModelDto>>[];
 
     if (_filterHasSeveralComparisonFields(filter)) {
-      return _separateFilterQueriesMerged(query, filter);
+      queryResults.addAll(
+        await Future.wait(
+          queries.map((query) => _separateFilterResultsMerged(query, filter)),
+        ),
+      );
+    } else {
+      queryResults.addAll(
+        await Future.wait(
+          queries.map((query) => _appliedFiltersResult(query, filter)),
+        ),
+      );
     }
 
-    final specialistSnapshot = await _getFilterOrderBy(query, filter).get();
-    return _specialistDtoListFromSnapshot(specialistSnapshot);
+    return queries.length > 1
+        ? queryResults.expand((result) => result).toSet().toList()
+        : queryResults.first;
   }
 
+  /// Returns specialist by given [snapshot]
   SpecialistModelDto? _specialistDtoFromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>?;
     if (data == null) return null;
@@ -92,6 +107,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     return SpecialistModelDto.fromJson(data);
   }
 
+  /// Returns list of specialists by given [snapshot]
   List<SpecialistModelDto> _specialistDtoListFromSnapshot(
     QuerySnapshot snapshot,
   ) {
@@ -101,24 +117,23 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
         .toList();
   }
 
-  Query<Object?> _specialistCatalogueQuery(FilterPreferencesDto filter) {
-    Query<Object?> query = _specialistCollectionRef;
-
-    final specializations = filter.specializations;
-
-    if (!_filterHasSeveralComparisonFields(filter)) {
-      query = _getPriceFilter(query, filter);
-      query = _getExperienceFilter(query, filter);
-    }
-
-    if (specializations != null) {
-      query = query.where('specializations', arrayContainsAny: specializations);
-    }
-
-    return query;
+  /// Used to fetch specialists catalogue with either price or experience
+  /// filter combined with specializations provided in [query]
+  Future<List<SpecialistModelDto>> _appliedFiltersResult(
+    Query<Object?> query,
+    FilterPreferencesDto filter,
+  ) async {
+    var filteredQuery = query;
+    filteredQuery = _getPriceFilter(filteredQuery, filter);
+    filteredQuery = _getExperienceFilter(filteredQuery, filter);
+    filteredQuery = _getFilterOrderBy(filteredQuery, filter);
+    final specialistSnapshot = await filteredQuery.get();
+    return _specialistDtoListFromSnapshot(specialistSnapshot);
   }
 
-  Future<List<SpecialistModelDto>> _separateFilterQueriesMerged(
+  /// Returns separately proceeded price and experience queries results
+  /// with specializations provided in [query] merged
+  Future<List<SpecialistModelDto>> _separateFilterResultsMerged(
     Query<Object?> query,
     FilterPreferencesDto filter,
   ) async {
@@ -138,7 +153,27 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
         .intersection(specialistsByExperience.toSet())
         .toList();
 
-    return mergedSpecialists.toList();
+    return mergedSpecialists;
+  }
+
+  /// Returns a list of specialization queries, chunked by 10 because of
+  /// Firestore array query limitation
+  ///
+  /// If filter's specializations null or empty, returns list only with [query]
+  List<Query<Object?>> _getSpecializationsQueries(
+    Query<Object?> query,
+    FilterPreferencesDto filter,
+  ) {
+    final specializations = filter.specializations;
+    if (specializations == null || specializations.isEmpty) {
+      return [query];
+    }
+
+    final chunked = _chunkList(specializations, 10);
+
+    return chunked.map((element) {
+      return query.where('specializations', arrayContainsAny: element);
+    }).toList();
   }
 
   /// Returns query with filter by price, without orderBy
@@ -148,19 +183,19 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     Query<Object?> query,
     FilterPreferencesDto filter,
   ) {
-    var localQuery = query;
+    var updated = query;
 
     final lowPrice = filter.lowPrice;
     final highPrice = filter.highPrice;
 
     if (lowPrice != null) {
-      localQuery = localQuery.where('price', isGreaterThanOrEqualTo: lowPrice);
+      updated = updated.where('price', isGreaterThanOrEqualTo: lowPrice);
     }
     if (highPrice != null) {
-      localQuery = localQuery.where('price', isLessThanOrEqualTo: highPrice);
+      updated = updated.where('price', isLessThanOrEqualTo: highPrice);
     }
 
-    return localQuery;
+    return updated;
   }
 
   /// Returns query with filter by experience, without orderBy
@@ -170,7 +205,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     Query<Object?> query,
     FilterPreferencesDto filter,
   ) {
-    var localQuery = query;
+    var updated = query;
 
     final experienceFrom = filter.experienceFrom;
     final experienceTo = filter.experienceTo;
@@ -182,20 +217,17 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     }
 
     if (experienceFrom != null) {
-      localQuery = isLessOrMoreThan
-          ? localQuery.where('experience', isGreaterThan: experienceFrom)
-          : localQuery.where(
-              'experience',
-              isGreaterThanOrEqualTo: experienceFrom,
-            );
+      updated = isLessOrMoreThan
+          ? updated.where('experience', isGreaterThan: experienceFrom)
+          : updated.where('experience', isGreaterThanOrEqualTo: experienceFrom);
     }
     if (experienceTo != null) {
-      localQuery = isLessOrMoreThan
-          ? localQuery.where('experience', isLessThan: experienceTo)
-          : localQuery.where('experience', isLessThanOrEqualTo: experienceTo);
+      updated = isLessOrMoreThan
+          ? updated.where('experience', isLessThan: experienceTo)
+          : updated.where('experience', isLessThanOrEqualTo: experienceTo);
     }
 
-    return localQuery;
+    return updated;
   }
 
   /// Returns either order by price or experience
@@ -205,29 +237,40 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     Query<Object?> query,
     FilterPreferencesDto filter,
   ) {
-    var localQuery = query;
     if (filter.lowPrice != null || filter.highPrice != null) {
-      localQuery = localQuery.orderBy('price');
+      return query.orderBy('price');
     }
     if (filter.experienceFrom != null || filter.experienceTo != null) {
-      localQuery = query.orderBy('experience');
+      return query.orderBy('experience');
     }
-    return localQuery;
+    return query;
   }
 
   /// Check if filter has both filter by price and experience.
   ///
   /// If yes, it is necessary to query these filters separately, because
-  /// Firestore can't have several comparison fields in one query
+  /// we can't have several comparison fields in one query based on Firestore
+  /// limitation
   bool _filterHasSeveralComparisonFields(FilterPreferencesDto filter) {
     final lowPrice = filter.lowPrice;
     final highPrice = filter.highPrice;
     final experienceFrom = filter.experienceFrom;
     final experienceTo = filter.experienceTo;
-    if ((lowPrice != null || highPrice != null) &&
-        (experienceFrom != null || experienceTo != null)) {
-      return true;
+    return (lowPrice != null || highPrice != null) &&
+        (experienceFrom != null || experienceTo != null);
+  }
+
+  /// Divides [list] into sub-lists, each of length equal to [chunkSize]
+  List<List<T>> _chunkList<T>(List<T> list, int chunkSize) {
+    final chunked = <List<T>>[];
+    var currentIndex = 0;
+
+    while (currentIndex < list.length) {
+      final endIndex = currentIndex + chunkSize;
+      chunked.add(list.sublist(currentIndex, endIndex.clamp(0, list.length)));
+      currentIndex = endIndex;
     }
-    return false;
+
+    return chunked;
   }
 }
