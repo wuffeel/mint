@@ -15,7 +15,7 @@ import 'package:mint/presentation/widgets/no_items_found.dart';
 import 'package:mint/presentation/widgets/specialist_catalogue_container.dart';
 
 import '../../../../domain/entity/filter_preferences/filter_preferences.dart';
-import '../../../widgets/doctor_card_tile.dart';
+import '../../../widgets/specialist_card_tile.dart';
 
 @RoutePage()
 class SpecialistsPage extends StatefulWidget {
@@ -98,7 +98,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                     SliverList.builder(
                       itemCount: state.specialistList.length,
                       itemBuilder: (context, index) {
-                        return DoctorCardTile(
+                        return SpecialistCardTile(
                           specialistModel: state.specialistList[index],
                         );
                       },
