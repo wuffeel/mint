@@ -55,5 +55,9 @@
     "tryToSearchWithDifferentFilter": "Спробуйте пошук з іншими фільтрами",
     "about": "Про себе",
     "education": "Освіта",
-    "reviews": "Відгуки"
+    "reviews": "Відгуки",
+    "perVisit": "за візит",
+    "reviewSingleCount": "відгук",
+    "reviewsMultipleCount": "відгуків",
+    "specializations": "Спеціалізації"
 }
