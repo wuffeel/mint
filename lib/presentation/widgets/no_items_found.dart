@@ -32,6 +32,7 @@ class NoItemsFound extends StatelessWidget {
                 style: MintTextStyles.headline1.copyWith(
                   color: Theme.of(context).hintColor.withOpacity(0.6),
                 ),
+                textAlign: TextAlign.center,
               ),
             ],
           );
