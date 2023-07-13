@@ -15,7 +15,7 @@ class SpecialistSliverAppBar extends StatefulWidget {
     this.floating = false,
     this.pinned = false,
     this.snap = false,
-    this.toolbarHeight = kToolbarHeight + 20,
+    this.toolbarHeight = kToolbarHeight,
     this.leadingWidth,
   });
 
