@@ -42,11 +42,8 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
                     isActionButton: true,
                   ),
                   toolBarColor: Theme.of(context).scaffoldBackgroundColor,
-                  background: ColoredBox(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    child: SpecialistDetailsWidget(
-                      specialistModel: widget.specialistModel,
-                    ),
+                  background: SpecialistDetailsWidget(
+                    specialistModel: widget.specialistModel,
                   ),
                 ),
               ),
