@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/fade_on_scroll.dart';
 
@@ -62,7 +60,6 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
         _height = (_childKey.currentContext?.findRenderObject() as RenderBox?)
             ?.size
             .height;
-        log(_height.toString());
       });
     });
   }
