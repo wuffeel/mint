@@ -61,6 +61,7 @@ class SpecialistCardTile extends StatelessWidget {
                     ? DecorationImage(
                         image: NetworkImage(photo),
                         fit: BoxFit.cover,
+
                       )
                     : null,
               ),
