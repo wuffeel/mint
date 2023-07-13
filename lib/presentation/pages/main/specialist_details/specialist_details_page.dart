@@ -47,6 +47,8 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
                   scrollController: _scrollController,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   pinned: true,
+                  // TODO(wuffel): investigate overflow caused by this widget
+                  // or ignore
                   leading: const MintBackButton(),
                   leadingWidth: 80.w,
                   forceElevated: innerBoxIsScrolled,
