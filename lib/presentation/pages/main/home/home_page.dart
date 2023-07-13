@@ -9,6 +9,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/home/widgets/home_app_bar.dart';
 import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_button.dart';
 import 'package:mint/presentation/widgets/doctor_card_tile.dart';
+import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
 import 'package:mint/presentation/widgets/specialist_catalogue_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -28,6 +29,10 @@ class HomePage extends StatelessWidget {
 
 class _HomePageView extends StatelessWidget {
   const _HomePageView();
+
+  void _refreshDoctorsOnline(BuildContext context) {
+    context.read<SpecialistOnlineBloc>().add(SpecialistOnlineFetchRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,18 +70,21 @@ class _HomePageView extends StatelessWidget {
                               );
                             }
                             if (state is SpecialistOnlineFetchSuccess) {
-                              return CustomScrollView(
-                                slivers: <Widget>[
-                                  SliverList.builder(
-                                    itemCount: state.specialistList.length,
-                                    itemBuilder: (context, index) {
-                                      return DoctorCardTile(
-                                        specialistModel:
-                                            state.specialistList[index],
-                                      );
-                                    },
-                                  ),
-                                ],
+                              return MintRefreshIndicator(
+                                onRefresh: () => _refreshDoctorsOnline(context),
+                                child: CustomScrollView(
+                                  slivers: <Widget>[
+                                    SliverList.builder(
+                                      itemCount: state.specialistList.length,
+                                      itemBuilder: (context, index) {
+                                        return DoctorCardTile(
+                                          specialistModel:
+                                              state.specialistList[index],
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                             return const SizedBox.shrink();
