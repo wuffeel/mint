@@ -11,6 +11,7 @@ import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_but
 import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
 import 'package:mint/presentation/widgets/specialist_card_tile.dart';
 import 'package:mint/presentation/widgets/specialist_catalogue_container.dart';
+import 'package:mint/presentation/widgets/specialist_shimmer_list.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 @RoutePage()
@@ -20,8 +21,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<SpecialistOnlineBloc>()
-        ..add(SpecialistOnlineFetchRequested()),
+      create: (context) =>
+          getIt<SpecialistOnlineBloc>()..add(SpecialistOnlineFetchRequested()),
       child: const _HomePageView(),
     );
   }
@@ -65,8 +66,9 @@ class _HomePageView extends StatelessWidget {
                             SpecialistOnlineState>(
                           builder: (context, state) {
                             if (state is SpecialistOnlineLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
+                              return const SingleChildScrollView(
+                                physics: NeverScrollableScrollPhysics(),
+                                child: SpecialistShimmerList(),
                               );
                             }
                             if (state is SpecialistOnlineFetchSuccess) {
