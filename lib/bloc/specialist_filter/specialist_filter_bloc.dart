@@ -111,8 +111,8 @@ class SpecialistFilterBloc
       _filterController.addToAppliedStream(currentPreferences);
       emit(
         SpecialistFilterApplySuccess(
-          appliedFilters: state.selectedFilters,
-          selectedFilters: state.selectedFilters,
+          appliedFilters: currentPreferences,
+          selectedFilters: currentPreferences,
           specialistFilter: state.specialistFilter,
         ),
       );
