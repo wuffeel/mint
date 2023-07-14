@@ -34,12 +34,17 @@ class FavoriteButton extends StatelessWidget {
           final isFavorite = state.favoriteList.any(
             (specialist) => specialist.id == specialistModel.id,
           );
-          return IconButton(
-            onPressed: () => _toggleFavorite(context, isFavorite),
-            padding: isActionButton ? null : EdgeInsets.zero,
-            constraints: isActionButton ? null : const BoxConstraints(),
-            icon: FavoriteIcon(isFavorite: isFavorite),
-          );
+          return isActionButton
+              ? IconButton(
+                  onPressed: () => _toggleFavorite(context, isFavorite),
+                  padding: isActionButton ? null : EdgeInsets.zero,
+                  constraints: isActionButton ? null : const BoxConstraints(),
+                  icon: FavoriteIcon(isFavorite: isFavorite),
+                )
+              : InkWell(
+                  onTap: () => _toggleFavorite(context, isFavorite),
+                  child: FavoriteIcon(isFavorite: isFavorite),
+                );
         }
         return Shimmer.fromColors(
           baseColor: Theme.of(context).hintColor.withOpacity(0.6),
