@@ -51,64 +51,70 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
         .add(SpecialistCatalogueRefreshRequested());
   }
 
+  void _navigateBack(TabsRouter tabsRouter) {
+    return tabsRouter.setActiveIndex(tabsRouter.previousIndex ?? 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final tabsRouter = AutoTabsRouter.of(context);
-    return Scaffold(
-      appBar: MintAppBar(
-        leading: MintBackButton(
-          onPressed: () => tabsRouter.setActiveIndex(
-            tabsRouter.previousIndex ?? 0,
-          ),
+    return WillPopScope(
+      onWillPop: () async {
+        _navigateBack(tabsRouter);
+        return false;
+      },
+      child: Scaffold(
+        appBar: MintAppBar(
+          leading: MintBackButton(onPressed: () => _navigateBack(tabsRouter)),
+          leadingWidth: 80.w,
+          actions: [
+            BlocBuilder<SpecialistFilterBloc, SpecialistFilterState>(
+              builder: (_, state) {
+                return FilterActionButton(
+                  isBadgeVisible: _isBadgeVisible(state),
+                  onPressed: () => _showFilterModalBottomSheet(context),
+                );
+              },
+            ),
+          ],
         ),
-        leadingWidth: 80.w,
-        actions: [
-          BlocBuilder<SpecialistFilterBloc, SpecialistFilterState>(
-            builder: (_, state) {
-              return FilterActionButton(
-                isBadgeVisible: _isBadgeVisible(state),
-                onPressed: () => _showFilterModalBottomSheet(context),
-              );
-            },
-          ),
-        ],
-      ),
-      body: SpecialistCatalogueContainer(
-        child: BlocBuilder<SpecialistCatalogueBloc, SpecialistCatalogueState>(
-          builder: (context, state) {
-            if (state is SpecialistCatalogueLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is SpecialistCatalogueFetchFailure) {
-              return ErrorTryAgainText(onRefresh: _refreshCatalogue);
-            }
-            if (state is SpecialistCatalogueFetchSuccess) {
-              if (state.specialistList.isEmpty) {
-                return NoItemsFound(
-                  title: context.l10n.noSpecialistsFound,
-                  subTitle: context.l10n.tryToSearchWithDifferentFilter,
+        body: SpecialistCatalogueContainer(
+          child: BlocBuilder<SpecialistCatalogueBloc, SpecialistCatalogueState>(
+            builder: (context, state) {
+              if (state is SpecialistCatalogueLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
               }
-              return MintRefreshIndicator(
-                onRefresh: _refreshCatalogue,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverList.builder(
-                      itemCount: state.specialistList.length,
-                      itemBuilder: (context, index) {
-                        return SpecialistCardTile(
-                          specialistModel: state.specialistList[index],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
+              if (state is SpecialistCatalogueFetchFailure) {
+                return ErrorTryAgainText(onRefresh: _refreshCatalogue);
+              }
+              if (state is SpecialistCatalogueFetchSuccess) {
+                if (state.specialistList.isEmpty) {
+                  return NoItemsFound(
+                    title: context.l10n.noSpecialistsFound,
+                    subTitle: context.l10n.tryToSearchWithDifferentFilter,
+                  );
+                }
+                return MintRefreshIndicator(
+                  onRefresh: _refreshCatalogue,
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverList.builder(
+                        itemCount: state.specialistList.length,
+                        itemBuilder: (context, index) {
+                          return SpecialistCardTile(
+                            specialistModel: state.specialistList[index],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
     );
