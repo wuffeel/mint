@@ -27,13 +27,17 @@ class ReviewSliverList extends StatelessWidget {
             );
           }
           if (state is ReviewFetchFailure) {
-            return ErrorTryAgainText(
-              onRefresh: onRefresh,
+            return SliverToBoxAdapter(
+              child: ErrorTryAgainText(
+                onRefresh: onRefresh,
+              ),
             );
           }
           if (state is ReviewFetchSuccess) {
             if (state.reviews.isEmpty) {
-              return NoItemsFound(title: context.l10n.noReviewsFound);
+              return SliverToBoxAdapter(
+                child: NoItemsFound(title: context.l10n.noReviewsFound),
+              );
             }
             return SliverList.separated(
               itemCount: state.reviews.length,
