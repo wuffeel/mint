@@ -26,8 +26,7 @@ mixin _$UserModelDto {
   String? get photoUrl => throw _privateConstructorUsedError;
   String? get nameTag => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
-  String? get lastName =>
-      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  String? get lastName => throw _privateConstructorUsedError;
   @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   DateTime? get dateOfBirth => throw _privateConstructorUsedError;
 
@@ -221,7 +220,6 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
   final String? firstName;
   @override
   final String? lastName;
-// ignore: invalid_annotation_target
   @override
   @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   final DateTime? dateOfBirth;
@@ -314,7 +312,7 @@ abstract class _UserModelDto implements UserModelDto {
   String? get firstName;
   @override
   String? get lastName;
-  @override // ignore: invalid_annotation_target
+  @override
   @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   DateTime? get dateOfBirth;
   @override
