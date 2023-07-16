@@ -70,7 +70,7 @@ class ReviewCardTile extends StatelessWidget {
               else
                 CircleAvatar(
                   radius: 20.r,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   child: Assets.svg.userPlaceholder.svg(
                     width: 20.w,
                     height: 20.h,
