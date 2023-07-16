@@ -17,14 +17,17 @@ class FirebaseSpecialistService implements SpecialistService {
     this._specialistModelFromDto,
     this._filterPreferencesToDto,
     this._reviewModelFromDto,
+    this._reviewDtoFromModel,
   );
 
   final SpecialistRepository _specialistRepository;
+
   final Factory<Future<SpecialistModel>, SpecialistModelDto>
       _specialistModelFromDto;
   final Factory<FilterPreferencesDto, FilterPreferences>
       _filterPreferencesToDto;
   final Factory<Future<ReviewModel?>, ReviewModelDto> _reviewModelFromDto;
+  final Factory<ReviewModelDto, ReviewModel> _reviewDtoFromModel;
 
   @override
   Future<List<SpecialistModel>> getSpecialistsOnline() async {
@@ -67,5 +70,12 @@ class FirebaseSpecialistService implements SpecialistService {
     final reviews = reviewsDto.map(_reviewModelFromDto.create);
     final reviewList = await Future.wait(reviews);
     return reviewList.whereType<ReviewModel>().toList();
+  }
+
+  @override
+  Future<void> addSpecialistReview(ReviewModel reviewModel) {
+    return _specialistRepository.addSpecialistReview(
+      _reviewDtoFromModel.create(reviewModel),
+    );
   }
 }

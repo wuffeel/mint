@@ -17,4 +17,6 @@ abstract class SpecialistService {
   );
 
   Future<List<ReviewModel>> getSpecialistReviews(String specialistId);
+
+  Future<void> addSpecialistReview(ReviewModel reviewModel);
 }

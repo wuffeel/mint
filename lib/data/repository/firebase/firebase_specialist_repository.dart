@@ -107,6 +107,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   Future<List<ReviewModelDto>> getSpecialistReviews(String specialistId) async {
     final reviewsSnapshot = await _reviewCollectionRef
         .where('specialistId', isEqualTo: specialistId)
+        .orderBy(_orderByDate)
         .get();
 
     return reviewsSnapshot.docs
@@ -117,6 +118,19 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
         })
         .whereType<ReviewModelDto>()
         .toList();
+  }
+
+  @override
+  Future<void> addSpecialistReview(ReviewModelDto reviewModelDto) {
+    final userId = reviewModelDto.userId;
+    final specialistId = reviewModelDto.specialistId;
+    return _reviewCollectionRef.doc('$userId-$specialistId').set({
+      'userId': userId,
+      'specialistId': specialistId,
+      'rating': reviewModelDto.rating,
+      'createdAt': DateTime.now(),
+      'content': reviewModelDto.content
+    });
   }
 
   /// Returns specialist by given [snapshot]
