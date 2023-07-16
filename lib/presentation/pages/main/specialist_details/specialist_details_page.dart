@@ -1,28 +1,49 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/review/review_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
-import 'package:mint/presentation/widgets/specialist_card_tile.dart';
 
 import '../../../../theme/mint_text_styles.dart';
 import '../../../widgets/mint_back_button.dart';
 
 @RoutePage()
-class SpecialistDetailsPage extends StatefulWidget {
-  const SpecialistDetailsPage({super.key, required this.specialistModel});
+class SpecialistDetailsPage extends StatelessWidget {
+  const SpecialistDetailsPage({
+    super.key,
+    required this.specialistModel,
+  });
 
   final SpecialistModel specialistModel;
 
   @override
-  State<SpecialistDetailsPage> createState() => _SpecialistDetailsPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          getIt<ReviewBloc>()..add(ReviewFetchRequested(specialistModel.id)),
+      child: _SpecialistDetailsView(specialistModel),
+    );
+  }
 }
 
-class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
+class _SpecialistDetailsView extends StatefulWidget {
+  const _SpecialistDetailsView(this.specialistModel);
+
+  final SpecialistModel specialistModel;
+
+  @override
+  State<_SpecialistDetailsView> createState() => _SpecialistDetailsViewState();
+}
+
+class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
   late final tabs = [
     context.l10n.about,
     context.l10n.education,
@@ -30,10 +51,16 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
   ];
   final _scrollController = ScrollController();
 
+  void _onReviewRefresh() {
+    return context.read<ReviewBloc>().add(
+          ReviewFetchRequested(widget.specialistModel.id),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: tabs.length,
       child: Scaffold(
         body: NestedScrollView(
           controller: _scrollController,
@@ -113,17 +140,7 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
                             ),
                           ),
                         if (index == 2)
-                          SliverPadding(
-                            padding: EdgeInsets.all(16.r),
-                            sliver: SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) => SpecialistCardTile(
-                                  specialistModel: widget.specialistModel,
-                                ),
-                                childCount: 10,
-                              ),
-                            ),
-                          ),
+                          ReviewSliverList(onRefresh: _onReviewRefresh),
                       ],
                     );
                   },
