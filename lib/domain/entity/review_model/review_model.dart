@@ -8,6 +8,7 @@ part 'review_model.freezed.dart';
 class ReviewModel with _$ReviewModel {
   const factory ReviewModel({
     required UserModel user,
+    required String specialistId,
     required double rating,
     required DateTime createdAt,
     String? content,

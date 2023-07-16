@@ -18,6 +18,7 @@ class ReviewModelFromDto
     if (user == null) return null;
     return ReviewModel(
       user: user,
+      specialistId: param.specialistId,
       rating: param.rating,
       createdAt: param.createdAt,
       content: param.content,
