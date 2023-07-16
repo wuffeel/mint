@@ -26,8 +26,8 @@ exports.updateSpecialistRating = functions.firestore
         reviewCount++;
       });
 
-      // Calculate the average rating
-      const averageRating = totalRating / reviewCount;
+      // Calculate the average rating with 1 digit after comma
+      const averageRating = Math.round((totalRating / reviewCount) * 10) / 10;
 
       // Update the specialist document with the average rating
       const specialistRef = firestore
