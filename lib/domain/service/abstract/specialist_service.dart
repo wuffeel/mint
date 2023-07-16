@@ -1,3 +1,4 @@
+import 'package:mint/domain/entity/review_model/review_model.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 
 import '../../entity/filter_preferences/filter_preferences.dart';
@@ -14,4 +15,6 @@ abstract class SpecialistService {
   Future<List<SpecialistModel>> getSpecialistCatalogue(
     FilterPreferences filter,
   );
+
+  Future<List<ReviewModel>> getSpecialistReviews(String specialistId);
 }

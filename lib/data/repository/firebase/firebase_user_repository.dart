@@ -50,4 +50,12 @@ class FirebaseUserRepository implements UserRepository {
       'phoneNumber': user.phoneNumber,
     });
   }
+
+  @override
+  Future<UserModelDto?> getUserData(String userId) async {
+    final userSnapshot = await _userCollectionRef.doc(userId).get();
+    final user = userSnapshot.data() as Map<String, dynamic>?;
+    if (user == null) return null;
+    return UserModelDto.fromJson(user);
+  }
 }

@@ -6,7 +6,9 @@ import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/service/abstract/specialist_service.dart';
 
 import '../../../data/model/filter_preferences_dto/filter_preferences_dto.dart';
+import '../../../data/model/review_model_dto/review_model_dto.dart';
 import '../../entity/filter_preferences/filter_preferences.dart';
+import '../../entity/review_model/review_model.dart';
 
 @Injectable(as: SpecialistService)
 class FirebaseSpecialistService implements SpecialistService {
@@ -14,6 +16,7 @@ class FirebaseSpecialistService implements SpecialistService {
     this._specialistRepository,
     this._specialistModelFromDto,
     this._filterPreferencesToDto,
+    this._reviewModelFromDto,
   );
 
   final SpecialistRepository _specialistRepository;
@@ -21,6 +24,7 @@ class FirebaseSpecialistService implements SpecialistService {
       _specialistModelFromDto;
   final Factory<FilterPreferencesDto, FilterPreferences>
       _filterPreferencesToDto;
+  final Factory<Future<ReviewModel?>, ReviewModelDto> _reviewModelFromDto;
 
   @override
   Future<List<SpecialistModel>> getSpecialistsOnline() async {
@@ -53,5 +57,15 @@ class FirebaseSpecialistService implements SpecialistService {
     final specialistCatalogue =
         await _specialistRepository.getSpecialistCatalogue(filterDto);
     return Future.wait(specialistCatalogue.map(_specialistModelFromDto.create));
+  }
+
+  @override
+  Future<List<ReviewModel>> getSpecialistReviews(String specialistId) async {
+    final reviewsDto = await _specialistRepository.getSpecialistReviews(
+      specialistId,
+    );
+    final reviews = reviewsDto.map(_reviewModelFromDto.create);
+    final reviewList = await Future.wait(reviews);
+    return reviewList.whereType<ReviewModel>().toList();
   }
 }
