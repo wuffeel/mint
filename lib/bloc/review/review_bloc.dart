@@ -84,7 +84,18 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       );
       emit(ReviewAddLoading(state.reviews));
       await _addReviewUseCase(review);
-      emit(ReviewAddSuccess([...state.reviews, review]));
+      final reviews = state.reviews;
+      final hasUserReview =
+          reviews.any((element) => element.user.id == user.id);
+
+      // If user already left a review, update it. If didn't, add new review
+      final updatedReviews = hasUserReview
+          ? reviews
+              .map((element) => element.user.id == user.id ? review : element)
+              .toList()
+          : [...reviews, review];
+
+      emit(ReviewAddSuccess(updatedReviews));
     } catch (error) {
       log('ReviewAddFailure: $error');
       emit(ReviewAddFailure(state.reviews));
