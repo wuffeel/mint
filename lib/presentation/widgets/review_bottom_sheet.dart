@@ -67,15 +67,15 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
       appBar: BottomSheetAppBar(
         title: Text(l10n.reviewSession, style: MintTextStyles.title2),
       ),
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
-            padding: EdgeInsets.only(
-              left: 16.w,
-              right: 16.w,
-              bottom: MediaQuery.viewInsetsOf(context).bottom,
-            ),
-            sliver: SliverFillRemaining(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          bottom: MediaQuery.viewInsetsOf(context).bottom,
+        ),
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverFillRemaining(
               hasScrollBody: false,
               child: BlocConsumer<ReviewBloc, ReviewState>(
                 listener: (context, state) {
@@ -162,8 +162,8 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
                 },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
