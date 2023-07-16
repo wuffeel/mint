@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/domain/usecase/add_review_use_case.dart';
 import 'package:mint/domain/usecase/fetch_specialist_reviews_use_case.dart';
 
 import '../../domain/controller/user_controller.dart';
@@ -19,13 +20,17 @@ part 'review_state.dart';
 class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
   ReviewBloc(
     this._fetchSpecialistReviewsUseCase,
+    this._addReviewUseCase,
     this._userController,
   ) : super(ReviewInitial()) {
     _subscribeToUserChange();
     on<ReviewFetchRequested>(_onReviewFetch);
+    on<ReviewAddRequested>(_onAddReview);
+    on<ReviewRatingSelected>(_onRatingSelect);
   }
 
   final FetchSpecialistReviewsUseCase _fetchSpecialistReviewsUseCase;
+  final AddReviewUseCase _addReviewUseCase;
 
   UserModel? _currentUser;
   final UserController _userController;
@@ -55,5 +60,40 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       log('ReviewFetchFailure: $error');
       emit(ReviewFetchFailure());
     }
+  }
+
+  Future<void> _onAddReview(
+    ReviewAddRequested event,
+    Emitter<ReviewState> emit,
+  ) async {
+    final state = this.state;
+    final user = _currentUser;
+    if (state is! ReviewFetchSuccess || user == null) return;
+    final rating = event.rating;
+    if (rating == null) {
+      emit(ReviewAddUnselectedFailure(state.reviews));
+      return;
+    }
+    try {
+      final review = ReviewModel(
+        user: user,
+        specialistId: event.specialistId,
+        rating: rating,
+        createdAt: DateTime.now(),
+        content: event.content,
+      );
+      emit(ReviewAddLoading(state.reviews));
+      await _addReviewUseCase(review);
+      emit(ReviewAddSuccess([...state.reviews, review]));
+    } catch (error) {
+      log('ReviewAddFailure: $error');
+      emit(ReviewAddFailure(state.reviews));
+    }
+  }
+
+  void _onRatingSelect(ReviewRatingSelected event, Emitter<ReviewState> emit) {
+    final state = this.state;
+    if (state is! ReviewFetchSuccess) return;
+    emit(ReviewSelectSuccess(state.reviews));
   }
 }
