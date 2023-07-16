@@ -33,7 +33,7 @@ class _SpecialistDetailsPageState extends State<SpecialistDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: tabs.length,
       child: Scaffold(
         body: NestedScrollView(
           controller: _scrollController,
