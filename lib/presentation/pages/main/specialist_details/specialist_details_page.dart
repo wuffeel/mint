@@ -14,6 +14,7 @@ import 'package:mint/presentation/widgets/favorite_button.dart';
 
 import '../../../../theme/mint_text_styles.dart';
 import '../../../widgets/mint_back_button.dart';
+import '../../../widgets/review_bottom_sheet.dart';
 
 @RoutePage()
 class SpecialistDetailsPage extends StatelessWidget {
@@ -55,6 +56,19 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     return context.read<ReviewBloc>().add(
           ReviewFetchRequested(widget.specialistModel.id),
         );
+  }
+
+  void _showReviewModalBottomSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => BlocProvider.value(
+        value: context.read<ReviewBloc>(),
+        child: ReviewBottomSheet(specialistId: widget.specialistModel.id),
+      ),
+    );
   }
 
   @override
@@ -139,8 +153,21 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                               ),
                             ),
                           ),
-                        if (index == 2)
+                        if (index == 2) ...[
+                          SliverPadding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 12.h,
+                              horizontal: 16.w,
+                            ),
+                            sliver: SliverToBoxAdapter(
+                              child: ElevatedButton(
+                                onPressed: _showReviewModalBottomSheet,
+                                child: const Text('Add review'),
+                              ),
+                            ),
+                          ),
                           ReviewSliverList(onRefresh: _onReviewRefresh),
+                        ],
                       ],
                     );
                   },

@@ -77,6 +77,7 @@ class _PickUpStepperState extends State<PickUpStepper> {
   }
 }
 
+// TODO(wuffeel): where this extension should be?
 extension ExtendedWidgetList on List<Widget> {
   /// Insert [widget] between each member of this list
   List<Widget> insertBetween(Widget widget) {

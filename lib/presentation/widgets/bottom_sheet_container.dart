@@ -6,11 +6,11 @@ class BottomSheetContainer extends StatelessWidget {
   const BottomSheetContainer({
     super.key,
     required this.child,
-    this.padding,
+    required this.appBar,
   });
 
   final Widget child;
-  final EdgeInsetsGeometry? padding;
+  final Widget appBar;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,7 @@ class BottomSheetContainer extends StatelessWidget {
               color: MintColors.bottomSheetTopLine,
             ),
           ),
+          appBar,
           Expanded(child: child),
         ],
       ),

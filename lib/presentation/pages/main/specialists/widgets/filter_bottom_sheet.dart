@@ -33,6 +33,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return BottomSheetContainer(
+      appBar: FilterAppBar(onClear: _onClear),
       child: BlocBuilder<SpecialistFilterBloc, SpecialistFilterState>(
         builder: (context, state) {
           if (state is SpecialistFilterLoading) {
@@ -42,10 +43,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: FilterAppBar(onClear: _onClear),
-                ),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.symmetric(
