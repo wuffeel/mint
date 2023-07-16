@@ -49,7 +49,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           SizedBox(width: 8.w),
           Text(
-            nameTag ?? '@user',
+            // TODO(wuffeel): what user tag placeholder should be used?
+            '@${nameTag ?? 'user'}',
             style: MintTextStyles.headline1.copyWith(height: 1),
           )
         ],
