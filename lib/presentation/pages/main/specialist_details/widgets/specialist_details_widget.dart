@@ -113,6 +113,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                         BlendMode.srcIn,
                       ),
                     ),
+                    SizedBox(width: 2.w),
                     Text(
                       specialistModel.rating.toStringAsFixed(1),
                       style: MintTextStyles.footnote.copyWith(),
