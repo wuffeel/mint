@@ -6,8 +6,10 @@ import 'package:mint/bloc/review/review_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/add_review_sliver_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_book_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/user_review_tile.dart';
@@ -52,7 +54,28 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     context.l10n.education,
     context.l10n.reviews,
   ];
-  final _scrollController = ScrollController();
+  final _nestedScrollController = ScrollController();
+
+  final _bookButtonKey = GlobalKey();
+  double? _bookButtonHeight = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateBookButtonHeight();
+  }
+
+  void _updateBookButtonHeight() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_bookButtonKey.currentContext == null) return;
+      setState(() {
+        _bookButtonHeight =
+            (_bookButtonKey.currentContext?.findRenderObject() as RenderBox?)
+                ?.size
+                .height;
+      });
+    });
+  }
 
   void _onReviewRefresh() {
     return context.read<ReviewBloc>().add(
@@ -95,7 +118,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
   @override
   void dispose() {
     super.dispose();
-    _scrollController.dispose();
+    _nestedScrollController.dispose();
   }
 
   @override
@@ -103,112 +126,121 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
-        body: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return <Widget>[
-              SliverOverlapAbsorber(
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                  context,
-                ),
-                sliver: SpecialistSliverAppBar(
-                  scrollController: _scrollController,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  pinned: true,
-                  // TODO(wuffel): investigate overflow caused by this widget
-                  // or ignore
-                  leading: const MintBackButton(),
-                  leadingWidth: 80.w,
-                  forceElevated: innerBoxIsScrolled,
-                  actions: [
-                    FavoriteButton(
-                      specialistModel: widget.specialistModel,
-                      isActionButton: true,
+        body: Stack(
+          children: <Widget>[
+            NestedScrollView(
+              controller: _nestedScrollController,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                      context,
                     ),
-                  ],
-                  flexibleSpace: Padding(
-                    padding: EdgeInsets.only(bottom: 24.h),
-                    child: SpecialistDetailsWidget(
-                      specialistModel: widget.specialistModel,
-                    ),
-                  ),
-                  bottom: OpaqueTabBar(
-                    tabBar: TabBar(
-                      tabs: List.generate(
-                        tabs.length,
-                        (index) => Tab(child: Text(tabs[index])),
+                    sliver: SpecialistSliverAppBar(
+                      scrollController: _nestedScrollController,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      pinned: true,
+                      // TODO(wuffel): investigate overflow caused by this widget
+                      // or ignore
+                      leading: const MintBackButton(),
+                      leadingWidth: 80.w,
+                      forceElevated: innerBoxIsScrolled,
+                      actions: [
+                        FavoriteButton(
+                          specialistModel: widget.specialistModel,
+                          isActionButton: true,
+                        ),
+                      ],
+                      flexibleSpace: Padding(
+                        padding: EdgeInsets.only(bottom: 24.h),
+                        child: SpecialistDetailsWidget(
+                          specialistModel: widget.specialistModel,
+                        ),
+                      ),
+                      bottom: OpaqueTabBar(
+                        tabBar: TabBar(
+                          tabs: List.generate(
+                            tabs.length,
+                            (index) => Tab(child: Text(tabs[index])),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: List.generate(tabs.length, (index) {
-              return SafeArea(
-                top: false,
-                bottom: false,
-                child: Builder(
-                  builder: (BuildContext context) {
-                    return CustomScrollView(
-                      key: PageStorageKey<String>(tabs[index]),
-                      slivers: <Widget>[
-                        SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            context,
-                          ),
-                        ),
-                        if (index == 0)
-                          SliverPadding(
-                            padding: EdgeInsets.all(16.r),
-                            sliver: SliverToBoxAdapter(
-                              child: Text(
-                                widget.specialistModel.about ?? '',
-                                style: MintTextStyles.body1,
+                ];
+              },
+              body: TabBarView(
+                children: List.generate(tabs.length, (index) {
+                  return SafeArea(
+                    top: false,
+                    bottom: false,
+                    child: Builder(
+                      builder: (BuildContext context) {
+                        return CustomScrollView(
+                          key: PageStorageKey<String>(tabs[index]),
+                          slivers: <Widget>[
+                            SliverOverlapInjector(
+                              handle: NestedScrollView
+                                  .sliverOverlapAbsorberHandleFor(
+                                context,
                               ),
                             ),
-                          ),
-                        if (index == 1)
-                          SliverPadding(
-                            padding: EdgeInsets.all(16.r),
-                            sliver: SliverToBoxAdapter(
-                              child: Text(
-                                widget.specialistModel.education ?? '',
-                                style: MintTextStyles.body1,
+                            if (index == 0)
+                              SliverPadding(
+                                padding: EdgeInsets.all(16.r),
+                                sliver: SliverToBoxAdapter(
+                                  child: Text(
+                                    widget.specialistModel.about ?? '',
+                                    style: MintTextStyles.body1,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        if (index == 2) ...[
-                          SliverPadding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 12.h,
-                              horizontal: 16.w,
-                            ),
-                            sliver: SliverToBoxAdapter(
-                              child: BlocBuilder<ReviewBloc, ReviewState>(
+                            if (index == 1)
+                              SliverPadding(
+                                padding: EdgeInsets.all(16.r),
+                                sliver: SliverToBoxAdapter(
+                                  child: Text(
+                                    widget.specialistModel.education ?? '',
+                                    style: MintTextStyles.body1,
+                                  ),
+                                ),
+                              ),
+                            if (index == 2) ...[
+                              BlocBuilder<ReviewBloc, ReviewState>(
                                 builder: (context, state) {
-                                  return ElevatedButton(
+                                  return AddReviewSliverButton(
                                     onPressed: state is! ReviewLoading
                                         ? () => _showReviewBottomSheet(state)
                                         : null,
-                                    child: Text(_getReviewButtonText(state)),
+                                    title: _getReviewButtonText(state),
                                   );
                                 },
                               ),
-                            ),
-                          ),
-                          const UserReviewTile(),
-                          ReviewSliverList(onRefresh: _onReviewRefresh),
-                        ],
-                      ],
-                    );
-                  },
+                              const UserReviewTile(),
+                              ReviewSliverList(onRefresh: _onReviewRefresh),
+                              SliverToBoxAdapter(
+                                child: SizedBox(height: _bookButtonHeight),
+                              ),
+                            ],
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }),
+              ),
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SpecialistBookButton(
+                  key: _bookButtonKey,
+                  onTap: () {},
                 ),
-              );
-            }),
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );

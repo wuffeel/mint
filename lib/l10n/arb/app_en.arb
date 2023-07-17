@@ -102,5 +102,6 @@
   "youHaveNotSelectedRating": "You have not selected a rating",
   "yourReview": "Your review",
   "addReview": "Add review",
-  "updateReview": "Update review"
+  "updateReview": "Update review",
+  "book": "Book"
 }

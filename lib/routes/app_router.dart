@@ -33,14 +33,16 @@ class AppRouter extends $AppRouter {
                 AutoRoute(page: HomeRoute.page),
                 AutoRoute(
                   page: SpecialistsWrapperRoute.page,
-                  children: [AutoRoute(path: '', page: SpecialistsRoute.page)],
+                  children: [
+                    AutoRoute(path: '', page: SpecialistsRoute.page),
+                    AutoRoute(page: SpecialistDetailsRoute.page),
+                  ],
                 ),
                 AutoRoute(page: SessionsRoute.page),
                 AutoRoute(page: ProfileRoute.page),
               ],
             ),
             AutoRoute(page: PickUpSpecialistRoute.page),
-            AutoRoute(page: SpecialistDetailsRoute.page),
           ],
         ),
       ];

@@ -29,8 +29,13 @@ class SpecialistCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final photo = specialistModel.photoUrl;
     return InkWell(
-      onTap: () => context.router.push(
-        SpecialistDetailsRoute(specialistModel: specialistModel),
+      onTap: () => context.router.navigate(
+        SpecialistsWrapperRoute(
+          children: [
+            const SpecialistsRoute(),
+            SpecialistDetailsRoute(specialistModel: specialistModel)
+          ],
+        ),
       ),
       child: Container(
         height: 106.h,

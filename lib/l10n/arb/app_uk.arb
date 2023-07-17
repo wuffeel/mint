@@ -102,5 +102,6 @@
   "youHaveNotSelectedRating": "Ви не обрали оцінку",
   "yourReview": "Ваш відгук",
   "addReview": "Додати відгук",
-  "updateReview": "Оновити відгук"
+  "updateReview": "Оновити відгук",
+  "book": "Забронювати"
 }
