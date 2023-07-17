@@ -60,33 +60,6 @@
   "reviewSingleCount": "review",
   "reviewsMultipleCount": "reviews",
   "specializations": "Specializations",
-  "nMinutesAgo": "{count, plural, =0{< 1 minute ago} =1{1 minute ago} other{{count} minutes ago}}",
-  "@nMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
-  "nHoursAgo": "{count, plural, =0{1 hour ago} =1{1 hour ago} other{{count} hours ago}}",
-  "@nHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
-  "nDaysAgo": "{count, plural, =0{Today} =1{1 day ago} other{{count} days ago}}",
-  "@nDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
   "noReviewsFound": "No reviews found",
   "reviewSession": "Review session",
   "howWasYourConsultation": "How was your consultation",

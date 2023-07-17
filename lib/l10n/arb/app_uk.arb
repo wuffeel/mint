@@ -60,33 +60,6 @@
   "reviewSingleCount": "відгук",
   "reviewsMultipleCount": "відгуків",
   "specializations": "Спеціалізації",
-  "nMinutesAgo": "{count, plural, =0{< 1 хвилини тому} =1{1 хвилину тому} other{{count} хвилин тому}}",
-  "@nMinutesAgo": {
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
-  "nHoursAgo": "{count, plural, =0{1 годину тому} =1{1 годину тому} other{{count} годин тому}}",
-  "@nHoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
-  "nDaysAgo": "{count, plural, =0{Сьогодні} =1{1 день тому} other{{count} днів тому}}",
-  "@nDaysAgo": {
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
   "noReviewsFound": "Відгуків не було знайдено",
   "reviewSession": "Оцініть сеанс",
   "howWasYourConsultation": "How was your consultation",

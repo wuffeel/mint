@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:mint/domain/entity/review_model/review_model.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -9,6 +8,7 @@ import 'package:mint/presentation/widgets/mint_rating_bar.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../../../gen/assets.gen.dart';
+import '../../../../../utils/time_ago/time_ago_util.dart';
 
 class ReviewCardTile extends StatelessWidget {
   const ReviewCardTile({super.key, required this.reviewModel});
@@ -24,19 +24,7 @@ class ReviewCardTile extends StatelessWidget {
 
   String _getStringFromDate(BuildContext context) {
     final createdAt = reviewModel.createdAt;
-    final now = DateTime.now();
-    final days = now.difference(createdAt).inDays;
-    if (days == 0) {
-      final minutes = now.difference(createdAt).inMinutes;
-      if (minutes >= 60) {
-        final hours = now.difference(createdAt).inHours;
-        return context.l10n.nHoursAgo(hours);
-      }
-      return context.l10n.nMinutesAgo(minutes);
-    }
-    return days <= 7
-        ? context.l10n.nDaysAgo(days)
-        : DateFormat.yMMMd().format(createdAt);
+    return TimeAgoUtil.format(createdAt, locale: context.l10n.localeName);
   }
 
   Color _getThemeContentColor(BuildContext context) {
