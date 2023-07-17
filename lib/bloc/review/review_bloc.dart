@@ -99,12 +99,7 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
               .toList()
           : [...reviews, review];
 
-      emit(
-        ReviewAddSuccess(
-          updatedReviews,
-          hasUserReview ? review : state.userReview,
-        ),
-      );
+      emit(ReviewAddSuccess(updatedReviews, review));
     } catch (error) {
       log('ReviewAddFailure: $error');
       emit(ReviewAddFailure(state.reviews, state.userReview));
