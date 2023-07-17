@@ -141,8 +141,8 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       pinned: true,
-                      // TODO(wuffel): investigate overflow caused by this widget
-                      // or ignore
+                      // TODO(wuffel): investigate overflow caused by this
+                      // widget or ignore
                       leading: const MintBackButton(),
                       leadingWidth: 80.w,
                       forceElevated: innerBoxIsScrolled,
@@ -236,7 +236,9 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                 alignment: Alignment.bottomCenter,
                 child: SpecialistBookButton(
                   key: _bookButtonKey,
-                  onTap: () {},
+                  onTap: () {
+                    // TODO(wuffeel): open book picker bottoms heet
+                  },
                 ),
               ),
             ),
