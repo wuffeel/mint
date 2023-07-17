@@ -3,7 +3,6 @@ class ExperienceModel {
     required this.title,
     this.experienceFrom,
     this.experienceTo,
-    this.isLessOrMoreThan = false,
   });
 
   /// A string representation of tag. Can be either:
@@ -33,12 +32,6 @@ class ExperienceModel {
   ///
   /// __experience < DateTime.now() - 1 year__
   final DateTime? experienceTo;
-
-  /// Variable used to identify whether experience should be compared on
-  /// equality or not
-  ///
-  /// If true, comparison do not include equality (i.e. < or >)
-  final bool isLessOrMoreThan;
 
   /// Method used to convert tags like 'lt\__N_y', '_N_y\__N_y', 'gt\__N_y',
   /// (where _N_ is some int number) to [ExperienceModel]
@@ -85,7 +78,6 @@ class ExperienceModel {
         title: _getTitleByPrefix(prefix, years),
         experienceFrom: experienceFrom,
         experienceTo: experienceTo,
-        isLessOrMoreThan: true,
       );
     } else if (rangeMatch != null) {
       final yearsFromString = rangeMatch[1];
