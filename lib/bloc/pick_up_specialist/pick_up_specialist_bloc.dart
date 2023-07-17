@@ -42,10 +42,10 @@ class PickUpSpecialistBloc
     }
   }
 
-  Future<void> _onPickUpFilterSelected(
+  void _onPickUpFilterSelected(
     PickUpSpecialistFilterSelected event,
     Emitter<PickUpSpecialistState> emit,
-  ) async {
+  ) {
     final state = this.state;
     if (state is! PickUpSpecialistLoadSuccess) return;
 
