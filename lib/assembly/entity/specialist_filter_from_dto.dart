@@ -19,7 +19,7 @@ class SpecialistFilterFromDto
       minPrice: param.minPrice,
       maxPrice: param.maxPrice,
       experience: experienceList,
-      specializations: param.specializations,
+      specializations: [...param.specializations],
     );
   }
 }

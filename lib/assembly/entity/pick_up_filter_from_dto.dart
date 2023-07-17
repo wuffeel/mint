@@ -15,9 +15,9 @@ class PickUpFilterFromDto implements Factory<PickUpFilter, PickUpFilterDto> {
         .toList();
 
     return PickUpFilter(
-      communicationMembers: param.communicationMembers,
+      communicationMembers: [...param.communicationMembers],
       priceRange: priceList,
-      specializations: param.specializations,
+      specializations: [...param.specializations],
     );
   }
 }
