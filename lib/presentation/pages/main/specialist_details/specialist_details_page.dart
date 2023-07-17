@@ -7,6 +7,7 @@ import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/add_review_sliver_button.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/booking_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_book_button.dart';
@@ -100,6 +101,16 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
           userReview: userReview,
         ),
       ),
+    );
+  }
+
+  void _showBookingBottomSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const BookingBottomSheet(),
     );
   }
 
@@ -236,9 +247,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                 alignment: Alignment.bottomCenter,
                 child: SpecialistBookButton(
                   key: _bookButtonKey,
-                  onTap: () {
-                    // TODO(wuffeel): open book picker bottoms heet
-                  },
+                  onTap: _showBookingBottomSheet,
                 ),
               ),
             ),
