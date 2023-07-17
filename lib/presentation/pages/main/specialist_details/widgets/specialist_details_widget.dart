@@ -21,8 +21,8 @@ class SpecialistDetailsWidget extends StatelessWidget {
     final l10n = context.l10n;
     final reviews = specialistModel.reviewCount;
     return reviews == 1
-        ? '($reviews) ${l10n.reviewSingleCount}'
-        : '($reviews) ${l10n.reviewsMultipleCount}';
+        ? '($reviews ${l10n.reviewSingleCount})'
+        : '($reviews ${l10n.reviewsMultipleCount})';
   }
 
   @override
