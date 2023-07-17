@@ -33,16 +33,6 @@ class FirebaseFilterRepository implements FilterRepository {
     final pickUpFilterData = pickUpSnapshot.data() as Map<String, dynamic>?;
     if (pickUpFilterData == null) return PickUpFilterDto.empty;
 
-    final specialistFilterSnap =
-        await _filterCollectionRef.doc(_filterId).get();
-    final specialistFilterData =
-        specialistFilterSnap.data() as Map<String, dynamic>?;
-    final specializations = specialistFilterData != null
-        ? (specialistFilterData['specializations'] as List).cast<String>()
-        : <String>[];
-
-    pickUpFilterData['specializations'] = specializations;
-
     return PickUpFilterDto.fromJson(pickUpFilterData);
   }
 }
