@@ -7,7 +7,9 @@ import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_price_slider.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_single_item_selection.dart';
+import 'package:mint/utils/experience/experience_localization.dart';
 
+import '../../../../../domain/entity/experience_model.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../widgets/mint_multi_item_selection.dart';
 
@@ -42,6 +44,19 @@ class FilterSection extends StatelessWidget {
     );
   }
 
+  List<String> _getExperienceFilterTitles(
+    BuildContext context,
+    List<ExperienceModel> experienceList,
+  ) {
+    final locale = context.l10n.localeName;
+    return experienceList.map((experienceModel) {
+      return ExperienceLocalization.format(
+        experienceModel: experienceModel,
+        locale: locale,
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -66,7 +81,7 @@ class FilterSection extends StatelessWidget {
         SizedBox(height: 16.h),
         FilterSingleItemSelection(
           items: filter.experience,
-          itemTitles: filter.experience.map((exp) => exp.title).toList(),
+          itemTitles: _getExperienceFilterTitles(context, filter.experience),
           selectedItem: selectedFilters.experience,
           onSelect: (experience) => _onPreferencesChange(
             context,

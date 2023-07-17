@@ -1,21 +1,8 @@
 class PriceRangeModel {
   PriceRangeModel({
-    required this.title,
     this.lowPrice,
     this.highPrice,
   });
-
-  /// A string representation of tag. Can be either:
-  ///
-  ///
-  /// Up to __N__₴
-  ///
-  /// __N__-__N__₴
-  ///
-  /// __N__₴ and more
-  ///
-  /// Where __N__ is some integer value representing price value
-  final String title;
 
   /// Comparison _from_ value
   ///
@@ -32,9 +19,9 @@ class PriceRangeModel {
   ///
   /// Examples:
   /// ```dart
-  /// PriceRangeModel.fromTag('up_1000').title => 'Up to 1000₴'
-  /// PriceRangeModel.fromTag('500_1000').title => '500-1000₴'
-  /// PriceRangeModel.fromTag('gt_1000').title => '1000₴ and more'
+  /// fromTag('up_1000') => experienceTo = 1000
+  /// fromTag('500_1000') => experienceFrom = 500, experienceTo = 1000
+  /// fromTag('gt_1000) => experienceFrom = 1000
   /// ```
   static PriceRangeModel? fromTag(String tag) {
     final lessOrMoreRegex = RegExp(r'^(up|gt)_?(\d+)$');
@@ -62,7 +49,6 @@ class PriceRangeModel {
       }
 
       return PriceRangeModel(
-        title: _getTitleByPrefix(prefix, price),
         lowPrice: lowPrice,
         highPrice: highPrice,
       );
@@ -75,23 +61,11 @@ class PriceRangeModel {
       final highPrice = int.parse(highPriceString);
 
       return PriceRangeModel(
-        title: '$lowPriceString-$highPriceString₴',
         lowPrice: lowPrice,
         highPrice: highPrice,
       );
     }
 
     return null;
-  }
-
-  /// Returns a corresponding [title] depending on [prefix] passed
-  static String _getTitleByPrefix(String prefix, int price) {
-    switch (prefix) {
-      case 'up':
-        return 'Up to $price₴';
-      case 'gt':
-        return '$price₴ and more';
-    }
-    return '';
   }
 }

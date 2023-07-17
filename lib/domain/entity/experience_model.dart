@@ -1,19 +1,8 @@
 class ExperienceModel {
   ExperienceModel({
-    required this.title,
     this.experienceFrom,
     this.experienceTo,
   });
-
-  /// A string representation of tag. Can be either:
-  ///
-  ///
-  /// - Less than _N_ year(-s)
-  /// - From _N_ to _N_ years
-  /// - More than _N_ year(-s)
-  ///
-  /// Where _N_ is some integer value representing years count
-  final String title;
 
   /// Comparison _from_ variable.
   ///
@@ -38,9 +27,11 @@ class ExperienceModel {
   ///
   /// Examples:
   /// ```dart
-  /// ExperienceModel.fromTag('lt_1').title => 'Less than 1 year'
-  /// ExperienceModel.fromTag('500_1000').title => '500-1000₴'
-  /// ExperienceModel.fromTag('gt_1000').title => '1000₴ and more'
+  /// final now = DateTime.now();
+  /// fromTag('lt_1') => experienceTo = (now - 1 year)
+  /// fromTag('1y_3y') => experienceFrom = (now - 3 years),
+  /// experienceTo = (now - 1 year)
+  /// fromTag('gt_3y') => experienceFrom = (now - 3 years)
   /// ```
   static ExperienceModel? fromTag(String tag) {
     final lessOrMoreRegex = RegExp(r'^(lt|gt)_?(\d+)y$');
@@ -75,7 +66,6 @@ class ExperienceModel {
       }
 
       return ExperienceModel(
-        title: _getTitleByPrefix(prefix, years),
         experienceFrom: experienceFrom,
         experienceTo: experienceTo,
       );
@@ -94,25 +84,11 @@ class ExperienceModel {
       final experienceTo = _convertToFlatDate(now, yearsTo);
 
       return ExperienceModel(
-        title: 'From $yearsFromString to $yearsToString years',
         experienceFrom: experienceFrom,
         experienceTo: experienceTo,
       );
     }
     return null;
-  }
-
-  /// Returns a corresponding [title] depending on [prefix] passed
-  static String _getTitleByPrefix(String prefix, int years) {
-    switch (prefix) {
-      case 'lt':
-        final lessThan = 'Less than $years';
-        return years == 1 ? '$lessThan year' : '$lessThan years';
-      case 'gt':
-        final moreThan = 'More than $years';
-        return years == 1 ? '$moreThan year' : '$moreThan years';
-    }
-    return '';
   }
 
   /// Subtracts the [date] with [years] provided and returns date with time
