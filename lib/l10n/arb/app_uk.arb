@@ -99,5 +99,8 @@
   "pleaseDescribeYourExperience": "Please describe your experience",
   "typeHereYourImpressions": "Type here your impressions",
   "leaveReview": "Зберегти відгук",
-  "youHaveNotSelectedRating": "Ви не обрали оцінку"
+  "youHaveNotSelectedRating": "Ви не обрали оцінку",
+  "yourReview": "Ваш відгук",
+  "addReview": "Додати відгук",
+  "updateReview": "Оновити відгук"
 }

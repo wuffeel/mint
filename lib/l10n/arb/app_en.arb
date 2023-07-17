@@ -99,5 +99,8 @@
   "pleaseDescribeYourExperience": "Please describe your experience",
   "typeHereYourImpressions": "Type here your impressions",
   "leaveReview": "Leave a review",
-  "youHaveNotSelectedRating": "You have not selected a rating"
+  "youHaveNotSelectedRating": "You have not selected a rating",
+  "yourReview": "Your review",
+  "addReview": "Add review",
+  "updateReview": "Update review"
 }
