@@ -7,16 +7,23 @@ import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_stepper.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_rating_button.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/review_text_field.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../backbone/review_session.dart';
+import '../../domain/entity/review_model/review_model.dart';
 
 class ReviewBottomSheet extends StatefulWidget {
-  const ReviewBottomSheet({super.key, required this.specialistId});
+  const ReviewBottomSheet({
+    super.key,
+    required this.specialistId,
+    this.userReview,
+  });
 
   final String specialistId;
+  final ReviewModel? userReview;
 
   @override
   State<ReviewBottomSheet> createState() => _ReviewBottomSheetState();
@@ -24,7 +31,21 @@ class ReviewBottomSheet extends StatefulWidget {
 
 class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
   final _reviewController = TextEditingController();
-  ReviewSession? _selectedRating;
+  late double? _selectedRating = widget.userReview?.rating;
+
+  /// Controller used to set TextField cursor to the end if userReview is not
+  /// null
+  final _reviewScroll = ScrollController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _reviewController.text = widget.userReview?.content ?? '';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _reviewScroll.jumpTo(_reviewScroll.position.maxScrollExtent);
+    });
+  }
 
   String _getRatingTitle(ReviewSession reviewSession) {
     final l10n = context.l10n;
@@ -44,13 +65,13 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
     }
   }
 
-  void _onRatingSelect(BuildContext context, ReviewSession rating) {
+  void _onRatingSelect(BuildContext context, double rating) {
     setState(() => _selectedRating = rating);
     context.read<ReviewBloc>().add(ReviewRatingSelected());
   }
 
   void _onSaveReview(BuildContext context) {
-    final rating = _selectedRating?.rating;
+    final rating = _selectedRating;
     context.read<ReviewBloc>().add(
           ReviewAddRequested(
             specialistId: widget.specialistId,
@@ -61,11 +82,21 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _reviewController.dispose();
+    _reviewScroll.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return BottomSheetContainer(
       appBar: BottomSheetAppBar(
-        title: Text(l10n.reviewSession, style: MintTextStyles.title2),
+        title: Text(
+          widget.userReview == null ? l10n.reviewSession : l10n.updateReview,
+          style: MintTextStyles.title2,
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -95,11 +126,11 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
                           .map<Widget>(
                             (value) => ReviewRatingButton(
                               value: value,
-                              onSelect: (rating) =>
-                                  _onRatingSelect(context, rating),
+                              onSelect: (value) =>
+                                  _onRatingSelect(context, value.rating),
                               title: _getRatingTitle(value),
                               rating: value.rating,
-                              isSelected: value == _selectedRating,
+                              isSelected: value.rating == _selectedRating,
                             ),
                           )
                           .toList()
@@ -120,32 +151,9 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
                         style: MintTextStyles.headline,
                       ),
                       SizedBox(height: 16.h),
-                      TextField(
+                      ReviewTextField(
                         controller: _reviewController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                          ),
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.secondary,
-                          hintText: '${l10n.typeHereYourImpressions}...',
-                          hintStyle: MintTextStyles.body1.copyWith(
-                            color: Theme.of(context).hintColor.withOpacity(0.3),
-                          ),
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(10.r),
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 3,
-                        style: MintTextStyles.body1,
+                        scrollController: _reviewScroll,
                       ),
                       const Spacer(),
                       SizedBox(height: 18.h),

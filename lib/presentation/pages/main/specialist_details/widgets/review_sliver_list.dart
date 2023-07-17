@@ -16,7 +16,7 @@ class ReviewSliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: EdgeInsets.all(16.r),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h, top: 4.h),
       sliver: BlocBuilder<ReviewBloc, ReviewState>(
         builder: (context, state) {
           if (state is ReviewLoading) {
@@ -34,15 +34,20 @@ class ReviewSliverList extends StatelessWidget {
             );
           }
           if (state is ReviewFetchSuccess) {
-            if (state.reviews.isEmpty) {
+            final reviews = state.reviews;
+            if (reviews.isEmpty) {
               return SliverToBoxAdapter(
                 child: NoItemsFound(title: context.l10n.noReviewsFound),
               );
             }
             return SliverList.separated(
-              itemCount: state.reviews.length,
-              itemBuilder: (context, index) =>
-                  ReviewCardTile(reviewModel: state.reviews[index]),
+              itemCount: reviews.length,
+              itemBuilder: (context, index) {
+                final review = reviews[index];
+                return review != state.userReview
+                    ? ReviewCardTile(reviewModel: review)
+                    : const SizedBox.shrink();
+              },
               separatorBuilder: (_, __) => SizedBox(height: 8.h),
             );
           }

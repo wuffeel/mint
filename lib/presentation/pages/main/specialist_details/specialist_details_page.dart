@@ -10,8 +10,10 @@ import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_t
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/user_review_tile.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
 
+import '../../../../domain/entity/review_model/review_model.dart';
 import '../../../../theme/mint_text_styles.dart';
 import '../../../widgets/mint_back_button.dart';
 import '../../../widgets/review_bottom_sheet.dart';
@@ -58,7 +60,11 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
         );
   }
 
-  void _showReviewModalBottomSheet() {
+  void _showReviewBottomSheet(ReviewState state) {
+    ReviewModel? userReview;
+    if (state is ReviewFetchSuccess && state.userReview != null) {
+      userReview = state.userReview;
+    }
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -66,9 +72,30 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
       backgroundColor: Colors.transparent,
       builder: (_) => BlocProvider.value(
         value: context.read<ReviewBloc>(),
-        child: ReviewBottomSheet(specialistId: widget.specialistModel.id),
+        child: ReviewBottomSheet(
+          specialistId: widget.specialistModel.id,
+          userReview: userReview,
+        ),
       ),
     );
+  }
+
+  String _getReviewButtonText(ReviewState state) {
+    if (state is ReviewLoading) {
+      return '...';
+    }
+    if (state is ReviewFetchSuccess) {
+      return state.userReview != null
+          ? context.l10n.updateReview
+          : context.l10n.addReview;
+    }
+    return '';
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -160,12 +187,19 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                               horizontal: 16.w,
                             ),
                             sliver: SliverToBoxAdapter(
-                              child: ElevatedButton(
-                                onPressed: _showReviewModalBottomSheet,
-                                child: const Text('Add review'),
+                              child: BlocBuilder<ReviewBloc, ReviewState>(
+                                builder: (context, state) {
+                                  return ElevatedButton(
+                                    onPressed: state is! ReviewLoading
+                                        ? () => _showReviewBottomSheet(state)
+                                        : null,
+                                    child: Text(_getReviewButtonText(state)),
+                                  );
+                                },
                               ),
                             ),
                           ),
+                          const UserReviewTile(),
                           ReviewSliverList(onRefresh: _onReviewRefresh),
                         ],
                       ],
