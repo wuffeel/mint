@@ -52,10 +52,15 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     ReviewFetchRequested event,
     Emitter<ReviewState> emit,
   ) async {
+    final user = _currentUser;
+    if (user == null) return;
     emit(ReviewLoading());
     try {
       final reviews = await _fetchSpecialistReviewsUseCase(event.specialistId);
-      emit(ReviewFetchSuccess(reviews));
+      final userReviews =
+          reviews.where((element) => element.user.id == user.id).toList();
+      final userReview = userReviews.isNotEmpty ? userReviews.first : null;
+      emit(ReviewFetchSuccess(reviews, userReview));
     } catch (error) {
       log('ReviewFetchFailure: $error');
       emit(ReviewFetchFailure());
@@ -71,7 +76,7 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     if (state is! ReviewFetchSuccess || user == null) return;
     final rating = event.rating;
     if (rating == null) {
-      emit(ReviewAddUnselectedFailure(state.reviews));
+      emit(ReviewAddUnselectedFailure(state.reviews, state.userReview));
       return;
     }
     try {
@@ -82,11 +87,10 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
         createdAt: DateTime.now(),
         content: event.content,
       );
-      emit(ReviewAddLoading(state.reviews));
+      emit(ReviewAddLoading(state.reviews, state.userReview));
       await _addReviewUseCase(review);
       final reviews = state.reviews;
-      final hasUserReview =
-          reviews.any((element) => element.user.id == user.id);
+      final hasUserReview = state.userReview != null;
 
       // If user already left a review, update it. If didn't, add new review
       final updatedReviews = hasUserReview
@@ -95,16 +99,21 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
               .toList()
           : [...reviews, review];
 
-      emit(ReviewAddSuccess(updatedReviews));
+      emit(
+        ReviewAddSuccess(
+          updatedReviews,
+          hasUserReview ? review : state.userReview,
+        ),
+      );
     } catch (error) {
       log('ReviewAddFailure: $error');
-      emit(ReviewAddFailure(state.reviews));
+      emit(ReviewAddFailure(state.reviews, state.userReview));
     }
   }
 
   void _onRatingSelect(ReviewRatingSelected event, Emitter<ReviewState> emit) {
     final state = this.state;
     if (state is! ReviewFetchSuccess) return;
-    emit(ReviewSelectSuccess(state.reviews));
+    emit(ReviewSelectSuccess(state.reviews, state.userReview));
   }
 }
