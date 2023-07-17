@@ -1,4 +1,3 @@
-// TODO(wuffeel): should it be renamed?
 class PriceRangeModel {
   PriceRangeModel({
     required this.title,
@@ -30,6 +29,13 @@ class PriceRangeModel {
 
   /// Method used to convert tags like 'up\___N__', '__N__\___N__', 'gt\___N__',
   /// (where __N__ is some int number) to [PriceRangeModel]
+  ///
+  /// Examples:
+  /// ```dart
+  /// PriceRangeModel.fromTag('up_1000').title => 'Up to 1000₴'
+  /// PriceRangeModel.fromTag('500_1000').title => '500-1000₴'
+  /// PriceRangeModel.fromTag('gt_1000').title => '1000₴ and more'
+  /// ```
   static PriceRangeModel? fromTag(String tag) {
     final lessOrMoreRegex = RegExp(r'^(up|gt)_?(\d+)$');
     final rangeRegex = RegExp(r'^(\d+)_(\d+)$');

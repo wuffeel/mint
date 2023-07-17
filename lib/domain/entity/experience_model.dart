@@ -1,4 +1,3 @@
-// TODO(wuffeel): should it be renamed?
 class ExperienceModel {
   ExperienceModel({
     required this.title,
@@ -43,6 +42,13 @@ class ExperienceModel {
 
   /// Method used to convert tags like 'lt\__N_y', '_N_y\__N_y', 'gt\__N_y',
   /// (where _N_ is some int number) to [ExperienceModel]
+  ///
+  /// Examples:
+  /// ```dart
+  /// ExperienceModel.fromTag('lt_1').title => 'Less than 1 year'
+  /// ExperienceModel.fromTag('500_1000').title => '500-1000₴'
+  /// ExperienceModel.fromTag('gt_1000').title => '1000₴ and more'
+  /// ```
   static ExperienceModel? fromTag(String tag) {
     final lessOrMoreRegex = RegExp(r'^(lt|gt)_?(\d+)y$');
     final rangeRegex = RegExp(r'^(\d+)y_(\d+)y$');
