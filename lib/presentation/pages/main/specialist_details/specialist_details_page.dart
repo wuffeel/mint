@@ -55,9 +55,16 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     context.l10n.education,
     context.l10n.reviews,
   ];
+
+  /// Used to apply header fade offset based on current scroll position
   final _nestedScrollController = ScrollController();
 
+  /// Key used to be attached to bottom book button container widget, size of
+  /// which will be calculated
   final _bookButtonKey = GlobalKey();
+
+  /// Variable to get bottom-stacked book button container.
+  /// Used to apply bottom padding for the scroll view.
   double? _bookButtonHeight = 0;
 
   @override
@@ -66,6 +73,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     _updateBookButtonHeight();
   }
 
+  /// Sets the [_bookButtonHeight] to bottom book button's container height
   void _updateBookButtonHeight() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_bookButtonKey.currentContext == null) return;
@@ -116,6 +124,9 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     );
   }
 
+  /// Used to apply localized text to 'Add/Update review' button.
+  ///
+  /// If current [state] is review loading state, returns '...'
   String _getReviewButtonText(ReviewState state) {
     if (state is ReviewLoading) {
       return '...';
