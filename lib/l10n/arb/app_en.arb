@@ -76,5 +76,6 @@
   "yourReview": "Your review",
   "addReview": "Add review",
   "updateReview": "Update review",
-  "book": "Book"
+  "book": "Book",
+  "previousStep": "Previous"
 }

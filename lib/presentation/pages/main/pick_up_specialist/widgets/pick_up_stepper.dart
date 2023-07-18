@@ -55,11 +55,11 @@ class _PickUpStepperState extends State<PickUpStepper> {
         if (widget.currentStep != 0) ...[
           InkWell(
             onTap: widget.onPreviousStep,
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Icon(Icons.chevron_left),
-                Text('Previous'),
+                const Icon(Icons.chevron_left),
+                Text(context.l10n.previousStep, style: MintTextStyles.caption1),
               ],
             ),
           ),
