@@ -196,6 +196,8 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
   }
 
   /// Used to move the given [item] to the start of list
+  ///
+  /// [condition] is needed to find out the [item] in list to be removed
   List<T> _moveItemToStart<T>(
     T item,
     List<T> list,
