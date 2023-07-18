@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/booking_date_calendar.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/booking_time_calendar.dart';
+import 'package:mint/presentation/pages/main/booking/widgets/booking_date_calendar.dart';
+import 'package:mint/presentation/pages/main/booking/widgets/booking_time_calendar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/dynamic_bottom_sheet_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
