@@ -17,6 +17,7 @@ class ReviewModelFromDto
     final user = await _service.getUserData(param.userId);
     if (user == null) return null;
     return ReviewModel(
+      id: param.id,
       user: user,
       specialistId: param.specialistId,
       rating: param.rating,

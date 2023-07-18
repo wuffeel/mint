@@ -8,6 +8,7 @@ import '../../domain/entity/review_model/review_model.dart';
 class ReviewModelToDto implements Factory<ReviewModelDto, ReviewModel> {
   @override
   ReviewModelDto create(ReviewModel param) => ReviewModelDto(
+        id: param.id,
         userId: param.user.id,
         specialistId: param.specialistId,
         rating: param.rating,

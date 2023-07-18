@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ReviewModel {
+  String get id => throw _privateConstructorUsedError;
   UserModel get user => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
@@ -34,7 +35,8 @@ abstract class $ReviewModelCopyWith<$Res> {
       _$ReviewModelCopyWithImpl<$Res, ReviewModel>;
   @useResult
   $Res call(
-      {UserModel user,
+      {String id,
+      UserModel user,
       String specialistId,
       double rating,
       DateTime createdAt,
@@ -56,6 +58,7 @@ class _$ReviewModelCopyWithImpl<$Res, $Val extends ReviewModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? user = null,
     Object? specialistId = null,
     Object? rating = null,
@@ -63,6 +66,10 @@ class _$ReviewModelCopyWithImpl<$Res, $Val extends ReviewModel>
     Object? content = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -104,7 +111,8 @@ abstract class _$$_ReviewModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {UserModel user,
+      {String id,
+      UserModel user,
       String specialistId,
       double rating,
       DateTime createdAt,
@@ -125,6 +133,7 @@ class __$$_ReviewModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? user = null,
     Object? specialistId = null,
     Object? rating = null,
@@ -132,6 +141,10 @@ class __$$_ReviewModelCopyWithImpl<$Res>
     Object? content = freezed,
   }) {
     return _then(_$_ReviewModel(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -160,12 +173,15 @@ class __$$_ReviewModelCopyWithImpl<$Res>
 
 class _$_ReviewModel with DiagnosticableTreeMixin implements _ReviewModel {
   const _$_ReviewModel(
-      {required this.user,
+      {required this.id,
+      required this.user,
       required this.specialistId,
       required this.rating,
       required this.createdAt,
       this.content});
 
+  @override
+  final String id;
   @override
   final UserModel user;
   @override
@@ -179,7 +195,7 @@ class _$_ReviewModel with DiagnosticableTreeMixin implements _ReviewModel {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ReviewModel(user: $user, specialistId: $specialistId, rating: $rating, createdAt: $createdAt, content: $content)';
+    return 'ReviewModel(id: $id, user: $user, specialistId: $specialistId, rating: $rating, createdAt: $createdAt, content: $content)';
   }
 
   @override
@@ -187,6 +203,7 @@ class _$_ReviewModel with DiagnosticableTreeMixin implements _ReviewModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ReviewModel'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('user', user))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('rating', rating))
@@ -199,6 +216,7 @@ class _$_ReviewModel with DiagnosticableTreeMixin implements _ReviewModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ReviewModel &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
@@ -209,8 +227,8 @@ class _$_ReviewModel with DiagnosticableTreeMixin implements _ReviewModel {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, user, specialistId, rating, createdAt, content);
+  int get hashCode => Object.hash(
+      runtimeType, id, user, specialistId, rating, createdAt, content);
 
   @JsonKey(ignore: true)
   @override
@@ -221,12 +239,15 @@ class _$_ReviewModel with DiagnosticableTreeMixin implements _ReviewModel {
 
 abstract class _ReviewModel implements ReviewModel {
   const factory _ReviewModel(
-      {required final UserModel user,
+      {required final String id,
+      required final UserModel user,
       required final String specialistId,
       required final double rating,
       required final DateTime createdAt,
       final String? content}) = _$_ReviewModel;
 
+  @override
+  String get id;
   @override
   UserModel get user;
   @override

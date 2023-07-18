@@ -20,6 +20,7 @@ ReviewModelDto _$ReviewModelDtoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ReviewModelDto {
+  String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
@@ -40,7 +41,8 @@ abstract class $ReviewModelDtoCopyWith<$Res> {
       _$ReviewModelDtoCopyWithImpl<$Res, ReviewModelDto>;
   @useResult
   $Res call(
-      {String userId,
+      {String id,
+      String userId,
       String specialistId,
       double rating,
       @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime createdAt,
@@ -60,6 +62,7 @@ class _$ReviewModelDtoCopyWithImpl<$Res, $Val extends ReviewModelDto>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? userId = null,
     Object? specialistId = null,
     Object? rating = null,
@@ -67,6 +70,10 @@ class _$ReviewModelDtoCopyWithImpl<$Res, $Val extends ReviewModelDto>
     Object? content = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -100,7 +107,8 @@ abstract class _$$_ReviewModelDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String userId,
+      {String id,
+      String userId,
       String specialistId,
       double rating,
       @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime createdAt,
@@ -118,6 +126,7 @@ class __$$_ReviewModelDtoCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? userId = null,
     Object? specialistId = null,
     Object? rating = null,
@@ -125,6 +134,10 @@ class __$$_ReviewModelDtoCopyWithImpl<$Res>
     Object? content = freezed,
   }) {
     return _then(_$_ReviewModelDto(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -151,19 +164,21 @@ class __$$_ReviewModelDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ReviewModelDto
-    with DiagnosticableTreeMixin
-    implements _ReviewModelDto {
+class _$_ReviewModelDto extends _ReviewModelDto with DiagnosticableTreeMixin {
   const _$_ReviewModelDto(
-      {required this.userId,
+      {required this.id,
+      required this.userId,
       required this.specialistId,
       required this.rating,
       @JsonKey(fromJson: DateUtils.convertToDateTime) required this.createdAt,
-      this.content});
+      this.content})
+      : super._();
 
   factory _$_ReviewModelDto.fromJson(Map<String, dynamic> json) =>
       _$$_ReviewModelDtoFromJson(json);
 
+  @override
+  final String id;
   @override
   final String userId;
   @override
@@ -178,7 +193,7 @@ class _$_ReviewModelDto
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ReviewModelDto(userId: $userId, specialistId: $specialistId, rating: $rating, createdAt: $createdAt, content: $content)';
+    return 'ReviewModelDto(id: $id, userId: $userId, specialistId: $specialistId, rating: $rating, createdAt: $createdAt, content: $content)';
   }
 
   @override
@@ -186,6 +201,7 @@ class _$_ReviewModelDto
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ReviewModelDto'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('rating', rating))
@@ -198,6 +214,7 @@ class _$_ReviewModelDto
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ReviewModelDto &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
@@ -210,7 +227,7 @@ class _$_ReviewModelDto
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, userId, specialistId, rating, createdAt, content);
+      runtimeType, id, userId, specialistId, rating, createdAt, content);
 
   @JsonKey(ignore: true)
   @override
@@ -226,18 +243,22 @@ class _$_ReviewModelDto
   }
 }
 
-abstract class _ReviewModelDto implements ReviewModelDto {
+abstract class _ReviewModelDto extends ReviewModelDto {
   const factory _ReviewModelDto(
-      {required final String userId,
+      {required final String id,
+      required final String userId,
       required final String specialistId,
       required final double rating,
       @JsonKey(fromJson: DateUtils.convertToDateTime)
           required final DateTime createdAt,
       final String? content}) = _$_ReviewModelDto;
+  const _ReviewModelDto._() : super._();
 
   factory _ReviewModelDto.fromJson(Map<String, dynamic> json) =
       _$_ReviewModelDto.fromJson;
 
+  @override
+  String get id;
   @override
   String get userId;
   @override

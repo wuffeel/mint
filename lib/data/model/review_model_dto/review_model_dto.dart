@@ -9,6 +9,7 @@ part 'review_model_dto.g.dart';
 @freezed
 class ReviewModelDto with _$ReviewModelDto {
   const factory ReviewModelDto({
+    required String id,
     required String userId,
     required String specialistId,
     required double rating,
@@ -17,6 +18,13 @@ class ReviewModelDto with _$ReviewModelDto {
     String? content,
   }) = _ReviewModelDto;
 
+  const ReviewModelDto._();
+
   factory ReviewModelDto.fromJson(Map<String, dynamic> json) =>
       _$ReviewModelDtoFromJson(json);
+
+  factory ReviewModelDto.fromJsonWithId(Map<String, dynamic> json, String id) =>
+      _$ReviewModelDtoFromJson(<String, dynamic>{'id': id, ...json});
+
+  Map<String, dynamic> toJsonWithoutId() => toJson()..remove('id');
 }
