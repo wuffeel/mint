@@ -73,8 +73,23 @@ class FirebaseSpecialistService implements SpecialistService {
   }
 
   @override
-  Future<void> addSpecialistReview(ReviewModel reviewModel) {
-    return _specialistRepository.addSpecialistReview(
+  Future<ReviewModel> addSpecialistReview(ReviewModel reviewModel) async {
+    final review = await _specialistRepository.addSpecialistReview(
+      _reviewDtoFromModel.create(reviewModel),
+    );
+    return reviewModel.copyWith(id: review.id);
+  }
+
+  @override
+  Future<void> updateSpecialistReview(ReviewModel reviewModel) {
+    return _specialistRepository.updateSpecialistReview(
+      _reviewDtoFromModel.create(reviewModel),
+    );
+  }
+
+  @override
+  Future<void> deleteSpecialistReview(ReviewModel reviewModel) {
+    return _specialistRepository.deleteSpecialistReview(
       _reviewDtoFromModel.create(reviewModel),
     );
   }

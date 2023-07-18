@@ -107,30 +107,38 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   Future<List<ReviewModelDto>> getSpecialistReviews(String specialistId) async {
     final reviewsSnapshot = await _reviewCollectionRef
         .where('specialistId', isEqualTo: specialistId)
-        .orderBy(_orderByDate, descending: true)
         .get();
 
     return reviewsSnapshot.docs
         .map((review) {
           final data = review.data() as Map<String, dynamic>?;
           if (data == null) return null;
-          return ReviewModelDto.fromJson(data);
+          return ReviewModelDto.fromJsonWithId(data, review.id);
         })
         .whereType<ReviewModelDto>()
         .toList();
   }
 
   @override
-  Future<void> addSpecialistReview(ReviewModelDto reviewModelDto) {
-    final userId = reviewModelDto.userId;
-    final specialistId = reviewModelDto.specialistId;
-    return _reviewCollectionRef.doc('$userId-$specialistId').set({
-      'userId': userId,
-      'specialistId': specialistId,
-      'rating': reviewModelDto.rating,
-      'createdAt': DateTime.now(),
-      'content': reviewModelDto.content
-    });
+  Future<ReviewModelDto> addSpecialistReview(
+    ReviewModelDto reviewModelDto,
+  ) async {
+    final resultReview = await _reviewCollectionRef.add(
+      reviewModelDto.toJsonWithoutId(),
+    );
+    return reviewModelDto.copyWith(id: resultReview.id);
+  }
+
+  @override
+  Future<void> updateSpecialistReview(ReviewModelDto reviewModelDto) {
+    return _reviewCollectionRef
+        .doc(reviewModelDto.id)
+        .set(reviewModelDto.toJsonWithoutId());
+  }
+
+  @override
+  Future<void> deleteSpecialistReview(ReviewModelDto reviewModelDto) {
+    return _reviewCollectionRef.doc(reviewModelDto.id).delete();
   }
 
   /// Returns specialist by given [snapshot]

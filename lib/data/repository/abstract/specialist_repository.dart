@@ -17,5 +17,9 @@ abstract class SpecialistRepository {
 
   Future<List<ReviewModelDto>> getSpecialistReviews(String specialistId);
 
-  Future<void> addSpecialistReview(ReviewModelDto reviewModelDto);
+  Future<ReviewModelDto> addSpecialistReview(ReviewModelDto reviewModelDto);
+
+  Future<void> updateSpecialistReview(ReviewModelDto reviewModelDto);
+
+  Future<void> deleteSpecialistReview(ReviewModelDto reviewModelDto);
 }

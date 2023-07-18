@@ -4,11 +4,11 @@ import 'package:mint/domain/service/abstract/specialist_service.dart';
 import '../entity/review_model/review_model.dart';
 
 @injectable
-class AddReviewUseCase {
-  AddReviewUseCase(this._service);
+class UpdateReviewUseCase {
+  UpdateReviewUseCase(this._service);
 
   final SpecialistService _service;
 
-  Future<ReviewModel> call(ReviewModel reviewModel) =>
-      _service.addSpecialistReview(reviewModel);
+  Future<void> call(ReviewModel reviewModel) =>
+      _service.updateSpecialistReview(reviewModel);
 }
