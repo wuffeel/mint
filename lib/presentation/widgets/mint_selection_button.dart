@@ -10,6 +10,11 @@ class MintSelectionButton<T> extends StatelessWidget {
     required this.isSelected,
     this.hasCheckMark = false,
     this.onSelect,
+    this.itemInnerPadding,
+    this.itemTextStyle,
+    this.unselectedTextStyle,
+    this.disabledTextStyle,
+    this.width,
   });
 
   final T value;
@@ -17,6 +22,23 @@ class MintSelectionButton<T> extends StatelessWidget {
   final bool isSelected;
   final bool hasCheckMark;
   final void Function(T)? onSelect;
+  final EdgeInsetsGeometry? itemInnerPadding;
+  final TextStyle? itemTextStyle;
+  final TextStyle? unselectedTextStyle;
+  final TextStyle? disabledTextStyle;
+  final double? width;
+
+  TextStyle? _getTextStyle() {
+    if (isDisabled && disabledTextStyle != null) {
+      return disabledTextStyle;
+    } else if (!isSelected && unselectedTextStyle != null) {
+      return unselectedTextStyle;
+    } else {
+      return itemTextStyle ?? TextStyle(fontSize: 16.sp, height: 1.3);
+    }
+  }
+
+  bool get isDisabled => onSelect == null && !isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +47,9 @@ class MintSelectionButton<T> extends StatelessWidget {
       onTap: onSelectLocal != null ? () => onSelectLocal(value) : null,
       borderRadius: BorderRadius.circular(10.r),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+        width: width,
+        padding: itemInnerPadding ?? EdgeInsets.symmetric(vertical: 12.h),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(10.r),
@@ -46,10 +70,10 @@ class MintSelectionButton<T> extends StatelessWidget {
                     isSelected: isSelected,
                   ),
                   SizedBox(width: 4.w),
-                  Text(title, style: TextStyle(fontSize: 16.sp, height: 1.3)),
+                  Text(title, style: _getTextStyle()),
                 ],
               )
-            : Text(title, style: TextStyle(fontSize: 16.sp, height: 1.3)),
+            : Text(title, style: _getTextStyle()),
       ),
     );
   }

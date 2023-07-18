@@ -77,5 +77,8 @@
   "addReview": "Add review",
   "updateReview": "Update review",
   "book": "Book",
-  "previousStep": "Previous"
+  "previousStep": "Previous",
+  "continueStep": "Continue",
+  "chooseAvailableDate": "Choose an available date",
+  "chooseRightTimeToBook": "Choose the right time to book"
 }

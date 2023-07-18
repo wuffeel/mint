@@ -37,7 +37,7 @@ class FilterSingleItemSelection<T> extends StatelessWidget {
                   value: items[index - 1],
                   title: itemTitles[index - 1],
                   isSelected: selectedItem == items[index - 1],
-                  onSelect: selectedItem != items[index -1] ? onSelect : null,
+                  onSelect: selectedItem != items[index - 1] ? onSelect : null,
                 );
         },
       ),

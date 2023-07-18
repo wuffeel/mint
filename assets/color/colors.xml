@@ -26,6 +26,8 @@
     <color name="additionalViolet">#876CD1</color>
     <color name="separatorLight">#E6E6E6</color>
     <color name="separatorDark">#545458</color>
+    <color name="timeCalendarSeparatorLight">#EDEDED</color>
+    <color name="timeCalendarSeparatorDark">#767680</color>
     <color name="imageBackgroundLight">#696969</color>
     <color name="imageBackgroundDark">#E3E3E3</color>
     <color name="bottomSheetTopLine">#E0E0E0</color>
