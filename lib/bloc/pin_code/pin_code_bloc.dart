@@ -111,7 +111,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     try {
       if (pin == event.pinCode) {
         if (status == PinCodeStatusEntered.signIn) {
-          emit(PinCodeSignInConfirmSuccess());
+          emit(PinCodeSignInConfirmSuccess(status, pin));
           return;
         } else if (status == PinCodeStatusEntered.changePrevious) {
           // If entered pin code matches current pin, let write new pin-code
@@ -122,10 +122,10 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
         await _pinCodeChangeUseCase(user.id, pin);
 
         if (status == PinCodeStatusEntered.signUp) {
-          emit(PinCodeSignUpConfirmSuccess());
+          emit(PinCodeSignUpConfirmSuccess(status, pin));
           return;
         } else if (status == PinCodeStatusEntered.changeNew) {
-          emit(PinCodeNewConfirmSuccess());
+          emit(PinCodeNewConfirmSuccess(status, pin));
           return;
         }
       } else {

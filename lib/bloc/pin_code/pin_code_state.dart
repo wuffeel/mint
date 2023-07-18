@@ -24,11 +24,17 @@ class PinCodeFailure extends PinCodeEnterSuccess {
   PinCodeFailure(super.status, super.pinCode);
 }
 
-class PinCodeSignInConfirmSuccess extends PinCodeState {}
+class PinCodeSignInConfirmSuccess extends PinCodeEnterSuccess {
+  PinCodeSignInConfirmSuccess(super.status, super.pinCode);
+}
 
-class PinCodeSignUpConfirmSuccess extends PinCodeState {}
+class PinCodeSignUpConfirmSuccess extends PinCodeEnterSuccess {
+  PinCodeSignUpConfirmSuccess(super.status, super.pinCode);
+}
 
-class PinCodeNewConfirmSuccess extends PinCodeState {}
+class PinCodeNewConfirmSuccess extends PinCodeEnterSuccess {
+  PinCodeNewConfirmSuccess(super.status, super.pinCode);
+}
 
 class PinCodeResetSuccess extends PinCodeState {}
 
