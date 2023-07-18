@@ -21,5 +21,17 @@ class ReviewAddRequested extends ReviewEvent {
   final String? content;
 }
 
+class ReviewUpdateRequested extends ReviewEvent {
+  ReviewUpdateRequested(this.reviewModel);
+
+  final ReviewModel reviewModel;
+}
+
+class ReviewDeleteRequested extends ReviewEvent {
+  ReviewDeleteRequested(this.reviewModel);
+
+  final ReviewModel reviewModel;
+}
+
 /// Event is used to reset the unselected state
 class ReviewRatingSelected extends ReviewEvent {}
