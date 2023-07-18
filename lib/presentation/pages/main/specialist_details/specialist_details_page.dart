@@ -98,7 +98,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
   void _onReviewDelete(ReviewModel review) {
     showDialog<void>(
       context: context,
-      builder: (context) => ReviewDeleteDialog(
+      builder: (_) => ReviewDeleteDialog(
         onDelete: () {
           return context.read<ReviewBloc>().add(ReviewDeleteRequested(review));
         },

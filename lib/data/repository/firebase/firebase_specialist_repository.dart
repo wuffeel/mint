@@ -107,6 +107,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   Future<List<ReviewModelDto>> getSpecialistReviews(String specialistId) async {
     final reviewsSnapshot = await _reviewCollectionRef
         .where('specialistId', isEqualTo: specialistId)
+        .orderBy(_orderByDate, descending: true)
         .get();
 
     return reviewsSnapshot.docs

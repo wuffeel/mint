@@ -19,7 +19,10 @@ class ReviewDeleteDialog extends StatelessWidget {
           child: Text(l10n.cancel),
         ),
         TextButton(
-          onPressed: onDelete,
+          onPressed: () {
+            onDelete();
+            context.router.pop();
+          },
           child: Text(l10n.yes),
         )
       ],

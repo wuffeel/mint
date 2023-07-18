@@ -105,8 +105,8 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       final reviews = state.reviews;
       final userReviews = state.userReviews;
 
-      final updatedReviews = [...reviews, reviewWithId];
-      final updatedUserReviews = [...userReviews, reviewWithId];
+      final updatedReviews = [reviewWithId, ...reviews];
+      final updatedUserReviews = [reviewWithId, ...userReviews];
 
       emit(ReviewAddSuccess(updatedReviews, updatedUserReviews));
     } catch (error) {
@@ -130,19 +130,15 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       final reviews = state.reviews;
       final userReviews = state.userReviews;
 
-      final updatedReviews = reviews.map((newReview) {
-        if (newReview.id == review.id) {
-          return review;
-        }
-        return newReview;
-      }).toList();
+      final updatedReviews = moveItemToStart(
+        reviews,
+        (item) => item.id == review.id,
+      );
 
-      final updatedUserReviews = userReviews.map((newReview) {
-        if (newReview.id == review.id) {
-          return review;
-        }
-        return newReview;
-      }).toList();
+      final updatedUserReviews = moveItemToStart(
+        userReviews,
+        (item) => item.id == review.id,
+      );
 
       emit(ReviewAddSuccess(updatedReviews, updatedUserReviews));
     } catch (error) {
@@ -195,5 +191,17 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     final state = this.state;
     if (state is! ReviewFetchSuccess) return;
     emit(ReviewSelectSuccess(state.reviews, state.userReviews));
+  }
+
+  List<T> moveItemToStart<T>(List<T> list, bool Function(T) condition) {
+    final index = list.indexWhere(condition);
+    if (index == -1) {
+      return list;
+    }
+
+    final item = list.removeAt(index);
+    list.insert(0, item);
+
+    return list;
   }
 }
