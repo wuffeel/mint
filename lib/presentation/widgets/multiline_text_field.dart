@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/l10n/l10n.dart';
 
-import '../../../../../theme/mint_text_styles.dart';
+import '../../theme/mint_text_styles.dart';
 
-class ReviewTextField extends StatefulWidget {
-  const ReviewTextField({
+class MultilineTextField extends StatefulWidget {
+  const MultilineTextField({
     super.key,
-    required this.controller,
-    required this.scrollController,
+    this.controller,
+    this.scrollController,
+    this.maxLines,
+    this.hintText,
   });
 
-  final TextEditingController controller;
-  final ScrollController scrollController;
+  final TextEditingController? controller;
+  final ScrollController? scrollController;
+  final int? maxLines;
+  final String? hintText;
 
   @override
-  State<ReviewTextField> createState() => _ReviewTextFieldState();
+  State<MultilineTextField> createState() => _MultilineTextFieldState();
 }
 
-class _ReviewTextFieldState extends State<ReviewTextField> {
+class _MultilineTextFieldState extends State<MultilineTextField> {
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return TextField(
       controller: widget.controller,
       scrollController: widget.scrollController,
@@ -37,7 +39,7 @@ class _ReviewTextFieldState extends State<ReviewTextField> {
         ),
         filled: true,
         fillColor: Theme.of(context).colorScheme.secondary,
-        hintText: '${l10n.typeHereYourImpressions}...',
+        hintText: widget.hintText,
         hintStyle: MintTextStyles.body1.copyWith(
           color: Theme.of(context).hintColor.withOpacity(0.3),
         ),
@@ -45,7 +47,7 @@ class _ReviewTextFieldState extends State<ReviewTextField> {
         contentPadding: EdgeInsets.all(10.r),
       ),
       keyboardType: TextInputType.multiline,
-      maxLines: 3,
+      maxLines: widget.maxLines,
       style: MintTextStyles.body1,
     );
   }

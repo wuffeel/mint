@@ -7,9 +7,9 @@ import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_stepper.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_rating_button.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/review_text_field.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_container.dart';
+import 'package:mint/presentation/widgets/multiline_text_field.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../backbone/review_session.dart';
@@ -151,9 +151,11 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
                         style: MintTextStyles.headline,
                       ),
                       SizedBox(height: 16.h),
-                      ReviewTextField(
+                      MultilineTextField(
                         controller: _reviewController,
                         scrollController: _reviewScroll,
+                        maxLines: 3,
+                        hintText: '${l10n.typeHereYourImpressions}...',
                       ),
                       const Spacer(),
                       SizedBox(height: 18.h),
