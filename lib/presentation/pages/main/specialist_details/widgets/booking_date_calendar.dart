@@ -68,23 +68,24 @@ class _BookingDateCalendarState extends State<BookingDateCalendar> {
               _focusedDay = focusedDay;
             },
             calendarStyle: CalendarStyle(
-                isTodayHighlighted: false,
-                defaultTextStyle: MintTextStyles.figure,
-                selectedTextStyle: MintTextStyles.figure,
-                selectedDecoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                  ),
-                  shape: BoxShape.circle,
+              isTodayHighlighted: false,
+              defaultTextStyle: MintTextStyles.figure,
+              selectedTextStyle: MintTextStyles.figure,
+              selectedDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
                 ),
-                disabledTextStyle: MintTextStyles.figure.copyWith(
-                  color: Theme.of(context).hintColor.withOpacity(0.18),
-                ),
-                outsideTextStyle: MintTextStyles.figure.copyWith(
-                  color: Theme.of(context).hintColor.withOpacity(0.8),
-                ),
-                weekendTextStyle: MintTextStyles.figure),
+                shape: BoxShape.circle,
+              ),
+              disabledTextStyle: MintTextStyles.figure.copyWith(
+                color: Theme.of(context).hintColor.withOpacity(0.18),
+              ),
+              outsideTextStyle: MintTextStyles.figure.copyWith(
+                color: Theme.of(context).hintColor.withOpacity(0.8),
+              ),
+              weekendTextStyle: MintTextStyles.figure,
+            ),
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
                 fontSize: 16.sp,

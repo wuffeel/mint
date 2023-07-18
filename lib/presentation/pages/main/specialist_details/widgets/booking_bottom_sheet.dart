@@ -6,7 +6,6 @@ import 'package:mint/presentation/pages/main/specialist_details/widgets/booking_
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/dynamic_bottom_sheet_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class BookingBottomSheet extends StatefulWidget {
   const BookingBottomSheet({super.key});
