@@ -36,15 +36,19 @@ class _BookingDateCalendarState extends State<BookingDateCalendar> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     return Padding(
-      padding: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-        bottom: 26.h,
-      ),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 26.h),
       child: Column(
         children: <Widget>[
           TableCalendar<dynamic>(
+            focusedDay: _focusedDay,
+            firstDay: now,
+            lastDay: DateTime(now.year, now.month, now.day + 28),
+            locale: context.l10n.localeName,
+            rangeSelectionMode: RangeSelectionMode.disabled,
             startingDayOfWeek: StartingDayOfWeek.monday,
+            pageJumpingEnabled: true,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            onPageChanged: (focusedDay) => _focusedDay = focusedDay,
             headerStyle: HeaderStyle(
               titleCentered: true,
               formatButtonVisible: false,
@@ -52,20 +56,13 @@ class _BookingDateCalendarState extends State<BookingDateCalendar> {
                 return DateFormat.MMMM(locale).format(date);
               },
             ),
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(_selectedDay, selectedDay)) {
-                // Call `setState()` when updating the selected day
                 widget.onSelectedChanged(selectedDay);
                 setState(() {
                   _focusedDay = focusedDay;
                 });
               }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
             },
             calendarStyle: CalendarStyle(
               isTodayHighlighted: false,
@@ -95,15 +92,6 @@ class _BookingDateCalendarState extends State<BookingDateCalendar> {
                 fontSize: 16.sp,
                 color: Theme.of(context).hintColor.withOpacity(0.6),
               ),
-            ),
-            rangeSelectionMode: RangeSelectionMode.disabled,
-            locale: context.l10n.localeName,
-            focusedDay: _focusedDay,
-            firstDay: now,
-            lastDay: DateTime(
-              now.year,
-              now.month,
-              now.day + 28,
             ),
           ),
           SizedBox(height: 20.h),
