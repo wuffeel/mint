@@ -70,7 +70,7 @@
   "notHelpful": "Не допомогла",
   "doNotRecommend": "Не рекомендую",
   "pleaseDescribeYourExperience": "Будь ласка, опишіть свій досвід",
-  "typeHereYourImpressions": "Напишіть тут ваші враження",
+  "typeHereYourImpressions": "Введіть тут ваші враження",
   "leaveReview": "Зберегти відгук",
   "youHaveNotSelectedRating": "Ви не обрали оцінку",
   "yourReview": "Ваш відгук",
@@ -80,5 +80,15 @@
   "previousStep": "Назад",
   "continueStep": "Продовжити",
   "chooseAvailableDate": "Оберіть вільну дату",
-  "chooseRightTimeToBook": "Оберіть необхідний час для бронювання"
+  "chooseRightTimeToBook": "Оберіть необхідний час для бронювання",
+  "consultationSummary": "Підсумкові дані консультації",
+  "typeHerePersonalNotes": "Введіть тут особисті нотатки",
+  "upToNMin": "До {min} хв.",
+  "@upToNMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -1,14 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_date_calendar.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_time_calendar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/dynamic_bottom_sheet_container.dart';
+import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class BookingBottomSheet extends StatefulWidget {
-  const BookingBottomSheet({super.key});
+  const BookingBottomSheet({super.key, required this.specialistModel});
+
+  final SpecialistModel specialistModel;
 
   @override
   State<BookingBottomSheet> createState() => _BookingBottomSheetState();
@@ -19,6 +24,17 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
 
   DateTime? _selectedDay;
   DateTime? _selectedTime;
+
+  void _navigateToBookingResume() {
+    context.router.pop();
+    context.router.push(
+      BookingResumeRoute(
+        specialistModel: widget.specialistModel,
+        date: _selectedDay ?? DateTime.now(),
+        time: _selectedTime ?? DateTime.now(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +82,7 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
               selectedDate: _selectedDay ?? DateTime.now(),
               selectedTime: _selectedTime,
               onTimeSelected: (time) => setState(() => _selectedTime = time),
-              onContinue: () => setState(() => _currentStep = 0),
+              onContinue: _navigateToBookingResume,
             ),
         ],
       ),

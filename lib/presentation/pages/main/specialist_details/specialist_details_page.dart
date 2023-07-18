@@ -110,7 +110,9 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => const BookingBottomSheet(),
+      builder: (_) => BookingBottomSheet(
+        specialistModel: widget.specialistModel,
+      ),
     );
   }
 

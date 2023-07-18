@@ -15,12 +15,12 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:mint/assembly/entity/pick_up_filter_from_dto.dart' as _i10;
 import 'package:mint/assembly/entity/review_model_from_dto.dart' as _i51;
-import 'package:mint/assembly/entity/specialist_filter_from_dto.dart' as _i7;
-import 'package:mint/assembly/entity/specialist_model_from_dto.dart' as _i41;
-import 'package:mint/assembly/entity/user_model_from_dto.dart' as _i44;
+import 'package:mint/assembly/entity/specialist_filter_from_dto.dart' as _i13;
+import 'package:mint/assembly/entity/specialist_model_from_dto.dart' as _i44;
+import 'package:mint/assembly/entity/user_model_from_dto.dart' as _i41;
 import 'package:mint/assembly/factory.dart' as _i4;
 import 'package:mint/assembly/model/filter_preferences_to_dto.dart' as _i16;
-import 'package:mint/assembly/model/review_model_to_dto.dart' as _i13;
+import 'package:mint/assembly/model/review_model_to_dto.dart' as _i7;
 import 'package:mint/bloc/auth/auth_bloc.dart' as _i37;
 import 'package:mint/bloc/favorite/favorite_bloc.dart' as _i69;
 import 'package:mint/bloc/pick_up_specialist/pick_up_specialist_bloc.dart'
@@ -38,12 +38,12 @@ import 'package:mint/data/model/filter_preferences_dto/filter_preferences_dto.da
     as _i14;
 import 'package:mint/data/model/pick_up_filter_dto/pick_up_filter_dto.dart'
     as _i9;
-import 'package:mint/data/model/review_model_dto/review_model_dto.dart' as _i11;
+import 'package:mint/data/model/review_model_dto/review_model_dto.dart' as _i5;
 import 'package:mint/data/model/specialist_filter_dto/specialist_filter_dto.dart'
-    as _i6;
+    as _i12;
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart'
-    as _i40;
-import 'package:mint/data/model/user_model_dto/user_model_dto.dart' as _i43;
+    as _i43;
+import 'package:mint/data/model/user_model_dto/user_model_dto.dart' as _i40;
 import 'package:mint/data/repository/abstract/filter_repository.dart' as _i17;
 import 'package:mint/data/repository/abstract/phone_auth_repository.dart'
     as _i21;
@@ -67,12 +67,12 @@ import 'package:mint/domain/controller/user_controller.dart' as _i32;
 import 'package:mint/domain/entity/filter_preferences/filter_preferences.dart'
     as _i15;
 import 'package:mint/domain/entity/pick_up_filter/pick_up_filter.dart' as _i8;
-import 'package:mint/domain/entity/review_model/review_model.dart' as _i12;
+import 'package:mint/domain/entity/review_model/review_model.dart' as _i6;
 import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart'
-    as _i5;
+    as _i11;
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
-    as _i39;
-import 'package:mint/domain/entity/user_model/user_model.dart' as _i42;
+    as _i42;
+import 'package:mint/domain/entity/user_model/user_model.dart' as _i39;
 import 'package:mint/domain/service/abstract/filter_service.dart' as _i19;
 import 'package:mint/domain/service/abstract/phone_auth_service.dart' as _i23;
 import 'package:mint/domain/service/abstract/specialist_service.dart' as _i55;
@@ -120,18 +120,18 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.lazySingleton<_i3.AppliedFilterController>(
         () => _i3.AppliedFilterController());
-    gh.factory<_i4.Factory<_i5.SpecialistFilter, _i6.SpecialistFilterDto>>(
-        () => _i7.SpecialistFilterFromDto());
+    gh.factory<_i4.Factory<_i5.ReviewModelDto, _i6.ReviewModel>>(
+        () => _i7.ReviewModelToDto());
     gh.factory<_i4.Factory<_i8.PickUpFilter, _i9.PickUpFilterDto>>(
         () => _i10.PickUpFilterFromDto());
-    gh.factory<_i4.Factory<_i11.ReviewModelDto, _i12.ReviewModel>>(
-        () => _i13.ReviewModelToDto());
+    gh.factory<_i4.Factory<_i11.SpecialistFilter, _i12.SpecialistFilterDto>>(
+        () => _i13.SpecialistFilterFromDto());
     gh.factory<_i4.Factory<_i14.FilterPreferencesDto, _i15.FilterPreferences>>(
         () => _i16.FilterPreferencesToDto());
     gh.factory<_i17.FilterRepository>(() => _i18.FirebaseFilterRepository());
     gh.factory<_i19.FilterService>(() => _i20.FirebaseFilterService(
           gh<_i17.FilterRepository>(),
-          gh<_i4.Factory<_i5.SpecialistFilter, _i6.SpecialistFilterDto>>(),
+          gh<_i4.Factory<_i11.SpecialistFilter, _i12.SpecialistFilterDto>>(),
           gh<_i4.Factory<_i8.PickUpFilter, _i9.PickUpFilterDto>>(),
         ));
     gh.factory<_i21.PhoneAuthRepository>(() => _i22.FirebaseAuthRepository());
@@ -155,12 +155,12 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i35.VerifyOtpUseCase>(),
           gh<_i32.UserController>(),
         ));
+    gh.factory<_i4.Factory<_i38.Future<_i39.UserModel>, _i40.UserModelDto>>(
+        () => _i41.UserModelFromDto(gh<_i30.StorageService>()));
     gh.factory<
-            _i4.Factory<_i38.Future<_i39.SpecialistModel>,
-                _i40.SpecialistModelDto>>(
-        () => _i41.SpecialistModelFromDto(gh<_i30.StorageService>()));
-    gh.factory<_i4.Factory<_i38.Future<_i42.UserModel>, _i43.UserModelDto>>(
-        () => _i44.UserModelFromDto(gh<_i30.StorageService>()));
+            _i4.Factory<_i38.Future<_i42.SpecialistModel>,
+                _i43.SpecialistModelDto>>(
+        () => _i44.SpecialistModelFromDto(gh<_i30.StorageService>()));
     gh.factory<_i45.FetchPickUpFilterUseCase>(
         () => _i45.FetchPickUpFilterUseCase(gh<_i19.FilterService>()));
     gh.factory<_i46.FetchSpecialistFilterUseCase>(
@@ -176,10 +176,9 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i49.UserService>(() => _i50.FirebaseUserService(
           gh<_i33.UserRepository>(),
-          gh<_i4.Factory<_i38.Future<_i42.UserModel>, _i43.UserModelDto>>(),
+          gh<_i4.Factory<_i38.Future<_i39.UserModel>, _i40.UserModelDto>>(),
         ));
-    gh.factory<
-            _i4.Factory<_i38.Future<_i12.ReviewModel?>, _i11.ReviewModelDto>>(
+    gh.factory<_i4.Factory<_i38.Future<_i6.ReviewModel?>, _i5.ReviewModelDto>>(
         () => _i51.ReviewModelFromDto(gh<_i49.UserService>()));
     gh.factory<_i52.GetCurrentUserUseCase>(
         () => _i52.GetCurrentUserUseCase(gh<_i49.UserService>()));
@@ -190,13 +189,11 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i55.SpecialistService>(() => _i56.FirebaseSpecialistService(
           gh<_i26.SpecialistRepository>(),
           gh<
-              _i4.Factory<_i38.Future<_i39.SpecialistModel>,
-                  _i40.SpecialistModelDto>>(),
+              _i4.Factory<_i38.Future<_i42.SpecialistModel>,
+                  _i43.SpecialistModelDto>>(),
           gh<_i4.Factory<_i14.FilterPreferencesDto, _i15.FilterPreferences>>(),
-          gh<
-              _i4.Factory<_i38.Future<_i12.ReviewModel?>,
-                  _i11.ReviewModelDto>>(),
-          gh<_i4.Factory<_i11.ReviewModelDto, _i12.ReviewModel>>(),
+          gh<_i4.Factory<_i38.Future<_i6.ReviewModel?>, _i5.ReviewModelDto>>(),
+          gh<_i4.Factory<_i5.ReviewModelDto, _i6.ReviewModel>>(),
         ));
     gh.factory<_i57.UserBloc>(() => _i57.UserBloc(
           gh<_i52.GetCurrentUserUseCase>(),

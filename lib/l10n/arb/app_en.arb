@@ -80,5 +80,15 @@
   "previousStep": "Previous",
   "continueStep": "Continue",
   "chooseAvailableDate": "Choose an available date",
-  "chooseRightTimeToBook": "Choose the right time to book"
+  "chooseRightTimeToBook": "Choose the right time to book",
+  "consultationSummary": "Consultation summary",
+  "typeHerePersonalNotes": "Type here personal notes",
+  "upToNMin": "Up to {min} min",
+  "@upToNMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  }
 }
