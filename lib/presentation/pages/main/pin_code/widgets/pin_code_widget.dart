@@ -32,7 +32,11 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
   /// Current pin-code typed
   String _pinCode = '';
 
-  /// Sets the [_pinCode] to empty string dependent on [state]
+  /// Used for these situations:
+  ///
+  /// __Set the [_pinCode] to empty string on specific [state]__
+  ///
+  /// __If pin code thrown a failure => launch pin code shake animation__
   void _pinCodeListener(PinCodeState state) {
     final needsToBeCleared = state is PinCodeEnterSuccess ||
         (state is PinCodeInitial &&
