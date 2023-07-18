@@ -15,8 +15,6 @@ import 'package:mint/presentation/pages/main/specialist_details/widgets/speciali
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/user_reviews_section.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/your_reviews_divider.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/your_reviews_title.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
 
 import '../../../../domain/entity/review_model/review_model.dart';
@@ -182,11 +180,8 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                           isActionButton: true,
                         ),
                       ],
-                      flexibleSpace: Padding(
-                        padding: EdgeInsets.only(bottom: 24.h),
-                        child: SpecialistDetailsWidget(
-                          specialistModel: widget.specialistModel,
-                        ),
+                      flexibleSpace: SpecialistDetailsWidget(
+                        specialistModel: widget.specialistModel,
                       ),
                       bottom: OpaqueTabBar(
                         tabBar: TabBar(
@@ -247,13 +242,10 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                                   );
                                 },
                               ),
-                              const YourReviewsTitle(),
                               UserReviewsSection(
                                 onEdit: _showReviewBottomSheet,
                                 onDelete: _onReviewDelete,
                               ),
-                              SliverToBoxAdapter(child: SizedBox(height: 12.h)),
-                              const YourReviewsDivider(),
                               ReviewSliverList(onRefresh: _onReviewRefresh),
                               SliverToBoxAdapter(
                                 child: SizedBox(height: _bookButtonHeight),

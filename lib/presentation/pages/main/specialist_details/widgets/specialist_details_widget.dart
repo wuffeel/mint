@@ -53,12 +53,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
               ),
             ),
           Padding(
-            padding: EdgeInsets.only(
-              left: 16.w,
-              right: 16.w,
-              top: 16.h,
-              bottom: 24.h,
-            ),
+            padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -143,6 +138,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 24.h),
               ],
             ),
           )

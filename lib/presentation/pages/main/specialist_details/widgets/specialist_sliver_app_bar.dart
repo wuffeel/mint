@@ -67,7 +67,14 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
       setState(() {
         final initialWidget =
             _initialWidgetKey.currentContext?.findRenderObject() as RenderBox?;
+
         _flexibleSpaceHeight = initialWidget?.size.height;
+        // Adding status bar height to total height
+        var heightLocal = _flexibleSpaceHeight;
+        if (heightLocal != null) {
+          heightLocal += MediaQuery.paddingOf(context).top;
+        }
+        _flexibleSpaceHeight = heightLocal;
       });
     });
   }
@@ -95,19 +102,17 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
       return SliverToBoxAdapter(
         child: Stack(
           children: [
-            Padding(
-              // Padding which centers the flexible space within the app bar
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.paddingOf(context).top / 2,
-              ),
-              child: Container(
-                key: _initialWidgetKey,
-                child: widget.flexibleSpace ??
-                    const SizedBox(height: kToolbarHeight),
-              ),
+            Column(
+              children: [
+                Container(
+                  key: _initialWidgetKey,
+                  child: widget.flexibleSpace ??
+                      const SizedBox(height: kToolbarHeight),
+                ),
+                widget.bottom ?? const SizedBox.shrink(),
+              ],
             ),
             Positioned.fill(
-              top: 10,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: AppBar(
@@ -117,7 +122,6 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
                   leading: widget.leading,
                   leadingWidth: 80.w,
                   actions: widget.actions,
-                  bottom: widget.bottom,
                   toolbarHeight: widget.toolbarHeight,
                 ),
               ),

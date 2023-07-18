@@ -35,6 +35,7 @@ dependencies:
   pinput: ^2.2.31
   rxdart: ^0.27.7
   shimmer: ^3.0.0
+  sliver_tools: ^0.2.12
   table_calendar: ^3.0.9
 
 dev_dependencies:
