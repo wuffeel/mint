@@ -19,9 +19,9 @@ class PriceRangeModel {
   ///
   /// Examples:
   /// ```dart
-  /// fromTag('up_1000') => experienceTo = 1000
-  /// fromTag('500_1000') => experienceFrom = 500, experienceTo = 1000
-  /// fromTag('gt_1000) => experienceFrom = 1000
+  /// fromTag('up_1000') => lowPrice = 1000
+  /// fromTag('500_1000') => lowPrice = 500, highPrice = 1000
+  /// fromTag('gt_1000) => lowPrice = 1000
   /// ```
   static PriceRangeModel? fromTag(String tag) {
     final lessOrMoreRegex = RegExp(r'^(up|gt)_?(\d+)$');

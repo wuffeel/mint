@@ -15,22 +15,22 @@ class ExperienceLocalization {
   /// Calculates the difference in years between a given date or date range
   /// and returns the appropriate localized message.
   ///
-  /// __If [date] is provided, the method can either return:__
+  /// __If [date] is provided, the method can return:__
   ///
   /// &gt; 'Less than 1 year' if the difference is less than 1 year.
   ///
-  /// &gt; '_difference_ years' if the difference is 1 year or more.
+  /// &gt; '_X_ years' if the difference is 1 year or more.
   ///
-  /// __If [experienceModel] is provided, the method can either return:__
+  /// __If [experienceModel] is provided, the method can return:__
   ///
-  /// &gt; 'From _fromDiff_ to _toDiff_ years' if both _from_ and _to_ are not
-  /// null.
+  /// &gt; 'From _X_ to _Y_ years' if both _From_ and _To_ are not null.
   ///
-  /// &gt; 'Less than _fromDiff_ years' if only _from_ is not null.
+  /// &gt; 'Less than _X_ years' if only _From_ is not null.
   ///
-  /// &gt; 'More than _toDiff_ years' if only _to_ is not null.
+  /// &gt; 'More than _Y_ years' if only _To_ is not null.
   ///
-  /// The [locale] parameter specifies the locale for the message.
+  /// __The [locale] parameter specifies the locale for the message.__
+  ///
   /// If no locale is specified, defaults to English.
   static String format({
     DateTime? date,

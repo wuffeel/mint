@@ -71,6 +71,15 @@ class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
     return false;
   }
 
+  /// Returns localized titles for price range given
+  ///
+  /// Can return either:
+  ///
+  /// If both low and high price passed => '_low_-_high_₴'
+  ///
+  /// If only high price passed => 'Up to _high_₴'
+  ///
+  /// If only low price passed => '_low_₴ and more'
   List<String> _getPriceRangeTitles(List<PriceRangeModel> priceList) {
     final l10n = context.l10n;
     return priceList.map((e) {
