@@ -52,14 +52,14 @@ class ExperienceLocalization {
       final to = experienceModel.experienceTo;
 
       if (from != null && to != null) {
-        final fromDiff = (now.difference(from).inDays / 365).round();
-        final toDiff = (now.difference(to).inDays / 365).round();
+        final fromDiff = now.difference(from).inDays ~/ 365;
+        final toDiff = now.difference(to).inDays ~/ 365;
         return messages.fromYearsToYears(toDiff, fromDiff);
       } else if (from != null) {
-        final fromDiff = (now.difference(from).inDays / 365).round();
+        final fromDiff = now.difference(from).inDays ~/ 365;
         return messages.lessThanYears(fromDiff);
       } else if (to != null) {
-        final toDiff = (now.difference(to).inDays / 365).round();
+        final toDiff = now.difference(to).inDays ~/ 365;
         return messages.moreThanYears(toDiff);
       }
     }
