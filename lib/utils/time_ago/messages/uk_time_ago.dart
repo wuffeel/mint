@@ -6,7 +6,7 @@ class UkTimeAgo implements TimeAgoMessages {
   String suffixAgo() => 'тому';
 
   @override
-  String lessThanOneMinute(int seconds) => '< 1 хвилини тому';
+  String lessThanOneMinute(int seconds) => '< 1 хвилини';
 
   @override
   String minutes(int minutes) {

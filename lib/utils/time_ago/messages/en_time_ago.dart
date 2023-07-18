@@ -4,7 +4,7 @@ class EnTimeAgo implements TimeAgoMessages {
   @override
   String suffixAgo() => 'ago';
   @override
-  String lessThanOneMinute(int seconds) => '< 1 minute ago';
+  String lessThanOneMinute(int seconds) => '< 1 minute';
   @override
   String minutes(int minutes) => '$minutes minutes';
   @override
