@@ -19,26 +19,26 @@ import 'package:mint/assembly/entity/specialist_filter_from_dto.dart' as _i13;
 import 'package:mint/assembly/entity/specialist_model_from_dto.dart' as _i44;
 import 'package:mint/assembly/entity/user_model_from_dto.dart' as _i41;
 import 'package:mint/assembly/factory.dart' as _i4;
-import 'package:mint/assembly/model/filter_preferences_to_dto.dart' as _i16;
-import 'package:mint/assembly/model/review_model_to_dto.dart' as _i7;
+import 'package:mint/assembly/model/filter_preferences_to_dto.dart' as _i7;
+import 'package:mint/assembly/model/review_model_to_dto.dart' as _i16;
 import 'package:mint/bloc/auth/auth_bloc.dart' as _i37;
-import 'package:mint/bloc/favorite/favorite_bloc.dart' as _i69;
+import 'package:mint/bloc/favorite/favorite_bloc.dart' as _i71;
 import 'package:mint/bloc/pick_up_specialist/pick_up_specialist_bloc.dart'
     as _i47;
-import 'package:mint/bloc/pin_code/pin_code_bloc.dart' as _i64;
-import 'package:mint/bloc/review/review_bloc.dart' as _i66;
+import 'package:mint/bloc/pin_code/pin_code_bloc.dart' as _i66;
+import 'package:mint/bloc/review/review_bloc.dart' as _i68;
 import 'package:mint/bloc/specialist_catalogue/specialist_catalogue_bloc.dart'
-    as _i67;
+    as _i69;
 import 'package:mint/bloc/specialist_filter/specialist_filter_bloc.dart'
     as _i48;
 import 'package:mint/bloc/specialist_online/specialist_online_bloc.dart'
-    as _i68;
-import 'package:mint/bloc/user/user_bloc.dart' as _i57;
+    as _i70;
+import 'package:mint/bloc/user/user_bloc.dart' as _i58;
 import 'package:mint/data/model/filter_preferences_dto/filter_preferences_dto.dart'
-    as _i14;
+    as _i5;
 import 'package:mint/data/model/pick_up_filter_dto/pick_up_filter_dto.dart'
     as _i9;
-import 'package:mint/data/model/review_model_dto/review_model_dto.dart' as _i5;
+import 'package:mint/data/model/review_model_dto/review_model_dto.dart' as _i14;
 import 'package:mint/data/model/specialist_filter_dto/specialist_filter_dto.dart'
     as _i12;
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart'
@@ -65,9 +65,9 @@ import 'package:mint/domain/controller/applied_filter_controller.dart' as _i3;
 import 'package:mint/domain/controller/pick_up_filter_controller.dart' as _i25;
 import 'package:mint/domain/controller/user_controller.dart' as _i32;
 import 'package:mint/domain/entity/filter_preferences/filter_preferences.dart'
-    as _i15;
+    as _i6;
 import 'package:mint/domain/entity/pick_up_filter/pick_up_filter.dart' as _i8;
-import 'package:mint/domain/entity/review_model/review_model.dart' as _i6;
+import 'package:mint/domain/entity/review_model/review_model.dart' as _i15;
 import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart'
     as _i11;
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
@@ -88,22 +88,24 @@ import 'package:mint/domain/service/firebase/firebase_storage_service.dart'
     as _i31;
 import 'package:mint/domain/service/firebase/firebase_user_service.dart'
     as _i50;
-import 'package:mint/domain/usecase/add_review_use_case.dart' as _i58;
-import 'package:mint/domain/usecase/add_to_favorite_use_case.dart' as _i59;
-import 'package:mint/domain/usecase/fetch_favorite_list_use_case.dart' as _i60;
+import 'package:mint/domain/usecase/add_review_use_case.dart' as _i59;
+import 'package:mint/domain/usecase/add_to_favorite_use_case.dart' as _i60;
+import 'package:mint/domain/usecase/delete_review_use_case.dart' as _i61;
+import 'package:mint/domain/usecase/fetch_favorite_list_use_case.dart' as _i62;
 import 'package:mint/domain/usecase/fetch_pick_up_filter_use_case.dart' as _i45;
 import 'package:mint/domain/usecase/fetch_specialist_catalogue_use_case.dart'
-    as _i61;
+    as _i63;
 import 'package:mint/domain/usecase/fetch_specialist_filter_use_case.dart'
     as _i46;
 import 'package:mint/domain/usecase/fetch_specialist_reviews_use_case.dart'
-    as _i62;
+    as _i64;
 import 'package:mint/domain/usecase/fetch_specialists_online_use_case.dart'
-    as _i63;
+    as _i65;
 import 'package:mint/domain/usecase/get_current_user_use_case.dart' as _i52;
 import 'package:mint/domain/usecase/log_out_use_case.dart' as _i53;
 import 'package:mint/domain/usecase/pin_code_change_use_case.dart' as _i54;
-import 'package:mint/domain/usecase/remove_from_favorite_use_case.dart' as _i65;
+import 'package:mint/domain/usecase/remove_from_favorite_use_case.dart' as _i67;
+import 'package:mint/domain/usecase/update_review_use_case.dart' as _i57;
 import 'package:mint/domain/usecase/verify_otp_use_case.dart' as _i35;
 import 'package:mint/domain/usecase/verify_phone_use_case.dart' as _i36;
 
@@ -120,14 +122,14 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.lazySingleton<_i3.AppliedFilterController>(
         () => _i3.AppliedFilterController());
-    gh.factory<_i4.Factory<_i5.ReviewModelDto, _i6.ReviewModel>>(
-        () => _i7.ReviewModelToDto());
+    gh.factory<_i4.Factory<_i5.FilterPreferencesDto, _i6.FilterPreferences>>(
+        () => _i7.FilterPreferencesToDto());
     gh.factory<_i4.Factory<_i8.PickUpFilter, _i9.PickUpFilterDto>>(
         () => _i10.PickUpFilterFromDto());
     gh.factory<_i4.Factory<_i11.SpecialistFilter, _i12.SpecialistFilterDto>>(
         () => _i13.SpecialistFilterFromDto());
-    gh.factory<_i4.Factory<_i14.FilterPreferencesDto, _i15.FilterPreferences>>(
-        () => _i16.FilterPreferencesToDto());
+    gh.factory<_i4.Factory<_i14.ReviewModelDto, _i15.ReviewModel>>(
+        () => _i16.ReviewModelToDto());
     gh.factory<_i17.FilterRepository>(() => _i18.FirebaseFilterRepository());
     gh.factory<_i19.FilterService>(() => _i20.FirebaseFilterService(
           gh<_i17.FilterRepository>(),
@@ -178,7 +180,8 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i33.UserRepository>(),
           gh<_i4.Factory<_i38.Future<_i39.UserModel>, _i40.UserModelDto>>(),
         ));
-    gh.factory<_i4.Factory<_i38.Future<_i6.ReviewModel?>, _i5.ReviewModelDto>>(
+    gh.factory<
+            _i4.Factory<_i38.Future<_i15.ReviewModel?>, _i14.ReviewModelDto>>(
         () => _i51.ReviewModelFromDto(gh<_i49.UserService>()));
     gh.factory<_i52.GetCurrentUserUseCase>(
         () => _i52.GetCurrentUserUseCase(gh<_i49.UserService>()));
@@ -191,49 +194,57 @@ extension GetItInjectableX on _i1.GetIt {
           gh<
               _i4.Factory<_i38.Future<_i42.SpecialistModel>,
                   _i43.SpecialistModelDto>>(),
-          gh<_i4.Factory<_i14.FilterPreferencesDto, _i15.FilterPreferences>>(),
-          gh<_i4.Factory<_i38.Future<_i6.ReviewModel?>, _i5.ReviewModelDto>>(),
-          gh<_i4.Factory<_i5.ReviewModelDto, _i6.ReviewModel>>(),
+          gh<_i4.Factory<_i5.FilterPreferencesDto, _i6.FilterPreferences>>(),
+          gh<
+              _i4.Factory<_i38.Future<_i15.ReviewModel?>,
+                  _i14.ReviewModelDto>>(),
+          gh<_i4.Factory<_i14.ReviewModelDto, _i15.ReviewModel>>(),
         ));
-    gh.factory<_i57.UserBloc>(() => _i57.UserBloc(
+    gh.factory<_i57.UpdateReviewUseCase>(
+        () => _i57.UpdateReviewUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i58.UserBloc>(() => _i58.UserBloc(
           gh<_i52.GetCurrentUserUseCase>(),
           gh<_i53.LogOutUseCase>(),
           gh<_i32.UserController>(),
         ));
-    gh.factory<_i58.AddReviewUseCase>(
-        () => _i58.AddReviewUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i59.AddToFavoriteUseCase>(
-        () => _i59.AddToFavoriteUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i60.FetchFavoriteListUseCase>(
-        () => _i60.FetchFavoriteListUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i61.FetchSpecialistCatalogueUseCase>(() =>
-        _i61.FetchSpecialistCatalogueUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i62.FetchSpecialistReviewsUseCase>(
-        () => _i62.FetchSpecialistReviewsUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i63.FetchSpecialistsOnlineUseCase>(
-        () => _i63.FetchSpecialistsOnlineUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i64.PinCodeBloc>(() => _i64.PinCodeBloc(
+    gh.factory<_i59.AddReviewUseCase>(
+        () => _i59.AddReviewUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i60.AddToFavoriteUseCase>(
+        () => _i60.AddToFavoriteUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i61.DeleteReviewUseCase>(
+        () => _i61.DeleteReviewUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i62.FetchFavoriteListUseCase>(
+        () => _i62.FetchFavoriteListUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i63.FetchSpecialistCatalogueUseCase>(() =>
+        _i63.FetchSpecialistCatalogueUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i64.FetchSpecialistReviewsUseCase>(
+        () => _i64.FetchSpecialistReviewsUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i65.FetchSpecialistsOnlineUseCase>(
+        () => _i65.FetchSpecialistsOnlineUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i66.PinCodeBloc>(() => _i66.PinCodeBloc(
           gh<_i32.UserController>(),
           gh<_i54.PinCodeChangeUseCase>(),
         ));
-    gh.factory<_i65.RemoveFromFavoriteUseCase>(
-        () => _i65.RemoveFromFavoriteUseCase(gh<_i55.SpecialistService>()));
-    gh.factory<_i66.ReviewBloc>(() => _i66.ReviewBloc(
-          gh<_i62.FetchSpecialistReviewsUseCase>(),
-          gh<_i58.AddReviewUseCase>(),
+    gh.factory<_i67.RemoveFromFavoriteUseCase>(
+        () => _i67.RemoveFromFavoriteUseCase(gh<_i55.SpecialistService>()));
+    gh.factory<_i68.ReviewBloc>(() => _i68.ReviewBloc(
+          gh<_i64.FetchSpecialistReviewsUseCase>(),
+          gh<_i59.AddReviewUseCase>(),
           gh<_i32.UserController>(),
+          gh<_i57.UpdateReviewUseCase>(),
+          gh<_i61.DeleteReviewUseCase>(),
         ));
-    gh.factory<_i67.SpecialistCatalogueBloc>(() => _i67.SpecialistCatalogueBloc(
-          gh<_i61.FetchSpecialistCatalogueUseCase>(),
+    gh.factory<_i69.SpecialistCatalogueBloc>(() => _i69.SpecialistCatalogueBloc(
+          gh<_i63.FetchSpecialistCatalogueUseCase>(),
           gh<_i3.AppliedFilterController>(),
         ));
-    gh.factory<_i68.SpecialistOnlineBloc>(() =>
-        _i68.SpecialistOnlineBloc(gh<_i63.FetchSpecialistsOnlineUseCase>()));
-    gh.factory<_i69.FavoriteBloc>(() => _i69.FavoriteBloc(
+    gh.factory<_i70.SpecialistOnlineBloc>(() =>
+        _i70.SpecialistOnlineBloc(gh<_i65.FetchSpecialistsOnlineUseCase>()));
+    gh.factory<_i71.FavoriteBloc>(() => _i71.FavoriteBloc(
           gh<_i32.UserController>(),
-          gh<_i60.FetchFavoriteListUseCase>(),
-          gh<_i59.AddToFavoriteUseCase>(),
-          gh<_i65.RemoveFromFavoriteUseCase>(),
+          gh<_i62.FetchFavoriteListUseCase>(),
+          gh<_i60.AddToFavoriteUseCase>(),
+          gh<_i67.RemoveFromFavoriteUseCase>(),
         ));
     return this;
   }

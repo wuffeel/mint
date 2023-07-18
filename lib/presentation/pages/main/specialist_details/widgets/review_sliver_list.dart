@@ -44,7 +44,7 @@ class ReviewSliverList extends StatelessWidget {
               itemCount: reviews.length,
               itemBuilder: (context, index) {
                 final review = reviews[index];
-                return review != state.userReview
+                return !state.userReviews.contains(review)
                     ? ReviewCardTile(reviewModel: review)
                     : const SizedBox.shrink();
               },

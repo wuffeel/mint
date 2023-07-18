@@ -73,7 +73,7 @@
   "typeHereYourImpressions": "Type here your impressions",
   "leaveReview": "Leave a review",
   "youHaveNotSelectedRating": "You have not selected a rating",
-  "yourReview": "Your review",
+  "yourReviews": "Your reviews",
   "addReview": "Add review",
   "updateReview": "Update review",
   "book": "Book",
@@ -90,5 +90,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "deleteReview": "Delete review",
+  "doYouWantToDeleteReview": "Do you want to delete review",
+  "cancel": "Cancel",
+  "yes": "Yes"
 }

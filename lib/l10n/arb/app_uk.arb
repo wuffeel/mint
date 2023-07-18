@@ -73,7 +73,7 @@
   "typeHereYourImpressions": "Введіть тут ваші враження",
   "leaveReview": "Зберегти відгук",
   "youHaveNotSelectedRating": "Ви не обрали оцінку",
-  "yourReview": "Ваш відгук",
+  "yourReviews": "Ваші відгуки",
   "addReview": "Додати відгук",
   "updateReview": "Оновити відгук",
   "book": "Забронювати",
@@ -90,5 +90,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "deleteReview": "Видалити відгук",
+  "doYouWantToDeleteReview": "Хочете видалити відгук",
+  "cancel": "Відмінити",
+  "yes": "Так"
 }

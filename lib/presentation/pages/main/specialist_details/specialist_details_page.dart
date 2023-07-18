@@ -9,11 +9,14 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/booking_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/add_review_sliver_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/review_delete_dialog.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_book_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/user_review_tile.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/user_reviews_section.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/your_reviews_divider.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/your_reviews_title.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
 
 import '../../../../domain/entity/review_model/review_model.dart';
@@ -87,16 +90,23 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
   }
 
   void _onReviewRefresh() {
-    return context.read<ReviewBloc>().add(
-          ReviewFetchRequested(widget.specialistModel.id),
-        );
+    return context
+        .read<ReviewBloc>()
+        .add(ReviewFetchRequested(widget.specialistModel.id));
   }
 
-  void _showReviewBottomSheet(ReviewState state) {
-    ReviewModel? userReview;
-    if (state is ReviewFetchSuccess && state.userReview != null) {
-      userReview = state.userReview;
-    }
+  void _onReviewDelete(ReviewModel review) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => ReviewDeleteDialog(
+        onDelete: () {
+          return context.read<ReviewBloc>().add(ReviewDeleteRequested(review));
+        },
+      ),
+    );
+  }
+
+  void _showReviewBottomSheet(ReviewModel? userReview) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -132,9 +142,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
       return '...';
     }
     if (state is ReviewFetchSuccess) {
-      return state.userReview != null
-          ? context.l10n.updateReview
-          : context.l10n.addReview;
+      return context.l10n.addReview;
     }
     return '';
   }
@@ -233,13 +241,19 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                                 builder: (context, state) {
                                   return AddReviewSliverButton(
                                     onPressed: state is! ReviewLoading
-                                        ? () => _showReviewBottomSheet(state)
+                                        ? () => _showReviewBottomSheet(null)
                                         : null,
                                     title: _getReviewButtonText(state),
                                   );
                                 },
                               ),
-                              const UserReviewTile(),
+                              const YourReviewsTitle(),
+                              UserReviewsSection(
+                                onEdit: _showReviewBottomSheet,
+                                onDelete: _onReviewDelete,
+                              ),
+                              SliverToBoxAdapter(child: SizedBox(height: 12.h)),
+                              const YourReviewsDivider(),
                               ReviewSliverList(onRefresh: _onReviewRefresh),
                               SliverToBoxAdapter(
                                 child: SizedBox(height: _bookButtonHeight),
