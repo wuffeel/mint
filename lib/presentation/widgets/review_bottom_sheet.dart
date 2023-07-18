@@ -37,7 +37,6 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
   /// null
   final _reviewScroll = ScrollController();
 
-
   @override
   void initState() {
     super.initState();
@@ -70,15 +69,28 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
     context.read<ReviewBloc>().add(ReviewRatingSelected());
   }
 
+  /// Adds or updates the review considering userReview provided or not
   void _onSaveReview(BuildContext context) {
-    final rating = _selectedRating;
-    context.read<ReviewBloc>().add(
-          ReviewAddRequested(
-            specialistId: widget.specialistId,
-            rating: rating,
-            content: _reviewController.text.trim(),
-          ),
-        );
+    final userReview = widget.userReview;
+    if (userReview == null) {
+      context.read<ReviewBloc>().add(
+            ReviewAddRequested(
+              specialistId: widget.specialistId,
+              rating: _selectedRating,
+              content: _reviewController.text.trim(),
+            ),
+          );
+    } else {
+      context.read<ReviewBloc>().add(
+            ReviewUpdateRequested(
+              userReview.copyWith(
+                rating: _selectedRating ?? userReview.rating,
+                content: _reviewController.text.trim(),
+                createdAt: DateTime.now(),
+              ),
+            ),
+          );
+    }
   }
 
   @override

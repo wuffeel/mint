@@ -130,12 +130,14 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       final reviews = state.reviews;
       final userReviews = state.userReviews;
 
-      final updatedReviews = moveItemToStart(
+      final updatedReviews = _moveItemToStart(
+        review,
         reviews,
         (item) => item.id == review.id,
       );
 
-      final updatedUserReviews = moveItemToStart(
+      final updatedUserReviews = _moveItemToStart(
+        review,
         userReviews,
         (item) => item.id == review.id,
       );
@@ -193,14 +195,20 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     emit(ReviewSelectSuccess(state.reviews, state.userReviews));
   }
 
-  List<T> moveItemToStart<T>(List<T> list, bool Function(T) condition) {
+  /// Used to move the given [item] to the start of list
+  List<T> _moveItemToStart<T>(
+    T item,
+    List<T> list,
+    bool Function(T) condition,
+  ) {
     final index = list.indexWhere(condition);
     if (index == -1) {
       return list;
     }
 
-    final item = list.removeAt(index);
-    list.insert(0, item);
+    list
+      ..removeAt(index)
+      ..insert(0, item);
 
     return list;
   }
