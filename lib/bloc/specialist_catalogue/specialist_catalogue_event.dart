@@ -12,3 +12,9 @@ class SpecialistCatalogueFetchRequested extends SpecialistCatalogueEvent {
 }
 
 class SpecialistCatalogueRefreshRequested extends SpecialistCatalogueEvent {}
+
+class SpecialistCatalogueRatingUpdated extends SpecialistCatalogueEvent {
+  SpecialistCatalogueRatingUpdated(this.updatedRating);
+
+  final SpecialistRating updatedRating;
+}

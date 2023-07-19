@@ -18,29 +18,29 @@ import 'package:mint/presentation/pages/auth/otp_page/otp_page.dart' as _i2;
 import 'package:mint/presentation/pages/auth/sign_up_wrapper_page.dart' as _i1;
 import 'package:mint/presentation/pages/log_in_check_page.dart' as _i4;
 import 'package:mint/presentation/pages/main/booking/booking_resume_page.dart'
-    as _i17;
+    as _i9;
 import 'package:mint/presentation/pages/main/home/home_page.dart' as _i5;
 import 'package:mint/presentation/pages/main/navigation/navigation_page.dart'
-    as _i9;
-import 'package:mint/presentation/pages/main/navigation/navigation_wrapper_page.dart'
     as _i10;
+import 'package:mint/presentation/pages/main/navigation/navigation_wrapper_page.dart'
+    as _i11;
 import 'package:mint/presentation/pages/main/pick_up_specialist/pick_up_specialist_page.dart'
-    as _i13;
+    as _i14;
 import 'package:mint/presentation/pages/main/pin_code/forgot_pin_otp_wrapper_page.dart'
     as _i6;
 import 'package:mint/presentation/pages/main/pin_code/pin_code_page.dart'
     as _i8;
 import 'package:mint/presentation/pages/main/pin_code/pin_code_wrapper_page.dart'
     as _i7;
-import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i15;
+import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i16;
 import 'package:mint/presentation/pages/main/sessions/sessions_page.dart'
-    as _i14;
+    as _i15;
 import 'package:mint/presentation/pages/main/specialist_details/specialist_details_page.dart'
-    as _i16;
+    as _i17;
 import 'package:mint/presentation/pages/main/specialists/specialists_page.dart'
-    as _i11;
-import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
     as _i12;
+import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
+    as _i13;
 
 abstract class $AppRouter extends _i18.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -95,68 +95,68 @@ abstract class $AppRouter extends _i18.RootStackRouter {
         child: const _i8.PinCodePage(),
       );
     },
+    BookingResumeRoute.name: (routeData) {
+      final args = routeData.argsAs<BookingResumeRouteArgs>();
+      return _i18.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i9.BookingResumePage(
+          key: args.key,
+          specialistModel: args.specialistModel,
+          date: args.date,
+          time: args.time,
+          minutesDuration: args.minutesDuration,
+        ),
+      );
+    },
     NavigationRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.NavigationPage(),
+        child: const _i10.NavigationPage(),
       );
     },
     NavigationWrapperRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i18.WrappedRoute(child: const _i10.NavigationWrapperPage()),
+        child: _i18.WrappedRoute(child: const _i11.NavigationWrapperPage()),
       );
     },
     SpecialistsRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i11.SpecialistsPage(),
+        child: const _i12.SpecialistsPage(),
       );
     },
     SpecialistsWrapperRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i18.WrappedRoute(child: const _i12.SpecialistsWrapperPage()),
+        child: _i18.WrappedRoute(child: const _i13.SpecialistsWrapperPage()),
       );
     },
     PickUpSpecialistRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i13.PickUpSpecialistPage(),
+        child: const _i14.PickUpSpecialistPage(),
       );
     },
     SessionsRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i14.SessionsPage(),
+        child: const _i15.SessionsPage(),
       );
     },
     ProfileRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i15.ProfilePage(),
+        child: const _i16.ProfilePage(),
       );
     },
     SpecialistDetailsRoute.name: (routeData) {
       final args = routeData.argsAs<SpecialistDetailsRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i16.SpecialistDetailsPage(
+        child: _i17.SpecialistDetailsPage(
           key: args.key,
           specialistModel: args.specialistModel,
-        ),
-      );
-    },
-    BookingResumeRoute.name: (routeData) {
-      final args = routeData.argsAs<BookingResumeRouteArgs>();
-      return _i18.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i17.BookingResumePage(
-          key: args.key,
-          specialistModel: args.specialistModel,
-          date: args.date,
-          time: args.time,
-          minutesDuration: args.minutesDuration,
         ),
       );
     },
@@ -276,144 +276,7 @@ class PinCodeRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.NavigationPage]
-class NavigationRoute extends _i18.PageRouteInfo<void> {
-  const NavigationRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          NavigationRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'NavigationRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i10.NavigationWrapperPage]
-class NavigationWrapperRoute extends _i18.PageRouteInfo<void> {
-  const NavigationWrapperRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          NavigationWrapperRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'NavigationWrapperRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i11.SpecialistsPage]
-class SpecialistsRoute extends _i18.PageRouteInfo<void> {
-  const SpecialistsRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          SpecialistsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SpecialistsRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i12.SpecialistsWrapperPage]
-class SpecialistsWrapperRoute extends _i18.PageRouteInfo<void> {
-  const SpecialistsWrapperRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          SpecialistsWrapperRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SpecialistsWrapperRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i13.PickUpSpecialistPage]
-class PickUpSpecialistRoute extends _i18.PageRouteInfo<void> {
-  const PickUpSpecialistRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          PickUpSpecialistRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PickUpSpecialistRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i14.SessionsPage]
-class SessionsRoute extends _i18.PageRouteInfo<void> {
-  const SessionsRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          SessionsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SessionsRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i15.ProfilePage]
-class ProfileRoute extends _i18.PageRouteInfo<void> {
-  const ProfileRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          ProfileRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ProfileRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i16.SpecialistDetailsPage]
-class SpecialistDetailsRoute
-    extends _i18.PageRouteInfo<SpecialistDetailsRouteArgs> {
-  SpecialistDetailsRoute({
-    _i19.Key? key,
-    required _i20.SpecialistModel specialistModel,
-    List<_i18.PageRouteInfo>? children,
-  }) : super(
-          SpecialistDetailsRoute.name,
-          args: SpecialistDetailsRouteArgs(
-            key: key,
-            specialistModel: specialistModel,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'SpecialistDetailsRoute';
-
-  static const _i18.PageInfo<SpecialistDetailsRouteArgs> page =
-      _i18.PageInfo<SpecialistDetailsRouteArgs>(name);
-}
-
-class SpecialistDetailsRouteArgs {
-  const SpecialistDetailsRouteArgs({
-    this.key,
-    required this.specialistModel,
-  });
-
-  final _i19.Key? key;
-
-  final _i20.SpecialistModel specialistModel;
-
-  @override
-  String toString() {
-    return 'SpecialistDetailsRouteArgs{key: $key, specialistModel: $specialistModel}';
-  }
-}
-
-/// generated route for
-/// [_i17.BookingResumePage]
+/// [_i9.BookingResumePage]
 class BookingResumeRoute extends _i18.PageRouteInfo<BookingResumeRouteArgs> {
   BookingResumeRoute({
     _i19.Key? key,
@@ -462,5 +325,142 @@ class BookingResumeRouteArgs {
   @override
   String toString() {
     return 'BookingResumeRouteArgs{key: $key, specialistModel: $specialistModel, date: $date, time: $time, minutesDuration: $minutesDuration}';
+  }
+}
+
+/// generated route for
+/// [_i10.NavigationPage]
+class NavigationRoute extends _i18.PageRouteInfo<void> {
+  const NavigationRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          NavigationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NavigationRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i11.NavigationWrapperPage]
+class NavigationWrapperRoute extends _i18.PageRouteInfo<void> {
+  const NavigationWrapperRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          NavigationWrapperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NavigationWrapperRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i12.SpecialistsPage]
+class SpecialistsRoute extends _i18.PageRouteInfo<void> {
+  const SpecialistsRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          SpecialistsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SpecialistsRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i13.SpecialistsWrapperPage]
+class SpecialistsWrapperRoute extends _i18.PageRouteInfo<void> {
+  const SpecialistsWrapperRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          SpecialistsWrapperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SpecialistsWrapperRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i14.PickUpSpecialistPage]
+class PickUpSpecialistRoute extends _i18.PageRouteInfo<void> {
+  const PickUpSpecialistRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          PickUpSpecialistRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PickUpSpecialistRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i15.SessionsPage]
+class SessionsRoute extends _i18.PageRouteInfo<void> {
+  const SessionsRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          SessionsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SessionsRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i16.ProfilePage]
+class ProfileRoute extends _i18.PageRouteInfo<void> {
+  const ProfileRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          ProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i17.SpecialistDetailsPage]
+class SpecialistDetailsRoute
+    extends _i18.PageRouteInfo<SpecialistDetailsRouteArgs> {
+  SpecialistDetailsRoute({
+    _i19.Key? key,
+    required _i20.SpecialistModel specialistModel,
+    List<_i18.PageRouteInfo>? children,
+  }) : super(
+          SpecialistDetailsRoute.name,
+          args: SpecialistDetailsRouteArgs(
+            key: key,
+            specialistModel: specialistModel,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'SpecialistDetailsRoute';
+
+  static const _i18.PageInfo<SpecialistDetailsRouteArgs> page =
+      _i18.PageInfo<SpecialistDetailsRouteArgs>(name);
+}
+
+class SpecialistDetailsRouteArgs {
+  const SpecialistDetailsRouteArgs({
+    this.key,
+    required this.specialistModel,
+  });
+
+  final _i19.Key? key;
+
+  final _i20.SpecialistModel specialistModel;
+
+  @override
+  String toString() {
+    return 'SpecialistDetailsRouteArgs{key: $key, specialistModel: $specialistModel}';
   }
 }

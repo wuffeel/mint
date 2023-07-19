@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/domain/controller/specialist_rating_controller.dart';
 import 'package:mint/domain/usecase/add_review_use_case.dart';
 import 'package:mint/domain/usecase/fetch_specialist_reviews_use_case.dart';
 import 'package:mint/domain/usecase/update_review_use_case.dart';
@@ -24,6 +25,7 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     this._fetchSpecialistReviewsUseCase,
     this._addReviewUseCase,
     this._userController,
+    this._specialistRatingController,
     this._updateReviewUseCase,
     this._deleteReviewUseCase,
   ) : super(ReviewInitial()) {
@@ -42,6 +44,8 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
 
   UserModel? _currentUser;
   final UserController _userController;
+  final SpecialistRatingController _specialistRatingController;
+
   late final StreamSubscription<UserModel?> _userSubscription;
 
   void _subscribeToUserChange() {
@@ -108,6 +112,10 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       final updatedReviews = [reviewWithId, ...reviews];
       final updatedUserReviews = [reviewWithId, ...userReviews];
 
+      _specialistRatingController.addToSpecialistRatingStream(
+        _getUpdatedRating(updatedReviews, event.specialistId),
+      );
+
       emit(ReviewAddSuccess(updatedReviews, updatedUserReviews));
     } catch (error) {
       log('ReviewAddFailure: $error');
@@ -140,6 +148,10 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
         review,
         userReviews,
         (item) => item.id == review.id,
+      );
+
+      _specialistRatingController.addToSpecialistRatingStream(
+        _getUpdatedRating(updatedReviews, event.reviewModel.specialistId),
       );
 
       emit(ReviewAddSuccess(updatedReviews, updatedUserReviews));
@@ -182,6 +194,10 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
           .whereType<ReviewModel>()
           .toList();
 
+      _specialistRatingController.addToSpecialistRatingStream(
+        _getUpdatedRating(updatedReviews, event.reviewModel.specialistId),
+      );
+
       emit(ReviewDeleteSuccess(updatedReviews, updatedUserReviews));
     } catch (error) {
       log('ReviewDeleteFailure: $error');
@@ -213,5 +229,22 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
       ..insert(0, item);
 
     return list;
+  }
+
+  SpecialistRating _getUpdatedRating(
+    List<ReviewModel> reviewList,
+    String specialistId,
+  ) {
+    final specialistReviews =
+        reviewList.where((element) => element.specialistId == specialistId);
+    final newRating =
+        specialistReviews.map((e) => e.rating).reduce((a, b) => a + b);
+    final reviewCount = specialistReviews.length;
+    final updatedRating = (
+      double.parse((newRating / reviewCount).toStringAsFixed(1)),
+      reviewCount,
+      specialistId,
+    );
+    return updatedRating;
   }
 }
