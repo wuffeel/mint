@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/bloc/review/review_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
@@ -126,8 +127,12 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => BookingBottomSheet(
-        specialistModel: widget.specialistModel,
+      builder: (_) => BlocProvider(
+        create: (context) => getIt<BookingBloc>()
+          ..add(BookingInfoRequested(widget.specialistModel.id)),
+        child: BookingBottomSheet(
+          specialistModel: widget.specialistModel,
+        ),
       ),
     );
   }
@@ -170,6 +175,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                       scrollController: _nestedScrollController,
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
+                      floating: true,
                       pinned: true,
                       leading: const MintBackButton(),
                       leadingWidth: 80.w,
