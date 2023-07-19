@@ -18,7 +18,7 @@ class ReviewCardTile extends StatelessWidget {
   String _getFullName() {
     final user = reviewModel.user;
     // TODO(wuffeel): what user name placeholder should be used?
-    if (user.firstName == null || user.lastName == null) return 'user';
+    if (user.firstName == null || user.lastName == null) return 'Patient';
     return '${user.firstName} ${user.lastName}';
   }
 
