@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/theme/mint_text_styles.dart';
 
 class AddReviewSliverButton extends StatelessWidget {
   const AddReviewSliverButton({
