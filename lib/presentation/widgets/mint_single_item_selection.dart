@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/presentation/widgets/mint_selection_button.dart';
 
 class MintSingleItemSelection<T> extends StatelessWidget {
@@ -9,26 +8,30 @@ class MintSingleItemSelection<T> extends StatelessWidget {
     required this.itemTitles,
     required this.selectedItem,
     required this.onSelect,
-    this.itemsPerRow = 6,
+    this.itemsPerRow,
     this.mainSpacing,
     this.crossSpacing,
+    this.itemAlignment,
     this.itemInnerPadding,
     this.itemTextStyle,
     this.unselectedTextStyle,
     this.disabledTextStyle,
+    this.itemWidth,
   });
 
   final List<T> items;
   final List<String> itemTitles;
   final T? selectedItem;
   final ValueChanged<T>? onSelect;
+  final AlignmentGeometry? itemAlignment;
   final EdgeInsetsGeometry? itemInnerPadding;
   final TextStyle? itemTextStyle;
   final TextStyle? unselectedTextStyle;
   final TextStyle? disabledTextStyle;
+  final double? itemWidth;
 
   /// The number of items to display per row.
-  final int itemsPerRow;
+  final int? itemsPerRow;
 
   /// The spacing between items horizontally.
   final double? mainSpacing;
@@ -50,18 +53,21 @@ class MintSingleItemSelection<T> extends StatelessWidget {
 
   /// Calculates the width of each item based on the available width and the
   /// spacing between items.
-  double _getItemWidth(double maxWidth) {
+  double _getItemWidth(double maxWidth, int itemsPerRow) {
     final spacing = _calculateSpacing(maxWidth, itemsPerRow);
     return (maxWidth - spacing * (itemsPerRow - 1)) / itemsPerRow;
   }
 
   @override
   Widget build(BuildContext context) {
+    final perRow = itemsPerRow;
     return LayoutBuilder(
       builder: (context, constraints) {
         return Wrap(
-          spacing: _calculateSpacing(constraints.maxWidth, itemsPerRow),
-          runSpacing: crossSpacing ?? 8.h,
+          spacing: perRow != null
+              ? _calculateSpacing(constraints.maxWidth, perRow)
+              : mainSpacing ?? 0,
+          runSpacing: crossSpacing ?? 0,
           children: List.generate(
             items.length,
             (index) {
@@ -71,8 +77,11 @@ class MintSingleItemSelection<T> extends StatelessWidget {
                 title: itemTitles[index],
                 isSelected: selectedItem == item,
                 onSelect: selectedItem != item ? onSelect : null,
-                width: _getItemWidth(constraints.maxWidth),
+                width: perRow != null
+                    ? _getItemWidth(constraints.maxWidth, perRow)
+                    : itemWidth,
                 itemTextStyle: itemTextStyle,
+                itemAlignment: itemAlignment,
                 itemInnerPadding: itemInnerPadding,
                 unselectedTextStyle: unselectedTextStyle,
                 disabledTextStyle: disabledTextStyle,

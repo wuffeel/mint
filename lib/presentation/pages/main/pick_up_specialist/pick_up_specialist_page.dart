@@ -146,6 +146,10 @@ class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
                       onItemSelected: (specializations) => _onValueSelected(
                         preferences.copyWith(specializations: specializations),
                       ),
+                      itemInnerPadding: EdgeInsets.symmetric(
+                        vertical: 12.h,
+                        horizontal: 8.w,
+                      ),
                     ),
                   ),
                 ],

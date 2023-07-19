@@ -10,6 +10,7 @@ class MintSelectionButton<T> extends StatelessWidget {
     required this.isSelected,
     this.hasCheckMark = false,
     this.onSelect,
+    this.itemAlignment,
     this.itemInnerPadding,
     this.itemTextStyle,
     this.unselectedTextStyle,
@@ -22,6 +23,7 @@ class MintSelectionButton<T> extends StatelessWidget {
   final bool isSelected;
   final bool hasCheckMark;
   final void Function(T)? onSelect;
+  final AlignmentGeometry? itemAlignment;
   final EdgeInsetsGeometry? itemInnerPadding;
   final TextStyle? itemTextStyle;
   final TextStyle? unselectedTextStyle;
@@ -48,8 +50,8 @@ class MintSelectionButton<T> extends StatelessWidget {
       borderRadius: BorderRadius.circular(10.r),
       child: Container(
         width: width,
-        padding: itemInnerPadding ?? EdgeInsets.symmetric(vertical: 12.h),
-        alignment: Alignment.center,
+        padding: itemInnerPadding,
+        alignment: itemAlignment,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(10.r),

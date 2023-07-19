@@ -129,6 +129,7 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
               mainSpacing: 11.w,
               crossSpacing: 11.h,
               itemInnerPadding: EdgeInsets.symmetric(vertical: 12.5.h),
+              itemAlignment: Alignment.center,
               itemTextStyle: MintTextStyles.callOut3,
               unselectedTextStyle: MintTextStyles.callOut3.copyWith(
                 color: Theme.of(context).hintColor.withOpacity(0.6),

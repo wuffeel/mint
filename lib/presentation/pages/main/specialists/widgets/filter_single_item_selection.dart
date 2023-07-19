@@ -11,12 +11,14 @@ class FilterSingleItemSelection<T> extends StatelessWidget {
     required this.itemTitles,
     required this.selectedItem,
     required this.onSelect,
+    this.itemInnerPadding,
   });
 
   final List<T> items;
   final List<String> itemTitles;
   final T? selectedItem;
   final ValueChanged<T?> onSelect;
+  final EdgeInsetsGeometry? itemInnerPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,14 @@ class FilterSingleItemSelection<T> extends StatelessWidget {
                   title: context.l10n.allFilter,
                   isSelected: selectedItem == null,
                   onSelect: onSelect,
+                  itemInnerPadding: itemInnerPadding,
                 )
               : MintSelectionButton(
                   value: items[index - 1],
                   title: itemTitles[index - 1],
                   isSelected: selectedItem == items[index - 1],
                   onSelect: selectedItem != items[index - 1] ? onSelect : null,
+                  itemInnerPadding: itemInnerPadding,
                 );
         },
       ),
