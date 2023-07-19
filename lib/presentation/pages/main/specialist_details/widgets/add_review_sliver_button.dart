@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/theme/mint_text_styles.dart';
 
 class AddReviewSliverButton extends StatelessWidget {
   const AddReviewSliverButton({
@@ -19,7 +20,7 @@ class AddReviewSliverButton extends StatelessWidget {
         horizontal: 16.w,
       ),
       sliver: SliverToBoxAdapter(
-        child: ElevatedButton(
+        child: OutlinedButton(
           onPressed: onPressed,
           child: Text(title),
         ),

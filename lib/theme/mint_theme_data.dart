@@ -72,6 +72,30 @@ class MintThemeData {
     ),
   );
 
+  static final outlinedButtonLight = OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      elevation: 0,
+      minimumSize: Size.fromHeight(50.h),
+      foregroundColor: Colors.black,
+      disabledForegroundColor: Colors.black.withOpacity(0.4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+      side: const BorderSide(color: MintColors.primaryLightBlueColor),
+      textStyle: MintTextStyles.headline,
+    ),
+  );
+
+  static final outlinedButtonDark = OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      elevation: 0,
+      minimumSize: Size.fromHeight(50.h),
+      foregroundColor: Colors.white,
+      disabledForegroundColor: Colors.white.withOpacity(0.6),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+      side: const BorderSide(color: MintColors.primaryDarkBlueColor),
+      textStyle: MintTextStyles.headline,
+    ),
+  );
+
   static final bottomNavigationBarLight = BottomNavigationBarThemeData(
     backgroundColor: MintColors.scaffoldLight,
     unselectedItemColor: MintColors.greyLight.withOpacity(0.6),
