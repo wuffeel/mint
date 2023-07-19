@@ -105,4 +105,24 @@ class MintThemeData {
     inactiveTrackColor: MintColors.elementsGreyDark,
     trackHeight: 2,
   );
+
+  static final tabBarThemeLight = TabBarTheme(
+    indicatorColor: Colors.black,
+    labelColor: Colors.black,
+    labelStyle: MintTextStyles.tab16,
+    unselectedLabelStyle: MintTextStyles.tab16,
+    unselectedLabelColor: MintColors.greyLight.withOpacity(0.3),
+    indicator: const UnderlineTabIndicator(
+      borderSide: BorderSide(width: 2),
+    ),
+  );
+
+  static final tabBarThemeDark = TabBarTheme(
+    indicatorColor: Colors.white,
+    labelColor: Colors.white,
+    labelStyle: MintTextStyles.tab16,
+    unselectedLabelStyle: MintTextStyles.tab16,
+    unselectedLabelColor: MintColors.greyDark.withOpacity(0.3),
+    indicator: const UnderlineTabIndicator(),
+  );
 }

@@ -10,8 +10,12 @@ class SpecialistModel with _$SpecialistModel {
     required String firstName,
     required String lastName,
     required int price,
-    required int experience,
+    required DateTime experience,
     required double rating,
+    required int reviewCount,
+    required List<String> specializations,
     String? photoUrl,
+    String? about,
+    String? education,
   }) = _SpecialistModel;
 }

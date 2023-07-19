@@ -33,7 +33,6 @@ class _PickUpStepperState extends State<PickUpStepper> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 16.h),
         Text(context.l10n.helpUsMatchYou, style: MintTextStyles.title1),
         SizedBox(height: 16.h),
         Row(
@@ -66,16 +65,13 @@ class _PickUpStepperState extends State<PickUpStepper> {
           ),
           SizedBox(height: 16.h),
         ],
-        Expanded(
-          child: widget.steps[widget.currentStep],
-        ),
+        Expanded(child: widget.steps[widget.currentStep]),
         ElevatedButton(
           onPressed: widget.currentStep + 1 < widget.steps.length
               ? widget.onNextStep
               : widget.onFinish,
           child: Text(context.l10n.next),
         ),
-        SizedBox(height: 26.h),
       ],
     );
   }

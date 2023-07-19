@@ -81,8 +81,7 @@ class MintBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: use_decorated_box
-    return Container(
+    return Ink(
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       ),

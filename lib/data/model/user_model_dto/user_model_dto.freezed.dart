@@ -28,7 +28,7 @@ mixin _$UserModelDto {
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
-  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   DateTime? get dateOfBirth => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +51,8 @@ abstract class $UserModelDtoCopyWith<$Res> {
       String? nameTag,
       String? firstName,
       String? lastName,
-      @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime? dateOfBirth});
+      @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
+          DateTime? dateOfBirth});
 }
 
 /// @nodoc
@@ -129,7 +130,8 @@ abstract class _$$_UserModelDtoCopyWith<$Res>
       String? nameTag,
       String? firstName,
       String? lastName,
-      @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime? dateOfBirth});
+      @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
+          DateTime? dateOfBirth});
 }
 
 /// @nodoc
@@ -200,7 +202,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
       this.nameTag,
       this.firstName,
       this.lastName,
-      @JsonKey(fromJson: DateUtils.convertToDateTime) this.dateOfBirth});
+      @JsonKey(fromJson: DateUtils.tryConvertToDateTime) this.dateOfBirth});
 
   factory _$_UserModelDto.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelDtoFromJson(json);
@@ -221,7 +223,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
   final String? lastName;
 // ignore: invalid_annotation_target
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   final DateTime? dateOfBirth;
 
   @override
@@ -292,7 +294,7 @@ abstract class _UserModelDto implements UserModelDto {
       final String? nameTag,
       final String? firstName,
       final String? lastName,
-      @JsonKey(fromJson: DateUtils.convertToDateTime)
+      @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
           final DateTime? dateOfBirth}) = _$_UserModelDto;
 
   factory _UserModelDto.fromJson(Map<String, dynamic> json) =
@@ -313,7 +315,7 @@ abstract class _UserModelDto implements UserModelDto {
   @override
   String? get lastName;
   @override // ignore: invalid_annotation_target
-  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   DateTime? get dateOfBirth;
   @override
   @JsonKey(ignore: true)

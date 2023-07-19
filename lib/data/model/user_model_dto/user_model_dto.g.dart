@@ -15,7 +15,7 @@ _$_UserModelDto _$$_UserModelDtoFromJson(Map<String, dynamic> json) =>
       nameTag: json['nameTag'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
-      dateOfBirth: DateUtils.convertToDateTime(json['dateOfBirth']),
+      dateOfBirth: DateUtils.tryConvertToDateTime(json['dateOfBirth']),
     );
 
 Map<String, dynamic> _$$_UserModelDtoToJson(_$_UserModelDto instance) =>

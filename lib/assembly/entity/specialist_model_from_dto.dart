@@ -20,6 +20,10 @@ class SpecialistModelFromDto
         price: param.price,
         experience: param.experience,
         rating: param.rating,
+        reviewCount: param.reviewCount,
+        specializations: [...param.specializations],
         photoUrl: await _service.getSpecialistPhoto(param.photoUrl),
+        about: param.about,
+        education: param.education,
       );
 }

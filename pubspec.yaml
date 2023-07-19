@@ -34,6 +34,7 @@ dependencies:
   meta: ^1.9.1
   pinput: ^2.2.31
   rxdart: ^0.27.7
+  shimmer: ^3.0.0
 
 dev_dependencies:
   auto_route_generator: ^7.1.1

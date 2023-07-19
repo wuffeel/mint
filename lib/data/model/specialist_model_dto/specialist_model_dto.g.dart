@@ -13,9 +13,16 @@ _$_SpecialistModelDto _$$_SpecialistModelDtoFromJson(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       price: json['price'] as int,
-      experience: json['experience'] as int,
-      rating: (json['rating'] as num).toDouble(),
+      experience: DateUtils.convertToDateTime(json['experience']),
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      reviewCount: json['reviewCount'] as int? ?? 0,
+      specializations: (json['specializations'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
       photoUrl: json['photoUrl'] as String?,
+      about: json['about'] as String?,
+      education: json['education'] as String?,
     );
 
 Map<String, dynamic> _$$_SpecialistModelDtoToJson(
@@ -25,7 +32,11 @@ Map<String, dynamic> _$$_SpecialistModelDtoToJson(
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'price': instance.price,
-      'experience': instance.experience,
+      'experience': instance.experience.toIso8601String(),
       'rating': instance.rating,
+      'reviewCount': instance.reviewCount,
+      'specializations': instance.specializations,
       'photoUrl': instance.photoUrl,
+      'about': instance.about,
+      'education': instance.education,
     };

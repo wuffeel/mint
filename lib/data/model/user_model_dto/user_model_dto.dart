@@ -17,7 +17,7 @@ class UserModelDto with _$UserModelDto {
     String? firstName,
     String? lastName,
     // ignore: invalid_annotation_target
-    @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime? dateOfBirth,
+    @JsonKey(fromJson: DateUtils.tryConvertToDateTime) DateTime? dateOfBirth,
   }) = _UserModelDto;
 
   factory UserModelDto.fromJson(Map<String, dynamic> json) =>

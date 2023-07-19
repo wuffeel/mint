@@ -24,9 +24,14 @@ mixin _$SpecialistModelDto {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
-  int get experience => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  DateTime get experience => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
+  int get reviewCount => throw _privateConstructorUsedError;
+  List<String> get specializations => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
+  String? get about => throw _privateConstructorUsedError;
+  String? get education => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,9 +50,13 @@ abstract class $SpecialistModelDtoCopyWith<$Res> {
       String firstName,
       String lastName,
       int price,
-      int experience,
+      @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime experience,
       double rating,
-      String? photoUrl});
+      int reviewCount,
+      List<String> specializations,
+      String? photoUrl,
+      String? about,
+      String? education});
 }
 
 /// @nodoc
@@ -69,7 +78,11 @@ class _$SpecialistModelDtoCopyWithImpl<$Res, $Val extends SpecialistModelDto>
     Object? price = null,
     Object? experience = null,
     Object? rating = null,
+    Object? reviewCount = null,
+    Object? specializations = null,
     Object? photoUrl = freezed,
+    Object? about = freezed,
+    Object? education = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -91,14 +104,30 @@ class _$SpecialistModelDtoCopyWithImpl<$Res, $Val extends SpecialistModelDto>
       experience: null == experience
           ? _value.experience
           : experience // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       rating: null == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double,
+      reviewCount: null == reviewCount
+          ? _value.reviewCount
+          : reviewCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      specializations: null == specializations
+          ? _value.specializations
+          : specializations // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       photoUrl: freezed == photoUrl
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
+      education: freezed == education
+          ? _value.education
+          : education // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -117,9 +146,13 @@ abstract class _$$_SpecialistModelDtoCopyWith<$Res>
       String firstName,
       String lastName,
       int price,
-      int experience,
+      @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime experience,
       double rating,
-      String? photoUrl});
+      int reviewCount,
+      List<String> specializations,
+      String? photoUrl,
+      String? about,
+      String? education});
 }
 
 /// @nodoc
@@ -139,7 +172,11 @@ class __$$_SpecialistModelDtoCopyWithImpl<$Res>
     Object? price = null,
     Object? experience = null,
     Object? rating = null,
+    Object? reviewCount = null,
+    Object? specializations = null,
     Object? photoUrl = freezed,
+    Object? about = freezed,
+    Object? education = freezed,
   }) {
     return _then(_$_SpecialistModelDto(
       id: null == id
@@ -161,14 +198,30 @@ class __$$_SpecialistModelDtoCopyWithImpl<$Res>
       experience: null == experience
           ? _value.experience
           : experience // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
       rating: null == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
               as double,
+      reviewCount: null == reviewCount
+          ? _value.reviewCount
+          : reviewCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      specializations: null == specializations
+          ? _value._specializations
+          : specializations // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       photoUrl: freezed == photoUrl
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
+      education: freezed == education
+          ? _value.education
+          : education // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -184,9 +237,14 @@ class _$_SpecialistModelDto
       required this.firstName,
       required this.lastName,
       required this.price,
-      required this.experience,
-      required this.rating,
-      this.photoUrl});
+      @JsonKey(fromJson: DateUtils.convertToDateTime) required this.experience,
+      this.rating = 0.0,
+      this.reviewCount = 0,
+      final List<String> specializations = const <String>[],
+      this.photoUrl,
+      this.about,
+      this.education})
+      : _specializations = specializations;
 
   factory _$_SpecialistModelDto.fromJson(Map<String, dynamic> json) =>
       _$$_SpecialistModelDtoFromJson(json);
@@ -200,15 +258,33 @@ class _$_SpecialistModelDto
   @override
   final int price;
   @override
-  final int experience;
+  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  final DateTime experience;
   @override
+  @JsonKey()
   final double rating;
   @override
+  @JsonKey()
+  final int reviewCount;
+  final List<String> _specializations;
+  @override
+  @JsonKey()
+  List<String> get specializations {
+    if (_specializations is EqualUnmodifiableListView) return _specializations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_specializations);
+  }
+
+  @override
   final String? photoUrl;
+  @override
+  final String? about;
+  @override
+  final String? education;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SpecialistModelDto(id: $id, firstName: $firstName, lastName: $lastName, price: $price, experience: $experience, rating: $rating, photoUrl: $photoUrl)';
+    return 'SpecialistModelDto(id: $id, firstName: $firstName, lastName: $lastName, price: $price, experience: $experience, rating: $rating, reviewCount: $reviewCount, specializations: $specializations, photoUrl: $photoUrl, about: $about, education: $education)';
   }
 
   @override
@@ -222,7 +298,11 @@ class _$_SpecialistModelDto
       ..add(DiagnosticsProperty('price', price))
       ..add(DiagnosticsProperty('experience', experience))
       ..add(DiagnosticsProperty('rating', rating))
-      ..add(DiagnosticsProperty('photoUrl', photoUrl));
+      ..add(DiagnosticsProperty('reviewCount', reviewCount))
+      ..add(DiagnosticsProperty('specializations', specializations))
+      ..add(DiagnosticsProperty('photoUrl', photoUrl))
+      ..add(DiagnosticsProperty('about', about))
+      ..add(DiagnosticsProperty('education', education));
   }
 
   @override
@@ -239,14 +319,32 @@ class _$_SpecialistModelDto
             (identical(other.experience, experience) ||
                 other.experience == experience) &&
             (identical(other.rating, rating) || other.rating == rating) &&
+            (identical(other.reviewCount, reviewCount) ||
+                other.reviewCount == reviewCount) &&
+            const DeepCollectionEquality()
+                .equals(other._specializations, _specializations) &&
             (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+                other.photoUrl == photoUrl) &&
+            (identical(other.about, about) || other.about == about) &&
+            (identical(other.education, education) ||
+                other.education == education));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstName, lastName, price,
-      experience, rating, photoUrl);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      firstName,
+      lastName,
+      price,
+      experience,
+      rating,
+      reviewCount,
+      const DeepCollectionEquality().hash(_specializations),
+      photoUrl,
+      about,
+      education);
 
   @JsonKey(ignore: true)
   @override
@@ -269,9 +367,14 @@ abstract class _SpecialistModelDto implements SpecialistModelDto {
       required final String firstName,
       required final String lastName,
       required final int price,
-      required final int experience,
-      required final double rating,
-      final String? photoUrl}) = _$_SpecialistModelDto;
+      @JsonKey(fromJson: DateUtils.convertToDateTime)
+          required final DateTime experience,
+      final double rating,
+      final int reviewCount,
+      final List<String> specializations,
+      final String? photoUrl,
+      final String? about,
+      final String? education}) = _$_SpecialistModelDto;
 
   factory _SpecialistModelDto.fromJson(Map<String, dynamic> json) =
       _$_SpecialistModelDto.fromJson;
@@ -285,11 +388,20 @@ abstract class _SpecialistModelDto implements SpecialistModelDto {
   @override
   int get price;
   @override
-  int get experience;
+  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  DateTime get experience;
   @override
   double get rating;
   @override
+  int get reviewCount;
+  @override
+  List<String> get specializations;
+  @override
   String? get photoUrl;
+  @override
+  String? get about;
+  @override
+  String? get education;
   @override
   @JsonKey(ignore: true)
   _$$_SpecialistModelDtoCopyWith<_$_SpecialistModelDto> get copyWith =>

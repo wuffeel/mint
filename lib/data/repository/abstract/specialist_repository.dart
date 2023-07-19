@@ -1,3 +1,4 @@
+import 'package:mint/data/model/filter_preferences_dto/filter_preferences_dto.dart';
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
 
 abstract class SpecialistRepository {
@@ -8,4 +9,8 @@ abstract class SpecialistRepository {
   Future<void> addToFavorite(String userId, String specialistId);
 
   Future<void> removeFromFavorite(String userId, String specialistId);
+
+  Future<List<SpecialistModelDto>> getSpecialistCatalogue(
+    FilterPreferencesDto filter,
+  );
 }

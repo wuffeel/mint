@@ -9,6 +9,7 @@ class SpecialistCatalogueContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,

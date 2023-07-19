@@ -41,6 +41,7 @@ class App extends StatelessWidget {
               bottomNavigationBarTheme: MintThemeData.bottomNavigationBarLight,
               dividerColor: MintColors.separatorLight,
               sliderTheme: MintThemeData.sliderThemeLight,
+              tabBarTheme: MintThemeData.tabBarThemeLight,
             ),
             darkTheme: ThemeData(
               fontFamily: MintFontFamily.inter,
@@ -55,6 +56,7 @@ class App extends StatelessWidget {
               bottomNavigationBarTheme: MintThemeData.bottomNavigationBarDark,
               dividerColor: MintColors.separatorDark.withOpacity(0.6),
               sliderTheme: MintThemeData.sliderThemeDark,
+              tabBarTheme: MintThemeData.tabBarThemeDark,
             ),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
