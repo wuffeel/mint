@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/specialist_work_info_dto/specialist_work_info_dto.dart';
