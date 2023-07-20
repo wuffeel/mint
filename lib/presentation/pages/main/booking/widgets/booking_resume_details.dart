@@ -41,7 +41,7 @@ class BookingResumeDetails extends StatelessWidget {
               children: <Widget>[
                 Text('Date:', style: MintTextStyles.callOut),
                 Text(
-                  DateFormat('dd.MM.yyyy').format(date),
+                  DateFormat.yMd(context.l10n.localeName).format(date),
                   style: MintTextStyles.body.copyWith(
                     color: _getTimeDataTextColor(context),
                   ),

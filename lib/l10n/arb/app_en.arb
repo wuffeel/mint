@@ -80,6 +80,7 @@
   "previousStep": "Previous",
   "continueStep": "Continue",
   "chooseAvailableDate": "Choose an available date",
+  "chooseAvailableTime": "Choose an available time",
   "chooseRightTimeToBook": "Choose the right time to book",
   "consultationSummary": "Consultation summary",
   "typeHerePersonalNotes": "Type here personal notes",

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_single_item_selection.dart';
@@ -15,25 +18,28 @@ class BookingTimeCalendar extends StatefulWidget {
     required this.selectedTime,
     required this.onTimeSelected,
     required this.onContinue,
+    required this.bookingInfo,
   });
 
   final DateTime selectedDate;
   final DateTime? selectedTime;
   final void Function(DateTime) onTimeSelected;
   final VoidCallback onContinue;
+  final SpecialistWorkInfo bookingInfo;
 
   @override
   State<BookingTimeCalendar> createState() => _BookingTimeCalendarState();
 }
 
 class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
-  late DateTime _selectedTime = widget.selectedTime ?? DateTime.now();
+  /// String representation of selectedDate weekday, e.g. 'Monday'
+  late final _selectedDay = DateFormat('EEEE').format(widget.selectedDate);
 
-  @override
-  void didUpdateWidget(covariant BookingTimeCalendar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _selectedTime = widget.selectedTime ?? DateTime.now();
-  }
+  /// List of work hours for [_selectedDay]
+  late final _workHours = widget.bookingInfo.workHours.firstWhere(
+        (element) => element.containsKey(_selectedDay),
+      )[_selectedDay] ??
+      <DateTime>[];
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +96,7 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
                   child: Padding(
                     padding: EdgeInsets.all(10.w),
                     child: Text(
-                      DateFormat('dd.MM.yyyy').format(widget.selectedDate),
+                      DateFormat.yMd().format(widget.selectedDate),
                       style: MintTextStyles.caption1,
                     ),
                   ),
@@ -103,33 +109,20 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
             alignment: Alignment.centerLeft,
             child: MintSingleItemSelection(
               items: List.generate(
-                10,
-                (index) => DateTime(
-                  DateTime.now().year,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                  DateTime.now().hour,
-                  30 * index,
-                ),
+                _workHours.length,
+                (index) => _workHours[index],
               ),
               itemTitles: List.generate(
-                10,
-                (index) => DateFormat.Hm().format(
-                  DateTime(
-                    DateTime.now().year,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                    DateTime.now().hour,
-                    30 * index,
-                  ),
-                ),
+                _workHours.length,
+                (index) => DateFormat.Hm().format(_workHours[index]),
               ),
-              selectedItem: _selectedTime,
+              selectedItem: widget.selectedTime,
               onSelect: widget.onTimeSelected,
               mainSpacing: 11.w,
               crossSpacing: 11.h,
               itemInnerPadding: EdgeInsets.symmetric(vertical: 12.5.h),
               itemAlignment: Alignment.center,
+              itemsPerRow: 6,
               itemTextStyle: MintTextStyles.callOut3,
               unselectedTextStyle: MintTextStyles.callOut3.copyWith(
                 color: Theme.of(context).hintColor.withOpacity(0.6),
@@ -141,7 +134,7 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
           ),
           SizedBox(height: 20.h),
           ElevatedButton(
-            onPressed: widget.onContinue,
+            onPressed: widget.selectedTime != null ? widget.onContinue : null,
             child: Text(l10n.continueStep),
           ),
           SizedBox(height: 26.h),

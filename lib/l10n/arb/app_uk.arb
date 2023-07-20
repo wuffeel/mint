@@ -80,6 +80,7 @@
   "previousStep": "Назад",
   "continueStep": "Продовжити",
   "chooseAvailableDate": "Оберіть вільну дату",
+  "chooseAvailableTime": "Оберіть вільний час",
   "chooseRightTimeToBook": "Оберіть необхідний час для бронювання",
   "consultationSummary": "Підсумкові дані консультації",
   "typeHerePersonalNotes": "Введіть тут особисті нотатки",
