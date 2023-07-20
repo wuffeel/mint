@@ -95,5 +95,7 @@
   "deleteReview": "Видалити відгук",
   "doYouWantToDeleteReview": "Хочете видалити відгук",
   "cancel": "Відмінити",
-  "yes": "Так"
+  "yes": "Так",
+  "upTo": "До",
+  "andMore": "and more"
 }

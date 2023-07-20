@@ -95,5 +95,7 @@
   "deleteReview": "Delete review",
   "doYouWantToDeleteReview": "Do you want to delete review",
   "cancel": "Cancel",
-  "yes": "Yes"
+  "yes": "Yes",
+  "upTo": "Up to",
+  "andMore": "and more"
 }
