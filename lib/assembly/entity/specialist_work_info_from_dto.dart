@@ -22,8 +22,10 @@ class SpecialistWorkInfoFromDto
 
         if (startTime != null && endTime != null) {
           // Parse the "start" and "end" times into DateTime objects
-          final startDateTime = DateFormat('h:mm a').parse(startTime);
-          final endDateTime = DateFormat('h:mm a').parse(endTime);
+          final startDateTime =
+              DateFormat('h:mm a').parse(startTime, true).toLocal();
+          final endDateTime =
+              DateFormat('h:mm a').parse(endTime, true).toLocal();
 
           // Generate the List<DateTime> representing the work hours for the day
           final workHoursList = <DateTime>[];
@@ -31,9 +33,7 @@ class SpecialistWorkInfoFromDto
           while (currentHour.isBefore(endDateTime)) {
             workHoursList.add(currentHour);
             currentHour = currentHour.add(
-              Duration(
-                minutes: consultationMinutes,
-              ),
+              Duration(minutes: consultationMinutes),
             );
           }
 
