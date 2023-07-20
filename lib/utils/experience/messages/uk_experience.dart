@@ -2,13 +2,13 @@ import 'package:mint/utils/experience/abstract/experience_messages.dart';
 
 class UkExperience implements ExperienceMessages {
   @override
-  String lessThanOneYear() => 'Менше 1 року';
+  String lessThanYears(int years) => 'Менше $years ${_yearsRange(years)}';
 
   @override
   String moreThanYears(int years) => 'Більше $years ${_yearsRange(years)}';
 
   @override
-  String fromYearsToYEars(int from, int to) {
+  String fromYearsToYears(int from, int to) {
     return 'Від $from до $to ${_yearsRange(to)}';
   }
 

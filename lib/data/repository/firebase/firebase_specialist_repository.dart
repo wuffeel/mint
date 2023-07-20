@@ -253,22 +253,16 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
 
     final experienceFrom = filter.experienceFrom;
     final experienceTo = filter.experienceTo;
-    final isLessOrMoreThan = filter.isExperienceLessOrMoreThan;
 
-    if (isLessOrMoreThan == null ||
-        (experienceFrom == null && experienceTo == null)) {
+    if (experienceFrom == null && experienceTo == null) {
       return query;
     }
 
     if (experienceFrom != null) {
-      updated = isLessOrMoreThan
-          ? updated.where('experience', isGreaterThan: experienceFrom)
-          : updated.where('experience', isGreaterThanOrEqualTo: experienceFrom);
+      updated = updated.where('experience', isGreaterThan: experienceFrom);
     }
     if (experienceTo != null) {
-      updated = isLessOrMoreThan
-          ? updated.where('experience', isLessThan: experienceTo)
-          : updated.where('experience', isLessThanOrEqualTo: experienceTo);
+      updated = updated.where('experience', isLessThan: experienceTo);
     }
 
     return updated;

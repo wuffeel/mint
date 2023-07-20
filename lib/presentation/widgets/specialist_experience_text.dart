@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/utils/experience/experience_util.dart';
+import 'package:mint/utils/experience/experience_localization.dart';
 
 class SpecialistExperienceText extends StatelessWidget {
   const SpecialistExperienceText({
@@ -14,8 +14,8 @@ class SpecialistExperienceText extends StatelessWidget {
 
   String _getExperienceString(BuildContext context) {
     final l10n = context.l10n;
-    final experienceYears = ExperienceUtil.format(
-      experience,
+    final experienceYears = ExperienceLocalization.format(
+      date: experience,
       locale: l10n.localeName,
     );
     final psychologist = l10n.psychologist;

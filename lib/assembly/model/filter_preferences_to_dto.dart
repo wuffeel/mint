@@ -14,7 +14,6 @@ class FilterPreferencesToDto
           highPrice: param.highPrice,
           experienceFrom: param.experience?.experienceFrom,
           experienceTo: param.experience?.experienceTo,
-          isExperienceLessOrMoreThan: param.experience?.isLessOrMoreThan,
-          specializations: param.specializations,
+          specializations: [...?param.specializations],
         );
 }

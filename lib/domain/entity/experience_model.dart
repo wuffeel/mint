@@ -1,21 +1,8 @@
-// TODO(wuffeel): should it be renamed?
 class ExperienceModel {
   ExperienceModel({
-    required this.title,
     this.experienceFrom,
     this.experienceTo,
-    this.isLessOrMoreThan = false,
   });
-
-  /// A string representation of tag. Can be either:
-  ///
-  ///
-  /// - Less than _N_ year(-s)
-  /// - From _N_ to _N_ years
-  /// - More than _N_ year(-s)
-  ///
-  /// Where _N_ is some integer value representing years count
-  final String title;
 
   /// Comparison _from_ variable.
   ///
@@ -35,14 +22,17 @@ class ExperienceModel {
   /// __experience < DateTime.now() - 1 year__
   final DateTime? experienceTo;
 
-  /// Variable used to identify whether experience should be compared on
-  /// equality or not
-  ///
-  /// If true, comparison do not include equality (i.e. < or >)
-  final bool isLessOrMoreThan;
-
   /// Method used to convert tags like 'lt\__N_y', '_N_y\__N_y', 'gt\__N_y',
   /// (where _N_ is some int number) to [ExperienceModel]
+  ///
+  /// Examples:
+  /// ```dart
+  /// final now = DateTime.now();
+  /// fromTag('lt_1') => experienceTo = (now - 1 year)
+  /// fromTag('1y_3y') => experienceFrom = (now - 3 years),
+  /// experienceTo = (now - 1 year)
+  /// fromTag('gt_3y') => experienceFrom = (now - 3 years)
+  /// ```
   static ExperienceModel? fromTag(String tag) {
     final lessOrMoreRegex = RegExp(r'^(lt|gt)_?(\d+)y$');
     final rangeRegex = RegExp(r'^(\d+)y_(\d+)y$');
@@ -76,10 +66,8 @@ class ExperienceModel {
       }
 
       return ExperienceModel(
-        title: _getTitleByPrefix(prefix, years),
         experienceFrom: experienceFrom,
         experienceTo: experienceTo,
-        isLessOrMoreThan: true,
       );
     } else if (rangeMatch != null) {
       final yearsFromString = rangeMatch[1];
@@ -96,25 +84,11 @@ class ExperienceModel {
       final experienceTo = _convertToFlatDate(now, yearsTo);
 
       return ExperienceModel(
-        title: 'From $yearsFromString to $yearsToString years',
         experienceFrom: experienceFrom,
         experienceTo: experienceTo,
       );
     }
     return null;
-  }
-
-  /// Returns a corresponding [title] depending on [prefix] passed
-  static String _getTitleByPrefix(String prefix, int years) {
-    switch (prefix) {
-      case 'lt':
-        final lessThan = 'Less than $years';
-        return years == 1 ? '$lessThan year' : '$lessThan years';
-      case 'gt':
-        final moreThan = 'More than $years';
-        return years == 1 ? '$moreThan year' : '$moreThan years';
-    }
-    return '';
   }
 
   /// Subtracts the [date] with [years] provided and returns date with time

@@ -10,7 +10,6 @@ class FilterPreferencesDto with _$FilterPreferencesDto {
     int? highPrice,
     DateTime? experienceFrom,
     DateTime? experienceTo,
-    bool? isExperienceLessOrMoreThan,
     List<String>? specializations,
   }) = _FilterPreferencesDto;
 

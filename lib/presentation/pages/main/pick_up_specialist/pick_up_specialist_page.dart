@@ -12,6 +12,7 @@ import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 
+import '../../../../domain/entity/price_range_model.dart';
 import '../../../widgets/mint_multi_item_selection.dart';
 
 @RoutePage()
@@ -68,6 +69,32 @@ class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
         return preferences.specializations != null;
     }
     return false;
+  }
+
+  /// Returns localized titles for price range given
+  ///
+  /// Can return either:
+  ///
+  /// If both low and high price passed => '_low_-_high_₴'
+  ///
+  /// If only high price passed => 'Up to _high_₴'
+  ///
+  /// If only low price passed => '_low_₴ and more'
+  List<String> _getPriceRangeTitles(List<PriceRangeModel> priceList) {
+    final l10n = context.l10n;
+    return priceList.map((e) {
+      final low = e.lowPrice;
+      final high = e.highPrice;
+      if (low  != null && high != null) {
+        return '$low-$high₴';
+      } else if (high != null) {
+        return '${l10n.upTo} $high₴';
+      } else if (low != null) {
+        return '$low₴ ${l10n.andMore}';
+      } else {
+        return '';
+      }
+    }).toList();
   }
 
   @override
@@ -128,9 +155,7 @@ class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
                     title: context.l10n.howMuchCanIPay,
                     child: PickUpRadioButtonList(
                       items: filter.priceRange,
-                      itemTitles: filter.priceRange
-                          .map((priceRange) => priceRange.title)
-                          .toList(),
+                      itemTitles: _getPriceRangeTitles(filter.priceRange),
                       selectedItem: preferences.priceRange,
                       onSelect: (priceRange) => _onValueSelected(
                         preferences.copyWith(priceRange: priceRange),

@@ -2,16 +2,20 @@ import 'package:mint/utils/experience/abstract/experience_messages.dart';
 
 class EnExperience implements ExperienceMessages {
   @override
-  String lessThanOneYear() => 'Less than 1 year';
-
-  @override
-  String moreThanYears(int years) => 'More than $years years';
-
-  @override
-  String fromYearsToYEars(int from, int to) {
-    return 'From $from to $to';
+  String lessThanYears(int years) {
+    return 'Less than $years ${years > 1 ? 'years' : 'year'}';
   }
 
   @override
-  String years(int years) => '$years';
+  String moreThanYears(int years) {
+    return 'More than $years ${years > 1 ? 'years' : 'year'}';
+  }
+
+  @override
+  String fromYearsToYears(int from, int to) {
+    return 'From $from to $to years';
+  }
+
+  @override
+  String years(int years) => '$years ${years > 1 ? 'years' : 'year'}';
 }

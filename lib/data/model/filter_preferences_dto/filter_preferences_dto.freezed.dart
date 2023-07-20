@@ -20,7 +20,6 @@ mixin _$FilterPreferencesDto {
   int? get highPrice => throw _privateConstructorUsedError;
   DateTime? get experienceFrom => throw _privateConstructorUsedError;
   DateTime? get experienceTo => throw _privateConstructorUsedError;
-  bool? get isExperienceLessOrMoreThan => throw _privateConstructorUsedError;
   List<String>? get specializations => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -39,7 +38,6 @@ abstract class $FilterPreferencesDtoCopyWith<$Res> {
       int? highPrice,
       DateTime? experienceFrom,
       DateTime? experienceTo,
-      bool? isExperienceLessOrMoreThan,
       List<String>? specializations});
 }
 
@@ -61,7 +59,6 @@ class _$FilterPreferencesDtoCopyWithImpl<$Res,
     Object? highPrice = freezed,
     Object? experienceFrom = freezed,
     Object? experienceTo = freezed,
-    Object? isExperienceLessOrMoreThan = freezed,
     Object? specializations = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,10 +78,6 @@ class _$FilterPreferencesDtoCopyWithImpl<$Res,
           ? _value.experienceTo
           : experienceTo // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      isExperienceLessOrMoreThan: freezed == isExperienceLessOrMoreThan
-          ? _value.isExperienceLessOrMoreThan
-          : isExperienceLessOrMoreThan // ignore: cast_nullable_to_non_nullable
-              as bool?,
       specializations: freezed == specializations
           ? _value.specializations
           : specializations // ignore: cast_nullable_to_non_nullable
@@ -106,7 +99,6 @@ abstract class _$$_FilterPreferencesDtoCopyWith<$Res>
       int? highPrice,
       DateTime? experienceFrom,
       DateTime? experienceTo,
-      bool? isExperienceLessOrMoreThan,
       List<String>? specializations});
 }
 
@@ -125,7 +117,6 @@ class __$$_FilterPreferencesDtoCopyWithImpl<$Res>
     Object? highPrice = freezed,
     Object? experienceFrom = freezed,
     Object? experienceTo = freezed,
-    Object? isExperienceLessOrMoreThan = freezed,
     Object? specializations = freezed,
   }) {
     return _then(_$_FilterPreferencesDto(
@@ -145,10 +136,6 @@ class __$$_FilterPreferencesDtoCopyWithImpl<$Res>
           ? _value.experienceTo
           : experienceTo // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      isExperienceLessOrMoreThan: freezed == isExperienceLessOrMoreThan
-          ? _value.isExperienceLessOrMoreThan
-          : isExperienceLessOrMoreThan // ignore: cast_nullable_to_non_nullable
-              as bool?,
       specializations: freezed == specializations
           ? _value._specializations
           : specializations // ignore: cast_nullable_to_non_nullable
@@ -166,7 +153,6 @@ class _$_FilterPreferencesDto extends _FilterPreferencesDto
       this.highPrice,
       this.experienceFrom,
       this.experienceTo,
-      this.isExperienceLessOrMoreThan,
       final List<String>? specializations})
       : _specializations = specializations,
         super._();
@@ -179,8 +165,6 @@ class _$_FilterPreferencesDto extends _FilterPreferencesDto
   final DateTime? experienceFrom;
   @override
   final DateTime? experienceTo;
-  @override
-  final bool? isExperienceLessOrMoreThan;
   final List<String>? _specializations;
   @override
   List<String>? get specializations {
@@ -193,7 +177,7 @@ class _$_FilterPreferencesDto extends _FilterPreferencesDto
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FilterPreferencesDto(lowPrice: $lowPrice, highPrice: $highPrice, experienceFrom: $experienceFrom, experienceTo: $experienceTo, isExperienceLessOrMoreThan: $isExperienceLessOrMoreThan, specializations: $specializations)';
+    return 'FilterPreferencesDto(lowPrice: $lowPrice, highPrice: $highPrice, experienceFrom: $experienceFrom, experienceTo: $experienceTo, specializations: $specializations)';
   }
 
   @override
@@ -205,8 +189,6 @@ class _$_FilterPreferencesDto extends _FilterPreferencesDto
       ..add(DiagnosticsProperty('highPrice', highPrice))
       ..add(DiagnosticsProperty('experienceFrom', experienceFrom))
       ..add(DiagnosticsProperty('experienceTo', experienceTo))
-      ..add(DiagnosticsProperty(
-          'isExperienceLessOrMoreThan', isExperienceLessOrMoreThan))
       ..add(DiagnosticsProperty('specializations', specializations));
   }
 
@@ -223,10 +205,6 @@ class _$_FilterPreferencesDto extends _FilterPreferencesDto
                 other.experienceFrom == experienceFrom) &&
             (identical(other.experienceTo, experienceTo) ||
                 other.experienceTo == experienceTo) &&
-            (identical(other.isExperienceLessOrMoreThan,
-                    isExperienceLessOrMoreThan) ||
-                other.isExperienceLessOrMoreThan ==
-                    isExperienceLessOrMoreThan) &&
             const DeepCollectionEquality()
                 .equals(other._specializations, _specializations));
   }
@@ -238,7 +216,6 @@ class _$_FilterPreferencesDto extends _FilterPreferencesDto
       highPrice,
       experienceFrom,
       experienceTo,
-      isExperienceLessOrMoreThan,
       const DeepCollectionEquality().hash(_specializations));
 
   @JsonKey(ignore: true)
@@ -255,7 +232,6 @@ abstract class _FilterPreferencesDto extends FilterPreferencesDto {
       final int? highPrice,
       final DateTime? experienceFrom,
       final DateTime? experienceTo,
-      final bool? isExperienceLessOrMoreThan,
       final List<String>? specializations}) = _$_FilterPreferencesDto;
   const _FilterPreferencesDto._() : super._();
 
@@ -267,8 +243,6 @@ abstract class _FilterPreferencesDto extends FilterPreferencesDto {
   DateTime? get experienceFrom;
   @override
   DateTime? get experienceTo;
-  @override
-  bool? get isExperienceLessOrMoreThan;
   @override
   List<String>? get specializations;
   @override
