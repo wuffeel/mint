@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_date_calendar.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_time_calendar.dart';
@@ -30,21 +29,20 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
   DateTime? _selectedDay;
   DateTime? _selectedTime;
 
-  void _navigateToBookingResume() {
+  void _navigateToBookingResume(SpecialistWorkInfo workInfo) {
     context.router.pop();
     context.router.push(
       BookingResumeRoute(
         specialistModel: widget.specialistModel,
         date: _selectedDay ?? DateTime.now(),
         time: _selectedTime ?? DateTime.now(),
+        minutesDuration: workInfo.consultationMinutes,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    log('DAY: $_selectedDay');
-    log('TIME: $_selectedTime');
     final l10n = context.l10n;
     return DynamicBottomSheetContainer(
       appBar: Padding(
@@ -96,7 +94,7 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
                 if (_currentStep == 0)
                   BookingDateCalendar(
                     selectedDay: _selectedDay,
-                    onSelectedChanged: (day) => setState(() {
+                    onDaySelected: (day) => setState(() {
                       _selectedDay = day;
                       _selectedTime = null;
                     }),
@@ -109,7 +107,8 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
                     selectedTime: _selectedTime,
                     onTimeSelected: (time) =>
                         setState(() => _selectedTime = time),
-                    onContinue: _navigateToBookingResume,
+                    onContinue: () =>
+                        _navigateToBookingResume(state.bookingInfo),
                     bookingInfo: state.bookingInfo,
                   ),
               ],

@@ -283,7 +283,7 @@ class BookingResumeRoute extends _i18.PageRouteInfo<BookingResumeRouteArgs> {
     required _i20.SpecialistModel specialistModel,
     required DateTime date,
     required DateTime time,
-    int minutesDuration = 60,
+    required int minutesDuration,
     List<_i18.PageRouteInfo>? children,
   }) : super(
           BookingResumeRoute.name,
@@ -309,7 +309,7 @@ class BookingResumeRouteArgs {
     required this.specialistModel,
     required this.date,
     required this.time,
-    this.minutesDuration = 60,
+    required this.minutesDuration,
   });
 
   final _i19.Key? key;
