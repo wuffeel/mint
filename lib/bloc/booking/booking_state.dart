@@ -14,3 +14,7 @@ class BookingInfoFetchSuccess extends BookingState {
 }
 
 class BookingInfoFetchFailure extends BookingState {}
+
+class BookingBookSuccess extends BookingState {}
+
+class BookingBookFailure extends BookingState {}
