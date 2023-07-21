@@ -20,8 +20,9 @@ mixin _$SpecialistWorkInfo {
   int get consultationMinutes => throw _privateConstructorUsedError;
   List<DateTime> get excludedDays => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
-  List<Map<String, List<DateTime>>> get workHours =>
+  Map<String, List<DateTime>> get workHours =>
       throw _privateConstructorUsedError;
+  List<DateTime> get bookedTimes => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SpecialistWorkInfoCopyWith<SpecialistWorkInfo> get copyWith =>
@@ -39,7 +40,8 @@ abstract class $SpecialistWorkInfoCopyWith<$Res> {
       int consultationMinutes,
       List<DateTime> excludedDays,
       String specialistId,
-      List<Map<String, List<DateTime>>> workHours});
+      Map<String, List<DateTime>> workHours,
+      List<DateTime> bookedTimes});
 }
 
 /// @nodoc
@@ -60,6 +62,7 @@ class _$SpecialistWorkInfoCopyWithImpl<$Res, $Val extends SpecialistWorkInfo>
     Object? excludedDays = null,
     Object? specialistId = null,
     Object? workHours = null,
+    Object? bookedTimes = null,
   }) {
     return _then(_value.copyWith(
       bookingDaysAdvance: null == bookingDaysAdvance
@@ -81,7 +84,11 @@ class _$SpecialistWorkInfoCopyWithImpl<$Res, $Val extends SpecialistWorkInfo>
       workHours: null == workHours
           ? _value.workHours
           : workHours // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, List<DateTime>>>,
+              as Map<String, List<DateTime>>,
+      bookedTimes: null == bookedTimes
+          ? _value.bookedTimes
+          : bookedTimes // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
     ) as $Val);
   }
 }
@@ -99,7 +106,8 @@ abstract class _$$_SpecialistWorkInfoCopyWith<$Res>
       int consultationMinutes,
       List<DateTime> excludedDays,
       String specialistId,
-      List<Map<String, List<DateTime>>> workHours});
+      Map<String, List<DateTime>> workHours,
+      List<DateTime> bookedTimes});
 }
 
 /// @nodoc
@@ -118,6 +126,7 @@ class __$$_SpecialistWorkInfoCopyWithImpl<$Res>
     Object? excludedDays = null,
     Object? specialistId = null,
     Object? workHours = null,
+    Object? bookedTimes = null,
   }) {
     return _then(_$_SpecialistWorkInfo(
       bookingDaysAdvance: null == bookingDaysAdvance
@@ -139,7 +148,11 @@ class __$$_SpecialistWorkInfoCopyWithImpl<$Res>
       workHours: null == workHours
           ? _value._workHours
           : workHours // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, List<DateTime>>>,
+              as Map<String, List<DateTime>>,
+      bookedTimes: null == bookedTimes
+          ? _value._bookedTimes
+          : bookedTimes // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
     ));
   }
 }
@@ -154,9 +167,11 @@ class _$_SpecialistWorkInfo
       required this.consultationMinutes,
       required final List<DateTime> excludedDays,
       required this.specialistId,
-      required final List<Map<String, List<DateTime>>> workHours})
+      required final Map<String, List<DateTime>> workHours,
+      required final List<DateTime> bookedTimes})
       : _excludedDays = excludedDays,
-        _workHours = workHours;
+        _workHours = workHours,
+        _bookedTimes = bookedTimes;
 
   @override
   final int bookingDaysAdvance;
@@ -172,17 +187,25 @@ class _$_SpecialistWorkInfo
 
   @override
   final String specialistId;
-  final List<Map<String, List<DateTime>>> _workHours;
+  final Map<String, List<DateTime>> _workHours;
   @override
-  List<Map<String, List<DateTime>>> get workHours {
-    if (_workHours is EqualUnmodifiableListView) return _workHours;
+  Map<String, List<DateTime>> get workHours {
+    if (_workHours is EqualUnmodifiableMapView) return _workHours;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_workHours);
+    return EqualUnmodifiableMapView(_workHours);
+  }
+
+  final List<DateTime> _bookedTimes;
+  @override
+  List<DateTime> get bookedTimes {
+    if (_bookedTimes is EqualUnmodifiableListView) return _bookedTimes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_bookedTimes);
   }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SpecialistWorkInfo(bookingDaysAdvance: $bookingDaysAdvance, consultationMinutes: $consultationMinutes, excludedDays: $excludedDays, specialistId: $specialistId, workHours: $workHours)';
+    return 'SpecialistWorkInfo(bookingDaysAdvance: $bookingDaysAdvance, consultationMinutes: $consultationMinutes, excludedDays: $excludedDays, specialistId: $specialistId, workHours: $workHours, bookedTimes: $bookedTimes)';
   }
 
   @override
@@ -194,7 +217,8 @@ class _$_SpecialistWorkInfo
       ..add(DiagnosticsProperty('consultationMinutes', consultationMinutes))
       ..add(DiagnosticsProperty('excludedDays', excludedDays))
       ..add(DiagnosticsProperty('specialistId', specialistId))
-      ..add(DiagnosticsProperty('workHours', workHours));
+      ..add(DiagnosticsProperty('workHours', workHours))
+      ..add(DiagnosticsProperty('bookedTimes', bookedTimes));
   }
 
   @override
@@ -211,7 +235,9 @@ class _$_SpecialistWorkInfo
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
             const DeepCollectionEquality()
-                .equals(other._workHours, _workHours));
+                .equals(other._workHours, _workHours) &&
+            const DeepCollectionEquality()
+                .equals(other._bookedTimes, _bookedTimes));
   }
 
   @override
@@ -221,7 +247,8 @@ class _$_SpecialistWorkInfo
       consultationMinutes,
       const DeepCollectionEquality().hash(_excludedDays),
       specialistId,
-      const DeepCollectionEquality().hash(_workHours));
+      const DeepCollectionEquality().hash(_workHours),
+      const DeepCollectionEquality().hash(_bookedTimes));
 
   @JsonKey(ignore: true)
   @override
@@ -233,12 +260,12 @@ class _$_SpecialistWorkInfo
 
 abstract class _SpecialistWorkInfo implements SpecialistWorkInfo {
   const factory _SpecialistWorkInfo(
-          {required final int bookingDaysAdvance,
-          required final int consultationMinutes,
-          required final List<DateTime> excludedDays,
-          required final String specialistId,
-          required final List<Map<String, List<DateTime>>> workHours}) =
-      _$_SpecialistWorkInfo;
+      {required final int bookingDaysAdvance,
+      required final int consultationMinutes,
+      required final List<DateTime> excludedDays,
+      required final String specialistId,
+      required final Map<String, List<DateTime>> workHours,
+      required final List<DateTime> bookedTimes}) = _$_SpecialistWorkInfo;
 
   @override
   int get bookingDaysAdvance;
@@ -249,7 +276,9 @@ abstract class _SpecialistWorkInfo implements SpecialistWorkInfo {
   @override
   String get specialistId;
   @override
-  List<Map<String, List<DateTime>>> get workHours;
+  Map<String, List<DateTime>> get workHours;
+  @override
+  List<DateTime> get bookedTimes;
   @override
   @JsonKey(ignore: true)
   _$$_SpecialistWorkInfoCopyWith<_$_SpecialistWorkInfo> get copyWith =>

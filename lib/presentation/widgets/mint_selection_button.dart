@@ -10,6 +10,7 @@ class MintSelectionButton<T> extends StatelessWidget {
     required this.isSelected,
     this.hasCheckMark = false,
     this.onSelect,
+    this.isDisabled,
     this.itemAlignment,
     this.itemInnerPadding,
     this.itemTextStyle,
@@ -23,6 +24,7 @@ class MintSelectionButton<T> extends StatelessWidget {
   final bool isSelected;
   final bool hasCheckMark;
   final void Function(T)? onSelect;
+  final bool? isDisabled;
   final AlignmentGeometry? itemAlignment;
   final EdgeInsetsGeometry? itemInnerPadding;
   final TextStyle? itemTextStyle;
@@ -31,7 +33,8 @@ class MintSelectionButton<T> extends StatelessWidget {
   final double? width;
 
   TextStyle? _getTextStyle() {
-    if (isDisabled && disabledTextStyle != null) {
+    final disabled = isDisabled;
+    if (disabled != null && disabled && disabledTextStyle != null) {
       return disabledTextStyle;
     } else if (!isSelected && unselectedTextStyle != null) {
       return unselectedTextStyle;
@@ -40,13 +43,20 @@ class MintSelectionButton<T> extends StatelessWidget {
     }
   }
 
-  bool get isDisabled => onSelect == null && !isSelected;
+  bool get buttonDisabled {
+    final disabled = isDisabled;
+    return disabled != null && disabled;
+  }
 
   @override
   Widget build(BuildContext context) {
     final onSelectLocal = onSelect;
     return InkWell(
-      onTap: onSelectLocal != null ? () => onSelectLocal(value) : null,
+      onTap: buttonDisabled
+          ? null
+          : onSelectLocal != null
+              ? () => onSelectLocal(value)
+              : null,
       borderRadius: BorderRadius.circular(10.r),
       child: Container(
         width: width,

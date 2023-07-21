@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
-import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/booking/widgets/book_date_container.dart';
 import 'package:mint/presentation/widgets/mint_single_item_selection.dart';
 import 'package:mint/theme/mint_text_styles.dart';
-
-import '../../../../../gen/assets.gen.dart';
+import 'package:mint/utils/calendar_utils.dart';
 
 class BookingTimeCalendar extends StatefulWidget {
   const BookingTimeCalendar({
@@ -34,10 +33,8 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
   late final _selectedDay = DateFormat('EEEE').format(widget.selectedDate);
 
   /// List of work hours for [_selectedDay]
-  late final _workHours = widget.bookingInfo.workHours.firstWhere(
-        (element) => element.containsKey(_selectedDay),
-      )[_selectedDay] ??
-      <DateTime>[];
+  late final _workHours =
+      widget.bookingInfo.workHours[_selectedDay] ?? <DateTime>[];
 
   @override
   Widget build(BuildContext context) {
@@ -58,64 +55,23 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
             ),
           ),
           SizedBox(height: 10.h),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            child: Row(
-              children: <Widget>[
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      right: BorderSide(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? MintColors.greyLight
-                            : MintColors.timeCalendarSeparatorLight,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10.w),
-                    child: Assets.svg.calendarIcon.svg(
-                      width: 24.w,
-                      height: 24.h,
-                      fit: BoxFit.scaleDown,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).brightness == Brightness.dark
-                            ? MintColors.greyDark.withOpacity(0.6)
-                            : MintColors.grey1,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.w),
-                    child: Text(
-                      DateFormat.yMd().format(widget.selectedDate),
-                      style: MintTextStyles.caption1,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+          BookDateContainer(selectedDate: widget.selectedDate),
           SizedBox(height: 20.h),
           Align(
             alignment: Alignment.centerLeft,
             child: MintSingleItemSelection(
-              items: List.generate(
-                _workHours.length,
-                (index) => _workHours[index],
-              ),
+              items: _workHours,
               itemTitles: List.generate(
                 _workHours.length,
                 (index) => DateFormat.Hm().format(_workHours[index]),
               ),
               selectedItem: widget.selectedTime,
               onSelect: widget.onTimeSelected,
+              isItemDisabled: (time) => CalendarUtils.isTimeUnavailable(
+                time,
+                widget.selectedDate,
+                widget.bookingInfo.bookedTimes,
+              ),
               mainSpacing: 11.w,
               crossSpacing: 11.h,
               itemInnerPadding: EdgeInsets.symmetric(vertical: 12.5.h),

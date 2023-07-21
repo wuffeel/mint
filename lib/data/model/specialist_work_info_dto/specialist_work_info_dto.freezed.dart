@@ -24,9 +24,11 @@ mixin _$SpecialistWorkInfoDto {
   int get bookingDaysAdvance => throw _privateConstructorUsedError;
   int get consultationMinutes => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
-  List<dynamic> get workHours => throw _privateConstructorUsedError;
+  dynamic get workHours => throw _privateConstructorUsedError;
   @JsonKey(fromJson: DateUtils.convertToDateTimeList)
   List<DateTime> get excludedDays => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  List<DateTime> get bookedTimes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,9 +46,11 @@ abstract class $SpecialistWorkInfoDtoCopyWith<$Res> {
       {int bookingDaysAdvance,
       int consultationMinutes,
       String specialistId,
-      List<dynamic> workHours,
+      dynamic workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
-          List<DateTime> excludedDays});
+          List<DateTime> excludedDays,
+      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+          List<DateTime> bookedTimes});
 }
 
 /// @nodoc
@@ -66,8 +70,9 @@ class _$SpecialistWorkInfoDtoCopyWithImpl<$Res,
     Object? bookingDaysAdvance = null,
     Object? consultationMinutes = null,
     Object? specialistId = null,
-    Object? workHours = null,
+    Object? workHours = freezed,
     Object? excludedDays = null,
+    Object? bookedTimes = null,
   }) {
     return _then(_value.copyWith(
       bookingDaysAdvance: null == bookingDaysAdvance
@@ -82,13 +87,17 @@ class _$SpecialistWorkInfoDtoCopyWithImpl<$Res,
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
               as String,
-      workHours: null == workHours
+      workHours: freezed == workHours
           ? _value.workHours
           : workHours // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as dynamic,
       excludedDays: null == excludedDays
           ? _value.excludedDays
           : excludedDays // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
+      bookedTimes: null == bookedTimes
+          ? _value.bookedTimes
+          : bookedTimes // ignore: cast_nullable_to_non_nullable
               as List<DateTime>,
     ) as $Val);
   }
@@ -106,9 +115,11 @@ abstract class _$$_SpecialistWorkInfoDtoCopyWith<$Res>
       {int bookingDaysAdvance,
       int consultationMinutes,
       String specialistId,
-      List<dynamic> workHours,
+      dynamic workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
-          List<DateTime> excludedDays});
+          List<DateTime> excludedDays,
+      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+          List<DateTime> bookedTimes});
 }
 
 /// @nodoc
@@ -125,8 +136,9 @@ class __$$_SpecialistWorkInfoDtoCopyWithImpl<$Res>
     Object? bookingDaysAdvance = null,
     Object? consultationMinutes = null,
     Object? specialistId = null,
-    Object? workHours = null,
+    Object? workHours = freezed,
     Object? excludedDays = null,
+    Object? bookedTimes = null,
   }) {
     return _then(_$_SpecialistWorkInfoDto(
       bookingDaysAdvance: null == bookingDaysAdvance
@@ -141,13 +153,17 @@ class __$$_SpecialistWorkInfoDtoCopyWithImpl<$Res>
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
               as String,
-      workHours: null == workHours
-          ? _value._workHours
+      workHours: freezed == workHours
+          ? _value.workHours
           : workHours // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as dynamic,
       excludedDays: null == excludedDays
           ? _value._excludedDays
           : excludedDays // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
+      bookedTimes: null == bookedTimes
+          ? _value._bookedTimes
+          : bookedTimes // ignore: cast_nullable_to_non_nullable
               as List<DateTime>,
     ));
   }
@@ -162,11 +178,13 @@ class _$_SpecialistWorkInfoDto
       {required this.bookingDaysAdvance,
       required this.consultationMinutes,
       required this.specialistId,
-      required final List<dynamic> workHours,
+      required this.workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
-          final List<DateTime> excludedDays = const <DateTime>[]})
-      : _workHours = workHours,
-        _excludedDays = excludedDays;
+          final List<DateTime> excludedDays = const <DateTime>[],
+      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+          final List<DateTime> bookedTimes = const <DateTime>[]})
+      : _excludedDays = excludedDays,
+        _bookedTimes = bookedTimes;
 
   factory _$_SpecialistWorkInfoDto.fromJson(Map<String, dynamic> json) =>
       _$$_SpecialistWorkInfoDtoFromJson(json);
@@ -177,14 +195,8 @@ class _$_SpecialistWorkInfoDto
   final int consultationMinutes;
   @override
   final String specialistId;
-  final List<dynamic> _workHours;
   @override
-  List<dynamic> get workHours {
-    if (_workHours is EqualUnmodifiableListView) return _workHours;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_workHours);
-  }
-
+  final dynamic workHours;
   final List<DateTime> _excludedDays;
   @override
   @JsonKey(fromJson: DateUtils.convertToDateTimeList)
@@ -194,9 +206,18 @@ class _$_SpecialistWorkInfoDto
     return EqualUnmodifiableListView(_excludedDays);
   }
 
+  final List<DateTime> _bookedTimes;
+  @override
+  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  List<DateTime> get bookedTimes {
+    if (_bookedTimes is EqualUnmodifiableListView) return _bookedTimes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_bookedTimes);
+  }
+
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SpecialistWorkInfoDto(bookingDaysAdvance: $bookingDaysAdvance, consultationMinutes: $consultationMinutes, specialistId: $specialistId, workHours: $workHours, excludedDays: $excludedDays)';
+    return 'SpecialistWorkInfoDto(bookingDaysAdvance: $bookingDaysAdvance, consultationMinutes: $consultationMinutes, specialistId: $specialistId, workHours: $workHours, excludedDays: $excludedDays, bookedTimes: $bookedTimes)';
   }
 
   @override
@@ -208,7 +229,8 @@ class _$_SpecialistWorkInfoDto
       ..add(DiagnosticsProperty('consultationMinutes', consultationMinutes))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('workHours', workHours))
-      ..add(DiagnosticsProperty('excludedDays', excludedDays));
+      ..add(DiagnosticsProperty('excludedDays', excludedDays))
+      ..add(DiagnosticsProperty('bookedTimes', bookedTimes));
   }
 
   @override
@@ -222,10 +244,11 @@ class _$_SpecialistWorkInfoDto
                 other.consultationMinutes == consultationMinutes) &&
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
+            const DeepCollectionEquality().equals(other.workHours, workHours) &&
             const DeepCollectionEquality()
-                .equals(other._workHours, _workHours) &&
+                .equals(other._excludedDays, _excludedDays) &&
             const DeepCollectionEquality()
-                .equals(other._excludedDays, _excludedDays));
+                .equals(other._bookedTimes, _bookedTimes));
   }
 
   @JsonKey(ignore: true)
@@ -235,8 +258,9 @@ class _$_SpecialistWorkInfoDto
       bookingDaysAdvance,
       consultationMinutes,
       specialistId,
-      const DeepCollectionEquality().hash(_workHours),
-      const DeepCollectionEquality().hash(_excludedDays));
+      const DeepCollectionEquality().hash(workHours),
+      const DeepCollectionEquality().hash(_excludedDays),
+      const DeepCollectionEquality().hash(_bookedTimes));
 
   @JsonKey(ignore: true)
   @override
@@ -258,9 +282,11 @@ abstract class _SpecialistWorkInfoDto implements SpecialistWorkInfoDto {
       {required final int bookingDaysAdvance,
       required final int consultationMinutes,
       required final String specialistId,
-      required final List<dynamic> workHours,
+      required final dynamic workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
-          final List<DateTime> excludedDays}) = _$_SpecialistWorkInfoDto;
+          final List<DateTime> excludedDays,
+      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+          final List<DateTime> bookedTimes}) = _$_SpecialistWorkInfoDto;
 
   factory _SpecialistWorkInfoDto.fromJson(Map<String, dynamic> json) =
       _$_SpecialistWorkInfoDto.fromJson;
@@ -272,10 +298,13 @@ abstract class _SpecialistWorkInfoDto implements SpecialistWorkInfoDto {
   @override
   String get specialistId;
   @override
-  List<dynamic> get workHours;
+  dynamic get workHours;
   @override
   @JsonKey(fromJson: DateUtils.convertToDateTimeList)
   List<DateTime> get excludedDays;
+  @override
+  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  List<DateTime> get bookedTimes;
   @override
   @JsonKey(ignore: true)
   _$$_SpecialistWorkInfoDtoCopyWith<_$_SpecialistWorkInfoDto> get copyWith =>

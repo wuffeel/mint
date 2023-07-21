@@ -12,10 +12,14 @@ class SpecialistWorkInfoDto with _$SpecialistWorkInfoDto {
     required int bookingDaysAdvance,
     required int consultationMinutes,
     required String specialistId,
-    required List<dynamic> workHours,
+    required dynamic workHours,
     @Default(<DateTime>[])
     @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+    /// Vacations and exclusions
     List<DateTime> excludedDays,
+    @Default(<DateTime>[])
+    @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+    List<DateTime> bookedTimes,
   }) = _SpecialistWorkInfoDto;
 
   factory SpecialistWorkInfoDto.fromJson(Map<String, dynamic> json) =>

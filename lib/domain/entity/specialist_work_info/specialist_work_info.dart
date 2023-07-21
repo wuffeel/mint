@@ -10,6 +10,7 @@ class SpecialistWorkInfo with _$SpecialistWorkInfo {
     required int consultationMinutes,
     required List<DateTime> excludedDays,
     required String specialistId,
-    required List<Map<String, List<DateTime>>> workHours,
+    required Map<String, List<DateTime>> workHours,
+    required List<DateTime> bookedTimes,
   }) = _SpecialistWorkInfo;
 }

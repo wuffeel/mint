@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/utils/calendar_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../theme/mint_text_styles.dart';
@@ -11,13 +12,13 @@ class BookingDateCalendar extends StatefulWidget {
   const BookingDateCalendar({
     super.key,
     required this.selectedDay,
-    required this.onSelectedChanged,
+    required this.onDaySelected,
     required this.onContinue,
     required this.bookingInfo,
   });
 
   final DateTime? selectedDay;
-  final void Function(DateTime) onSelectedChanged;
+  final void Function(DateTime) onDaySelected;
   final VoidCallback onContinue;
   final SpecialistWorkInfo bookingInfo;
 
@@ -26,22 +27,26 @@ class BookingDateCalendar extends StatefulWidget {
 }
 
 class _BookingDateCalendarState extends State<BookingDateCalendar> {
-  DateTime _focusedDay = DateTime.now();
+  final _currentDate = DateTime.now();
+  late DateTime _focusedDay = _currentDate;
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
     return Padding(
       padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 26.h),
       child: Column(
         children: <Widget>[
           TableCalendar<dynamic>(
             focusedDay: _focusedDay,
-            firstDay: now,
+            firstDay: DateTime(
+              _currentDate.year,
+              _currentDate.month,
+              _currentDate.day,
+            ),
             lastDay: DateTime(
-              now.year,
-              now.month,
-              now.day + widget.bookingInfo.bookingDaysAdvance,
+              _currentDate.year,
+              _currentDate.month,
+              _currentDate.day + widget.bookingInfo.bookingDaysAdvance,
             ),
             locale: context.l10n.localeName,
             rangeSelectionMode: RangeSelectionMode.disabled,
@@ -50,16 +55,18 @@ class _BookingDateCalendarState extends State<BookingDateCalendar> {
             selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
             onPageChanged: (focusedDay) => _focusedDay = focusedDay,
             enabledDayPredicate: (day) {
-              return !widget.bookingInfo.excludedDays.any(
-                    (exclude) =>
-                        day.year == exclude.year &&
-                        day.month == exclude.month &&
-                        day.day == exclude.day,
+              final weekday = DateFormat('EEEE').format(day);
+              final workHours = widget.bookingInfo.workHours;
+              return workHours.containsKey(weekday) &&
+                  !widget.bookingInfo.excludedDays.any(
+                    (exclude) => isSameDay(exclude, day),
                   ) &&
-                  widget.bookingInfo.workHours.any(
-                    (workHour) =>
-                        workHour.containsKey(DateFormat('EEEE').format(day)),
-                  );
+                  !CalendarUtils.isDayFullyBooked(
+                    day,
+                    widget.bookingInfo.bookedTimes,
+                    workHours[weekday] ?? <DateTime>[],
+                  ) &&
+                  !CalendarUtils.isWorkTimeEnd(day, workHours[weekday]?.last);
             },
             headerStyle: HeaderStyle(
               titleCentered: true,
@@ -70,7 +77,7 @@ class _BookingDateCalendarState extends State<BookingDateCalendar> {
             ),
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(widget.selectedDay, selectedDay)) {
-                widget.onSelectedChanged(selectedDay);
+                widget.onDaySelected(selectedDay);
                 setState(() {
                   _focusedDay = focusedDay;
                 });

@@ -8,6 +8,7 @@ class MintSingleItemSelection<T> extends StatelessWidget {
     required this.itemTitles,
     required this.selectedItem,
     required this.onSelect,
+    this.isItemDisabled,
     this.itemsPerRow,
     this.mainSpacing,
     this.crossSpacing,
@@ -23,6 +24,7 @@ class MintSingleItemSelection<T> extends StatelessWidget {
   final List<String> itemTitles;
   final T? selectedItem;
   final ValueChanged<T>? onSelect;
+  final bool Function(T)? isItemDisabled;
   final AlignmentGeometry? itemAlignment;
   final EdgeInsetsGeometry? itemInnerPadding;
   final TextStyle? itemTextStyle;
@@ -58,6 +60,11 @@ class MintSingleItemSelection<T> extends StatelessWidget {
     return (maxWidth - spacing * (itemsPerRow - 1)) / itemsPerRow;
   }
 
+  bool _isCellDisabled(T value) {
+    final isDisabled = isItemDisabled;
+    return isDisabled != null && isDisabled(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     final perRow = itemsPerRow;
@@ -77,6 +84,7 @@ class MintSingleItemSelection<T> extends StatelessWidget {
                 title: itemTitles[index],
                 isSelected: selectedItem == item,
                 onSelect: selectedItem != item ? onSelect : null,
+                isDisabled: _isCellDisabled(item),
                 width: perRow != null
                     ? _getItemWidth(constraints.maxWidth, perRow)
                     : itemWidth,
