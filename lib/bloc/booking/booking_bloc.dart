@@ -69,9 +69,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     final user = _currentUser;
     if (user == null) return;
     try {
-      final selectedDate = event.selectedDate.toUtc();
-      final selectedTime = event.selectedTime.toUtc();
-      final bookTime = DateTime.utc(
+      final selectedDate = event.selectedDate;
+      final selectedTime = event.selectedTime;
+      final bookTime = DateTime(
         selectedDate.year,
         selectedDate.month,
         selectedDate.day,
@@ -84,6 +84,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         userId: user.id,
         notes: event.notes,
         bookTime: bookTime,
+        durationMinutes: event.durationMinutes,
         createdAt: DateTime.now(),
       );
       await _bookingBookUseCase(bookingData);

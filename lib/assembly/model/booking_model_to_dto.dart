@@ -11,7 +11,8 @@ class BookingModelToDto implements Factory<BookingDataDto, BookingData> {
         specialistId: param.specialistId,
         userId: param.userId,
         notes: param.notes,
-        bookTime: param.bookTime,
-        createdAt: param.createdAt,
+        bookTime: param.bookTime.toUtc(),
+        durationMinutes: param.durationMinutes,
+        createdAt: param.createdAt.toUtc(),
       );
 }

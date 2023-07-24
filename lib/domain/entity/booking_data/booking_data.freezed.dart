@@ -20,6 +20,7 @@ mixin _$BookingData {
   String get userId => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
   DateTime get bookTime => throw _privateConstructorUsedError;
+  int get durationMinutes => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,6 +39,7 @@ abstract class $BookingDataCopyWith<$Res> {
       String userId,
       String notes,
       DateTime bookTime,
+      int durationMinutes,
       DateTime createdAt});
 }
 
@@ -58,6 +60,7 @@ class _$BookingDataCopyWithImpl<$Res, $Val extends BookingData>
     Object? userId = null,
     Object? notes = null,
     Object? bookTime = null,
+    Object? durationMinutes = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +80,10 @@ class _$BookingDataCopyWithImpl<$Res, $Val extends BookingData>
           ? _value.bookTime
           : bookTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      durationMinutes: null == durationMinutes
+          ? _value.durationMinutes
+          : durationMinutes // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -98,6 +105,7 @@ abstract class _$$_BookingDataCopyWith<$Res>
       String userId,
       String notes,
       DateTime bookTime,
+      int durationMinutes,
       DateTime createdAt});
 }
 
@@ -116,6 +124,7 @@ class __$$_BookingDataCopyWithImpl<$Res>
     Object? userId = null,
     Object? notes = null,
     Object? bookTime = null,
+    Object? durationMinutes = null,
     Object? createdAt = null,
   }) {
     return _then(_$_BookingData(
@@ -135,6 +144,10 @@ class __$$_BookingDataCopyWithImpl<$Res>
           ? _value.bookTime
           : bookTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      durationMinutes: null == durationMinutes
+          ? _value.durationMinutes
+          : durationMinutes // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -151,6 +164,7 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
       required this.userId,
       required this.notes,
       required this.bookTime,
+      required this.durationMinutes,
       required this.createdAt});
 
   @override
@@ -162,11 +176,13 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
   @override
   final DateTime bookTime;
   @override
+  final int durationMinutes;
+  @override
   final DateTime createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BookingData(specialistId: $specialistId, userId: $userId, notes: $notes, bookTime: $bookTime, createdAt: $createdAt)';
+    return 'BookingData(specialistId: $specialistId, userId: $userId, notes: $notes, bookTime: $bookTime, durationMinutes: $durationMinutes, createdAt: $createdAt)';
   }
 
   @override
@@ -178,6 +194,7 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('bookTime', bookTime))
+      ..add(DiagnosticsProperty('durationMinutes', durationMinutes))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
@@ -192,13 +209,15 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
             (identical(other.notes, notes) || other.notes == notes) &&
             (identical(other.bookTime, bookTime) ||
                 other.bookTime == bookTime) &&
+            (identical(other.durationMinutes, durationMinutes) ||
+                other.durationMinutes == durationMinutes) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, specialistId, userId, notes, bookTime, createdAt);
+  int get hashCode => Object.hash(runtimeType, specialistId, userId, notes,
+      bookTime, durationMinutes, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -213,6 +232,7 @@ abstract class _BookingData implements BookingData {
       required final String userId,
       required final String notes,
       required final DateTime bookTime,
+      required final int durationMinutes,
       required final DateTime createdAt}) = _$_BookingData;
 
   @override
@@ -223,6 +243,8 @@ abstract class _BookingData implements BookingData {
   String get notes;
   @override
   DateTime get bookTime;
+  @override
+  int get durationMinutes;
   @override
   DateTime get createdAt;
   @override

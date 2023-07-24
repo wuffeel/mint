@@ -15,10 +15,12 @@ class BookingBookRequested extends BookingEvent {
     this.selectedDate,
     this.selectedTime,
     this.notes,
+    this.durationMinutes,
   );
 
   final String specialistId;
   final DateTime selectedDate;
   final DateTime selectedTime;
   final String notes;
+  final int durationMinutes;
 }

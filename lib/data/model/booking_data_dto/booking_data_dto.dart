@@ -11,6 +11,7 @@ class BookingDataDto with _$BookingDataDto {
     required String specialistId,
     required String userId,
     required String notes,
+    required int durationMinutes,
     @JsonKey(toJson: _toDateTime)
     required DateTime bookTime,
     @JsonKey(toJson: _toDateTime)

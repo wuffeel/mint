@@ -23,6 +23,7 @@ mixin _$BookingDataDto {
   String get specialistId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
+  int get durationMinutes => throw _privateConstructorUsedError;
   @JsonKey(toJson: _toDateTime)
   DateTime get bookTime => throw _privateConstructorUsedError;
   @JsonKey(toJson: _toDateTime)
@@ -44,6 +45,7 @@ abstract class $BookingDataDtoCopyWith<$Res> {
       {String specialistId,
       String userId,
       String notes,
+      int durationMinutes,
       @JsonKey(toJson: _toDateTime) DateTime bookTime,
       @JsonKey(toJson: _toDateTime) DateTime createdAt});
 }
@@ -64,6 +66,7 @@ class _$BookingDataDtoCopyWithImpl<$Res, $Val extends BookingDataDto>
     Object? specialistId = null,
     Object? userId = null,
     Object? notes = null,
+    Object? durationMinutes = null,
     Object? bookTime = null,
     Object? createdAt = null,
   }) {
@@ -80,6 +83,10 @@ class _$BookingDataDtoCopyWithImpl<$Res, $Val extends BookingDataDto>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String,
+      durationMinutes: null == durationMinutes
+          ? _value.durationMinutes
+          : durationMinutes // ignore: cast_nullable_to_non_nullable
+              as int,
       bookTime: null == bookTime
           ? _value.bookTime
           : bookTime // ignore: cast_nullable_to_non_nullable
@@ -104,6 +111,7 @@ abstract class _$$_BookingDataDtoCopyWith<$Res>
       {String specialistId,
       String userId,
       String notes,
+      int durationMinutes,
       @JsonKey(toJson: _toDateTime) DateTime bookTime,
       @JsonKey(toJson: _toDateTime) DateTime createdAt});
 }
@@ -122,6 +130,7 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
     Object? specialistId = null,
     Object? userId = null,
     Object? notes = null,
+    Object? durationMinutes = null,
     Object? bookTime = null,
     Object? createdAt = null,
   }) {
@@ -138,6 +147,10 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String,
+      durationMinutes: null == durationMinutes
+          ? _value.durationMinutes
+          : durationMinutes // ignore: cast_nullable_to_non_nullable
+              as int,
       bookTime: null == bookTime
           ? _value.bookTime
           : bookTime // ignore: cast_nullable_to_non_nullable
@@ -159,6 +172,7 @@ class _$_BookingDataDto
       {required this.specialistId,
       required this.userId,
       required this.notes,
+      required this.durationMinutes,
       @JsonKey(toJson: _toDateTime) required this.bookTime,
       @JsonKey(toJson: _toDateTime) required this.createdAt});
 
@@ -172,6 +186,8 @@ class _$_BookingDataDto
   @override
   final String notes;
   @override
+  final int durationMinutes;
+  @override
   @JsonKey(toJson: _toDateTime)
   final DateTime bookTime;
   @override
@@ -180,7 +196,7 @@ class _$_BookingDataDto
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BookingDataDto(specialistId: $specialistId, userId: $userId, notes: $notes, bookTime: $bookTime, createdAt: $createdAt)';
+    return 'BookingDataDto(specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, createdAt: $createdAt)';
   }
 
   @override
@@ -191,6 +207,7 @@ class _$_BookingDataDto
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('notes', notes))
+      ..add(DiagnosticsProperty('durationMinutes', durationMinutes))
       ..add(DiagnosticsProperty('bookTime', bookTime))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
@@ -204,6 +221,8 @@ class _$_BookingDataDto
                 other.specialistId == specialistId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.durationMinutes, durationMinutes) ||
+                other.durationMinutes == durationMinutes) &&
             (identical(other.bookTime, bookTime) ||
                 other.bookTime == bookTime) &&
             (identical(other.createdAt, createdAt) ||
@@ -212,8 +231,8 @@ class _$_BookingDataDto
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, specialistId, userId, notes, bookTime, createdAt);
+  int get hashCode => Object.hash(runtimeType, specialistId, userId, notes,
+      durationMinutes, bookTime, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -234,6 +253,7 @@ abstract class _BookingDataDto implements BookingDataDto {
           {required final String specialistId,
           required final String userId,
           required final String notes,
+          required final int durationMinutes,
           @JsonKey(toJson: _toDateTime) required final DateTime bookTime,
           @JsonKey(toJson: _toDateTime) required final DateTime createdAt}) =
       _$_BookingDataDto;
@@ -247,6 +267,8 @@ abstract class _BookingDataDto implements BookingDataDto {
   String get userId;
   @override
   String get notes;
+  @override
+  int get durationMinutes;
   @override
   @JsonKey(toJson: _toDateTime)
   DateTime get bookTime;

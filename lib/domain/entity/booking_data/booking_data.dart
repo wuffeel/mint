@@ -10,6 +10,7 @@ class BookingData with _$BookingData {
     required String userId,
     required String notes,
     required DateTime bookTime,
+    required int durationMinutes,
     required DateTime createdAt,
   }) = _BookingData;
 }
