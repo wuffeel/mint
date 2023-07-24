@@ -36,7 +36,7 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
         specialistModel: widget.specialistModel,
         date: _selectedDay ?? DateTime.now(),
         time: _selectedTime ?? DateTime.now(),
-        minutesDuration: workInfo.consultationMinutes,
+        durationMinutes: workInfo.consultationMinutes,
       ),
     );
   }
