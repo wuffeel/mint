@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:mint/assembly/factory.dart';
