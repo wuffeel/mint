@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
-import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_details.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
@@ -30,18 +29,24 @@ class BookingResumePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<BookingBloc>(),
-      child: BlocListener<BookingBloc, BookingState>(
-        listener: (context, state) {
-          if (state is BookingBookSuccess) context.router.pop();
-        },
-        child: _BookingResumeView(
-          specialistModel: specialistModel,
-          date: date,
-          time: time,
-          durationMinutes: durationMinutes,
-        ),
+    return BlocListener<BookingBloc, BookingState>(
+      listener: (context, state) {
+        if (state is BookingBookSuccess) {
+          context.router.push(
+            CheckoutDetailsRoute(
+              specialistModel: specialistModel,
+              date: date,
+              time: time,
+              durationMinutes: durationMinutes,
+            ),
+          );
+        }
+      },
+      child: _BookingResumeView(
+        specialistModel: specialistModel,
+        date: date,
+        time: time,
+        durationMinutes: durationMinutes,
       ),
     );
   }
@@ -67,17 +72,27 @@ class _BookingResumeView extends StatefulWidget {
 class _BookingResumePageState extends State<_BookingResumeView> {
   final _notesController = TextEditingController();
 
-  void _bookSpecialist() {
-    context.read<BookingBloc>().add(
-          BookingBookRequested(
-            widget.specialistModel.id,
-            widget.date,
-            widget.time,
-            _notesController.text.trim(),
-            widget.durationMinutes,
-          ),
-        );
-    context.router.push(const CheckoutWrapperRoute());
+  void _bookSpecialist(BookingState state) {
+    if (state is! BookingBookSuccess) {
+      context.read<BookingBloc>().add(
+        BookingBookRequested(
+          widget.specialistModel.id,
+          widget.date,
+          widget.time,
+          _notesController.text.trim(),
+          widget.durationMinutes,
+        ),
+      );
+    } else {
+      context.router.push(
+        CheckoutDetailsRoute(
+          specialistModel: widget.specialistModel,
+          date: widget.date,
+          time: widget.time,
+          durationMinutes: widget.durationMinutes,
+        ),
+      );
+    }
   }
 
   @override
@@ -120,9 +135,13 @@ class _BookingResumePageState extends State<_BookingResumeView> {
                   ),
                   const Spacer(),
                   SizedBox(height: 20.h),
-                  ElevatedButton(
-                    onPressed: _bookSpecialist,
-                    child: Text(l10n.book),
+                  BlocBuilder<BookingBloc, BookingState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: () => _bookSpecialist(state),
+                        child: Text(l10n.book),
+                      );
+                    },
                   ),
                   SizedBox(height: 26.h),
                 ],

@@ -88,7 +88,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         createdAt: DateTime.now(),
       );
       await _bookingBookUseCase(bookingData);
-      emit(BookingBookSuccess());
+      emit(BookingBookSuccess(bookingData));
     } catch (error) {
       log('BookingBookFailure: $error');
       emit(BookingBookFailure());

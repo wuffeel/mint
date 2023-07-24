@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../gen/colors.gen.dart';
 import '../../theme/mint_text_styles.dart';
 
-class MintTextField extends StatefulWidget {
-  const MintTextField({
+class MintTextFormField extends StatefulWidget {
+  const MintTextFormField({
     super.key,
     this.controller,
     this.focusNode,
@@ -17,6 +17,7 @@ class MintTextField extends StatefulWidget {
     this.maxLength,
     this.textInputAction,
     this.keyboardType,
+    this.validator,
   });
 
   final TextEditingController? controller;
@@ -28,15 +29,16 @@ class MintTextField extends StatefulWidget {
   final int? maxLength;
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
 
   @override
-  State<MintTextField> createState() => _MintTextFieldState();
+  State<MintTextFormField> createState() => _MintTextFormFieldState();
 }
 
-class _MintTextFieldState extends State<MintTextField> {
+class _MintTextFormFieldState extends State<MintTextFormField> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
       focusNode: widget.focusNode,
       maxLength: widget.maxLength,
@@ -56,12 +58,12 @@ class _MintTextFieldState extends State<MintTextField> {
         errorStyle: MintTextStyles.caption1,
         errorBorder: widget.errorText != null
             ? OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: MintColors.error,
-                  strokeAlign: BorderSide.strokeAlignOutside,
-                ),
-                borderRadius: BorderRadius.circular(8.r),
-              )
+          borderSide: const BorderSide(
+            color: MintColors.error,
+            strokeAlign: BorderSide.strokeAlignOutside,
+          ),
+          borderRadius: BorderRadius.circular(8.r),
+        )
             : null,
         hintText: widget.hintText,
         hintStyle: MintTextStyles.body.copyWith(
@@ -73,6 +75,7 @@ class _MintTextFieldState extends State<MintTextField> {
       style: MintTextStyles.body,
       textInputAction: widget.textInputAction,
       keyboardType: widget.keyboardType,
+      validator: widget.validator,
     );
   }
 }

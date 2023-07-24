@@ -14,6 +14,13 @@ import 'package:flutter/services.dart';
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/american_express_icon.svg
+  SvgGenImage get americanExpressIcon =>
+      const SvgGenImage('assets/svg/american_express_icon.svg');
+
+  /// File path: assets/svg/apple_icon.svg
+  SvgGenImage get appleIcon => const SvgGenImage('assets/svg/apple_icon.svg');
+
   /// File path: assets/svg/arrow_back_android.svg
   SvgGenImage get arrowBackAndroid =>
       const SvgGenImage('assets/svg/arrow_back_android.svg');
@@ -56,9 +63,16 @@ class $AssetsSvgGen {
   /// File path: assets/svg/home_icon.svg
   SvgGenImage get homeIcon => const SvgGenImage('assets/svg/home_icon.svg');
 
+  /// File path: assets/svg/mastercard_icon.svg
+  SvgGenImage get mastercardIcon =>
+      const SvgGenImage('assets/svg/mastercard_icon.svg');
+
   /// File path: assets/svg/pick_up_specialist.svg
   SvgGenImage get pickUpSpecialist =>
       const SvgGenImage('assets/svg/pick_up_specialist.svg');
+
+  /// File path: assets/svg/plus_icon.svg
+  SvgGenImage get plusIcon => const SvgGenImage('assets/svg/plus_icon.svg');
 
   /// File path: assets/svg/profile_icon.svg
   SvgGenImage get profileIcon =>
@@ -87,8 +101,13 @@ class $AssetsSvgGen {
   SvgGenImage get userPlaceholder =>
       const SvgGenImage('assets/svg/user_placeholder.svg');
 
+  /// File path: assets/svg/visa_icon.svg
+  SvgGenImage get visaIcon => const SvgGenImage('assets/svg/visa_icon.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
+        americanExpressIcon,
+        appleIcon,
         arrowBackAndroid,
         arrowBackIos,
         backspaceIcon,
@@ -101,14 +120,17 @@ class $AssetsSvgGen {
         heartIcon,
         heartIconFilled,
         homeIcon,
+        mastercardIcon,
         pickUpSpecialist,
+        plusIcon,
         profileIcon,
         questionMark,
         sessionsIcon,
         specialistsIcon,
         starIcon,
         starIconFilled,
-        userPlaceholder
+        userPlaceholder,
+        visaIcon
       ];
 }
 

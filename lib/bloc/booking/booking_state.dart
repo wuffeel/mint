@@ -15,6 +15,10 @@ class BookingInfoFetchSuccess extends BookingState {
 
 class BookingInfoFetchFailure extends BookingState {}
 
-class BookingBookSuccess extends BookingState {}
+class BookingBookSuccess extends BookingState {
+  BookingBookSuccess(this.bookingData);
+
+  final BookingData bookingData;
+}
 
 class BookingBookFailure extends BookingState {}

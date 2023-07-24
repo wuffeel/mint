@@ -5,12 +5,12 @@ import 'package:mint/gen/colors.gen.dart';
 class BottomSheetContainer extends StatelessWidget {
   const BottomSheetContainer({
     super.key,
-    required this.child,
     required this.appBar,
+    required this.child,
   });
 
-  final Widget child;
   final Widget appBar;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

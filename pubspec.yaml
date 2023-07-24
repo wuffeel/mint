@@ -32,6 +32,7 @@ dependencies:
   injectable: ^2.1.2
   intl: ^0.18.0
   json_annotation: ^4.8.1
+  mask_text_input_formatter: ^2.5.0
   meta: ^1.9.1
   pinput: ^2.2.31
   rxdart: ^0.27.7

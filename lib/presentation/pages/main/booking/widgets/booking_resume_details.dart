@@ -39,7 +39,7 @@ class BookingResumeDetails extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Date:', style: MintTextStyles.callOut),
+                Text('${l10n.date}:', style: MintTextStyles.callOut),
                 Text(
                   DateFormat.yMd(context.l10n.localeName).format(date),
                   style: MintTextStyles.body.copyWith(
@@ -55,7 +55,7 @@ class BookingResumeDetails extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Time:', style: MintTextStyles.callOut),
+                Text('${l10n.time}:', style: MintTextStyles.callOut),
                 Text(
                   DateFormat.Hm().format(time),
                   style: MintTextStyles.body.copyWith(
@@ -71,7 +71,7 @@ class BookingResumeDetails extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Duration:', style: MintTextStyles.callOut),
+                Text('${l10n.duration}:', style: MintTextStyles.callOut),
                 Text(
                   l10n.upToNMin(minutesDuration),
                   style: MintTextStyles.body.copyWith(
