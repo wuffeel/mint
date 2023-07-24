@@ -45,26 +45,11 @@ class UserReviewsSection extends StatelessWidget {
                   SliverList.separated(
                     itemBuilder: (context, index) {
                       final review = userReviews[index];
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(child: ReviewCardTile(reviewModel: review)),
-                          SizedBox(width: 8.w),
-                          Column(
-                            children: <Widget>[
-                              SizedBox(height: 12.h),
-                              InkWell(
-                                onTap: () => onEdit(review),
-                                child: const Icon(Icons.edit),
-                              ),
-                              SizedBox(height: 12.h),
-                              InkWell(
-                                onTap: () => onDelete(review),
-                                child: const Icon(Icons.delete),
-                              ),
-                            ],
-                          ),
-                        ],
+                      return ReviewCardTile(
+                        reviewModel: review,
+                        isUserReview: true,
+                        onEdit: onEdit,
+                        onDelete: onDelete,
                       );
                     },
                     separatorBuilder: (_, __) => SizedBox(height: 10.h),

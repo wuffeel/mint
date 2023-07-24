@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 
 class ReviewDeleteDialog extends StatelessWidget {

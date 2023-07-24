@@ -116,5 +116,7 @@
   "addCard": "Додати картку",
   "wrongCardNumber": "Некоректний номер картки",
   "wrongExpirationDate": "Некоректний термін придатності",
-  "wrongCvv": "Некоректний CVV"
+  "wrongCvv": "Некоректний CVV",
+  "edit": "Редагувати",
+  "delete": "Видалити"
 }

@@ -116,5 +116,7 @@
   "addCard": "Add card",
   "wrongCardNumber": "Wrong card number",
   "wrongExpirationDate": "Wrong expiration date",
-  "wrongCvv": "Wrong CVV"
+  "wrongCvv": "Wrong CVV",
+  "edit": "Edit",
+  "delete": "Delete"
 }

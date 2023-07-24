@@ -11,9 +11,18 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../../utils/time_ago/time_ago_util.dart';
 
 class ReviewCardTile extends StatelessWidget {
-  const ReviewCardTile({super.key, required this.reviewModel});
+  const ReviewCardTile({
+    super.key,
+    required this.reviewModel,
+    this.isUserReview,
+    this.onEdit,
+    this.onDelete,
+  });
 
   final ReviewModel reviewModel;
+  final bool? isUserReview;
+  final void Function(ReviewModel)? onEdit;
+  final void Function(ReviewModel)? onDelete;
 
   String _getFullName() {
     final user = reviewModel.user;
@@ -36,6 +45,7 @@ class ReviewCardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final localPhoto = reviewModel.user.photoUrl;
     final content = reviewModel.content;
+    final userReview = isUserReview;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
@@ -84,12 +94,43 @@ class ReviewCardTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(
-                _getStringFromDate(context),
-                style: MintTextStyles.caption1.copyWith(
-                  color: Theme.of(context).hintColor.withOpacity(0.6),
+              if (userReview != null && userReview)
+                Row(
+                  children: <Widget>[
+                    Text(
+                      _getStringFromDate(context),
+                      style: MintTextStyles.caption1.copyWith(
+                        color: Theme.of(context).hintColor.withOpacity(0.6),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    PopupMenuButton<_ReviewPopupMenuItem>(
+                      padding: EdgeInsets.zero,
+                      onSelected: (item) {
+                        final onTap = item.onTap;
+                        if (onTap != null) return onTap(reviewModel);
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: _ReviewPopupMenuItem(onTap: onEdit),
+                          child: Text(context.l10n.edit),
+                        ),
+                        PopupMenuItem(
+                          value: _ReviewPopupMenuItem(onTap: onDelete),
+                          child: Text(context.l10n.delete),
+                        ),
+                      ],
+                      child: Icon(Icons.more_horiz),
+                    ),
+                  ],
+                )
+              else
+                Text(
+                  _getStringFromDate(context),
+                  style: MintTextStyles.caption1.copyWith(
+                    color: Theme.of(context).hintColor.withOpacity(0.6),
+                  ),
                 ),
-              ),
             ],
           ),
           if (content != null) ...[
@@ -106,4 +147,10 @@ class ReviewCardTile extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ReviewPopupMenuItem {
+  const _ReviewPopupMenuItem({required this.onTap});
+
+  final void Function(ReviewModel)? onTap;
 }
