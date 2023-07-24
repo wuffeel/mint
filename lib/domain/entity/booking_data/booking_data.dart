@@ -6,11 +6,11 @@ part 'booking_data.freezed.dart';
 @freezed
 class BookingData with _$BookingData {
   const factory BookingData({
+    required String id,
     required String specialistId,
     required String userId,
     required String notes,
     required DateTime bookTime,
     required int durationMinutes,
-    required DateTime createdAt,
   }) = _BookingData;
 }

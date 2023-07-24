@@ -8,11 +8,12 @@ import '../../domain/entity/booking_data/booking_data.dart';
 class BookingDataToDto implements Factory<BookingDataDto, BookingData> {
   @override
   BookingDataDto create(BookingData param) => BookingDataDto(
+        id: param.id,
         specialistId: param.specialistId,
         userId: param.userId,
         notes: param.notes,
         bookTime: param.bookTime.toUtc(),
         durationMinutes: param.durationMinutes,
-        createdAt: param.createdAt.toUtc(),
+        createdAt: DateTime.now().toUtc(),
       );
 }

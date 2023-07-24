@@ -5,6 +5,7 @@ import 'package:mint/data/model/specialist_work_info_dto/specialist_work_info_dt
 import 'package:mint/data/repository/abstract/booking_repository.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';
+import '../../model/transaction_data_dto/transaction_data_dto.dart';
 
 @Injectable(as: BookingRepository)
 class FirebaseBookingRepository implements BookingRepository {
@@ -13,13 +14,18 @@ class FirebaseBookingRepository implements BookingRepository {
 
   static const _bookingInfoFunction = 'fetchBookingInformation';
   static const _bookingsCollection = 'bookings';
+  static const _transactionsCollection = 'transactions';
 
   CollectionReference get _bookingsCollectionRef =>
       _firestoreInstance.collection(_bookingsCollection);
 
+  CollectionReference get _transactionCollectionRef =>
+      _firestoreInstance.collection(_transactionsCollection);
+
   @override
   Future<SpecialistWorkInfoDto> getSpecialistBookInfo(
-      String specialistId,) async {
+    String specialistId,
+  ) async {
     final callable = _functionsInstance.httpsCallable(_bookingInfoFunction);
 
     final result = await callable.call<Map<String, dynamic>>({
@@ -32,7 +38,15 @@ class FirebaseBookingRepository implements BookingRepository {
   }
 
   @override
-  Future<void> bookSpecialist(BookingDataDto bookingData) {
-    return _bookingsCollectionRef.add(bookingData.toJson());
+  Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData) async {
+    final booking = await _bookingsCollectionRef.add(
+      bookingData.toJsonWithoutId(),
+    );
+    return bookingData.copyWith(id: booking.id);
+  }
+
+  @override
+  Future<void> payForSession(TransactionDataDto transactionData) {
+    return _transactionCollectionRef.add(transactionData.toJsonWithoutId());
   }
 }

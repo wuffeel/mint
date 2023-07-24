@@ -8,6 +8,6 @@ class BookingBookUseCase {
 
   final BookingService _service;
 
-  Future<void> call(BookingData bookingData) =>
+  Future<BookingData> call(BookingData bookingData) =>
       _service.bookSpecialist(bookingData);
 }

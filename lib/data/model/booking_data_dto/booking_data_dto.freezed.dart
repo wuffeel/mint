@@ -20,13 +20,14 @@ BookingDataDto _$BookingDataDtoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BookingDataDto {
+  String get id => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
   int get durationMinutes => throw _privateConstructorUsedError;
-  @JsonKey(toJson: _toDateTime)
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get bookTime => throw _privateConstructorUsedError;
-  @JsonKey(toJson: _toDateTime)
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,12 +43,15 @@ abstract class $BookingDataDtoCopyWith<$Res> {
       _$BookingDataDtoCopyWithImpl<$Res, BookingDataDto>;
   @useResult
   $Res call(
-      {String specialistId,
+      {String id,
+      String specialistId,
       String userId,
       String notes,
       int durationMinutes,
-      @JsonKey(toJson: _toDateTime) DateTime bookTime,
-      @JsonKey(toJson: _toDateTime) DateTime createdAt});
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          DateTime bookTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          DateTime createdAt});
 }
 
 /// @nodoc
@@ -63,6 +67,7 @@ class _$BookingDataDtoCopyWithImpl<$Res, $Val extends BookingDataDto>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? specialistId = null,
     Object? userId = null,
     Object? notes = null,
@@ -71,6 +76,10 @@ class _$BookingDataDtoCopyWithImpl<$Res, $Val extends BookingDataDto>
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       specialistId: null == specialistId
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
@@ -108,12 +117,15 @@ abstract class _$$_BookingDataDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String specialistId,
+      {String id,
+      String specialistId,
       String userId,
       String notes,
       int durationMinutes,
-      @JsonKey(toJson: _toDateTime) DateTime bookTime,
-      @JsonKey(toJson: _toDateTime) DateTime createdAt});
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          DateTime bookTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          DateTime createdAt});
 }
 
 /// @nodoc
@@ -127,6 +139,7 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? specialistId = null,
     Object? userId = null,
     Object? notes = null,
@@ -135,6 +148,10 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
     Object? createdAt = null,
   }) {
     return _then(_$_BookingDataDto(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       specialistId: null == specialistId
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
@@ -165,20 +182,24 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_BookingDataDto
-    with DiagnosticableTreeMixin
-    implements _BookingDataDto {
+class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
   const _$_BookingDataDto(
-      {required this.specialistId,
+      {required this.id,
+      required this.specialistId,
       required this.userId,
       required this.notes,
       required this.durationMinutes,
-      @JsonKey(toJson: _toDateTime) required this.bookTime,
-      @JsonKey(toJson: _toDateTime) required this.createdAt});
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          required this.bookTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          required this.createdAt})
+      : super._();
 
   factory _$_BookingDataDto.fromJson(Map<String, dynamic> json) =>
       _$$_BookingDataDtoFromJson(json);
 
+  @override
+  final String id;
   @override
   final String specialistId;
   @override
@@ -188,15 +209,15 @@ class _$_BookingDataDto
   @override
   final int durationMinutes;
   @override
-  @JsonKey(toJson: _toDateTime)
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   final DateTime bookTime;
   @override
-  @JsonKey(toJson: _toDateTime)
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   final DateTime createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BookingDataDto(specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, createdAt: $createdAt)';
+    return 'BookingDataDto(id: $id, specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, createdAt: $createdAt)';
   }
 
   @override
@@ -204,6 +225,7 @@ class _$_BookingDataDto
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'BookingDataDto'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('notes', notes))
@@ -217,6 +239,7 @@ class _$_BookingDataDto
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_BookingDataDto &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
@@ -231,7 +254,7 @@ class _$_BookingDataDto
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, specialistId, userId, notes,
+  int get hashCode => Object.hash(runtimeType, id, specialistId, userId, notes,
       durationMinutes, bookTime, createdAt);
 
   @JsonKey(ignore: true)
@@ -248,19 +271,24 @@ class _$_BookingDataDto
   }
 }
 
-abstract class _BookingDataDto implements BookingDataDto {
+abstract class _BookingDataDto extends BookingDataDto {
   const factory _BookingDataDto(
-          {required final String specialistId,
-          required final String userId,
-          required final String notes,
-          required final int durationMinutes,
-          @JsonKey(toJson: _toDateTime) required final DateTime bookTime,
-          @JsonKey(toJson: _toDateTime) required final DateTime createdAt}) =
-      _$_BookingDataDto;
+      {required final String id,
+      required final String specialistId,
+      required final String userId,
+      required final String notes,
+      required final int durationMinutes,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          required final DateTime bookTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          required final DateTime createdAt}) = _$_BookingDataDto;
+  const _BookingDataDto._() : super._();
 
   factory _BookingDataDto.fromJson(Map<String, dynamic> json) =
       _$_BookingDataDto.fromJson;
 
+  @override
+  String get id;
   @override
   String get specialistId;
   @override
@@ -270,10 +298,10 @@ abstract class _BookingDataDto implements BookingDataDto {
   @override
   int get durationMinutes;
   @override
-  @JsonKey(toJson: _toDateTime)
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get bookTime;
   @override
-  @JsonKey(toJson: _toDateTime)
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)

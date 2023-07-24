@@ -16,12 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$BookingData {
+  String get id => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
   DateTime get bookTime => throw _privateConstructorUsedError;
   int get durationMinutes => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BookingDataCopyWith<BookingData> get copyWith =>
@@ -35,12 +35,12 @@ abstract class $BookingDataCopyWith<$Res> {
       _$BookingDataCopyWithImpl<$Res, BookingData>;
   @useResult
   $Res call(
-      {String specialistId,
+      {String id,
+      String specialistId,
       String userId,
       String notes,
       DateTime bookTime,
-      int durationMinutes,
-      DateTime createdAt});
+      int durationMinutes});
 }
 
 /// @nodoc
@@ -56,14 +56,18 @@ class _$BookingDataCopyWithImpl<$Res, $Val extends BookingData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? specialistId = null,
     Object? userId = null,
     Object? notes = null,
     Object? bookTime = null,
     Object? durationMinutes = null,
-    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       specialistId: null == specialistId
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
@@ -84,10 +88,6 @@ class _$BookingDataCopyWithImpl<$Res, $Val extends BookingData>
           ? _value.durationMinutes
           : durationMinutes // ignore: cast_nullable_to_non_nullable
               as int,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ) as $Val);
   }
 }
@@ -101,12 +101,12 @@ abstract class _$$_BookingDataCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String specialistId,
+      {String id,
+      String specialistId,
       String userId,
       String notes,
       DateTime bookTime,
-      int durationMinutes,
-      DateTime createdAt});
+      int durationMinutes});
 }
 
 /// @nodoc
@@ -120,14 +120,18 @@ class __$$_BookingDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? specialistId = null,
     Object? userId = null,
     Object? notes = null,
     Object? bookTime = null,
     Object? durationMinutes = null,
-    Object? createdAt = null,
   }) {
     return _then(_$_BookingData(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       specialistId: null == specialistId
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
@@ -148,10 +152,6 @@ class __$$_BookingDataCopyWithImpl<$Res>
           ? _value.durationMinutes
           : durationMinutes // ignore: cast_nullable_to_non_nullable
               as int,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -160,13 +160,15 @@ class __$$_BookingDataCopyWithImpl<$Res>
 
 class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
   const _$_BookingData(
-      {required this.specialistId,
+      {required this.id,
+      required this.specialistId,
       required this.userId,
       required this.notes,
       required this.bookTime,
-      required this.durationMinutes,
-      required this.createdAt});
+      required this.durationMinutes});
 
+  @override
+  final String id;
   @override
   final String specialistId;
   @override
@@ -177,12 +179,10 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
   final DateTime bookTime;
   @override
   final int durationMinutes;
-  @override
-  final DateTime createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BookingData(specialistId: $specialistId, userId: $userId, notes: $notes, bookTime: $bookTime, durationMinutes: $durationMinutes, createdAt: $createdAt)';
+    return 'BookingData(id: $id, specialistId: $specialistId, userId: $userId, notes: $notes, bookTime: $bookTime, durationMinutes: $durationMinutes)';
   }
 
   @override
@@ -190,12 +190,12 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'BookingData'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('bookTime', bookTime))
-      ..add(DiagnosticsProperty('durationMinutes', durationMinutes))
-      ..add(DiagnosticsProperty('createdAt', createdAt));
+      ..add(DiagnosticsProperty('durationMinutes', durationMinutes));
   }
 
   @override
@@ -203,6 +203,7 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_BookingData &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
@@ -210,14 +211,12 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
             (identical(other.bookTime, bookTime) ||
                 other.bookTime == bookTime) &&
             (identical(other.durationMinutes, durationMinutes) ||
-                other.durationMinutes == durationMinutes) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.durationMinutes == durationMinutes));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, specialistId, userId, notes,
-      bookTime, durationMinutes, createdAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, specialistId, userId, notes, bookTime, durationMinutes);
 
   @JsonKey(ignore: true)
   @override
@@ -228,13 +227,15 @@ class _$_BookingData with DiagnosticableTreeMixin implements _BookingData {
 
 abstract class _BookingData implements BookingData {
   const factory _BookingData(
-      {required final String specialistId,
+      {required final String id,
+      required final String specialistId,
       required final String userId,
       required final String notes,
       required final DateTime bookTime,
-      required final int durationMinutes,
-      required final DateTime createdAt}) = _$_BookingData;
+      required final int durationMinutes}) = _$_BookingData;
 
+  @override
+  String get id;
   @override
   String get specialistId;
   @override
@@ -245,8 +246,6 @@ abstract class _BookingData implements BookingData {
   DateTime get bookTime;
   @override
   int get durationMinutes;
-  @override
-  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_BookingDataCopyWith<_$_BookingData> get copyWith =>

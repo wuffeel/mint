@@ -8,16 +8,18 @@ part of 'booking_data_dto.dart';
 
 _$_BookingDataDto _$$_BookingDataDtoFromJson(Map<String, dynamic> json) =>
     _$_BookingDataDto(
+      id: json['id'] as String,
       specialistId: json['specialistId'] as String,
       userId: json['userId'] as String,
       notes: json['notes'] as String,
       durationMinutes: json['durationMinutes'] as int,
-      bookTime: DateTime.parse(json['bookTime'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      bookTime: DateUtils.convertToDateTime(json['bookTime']),
+      createdAt: DateUtils.convertToDateTime(json['createdAt']),
     );
 
 Map<String, dynamic> _$$_BookingDataDtoToJson(_$_BookingDataDto instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'specialistId': instance.specialistId,
       'userId': instance.userId,
       'notes': instance.notes,
