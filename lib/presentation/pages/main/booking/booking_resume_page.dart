@@ -33,11 +33,15 @@ class BookingResumePage extends StatelessWidget {
       listener: (context, state) {
         if (state is BookingBookSuccess) {
           context.router.push(
-            CheckoutDetailsRoute(
-              specialistModel: specialistModel,
-              date: date,
-              time: time,
-              durationMinutes: durationMinutes,
+            CheckoutWrapperRoute(
+              children: [
+                CheckoutDetailsRoute(
+                  specialistModel: specialistModel,
+                  date: date,
+                  time: time,
+                  durationMinutes: durationMinutes,
+                ),
+              ],
             ),
           );
         }
@@ -75,14 +79,14 @@ class _BookingResumePageState extends State<_BookingResumeView> {
   void _bookSpecialist(BookingState state) {
     if (state is! BookingBookSuccess) {
       context.read<BookingBloc>().add(
-        BookingBookRequested(
-          widget.specialistModel.id,
-          widget.date,
-          widget.time,
-          _notesController.text.trim(),
-          widget.durationMinutes,
-        ),
-      );
+            BookingBookRequested(
+              widget.specialistModel.id,
+              widget.date,
+              widget.time,
+              _notesController.text.trim(),
+              widget.durationMinutes,
+            ),
+          );
     } else {
       context.router.push(
         CheckoutDetailsRoute(
