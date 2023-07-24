@@ -10,6 +10,7 @@ import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_deta
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/multiline_text_field.dart';
 import 'package:mint/presentation/widgets/specialist_card_tile.dart';
+import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 @RoutePage()
@@ -19,13 +20,13 @@ class BookingResumePage extends StatelessWidget {
     required this.specialistModel,
     required this.date,
     required this.time,
-    required this.minutesDuration,
+    required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
   final DateTime date;
   final DateTime time;
-  final int minutesDuration;
+  final int durationMinutes;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class BookingResumePage extends StatelessWidget {
           specialistModel: specialistModel,
           date: date,
           time: time,
-          minutesDuration: minutesDuration,
+          durationMinutes: durationMinutes,
         ),
       ),
     );
@@ -51,13 +52,13 @@ class _BookingResumeView extends StatefulWidget {
     required this.specialistModel,
     required this.date,
     required this.time,
-    required this.minutesDuration,
+    required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
   final DateTime date;
   final DateTime time;
-  final int minutesDuration;
+  final int durationMinutes;
 
   @override
   State<_BookingResumeView> createState() => _BookingResumePageState();
@@ -67,14 +68,16 @@ class _BookingResumePageState extends State<_BookingResumeView> {
   final _notesController = TextEditingController();
 
   void _bookSpecialist() {
-    return context.read<BookingBloc>().add(
-      BookingBookRequested(
-        widget.specialistModel.id,
-        widget.date,
-        widget.time,
-        _notesController.text.trim(),
-      ),
-    );
+    context.read<BookingBloc>().add(
+          BookingBookRequested(
+            widget.specialistModel.id,
+            widget.date,
+            widget.time,
+            _notesController.text.trim(),
+            widget.durationMinutes,
+          ),
+        );
+    context.router.push(const CheckoutWrapperRoute());
   }
 
   @override
@@ -107,7 +110,7 @@ class _BookingResumePageState extends State<_BookingResumeView> {
                   BookingResumeDetails(
                     date: widget.date,
                     time: widget.time,
-                    minutesDuration: widget.minutesDuration,
+                    minutesDuration: widget.durationMinutes,
                   ),
                   SizedBox(height: 16.h),
                   MultilineTextField(
