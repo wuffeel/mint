@@ -41,6 +41,21 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
     );
   }
 
+  void Function()? _onContinue(BookingState state) {
+    if (_currentStep == 0) {
+      return _selectedDay != null
+          ? () => setState(() => _currentStep += 1)
+          : null;
+    } else if (_currentStep == 1) {
+      if (state is BookingInfoFetchSuccess) {
+        return _selectedTime != null
+            ? () => _navigateToBookingResume(state.bookingInfo)
+            : null;
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -65,53 +80,60 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
             );
           }
           if (state is BookingInfoFetchSuccess) {
-            return Column(
-              children: <Widget>[
-                if (_currentStep != 0) ...[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.h,
-                        horizontal: 16.w,
-                      ),
-                      child: InkWell(
-                        onTap: () => setState(() => _currentStep -= 1),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(Icons.chevron_left, size: 20.r),
-                            Text(
-                              context.l10n.previousStep,
-                              style: MintTextStyles.caption1,
+            return AnimatedSize(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOutCubic,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  children: <Widget>[
+                    if (_currentStep != 0) ...[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12.h),
+                          child: InkWell(
+                            onTap: () => setState(() => _currentStep -= 1),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(Icons.chevron_left, size: 20.r),
+                                Text(
+                                  context.l10n.previousStep,
+                                  style: MintTextStyles.caption1,
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
+                    ],
+                    if (_currentStep == 0)
+                      BookingDateCalendar(
+                        selectedDay: _selectedDay,
+                        onDaySelected: (day) => setState(() {
+                          _selectedDay = day;
+                          _selectedTime = null;
+                        }),
+                        bookingInfo: state.bookingInfo,
+                      )
+                    else
+                      BookingTimeCalendar(
+                        selectedDate: _selectedDay ?? DateTime.now(),
+                        selectedTime: _selectedTime,
+                        onTimeSelected: (time) =>
+                            setState(() => _selectedTime = time),
+                        bookingInfo: state.bookingInfo,
+                      ),
+                    SizedBox(height: 20.h),
+                    ElevatedButton(
+                      onPressed: _onContinue(state),
+                      child: Text(l10n.continueStep),
                     ),
-                  ),
-                ],
-                if (_currentStep == 0)
-                  BookingDateCalendar(
-                    selectedDay: _selectedDay,
-                    onDaySelected: (day) => setState(() {
-                      _selectedDay = day;
-                      _selectedTime = null;
-                    }),
-                    onContinue: () => setState(() => _currentStep = 1),
-                    bookingInfo: state.bookingInfo,
-                  )
-                else if (_currentStep == 1)
-                  BookingTimeCalendar(
-                    selectedDate: _selectedDay ?? DateTime.now(),
-                    selectedTime: _selectedTime,
-                    onTimeSelected: (time) =>
-                        setState(() => _selectedTime = time),
-                    onContinue: () =>
-                        _navigateToBookingResume(state.bookingInfo),
-                    bookingInfo: state.bookingInfo,
-                  ),
-              ],
+                    SizedBox(height: 26.h),
+                  ],
+                ),
+              ),
             );
           }
           return const SizedBox.shrink();

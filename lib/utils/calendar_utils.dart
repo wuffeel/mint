@@ -1,14 +1,17 @@
+import 'dart:developer';
+
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarUtils {
-  /// Checks if the whole day was booked
+  /// Checks if there are any available time slots for booking on the given
+  /// [day].
   ///
   /// Returns:
-  /// - 'true' if every available consultation time from [daySchedule] on given
-  /// [day] is booked in [bookedTimes]
-  /// - 'false' otherwise
+  /// - `true` if there are available time slots for booking.
+  /// - `false` if all time slots are fully booked or unavailable.
   ///
-  /// Example:
+  ///
+  /// Example for fully booked day:
   /// ```dart
   /// final day = 2023-01-01 00:00:00.000;
   /// final daySchedule = [1970-01-01 08:00:00, 1970-01-01 09:00:00];
@@ -29,8 +32,10 @@ class CalendarUtils {
         bookedTimes.where((element) => isSameDay(element, day)).toList();
     if (dayBooks.isEmpty) return false;
 
+    final now = DateTime.now();
+
     final isBooked = daySchedule.every((workTime) {
-      final currentDayWorkTime = DateTime(
+      final dayWorkTime = DateTime(
         day.year,
         day.month,
         day.day,
@@ -38,10 +43,17 @@ class CalendarUtils {
         workTime.minute,
         workTime.second,
       );
-      final isBetween = currentDayWorkTime.isAfter(dayBooks.first) &&
-          currentDayWorkTime.isBefore(dayBooks.last);
-      final isFirst = currentDayWorkTime == dayBooks.first;
-      final isLast = currentDayWorkTime == dayBooks.last;
+
+      // Check if the current time is after workTime
+      if (now.isAfter(dayWorkTime)) {
+        return true; // Time slot is in the past; skip it
+      }
+
+      final isBetween = dayWorkTime.isAfter(dayBooks.first) &&
+          dayWorkTime.isBefore(dayBooks.last);
+      final isFirst = dayWorkTime == dayBooks.first;
+      final isLast = dayWorkTime == dayBooks.last;
+
       return isBetween || isFirst || isLast;
     });
 

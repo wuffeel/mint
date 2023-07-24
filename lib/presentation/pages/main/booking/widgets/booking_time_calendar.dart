@@ -14,14 +14,12 @@ class BookingTimeCalendar extends StatefulWidget {
     required this.selectedDate,
     required this.selectedTime,
     required this.onTimeSelected,
-    required this.onContinue,
     required this.bookingInfo,
   });
 
   final DateTime selectedDate;
   final DateTime? selectedTime;
   final void Function(DateTime) onTimeSelected;
-  final VoidCallback onContinue;
   final SpecialistWorkInfo bookingInfo;
 
   @override
@@ -39,61 +37,52 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              l10n.chooseRightTimeToBook,
-              style: TextStyle(
-                fontSize: 12.sp,
-                letterSpacing: 0.03,
-                color: Theme.of(context).hintColor.withOpacity(0.6),
-              ),
+    return Column(
+      children: <Widget>[
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            l10n.chooseRightTimeToBook,
+            style: TextStyle(
+              fontSize: 12.sp,
+              letterSpacing: 0.03,
+              color: Theme.of(context).hintColor.withOpacity(0.6),
             ),
           ),
-          SizedBox(height: 10.h),
-          BookDateContainer(selectedDate: widget.selectedDate),
-          SizedBox(height: 20.h),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: MintSingleItemSelection(
-              items: _workHours,
-              itemTitles: List.generate(
-                _workHours.length,
-                (index) => DateFormat.Hm().format(_workHours[index]),
-              ),
-              selectedItem: widget.selectedTime,
-              onSelect: widget.onTimeSelected,
-              isItemDisabled: (time) => CalendarUtils.isTimeUnavailable(
-                time,
-                widget.selectedDate,
-                widget.bookingInfo.bookedTimes,
-              ),
-              mainSpacing: 11.w,
-              crossSpacing: 11.h,
-              itemInnerPadding: EdgeInsets.symmetric(vertical: 12.5.h),
-              itemAlignment: Alignment.center,
-              itemsPerRow: 6,
-              itemTextStyle: MintTextStyles.callOut3,
-              unselectedTextStyle: MintTextStyles.callOut3.copyWith(
-                color: Theme.of(context).hintColor.withOpacity(0.6),
-              ),
-              disabledTextStyle: MintTextStyles.callOut3.copyWith(
-                color: Theme.of(context).hintColor.withOpacity(0.18),
-              ),
+        ),
+        SizedBox(height: 10.h),
+        BookDateContainer(selectedDate: widget.selectedDate),
+        SizedBox(height: 20.h),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: MintSingleItemSelection(
+            items: _workHours,
+            itemTitles: List.generate(
+              _workHours.length,
+              (index) => DateFormat.Hm().format(_workHours[index]),
+            ),
+            selectedItem: widget.selectedTime,
+            onSelect: widget.onTimeSelected,
+            isItemDisabled: (time) => CalendarUtils.isTimeUnavailable(
+              time,
+              widget.selectedDate,
+              widget.bookingInfo.bookedTimes,
+            ),
+            mainSpacing: 11.w,
+            crossSpacing: 11.h,
+            itemInnerPadding: EdgeInsets.symmetric(vertical: 12.5.h),
+            itemAlignment: Alignment.center,
+            itemsPerRow: 6,
+            itemTextStyle: MintTextStyles.callOut3,
+            unselectedTextStyle: MintTextStyles.callOut3.copyWith(
+              color: Theme.of(context).hintColor.withOpacity(0.6),
+            ),
+            disabledTextStyle: MintTextStyles.callOut3.copyWith(
+              color: Theme.of(context).hintColor.withOpacity(0.18),
             ),
           ),
-          SizedBox(height: 20.h),
-          ElevatedButton(
-            onPressed: widget.selectedTime != null ? widget.onContinue : null,
-            child: Text(l10n.continueStep),
-          ),
-          SizedBox(height: 26.h),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
