@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
+import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
 import 'package:mint/domain/usecase/booking_info_fetch_use_case.dart';
 
@@ -69,6 +70,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     final user = _currentUser;
     if (user == null) return;
     try {
+      emit(BookingBookLoading());
       final selectedDate = event.selectedDate;
       final selectedTime = event.selectedTime;
       final bookTime = DateTime(
@@ -91,7 +93,11 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       emit(BookingBookSuccess(booking));
     } catch (error) {
       log('BookingBookFailure: $error');
-      emit(BookingBookFailure());
+      if (error is BookingDuplicateException) {
+        emit(BookingBookDuplicateFailure());
+      } else {
+        emit(BookingBookFailure());
+      }
     }
   }
 }

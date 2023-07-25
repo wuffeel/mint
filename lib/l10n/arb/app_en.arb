@@ -118,5 +118,6 @@
   "wrongExpirationDate": "Wrong expiration date",
   "wrongCvv": "Wrong CVV",
   "edit": "Edit",
-  "delete": "Delete"
+  "delete": "Delete",
+  "timeIsAlreadyBooked": "The time is already booked. Please book other time."
 }

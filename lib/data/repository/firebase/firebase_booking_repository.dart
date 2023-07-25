@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/specialist_work_info_dto/specialist_work_info_dto.dart';
 import 'package:mint/data/repository/abstract/booking_repository.dart';
+import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';
 import '../../model/transaction_data_dto/transaction_data_dto.dart';
@@ -39,6 +40,13 @@ class FirebaseBookingRepository implements BookingRepository {
 
   @override
   Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData) async {
+    final bookExists = await _isBookExist(
+      bookingData.specialistId,
+      bookingData.bookTime,
+    );
+
+    if (bookExists) throw BookingDuplicateException();
+
     final booking = await _bookingsCollectionRef.add(
       bookingData.toJsonWithoutId(),
     );
@@ -48,5 +56,18 @@ class FirebaseBookingRepository implements BookingRepository {
   @override
   Future<void> payForSession(TransactionDataDto transactionData) {
     return _transactionCollectionRef.add(transactionData.toJsonWithoutId());
+  }
+
+  Future<bool> _isBookExist(
+    String specialistId,
+    DateTime bookTime,
+  ) async {
+    final bookingSnapshot = await _bookingsCollectionRef
+        .where('specialistId', isEqualTo: specialistId)
+        .where('bookTime', isEqualTo: bookTime)
+        .limit(1)
+        .get();
+
+    return bookingSnapshot.docs.isNotEmpty;
   }
 }

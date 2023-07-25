@@ -6,6 +6,8 @@ import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_details.dart';
+import 'package:mint/presentation/widgets/error_snack_bar.dart';
+import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/multiline_text_field.dart';
 import 'package:mint/presentation/widgets/specialist_card_tile.dart';
@@ -76,6 +78,19 @@ class _BookingResumeView extends StatefulWidget {
 class _BookingResumePageState extends State<_BookingResumeView> {
   final _notesController = TextEditingController();
 
+  void _bookingListener(BuildContext context, BookingState state) {
+    if (state is BookingBookDuplicateFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        ErrorSnackBar(content: Text(context.l10n.timeIsAlreadyBooked)),
+      );
+    }
+    if (state is BookingBookFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        ErrorSnackBar(content: Text(context.l10n.somethingWentWrongTryAgain)),
+      );
+    }
+  }
+
   void _bookSpecialist(BookingState state) {
     if (state is! BookingBookSuccess) {
       context.read<BookingBloc>().add(
@@ -110,48 +125,54 @@ class _BookingResumePageState extends State<_BookingResumeView> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: const MintAppBar(),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SpecialistCardTile(specialistModel: widget.specialistModel),
-                  SizedBox(height: 24.h),
-                  Text(
-                    l10n.consultationSummary,
-                    style: MintTextStyles.headline1,
-                  ),
-                  SizedBox(height: 16.h),
-                  BookingResumeDetails(
-                    date: widget.date,
-                    time: widget.time,
-                    minutesDuration: widget.durationMinutes,
-                  ),
-                  SizedBox(height: 16.h),
-                  MultilineTextField(
-                    controller: _notesController,
-                    maxLines: 3,
-                    hintText: '${l10n.typeHerePersonalNotes}...',
-                  ),
-                  const Spacer(),
-                  SizedBox(height: 20.h),
-                  BlocBuilder<BookingBloc, BookingState>(
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        onPressed: () => _bookSpecialist(state),
-                        child: Text(l10n.book),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 26.h),
-                ],
-              ),
-            )
-          ],
+      body: BlocListener<BookingBloc, BookingState>(
+        listener: _bookingListener,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SpecialistCardTile(specialistModel: widget.specialistModel),
+                    SizedBox(height: 24.h),
+                    Text(
+                      l10n.consultationSummary,
+                      style: MintTextStyles.headline1,
+                    ),
+                    SizedBox(height: 16.h),
+                    BookingResumeDetails(
+                      date: widget.date,
+                      time: widget.time,
+                      minutesDuration: widget.durationMinutes,
+                    ),
+                    SizedBox(height: 16.h),
+                    MultilineTextField(
+                      controller: _notesController,
+                      maxLines: 3,
+                      hintText: '${l10n.typeHerePersonalNotes}...',
+                    ),
+                    const Spacer(),
+                    SizedBox(height: 20.h),
+                    BlocBuilder<BookingBloc, BookingState>(
+                      builder: (context, state) {
+                        if (state is BookingBookLoading) {
+                          return const Center(child: LoadingIndicator());
+                        }
+                        return ElevatedButton(
+                          onPressed: () => _bookSpecialist(state),
+                          child: Text(l10n.book),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 26.h),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
