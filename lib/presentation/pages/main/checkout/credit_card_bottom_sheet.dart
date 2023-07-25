@@ -59,10 +59,7 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return BottomSheetContainer(
-      appBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: BottomSheetAppBar(title: Text(l10n.addCardDetails)),
-      ),
+      appBar: BottomSheetAppBar(title: Text(l10n.addCardDetails)),
       child: CustomScrollView(
         slivers: <Widget>[
           SliverFillRemaining(

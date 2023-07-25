@@ -13,22 +13,19 @@ class FilterAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: BottomSheetAppBar(
-        title: Text(l10n.filterTitle, style: MintTextStyles.title2),
-        actions: [
-          TextButton(
-            onPressed: onClear,
-            child: Text(
-              l10n.clear,
-              style: MintTextStyles.tagBig.copyWith(
-                color: Theme.of(context).hintColor.withOpacity(0.6),
-              ),
+    return BottomSheetAppBar(
+      title: Text(l10n.filterTitle, style: MintTextStyles.title2),
+      actions: [
+        TextButton(
+          onPressed: onClear,
+          child: Text(
+            l10n.clear,
+            style: MintTextStyles.tagBig.copyWith(
+              color: Theme.of(context).hintColor.withOpacity(0.6),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
