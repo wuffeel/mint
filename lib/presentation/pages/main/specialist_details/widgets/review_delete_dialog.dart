@@ -34,10 +34,12 @@ class ReviewDeleteDialog extends StatelessWidget {
             content: const _DeleteReviewContent(),
             actions: [
               CupertinoDialogAction(
+                isDefaultAction: true,
                 onPressed: context.router.pop,
                 child: Text(l10n.cancel),
               ),
               CupertinoDialogAction(
+                isDestructiveAction: true,
                 onPressed: () {
                   onDelete();
                   context.router.pop();
