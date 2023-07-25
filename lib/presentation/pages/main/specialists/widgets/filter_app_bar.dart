@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 
