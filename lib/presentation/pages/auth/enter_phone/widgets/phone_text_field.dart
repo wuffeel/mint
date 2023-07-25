@@ -24,6 +24,7 @@ class _PhoneTextFieldState extends State<PhoneTextField> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return MintTextField(
+      controller: widget.controller,
       maxLength: 15,
       errorText: widget.errorText,
       hintText: l10n.phoneNumber,
