@@ -15,8 +15,8 @@ class FilterAppBar extends StatelessWidget {
     return BottomSheetAppBar(
       title: Text(l10n.filterTitle, style: MintTextStyles.title2),
       actions: [
-        InkWell(
-          onTap: onClear,
+        TextButton(
+          onPressed: onClear,
           child: Text(
             l10n.clear,
             style: MintTextStyles.tagBig.copyWith(
