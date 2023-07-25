@@ -39,6 +39,7 @@ class _CreditCardTextFieldState extends State<CreditCardTextField> {
   @override
   Widget build(BuildContext context) {
     return MintTextFormField(
+      maxLength: 19,
       controller: widget.controller,
       focusNode: widget.focusNode,
       hintText: widget.hintText,
