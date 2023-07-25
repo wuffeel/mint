@@ -130,12 +130,8 @@ class SpecialistFilterBloc
     final state = this.state;
     if (state is! SpecialistFilterLoadSuccess) return;
 
-    emit(
-      SpecialistFilterLoadSuccess(
-        specialistFilter: state.specialistFilter,
-        appliedFilters: state.appliedFilters,
-      ),
-    );
+    _filterController.addToAppliedStream(FilterPreferences.empty);
+    emit(SpecialistFilterLoadSuccess(specialistFilter: state.specialistFilter));
   }
 
   void _onGetSelected(

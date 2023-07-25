@@ -22,6 +22,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   void _onClear() {
     context.read<SpecialistFilterBloc>().add(SpecialistFilterClearRequested());
+    context.router.pop();
   }
 
   void _onFilterApply() {
