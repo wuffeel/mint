@@ -81,6 +81,10 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         selectedTime.minute,
         selectedTime.second,
       );
+      if (DateTime.now().isAfter(bookTime)) {
+        emit(BookingBookLateFailure());
+        return;
+      }
       final bookingData = BookingData(
         id: '',
         specialistId: event.specialistId,

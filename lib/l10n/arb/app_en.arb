@@ -119,5 +119,6 @@
   "wrongCvv": "Wrong CVV",
   "edit": "Edit",
   "delete": "Delete",
-  "timeIsAlreadyBooked": "The time is already booked. Please book other time."
+  "timeIsAlreadyBooked": "The time is already booked. Please book other time.",
+  "bookTimePassed": "The booking time already passed. Please choose other time."
 }

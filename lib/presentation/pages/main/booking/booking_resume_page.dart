@@ -84,6 +84,11 @@ class _BookingResumePageState extends State<_BookingResumeView> {
         ErrorSnackBar(content: Text(context.l10n.timeIsAlreadyBooked)),
       );
     }
+    if (state is BookingBookLateFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        ErrorSnackBar(content: Text(context.l10n.bookTimePassed)),
+      );
+    }
     if (state is BookingBookFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
         ErrorSnackBar(content: Text(context.l10n.somethingWentWrongTryAgain)),
