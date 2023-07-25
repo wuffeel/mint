@@ -120,7 +120,7 @@ class ReviewCardTile extends StatelessWidget {
                           child: Text(context.l10n.delete),
                         ),
                       ],
-                      child: Icon(Icons.more_horiz),
+                      child: const Icon(Icons.more_horiz),
                     ),
                   ],
                 )
