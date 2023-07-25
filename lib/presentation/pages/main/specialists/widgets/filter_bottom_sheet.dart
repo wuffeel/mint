@@ -6,7 +6,7 @@ import 'package:mint/bloc/specialist_filter/specialist_filter_bloc.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_app_bar.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_section.dart';
-import 'package:mint/presentation/widgets/bottom_sheet_container.dart';
+import 'package:mint/presentation/widgets/bottom_sheet_fixed_container.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
@@ -33,7 +33,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BottomSheetContainer(
+    return BottomSheetFixedContainer(
       appBar: FilterAppBar(onClear: _onClear),
       child: BlocBuilder<SpecialistFilterBloc, SpecialistFilterState>(
         builder: (context, state) {

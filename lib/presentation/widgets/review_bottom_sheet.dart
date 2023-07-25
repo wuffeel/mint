@@ -8,7 +8,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_stepper.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_rating_button.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
-import 'package:mint/presentation/widgets/bottom_sheet_container.dart';
+import 'package:mint/presentation/widgets/bottom_sheet_fixed_container.dart';
 import 'package:mint/presentation/widgets/multiline_text_field.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -103,7 +103,7 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BottomSheetContainer(
+    return BottomSheetFixedContainer(
       appBar: BottomSheetAppBar(
         title: Text(
           widget.userReview == null ? l10n.reviewSession : l10n.updateReview,

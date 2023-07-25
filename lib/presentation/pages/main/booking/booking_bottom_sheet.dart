@@ -8,7 +8,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_date_calendar.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_time_calendar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
-import 'package:mint/presentation/widgets/dynamic_bottom_sheet_container.dart';
+import 'package:mint/presentation/widgets/bottom_sheet_dynamic_container.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -63,16 +63,13 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return DynamicBottomSheetContainer(
-      appBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: BottomSheetAppBar(
-          title: Text(
-            _currentStep == 0
-                ? l10n.chooseAvailableDate
-                : l10n.chooseAvailableTime,
-            style: MintTextStyles.title2,
-          ),
+    return BottomSheetDynamicContainer(
+      appBar: BottomSheetAppBar(
+        title: Text(
+          _currentStep == 0
+              ? l10n.chooseAvailableDate
+              : l10n.chooseAvailableTime,
+          style: MintTextStyles.title2,
         ),
       ),
       child: BlocBuilder<BookingBloc, BookingState>(

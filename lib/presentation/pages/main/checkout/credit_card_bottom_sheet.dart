@@ -6,7 +6,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/card_expiration_text_field.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/credit_card_text_field.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
-import 'package:mint/presentation/widgets/bottom_sheet_container.dart';
+import 'package:mint/presentation/widgets/bottom_sheet_fixed_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../widgets/mint_text_form_field.dart';
@@ -58,7 +58,7 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BottomSheetContainer(
+    return BottomSheetFixedContainer(
       appBar: BottomSheetAppBar(title: Text(l10n.addCardDetails)),
       child: CustomScrollView(
         slivers: <Widget>[
