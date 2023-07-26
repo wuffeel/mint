@@ -5,9 +5,8 @@ class CalendarUtils {
   /// [day].
   ///
   /// Returns:
-  /// - `true` if there are available time slots for booking.
-  /// - `false` if all time slots are fully booked or unavailable.
-  ///
+  /// - `true` if all time slots are fully booked or unavailable.
+  /// - `false` if there are available time slots for booking.
   ///
   /// Example for fully booked day:
   /// ```dart
@@ -32,8 +31,6 @@ class CalendarUtils {
 
     final now = DateTime.now();
 
-
-    // Check if any time slot in daySchedule is not booked
     return daySchedule.every((workTime) {
       final dayWorkTime = DateTime(
         day.year,
@@ -51,9 +48,8 @@ class CalendarUtils {
   /// Checks if the current time has passed the specified [workDayEnd].
   ///
   /// Returns:
-  /// - `true` if the current time is after the [workDayEnd] and is not
-  /// before [day].
-  /// - `false` otherwise.
+  /// - `true` if the current time is after the [workDayEnd].
+  /// - `false` otherwise, or if current time is before [day].
   ///
   /// Example:
   /// ```dart
@@ -62,6 +58,10 @@ class CalendarUtils {
   /// DateTime day = DateTime(2023, 7, 21); // July 21, 2023
   ///
   /// bool isEnd = isWorkTimeEnd(day, workDayEnd, currentDate); // true
+  ///
+  /// final currentDate = DateTime(2023, 7, 20) // July 20, 2023
+  ///
+  /// bool isEnd = isWorkTimeEnd(day, workDayEnd, currentDate) // false
   /// ```
   static bool isWorkTimeEnd(DateTime day, DateTime? workDayEnd) {
     final currentDate = DateTime.now();
@@ -101,6 +101,10 @@ class CalendarUtils {
   /// DateTime(2023, 7, 21, 14, 0)];
   ///
   /// isTimeUnavailable(selectedDate, time, bookedTimes) => true
+  ///
+  /// final currentTime = DateTime.now() // July 21, 2023, 09:00 AM
+  ///
+  /// isTimeUnavailable(selectedDate, time, []) => true
   /// ```
   static bool isTimeUnavailable(
     DateTime time,
