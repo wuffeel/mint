@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:injectable/injectable.dart';
@@ -35,8 +33,6 @@ class FirebasePaymentRepository implements PaymentRepository {
 
     final data = result.data;
 
-    log('DATA: $data');
-
     return CreditCardModelDto.fromJson(data);
   }
 
@@ -48,8 +44,6 @@ class FirebasePaymentRepository implements PaymentRepository {
 
     final data =
         result.data.map((e) => Map<String, dynamic>.from(e as Map)).toList();
-
-    log(data.toString());
 
     if (data.isEmpty) return <CreditCardModelDto>[];
 
