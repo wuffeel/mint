@@ -78,11 +78,15 @@ class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
         isSaveForFuture: event.isSaveForFuture,
       );
 
+      // Check if current cardList has the same databaseCard received
       final isDuplicate = state.cardList.any((e) {
         return e.fingerprint == databaseCard.fingerprint &&
             e.expirationMonth == databaseCard.expirationMonth &&
             e.expirationYear == databaseCard.expirationYear;
       });
+
+      // databaseCard can be not attached to customer, need to check
+      // if there is local credit card duplicate
       if (!event.isSaveForFuture) {
         if (isDuplicate) {
           emit(CreditCardSaveDuplicateFailure(cardList: state.cardList));
@@ -90,6 +94,8 @@ class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
         }
       }
 
+      // Check if there is local credit card with same number, but different
+      // expiration data. If so, need to locally replace it with new card data
       final updatedList = state.cardList
           .map((e) {
             final expirationChanged =
