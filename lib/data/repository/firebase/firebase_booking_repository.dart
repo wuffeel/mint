@@ -6,7 +6,6 @@ import 'package:mint/data/repository/abstract/booking_repository.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';
-import '../../model/transaction_data_dto/transaction_data_dto.dart';
 
 @Injectable(as: BookingRepository)
 class FirebaseBookingRepository implements BookingRepository {
@@ -15,13 +14,10 @@ class FirebaseBookingRepository implements BookingRepository {
 
   static const _bookingInfoFunction = 'fetchBookingInformation';
   static const _bookingsCollection = 'bookings';
-  static const _transactionsCollection = 'transactions';
 
   CollectionReference get _bookingsCollectionRef =>
       _firestoreInstance.collection(_bookingsCollection);
 
-  CollectionReference get _transactionCollectionRef =>
-      _firestoreInstance.collection(_transactionsCollection);
 
   @override
   Future<SpecialistWorkInfoDto> getSpecialistBookInfo(
@@ -53,10 +49,7 @@ class FirebaseBookingRepository implements BookingRepository {
     return bookingData.copyWith(id: booking.id);
   }
 
-  @override
-  Future<void> payForSession(TransactionDataDto transactionData) {
-    return _transactionCollectionRef.add(transactionData.toJsonWithoutId());
-  }
+
 
   Future<bool> _isBookExist(
     String specialistId,

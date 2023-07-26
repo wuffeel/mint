@@ -1,16 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/credit_card_model_dto/credit_card_model_dto.dart';
 import 'package:mint/data/repository/abstract/payment_repository.dart';
 
+import '../../model/transaction_data_dto/transaction_data_dto.dart';
+
 @Injectable(as: PaymentRepository)
 class FirebasePaymentRepository implements PaymentRepository {
   final _functionsInstance = FirebaseFunctions.instance;
+  final _firestoreInstance = FirebaseFirestore.instance;
   final _stripeInstance = Stripe.instance;
 
   static const _saveCardFunction = 'savePaymentMethod';
   static const _fetchCardsFunction = 'fetchUserPaymentCards';
+  static const _transactionsCollection = 'transactions';
+
+  CollectionReference get _transactionCollectionRef =>
+      _firestoreInstance.collection(_transactionsCollection);
 
   @override
   Future<CreditCardModelDto> savePaymentMethod(
@@ -48,5 +56,10 @@ class FirebasePaymentRepository implements PaymentRepository {
     if (data.isEmpty) return <CreditCardModelDto>[];
 
     return data.map(CreditCardModelDto.fromJson).toList();
+  }
+
+  @override
+  Future<void> payForSession(TransactionDataDto transactionData) {
+    return _transactionCollectionRef.add(transactionData.toJsonWithoutId());
   }
 }

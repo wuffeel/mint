@@ -6,9 +6,7 @@ import 'package:mint/domain/service/abstract/booking_service.dart';
 import '../../../assembly/factory.dart';
 import '../../../data/model/booking_data_dto/booking_data_dto.dart';
 import '../../../data/model/specialist_work_info_dto/specialist_work_info_dto.dart';
-import '../../../data/model/transaction_data_dto/transaction_data_dto.dart';
 import '../../entity/booking_data/booking_data.dart';
-import '../../entity/transaction_data/transaction_data.dart';
 
 @Injectable(as: BookingService)
 class FirebaseBookingService implements BookingService {
@@ -17,7 +15,6 @@ class FirebaseBookingService implements BookingService {
     this._specialistWorkInfoFromDto,
     this._bookingDataToDto,
     this._bookingDataFromDto,
-    this._transactionDataToDto,
   );
 
   final BookingRepository _bookingRepository;
@@ -26,7 +23,6 @@ class FirebaseBookingService implements BookingService {
       _specialistWorkInfoFromDto;
   final Factory<BookingDataDto, BookingData> _bookingDataToDto;
   final Factory<BookingData, BookingDataDto> _bookingDataFromDto;
-  final Factory<TransactionDataDto, TransactionData> _transactionDataToDto;
 
   @override
   Future<SpecialistWorkInfo> getSpecialistBookInfo(String specialistId) async {
@@ -42,12 +38,5 @@ class FirebaseBookingService implements BookingService {
       _bookingDataToDto.create(bookingData),
     );
     return _bookingDataFromDto.create(booking);
-  }
-
-  @override
-  Future<void> payForSession(TransactionData transactionData) {
-    return _bookingRepository.payForSession(
-      _transactionDataToDto.create(transactionData),
-    );
   }
 }
