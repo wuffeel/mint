@@ -26,6 +26,7 @@ dependencies:
       url: https://github.com/wuffeel/flutter_rating_bar.git
       ref: master
   flutter_screenutil: ^5.8.4
+  flutter_sticky_header: ^0.6.5
   flutter_stripe: ^9.3.0
   flutter_svg: ^2.0.7
   freezed_annotation: ^2.2.0

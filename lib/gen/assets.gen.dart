@@ -47,6 +47,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/check_mark.svg
   SvgGenImage get checkMark => const SvgGenImage('assets/svg/check_mark.svg');
 
+  /// File path: assets/svg/chevron_right.svg
+  SvgGenImage get chevronRight =>
+      const SvgGenImage('assets/svg/chevron_right.svg');
+
   /// File path: assets/svg/cross_icon.svg
   SvgGenImage get crossIcon => const SvgGenImage('assets/svg/cross_icon.svg');
 
@@ -115,6 +119,7 @@ class $AssetsSvgGen {
         bellIcon,
         calendarIcon,
         checkMark,
+        chevronRight,
         crossIcon,
         filterIcon,
         heartIcon,

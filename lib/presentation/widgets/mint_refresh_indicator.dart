@@ -18,7 +18,7 @@ class MintRefreshIndicator extends StatelessWidget {
       onRefresh: () {
         onRefresh();
         return Future<void>.delayed(
-          const Duration(milliseconds: 500),
+          const Duration(milliseconds: 300),
         );
       },
       child: child,
