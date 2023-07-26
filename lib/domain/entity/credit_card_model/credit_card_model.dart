@@ -6,9 +6,11 @@ part 'credit_card_model.freezed.dart';
 @freezed
 class CreditCardModel with _$CreditCardModel {
   const factory CreditCardModel({
-    required String number,
+    required String id,
+    required String last4,
+    required String cardBrand,
     required int expirationMonth,
     required int expirationYear,
-    required int cvv,
+    required String fingerprint,
 }) = _CreditCardModel;
 }

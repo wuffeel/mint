@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'credit_card_model.dart';
+part of 'credit_card_model_dto.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,8 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CreditCardModelDto _$CreditCardModelDtoFromJson(Map<String, dynamic> json) {
+  return _CreditCardModelDto.fromJson(json);
+}
+
 /// @nodoc
-mixin _$CreditCardModel {
+mixin _$CreditCardModelDto {
   String get id => throw _privateConstructorUsedError;
   String get last4 => throw _privateConstructorUsedError;
   String get cardBrand => throw _privateConstructorUsedError;
@@ -23,16 +27,17 @@ mixin _$CreditCardModel {
   int get expirationYear => throw _privateConstructorUsedError;
   String get fingerprint => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $CreditCardModelCopyWith<CreditCardModel> get copyWith =>
+  $CreditCardModelDtoCopyWith<CreditCardModelDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CreditCardModelCopyWith<$Res> {
-  factory $CreditCardModelCopyWith(
-          CreditCardModel value, $Res Function(CreditCardModel) then) =
-      _$CreditCardModelCopyWithImpl<$Res, CreditCardModel>;
+abstract class $CreditCardModelDtoCopyWith<$Res> {
+  factory $CreditCardModelDtoCopyWith(
+          CreditCardModelDto value, $Res Function(CreditCardModelDto) then) =
+      _$CreditCardModelDtoCopyWithImpl<$Res, CreditCardModelDto>;
   @useResult
   $Res call(
       {String id,
@@ -44,9 +49,9 @@ abstract class $CreditCardModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CreditCardModelCopyWithImpl<$Res, $Val extends CreditCardModel>
-    implements $CreditCardModelCopyWith<$Res> {
-  _$CreditCardModelCopyWithImpl(this._value, this._then);
+class _$CreditCardModelDtoCopyWithImpl<$Res, $Val extends CreditCardModelDto>
+    implements $CreditCardModelDtoCopyWith<$Res> {
+  _$CreditCardModelDtoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -93,11 +98,11 @@ class _$CreditCardModelCopyWithImpl<$Res, $Val extends CreditCardModel>
 }
 
 /// @nodoc
-abstract class _$$_CreditCardModelCopyWith<$Res>
-    implements $CreditCardModelCopyWith<$Res> {
-  factory _$$_CreditCardModelCopyWith(
-          _$_CreditCardModel value, $Res Function(_$_CreditCardModel) then) =
-      __$$_CreditCardModelCopyWithImpl<$Res>;
+abstract class _$$_CreditCardModelDtoCopyWith<$Res>
+    implements $CreditCardModelDtoCopyWith<$Res> {
+  factory _$$_CreditCardModelDtoCopyWith(_$_CreditCardModelDto value,
+          $Res Function(_$_CreditCardModelDto) then) =
+      __$$_CreditCardModelDtoCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -110,11 +115,11 @@ abstract class _$$_CreditCardModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CreditCardModelCopyWithImpl<$Res>
-    extends _$CreditCardModelCopyWithImpl<$Res, _$_CreditCardModel>
-    implements _$$_CreditCardModelCopyWith<$Res> {
-  __$$_CreditCardModelCopyWithImpl(
-      _$_CreditCardModel _value, $Res Function(_$_CreditCardModel) _then)
+class __$$_CreditCardModelDtoCopyWithImpl<$Res>
+    extends _$CreditCardModelDtoCopyWithImpl<$Res, _$_CreditCardModelDto>
+    implements _$$_CreditCardModelDtoCopyWith<$Res> {
+  __$$_CreditCardModelDtoCopyWithImpl(
+      _$_CreditCardModelDto _value, $Res Function(_$_CreditCardModelDto) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -127,7 +132,7 @@ class __$$_CreditCardModelCopyWithImpl<$Res>
     Object? expirationYear = null,
     Object? fingerprint = null,
   }) {
-    return _then(_$_CreditCardModel(
+    return _then(_$_CreditCardModelDto(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -157,17 +162,20 @@ class __$$_CreditCardModelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-class _$_CreditCardModel
+@JsonSerializable()
+class _$_CreditCardModelDto
     with DiagnosticableTreeMixin
-    implements _CreditCardModel {
-  const _$_CreditCardModel(
+    implements _CreditCardModelDto {
+  const _$_CreditCardModelDto(
       {required this.id,
       required this.last4,
       required this.cardBrand,
       required this.expirationMonth,
       required this.expirationYear,
       required this.fingerprint});
+
+  factory _$_CreditCardModelDto.fromJson(Map<String, dynamic> json) =>
+      _$$_CreditCardModelDtoFromJson(json);
 
   @override
   final String id;
@@ -184,14 +192,14 @@ class _$_CreditCardModel
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CreditCardModel(id: $id, last4: $last4, cardBrand: $cardBrand, expirationMonth: $expirationMonth, expirationYear: $expirationYear, fingerprint: $fingerprint)';
+    return 'CreditCardModelDto(id: $id, last4: $last4, cardBrand: $cardBrand, expirationMonth: $expirationMonth, expirationYear: $expirationYear, fingerprint: $fingerprint)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CreditCardModel'))
+      ..add(DiagnosticsProperty('type', 'CreditCardModelDto'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('last4', last4))
       ..add(DiagnosticsProperty('cardBrand', cardBrand))
@@ -204,7 +212,7 @@ class _$_CreditCardModel
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CreditCardModel &&
+            other is _$_CreditCardModelDto &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.last4, last4) || other.last4 == last4) &&
             (identical(other.cardBrand, cardBrand) ||
@@ -217,6 +225,7 @@ class _$_CreditCardModel
                 other.fingerprint == fingerprint));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, last4, cardBrand,
       expirationMonth, expirationYear, fingerprint);
@@ -224,18 +233,29 @@ class _$_CreditCardModel
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CreditCardModelCopyWith<_$_CreditCardModel> get copyWith =>
-      __$$_CreditCardModelCopyWithImpl<_$_CreditCardModel>(this, _$identity);
+  _$$_CreditCardModelDtoCopyWith<_$_CreditCardModelDto> get copyWith =>
+      __$$_CreditCardModelDtoCopyWithImpl<_$_CreditCardModelDto>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CreditCardModelDtoToJson(
+      this,
+    );
+  }
 }
 
-abstract class _CreditCardModel implements CreditCardModel {
-  const factory _CreditCardModel(
+abstract class _CreditCardModelDto implements CreditCardModelDto {
+  const factory _CreditCardModelDto(
       {required final String id,
       required final String last4,
       required final String cardBrand,
       required final int expirationMonth,
       required final int expirationYear,
-      required final String fingerprint}) = _$_CreditCardModel;
+      required final String fingerprint}) = _$_CreditCardModelDto;
+
+  factory _CreditCardModelDto.fromJson(Map<String, dynamic> json) =
+      _$_CreditCardModelDto.fromJson;
 
   @override
   String get id;
@@ -251,6 +271,6 @@ abstract class _CreditCardModel implements CreditCardModel {
   String get fingerprint;
   @override
   @JsonKey(ignore: true)
-  _$$_CreditCardModelCopyWith<_$_CreditCardModel> get copyWith =>
+  _$$_CreditCardModelDtoCopyWith<_$_CreditCardModelDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
