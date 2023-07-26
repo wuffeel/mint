@@ -109,10 +109,10 @@ class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
 
       emit(CreditCardSaveSuccess(cardList: [databaseCard, ...updatedList]));
     } catch (error) {
-      log('CreditCardSaveFailure: $error');
       if (error.toString().contains('already-exists')) {
         emit(CreditCardSaveDuplicateFailure(cardList: state.cardList));
       } else {
+        log('CreditCardSaveFailure: $error');
         emit(CreditCardSaveFailure(cardList: state.cardList));
       }
     }
