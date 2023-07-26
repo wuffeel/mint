@@ -19,7 +19,8 @@ mixin _$TransactionData {
   String get bookingId => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  int get price => throw _privateConstructorUsedError;
+  String get paymentMethodId => throw _privateConstructorUsedError;
+  int get amount => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TransactionDataCopyWith<TransactionData> get copyWith =>
@@ -32,7 +33,12 @@ abstract class $TransactionDataCopyWith<$Res> {
           TransactionData value, $Res Function(TransactionData) then) =
       _$TransactionDataCopyWithImpl<$Res, TransactionData>;
   @useResult
-  $Res call({String bookingId, String specialistId, String userId, int price});
+  $Res call(
+      {String bookingId,
+      String specialistId,
+      String userId,
+      String paymentMethodId,
+      int amount});
 }
 
 /// @nodoc
@@ -51,7 +57,8 @@ class _$TransactionDataCopyWithImpl<$Res, $Val extends TransactionData>
     Object? bookingId = null,
     Object? specialistId = null,
     Object? userId = null,
-    Object? price = null,
+    Object? paymentMethodId = null,
+    Object? amount = null,
   }) {
     return _then(_value.copyWith(
       bookingId: null == bookingId
@@ -66,9 +73,13 @@ class _$TransactionDataCopyWithImpl<$Res, $Val extends TransactionData>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      paymentMethodId: null == paymentMethodId
+          ? _value.paymentMethodId
+          : paymentMethodId // ignore: cast_nullable_to_non_nullable
+              as String,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -82,7 +93,12 @@ abstract class _$$_TransactionDataCopyWith<$Res>
       __$$_TransactionDataCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String bookingId, String specialistId, String userId, int price});
+  $Res call(
+      {String bookingId,
+      String specialistId,
+      String userId,
+      String paymentMethodId,
+      int amount});
 }
 
 /// @nodoc
@@ -99,7 +115,8 @@ class __$$_TransactionDataCopyWithImpl<$Res>
     Object? bookingId = null,
     Object? specialistId = null,
     Object? userId = null,
-    Object? price = null,
+    Object? paymentMethodId = null,
+    Object? amount = null,
   }) {
     return _then(_$_TransactionData(
       bookingId: null == bookingId
@@ -114,9 +131,13 @@ class __$$_TransactionDataCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      paymentMethodId: null == paymentMethodId
+          ? _value.paymentMethodId
+          : paymentMethodId // ignore: cast_nullable_to_non_nullable
+              as String,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -131,7 +152,8 @@ class _$_TransactionData
       {required this.bookingId,
       required this.specialistId,
       required this.userId,
-      required this.price});
+      required this.paymentMethodId,
+      required this.amount});
 
   @override
   final String bookingId;
@@ -140,11 +162,13 @@ class _$_TransactionData
   @override
   final String userId;
   @override
-  final int price;
+  final String paymentMethodId;
+  @override
+  final int amount;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TransactionData(bookingId: $bookingId, specialistId: $specialistId, userId: $userId, price: $price)';
+    return 'TransactionData(bookingId: $bookingId, specialistId: $specialistId, userId: $userId, paymentMethodId: $paymentMethodId, amount: $amount)';
   }
 
   @override
@@ -155,7 +179,8 @@ class _$_TransactionData
       ..add(DiagnosticsProperty('bookingId', bookingId))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('price', price));
+      ..add(DiagnosticsProperty('paymentMethodId', paymentMethodId))
+      ..add(DiagnosticsProperty('amount', amount));
   }
 
   @override
@@ -168,12 +193,14 @@ class _$_TransactionData
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.price, price) || other.price == price));
+            (identical(other.paymentMethodId, paymentMethodId) ||
+                other.paymentMethodId == paymentMethodId) &&
+            (identical(other.amount, amount) || other.amount == amount));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, bookingId, specialistId, userId, price);
+  int get hashCode => Object.hash(
+      runtimeType, bookingId, specialistId, userId, paymentMethodId, amount);
 
   @JsonKey(ignore: true)
   @override
@@ -187,7 +214,8 @@ abstract class _TransactionData implements TransactionData {
       {required final String bookingId,
       required final String specialistId,
       required final String userId,
-      required final int price}) = _$_TransactionData;
+      required final String paymentMethodId,
+      required final int amount}) = _$_TransactionData;
 
   @override
   String get bookingId;
@@ -196,7 +224,9 @@ abstract class _TransactionData implements TransactionData {
   @override
   String get userId;
   @override
-  int get price;
+  String get paymentMethodId;
+  @override
+  int get amount;
   @override
   @JsonKey(ignore: true)
   _$$_TransactionDataCopyWith<_$_TransactionData> get copyWith =>

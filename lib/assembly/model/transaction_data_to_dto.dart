@@ -13,7 +13,8 @@ class TransactionDataToDto
         bookingId: param.bookingId,
         specialistId: param.specialistId,
         userId: param.userId,
-        price: param.price,
+        paymentMethodId: param.paymentMethodId,
+        amount: param.amount,
         createdAt: DateTime.now().toUtc(),
       );
 }

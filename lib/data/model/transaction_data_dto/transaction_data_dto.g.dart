@@ -13,7 +13,8 @@ _$_TransactionDataDto _$$_TransactionDataDtoFromJson(
       bookingId: json['bookingId'] as String,
       specialistId: json['specialistId'] as String,
       userId: json['userId'] as String,
-      price: json['price'] as int,
+      paymentMethodId: json['paymentMethodId'] as String,
+      amount: json['amount'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$_TransactionDataDtoToJson(
       'bookingId': instance.bookingId,
       'specialistId': instance.specialistId,
       'userId': instance.userId,
-      'price': instance.price,
+      'paymentMethodId': instance.paymentMethodId,
+      'amount': instance.amount,
       'createdAt': _toDateTime(instance.createdAt),
     };

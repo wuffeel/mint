@@ -55,7 +55,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         bookingId: event.bookingId,
         specialistId: event.specialistId,
         userId: user.id,
-        price: event.price,
+        paymentMethodId: event.paymentMethodId,
+        amount: event.amount,
       );
       await _transactionPayUseCase(transactionData);
       emit(TransactionPaySuccess());

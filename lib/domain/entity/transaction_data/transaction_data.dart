@@ -9,6 +9,7 @@ class TransactionData with _$TransactionData {
     required String bookingId,
     required String specialistId,
     required String userId,
-    required int price,
+    required String paymentMethodId,
+    required int amount,
   }) = _TransactionData;
 }

@@ -12,7 +12,8 @@ class TransactionDataDto with _$TransactionDataDto {
     required String bookingId,
     required String specialistId,
     required String userId,
-    required int price,
+    required String paymentMethodId,
+    required int amount,
     @JsonKey(toJson: _toDateTime)
     required DateTime createdAt,
   }) = _TransactionDataDto;

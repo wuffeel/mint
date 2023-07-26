@@ -24,7 +24,8 @@ mixin _$TransactionDataDto {
   String get bookingId => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  int get price => throw _privateConstructorUsedError;
+  String get paymentMethodId => throw _privateConstructorUsedError;
+  int get amount => throw _privateConstructorUsedError;
   @JsonKey(toJson: _toDateTime)
   DateTime get createdAt => throw _privateConstructorUsedError;
 
@@ -45,7 +46,8 @@ abstract class $TransactionDataDtoCopyWith<$Res> {
       String bookingId,
       String specialistId,
       String userId,
-      int price,
+      String paymentMethodId,
+      int amount,
       @JsonKey(toJson: _toDateTime) DateTime createdAt});
 }
 
@@ -66,7 +68,8 @@ class _$TransactionDataDtoCopyWithImpl<$Res, $Val extends TransactionDataDto>
     Object? bookingId = null,
     Object? specialistId = null,
     Object? userId = null,
-    Object? price = null,
+    Object? paymentMethodId = null,
+    Object? amount = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -86,9 +89,13 @@ class _$TransactionDataDtoCopyWithImpl<$Res, $Val extends TransactionDataDto>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      paymentMethodId: null == paymentMethodId
+          ? _value.paymentMethodId
+          : paymentMethodId // ignore: cast_nullable_to_non_nullable
+              as String,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -111,7 +118,8 @@ abstract class _$$_TransactionDataDtoCopyWith<$Res>
       String bookingId,
       String specialistId,
       String userId,
-      int price,
+      String paymentMethodId,
+      int amount,
       @JsonKey(toJson: _toDateTime) DateTime createdAt});
 }
 
@@ -130,7 +138,8 @@ class __$$_TransactionDataDtoCopyWithImpl<$Res>
     Object? bookingId = null,
     Object? specialistId = null,
     Object? userId = null,
-    Object? price = null,
+    Object? paymentMethodId = null,
+    Object? amount = null,
     Object? createdAt = null,
   }) {
     return _then(_$_TransactionDataDto(
@@ -150,9 +159,13 @@ class __$$_TransactionDataDtoCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      paymentMethodId: null == paymentMethodId
+          ? _value.paymentMethodId
+          : paymentMethodId // ignore: cast_nullable_to_non_nullable
+              as String,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -171,7 +184,8 @@ class _$_TransactionDataDto extends _TransactionDataDto
       required this.bookingId,
       required this.specialistId,
       required this.userId,
-      required this.price,
+      required this.paymentMethodId,
+      required this.amount,
       @JsonKey(toJson: _toDateTime) required this.createdAt})
       : super._();
 
@@ -187,14 +201,16 @@ class _$_TransactionDataDto extends _TransactionDataDto
   @override
   final String userId;
   @override
-  final int price;
+  final String paymentMethodId;
+  @override
+  final int amount;
   @override
   @JsonKey(toJson: _toDateTime)
   final DateTime createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TransactionDataDto(id: $id, bookingId: $bookingId, specialistId: $specialistId, userId: $userId, price: $price, createdAt: $createdAt)';
+    return 'TransactionDataDto(id: $id, bookingId: $bookingId, specialistId: $specialistId, userId: $userId, paymentMethodId: $paymentMethodId, amount: $amount, createdAt: $createdAt)';
   }
 
   @override
@@ -206,7 +222,8 @@ class _$_TransactionDataDto extends _TransactionDataDto
       ..add(DiagnosticsProperty('bookingId', bookingId))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('price', price))
+      ..add(DiagnosticsProperty('paymentMethodId', paymentMethodId))
+      ..add(DiagnosticsProperty('amount', amount))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
@@ -221,15 +238,17 @@ class _$_TransactionDataDto extends _TransactionDataDto
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.price, price) || other.price == price) &&
+            (identical(other.paymentMethodId, paymentMethodId) ||
+                other.paymentMethodId == paymentMethodId) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, bookingId, specialistId, userId, price, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, bookingId, specialistId,
+      userId, paymentMethodId, amount, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -252,7 +271,8 @@ abstract class _TransactionDataDto extends TransactionDataDto {
           required final String bookingId,
           required final String specialistId,
           required final String userId,
-          required final int price,
+          required final String paymentMethodId,
+          required final int amount,
           @JsonKey(toJson: _toDateTime) required final DateTime createdAt}) =
       _$_TransactionDataDto;
   const _TransactionDataDto._() : super._();
@@ -269,7 +289,9 @@ abstract class _TransactionDataDto extends TransactionDataDto {
   @override
   String get userId;
   @override
-  int get price;
+  String get paymentMethodId;
+  @override
+  int get amount;
   @override
   @JsonKey(toJson: _toDateTime)
   DateTime get createdAt;

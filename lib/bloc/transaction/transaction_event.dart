@@ -4,9 +4,15 @@ part of 'transaction_bloc.dart';
 abstract class TransactionEvent {}
 
 class TransactionPayRequested extends TransactionEvent {
-  TransactionPayRequested(this.bookingId, this.specialistId, this.price);
+  TransactionPayRequested({
+    required this.bookingId,
+    required this.specialistId,
+    required this.paymentMethodId,
+    required this.amount,
+  });
 
   final String bookingId;
   final String specialistId;
-  final int price;
+  final String paymentMethodId;
+  final int amount;
 }
