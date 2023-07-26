@@ -20,7 +20,7 @@ class FirebaseBookingRepository implements BookingRepository {
 
 
   @override
-  Future<SpecialistWorkInfoDto> getSpecialistBookInfo(
+  Future<SpecialistWorkInfoDto> getSpecialistWorkInfo(
     String specialistId,
   ) async {
     final callable = _functionsInstance.httpsCallable(_bookingInfoFunction);

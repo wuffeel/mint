@@ -25,8 +25,8 @@ class FirebaseBookingService implements BookingService {
   final Factory<BookingData, BookingDataDto> _bookingDataFromDto;
 
   @override
-  Future<SpecialistWorkInfo> getSpecialistBookInfo(String specialistId) async {
-    final workInfoDto = await _bookingRepository.getSpecialistBookInfo(
+  Future<SpecialistWorkInfo> getSpecialistWorkInfo(String specialistId) async {
+    final workInfoDto = await _bookingRepository.getSpecialistWorkInfo(
       specialistId,
     );
     return _specialistWorkInfoFromDto.create(workInfoDto);

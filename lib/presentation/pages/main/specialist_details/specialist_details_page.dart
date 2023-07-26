@@ -129,7 +129,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
       backgroundColor: Colors.transparent,
       builder: (_) => BlocProvider(
         create: (context) => getIt<BookingBloc>()
-          ..add(BookingInfoRequested(widget.specialistModel.id)),
+          ..add(BookingWorkInfoRequested(widget.specialistModel.id)),
         child: BookingBottomSheet(
           specialistModel: widget.specialistModel,
         ),

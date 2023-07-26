@@ -8,7 +8,7 @@ import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
-import 'package:mint/domain/usecase/booking_info_fetch_use_case.dart';
+import 'package:mint/domain/usecase/specialist_work_info_fetch_use_case.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/user_model/user_model.dart';
@@ -21,15 +21,15 @@ part 'booking_state.dart';
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc(
     this._userController,
-    this._bookingInfoFetchUseCase,
+    this._specialistWorkInfoFetchUseCase,
     this._bookingBookUseCase,
   ) : super(BookingInitial()) {
     _subscribeToUserChange();
-    on<BookingInfoRequested>(_onBookingInfoRequest);
+    on<BookingWorkInfoRequested>(_onWorkInfoRequest);
     on<BookingBookRequested>(_onBookRequest);
   }
 
-  final BookingInfoFetchUseCase _bookingInfoFetchUseCase;
+  final SpecialistWorkInfoFetchUseCase _specialistWorkInfoFetchUseCase;
   final BookingBookUseCase _bookingBookUseCase;
 
   UserModel? _currentUser;
@@ -49,13 +49,15 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     return super.close();
   }
 
-  Future<void> _onBookingInfoRequest(
-    BookingInfoRequested event,
+  Future<void> _onWorkInfoRequest(
+    BookingWorkInfoRequested event,
     Emitter<BookingState> emit,
   ) async {
     emit(BookingInfoLoading());
     try {
-      final bookingInfo = await _bookingInfoFetchUseCase(event.specialistId);
+      final bookingInfo = await _specialistWorkInfoFetchUseCase(
+        event.specialistId,
+      );
       emit(BookingInfoFetchSuccess(bookingInfo));
     } catch (error) {
       log('BookingInfoFetchFailure: $error');
