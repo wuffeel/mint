@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/domain/controller/booking_controller.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
@@ -23,6 +24,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     this._userController,
     this._specialistWorkInfoFetchUseCase,
     this._bookingBookUseCase,
+    this._bookingController,
   ) : super(BookingInitial()) {
     _subscribeToUserChange();
     on<BookingWorkInfoRequested>(_onWorkInfoRequest);
@@ -34,6 +36,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
   UserModel? _currentUser;
   final UserController _userController;
+  final BookingController _bookingController;
 
   late final StreamSubscription<UserModel?> _userSubscription;
 
@@ -96,6 +99,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         durationMinutes: event.durationMinutes,
       );
       final booking = await _bookingBookUseCase(bookingData);
+      _bookingController.addToBookingsStream(hasChanged: true);
       emit(BookingBookSuccess(booking));
     } catch (error) {
       log('BookingBookFailure: $error');

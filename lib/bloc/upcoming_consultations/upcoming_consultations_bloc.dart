@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/domain/controller/booking_controller.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/upcoming_consultation_data/upcoming_consultation_data.dart';
@@ -20,8 +21,10 @@ class UpcomingConsultationsBloc
   UpcomingConsultationsBloc(
     this._fetchUpcomingConsultationsUseCase,
     this._userController,
+    this._bookingController,
   ) : super(UpcomingConsultationsInitial()) {
     _subscribeToUserChange();
+    _subscribeToBookingChange();
     on<UpcomingConsultationsFetchRequested>(_onUpcomingFetch);
   }
 
@@ -29,8 +32,10 @@ class UpcomingConsultationsBloc
 
   UserModel? _currentUser;
   final UserController _userController;
+  final BookingController _bookingController;
 
   late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<bool> _bookingSubscription;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
@@ -38,9 +43,16 @@ class UpcomingConsultationsBloc
     });
   }
 
+  void _subscribeToBookingChange() {
+    _bookingSubscription = _bookingController.bookings.listen((_) {
+      add(UpcomingConsultationsFetchRequested());
+    });
+  }
+
   @override
   Future<void> close() async {
     await _userSubscription.cancel();
+    await _bookingSubscription.cancel();
     return super.close();
   }
 
