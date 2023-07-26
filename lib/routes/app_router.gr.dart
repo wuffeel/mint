@@ -20,35 +20,35 @@ import 'package:mint/presentation/pages/log_in_check_page.dart' as _i4;
 import 'package:mint/presentation/pages/main/booking/booking_resume_page.dart'
     as _i9;
 import 'package:mint/presentation/pages/main/booking/booking_wrapper_page.dart'
-    as _i21;
+    as _i10;
 import 'package:mint/presentation/pages/main/checkout/checkout_details_page.dart'
-    as _i14;
+    as _i15;
 import 'package:mint/presentation/pages/main/checkout/checkout_payment_page.dart'
-    as _i13;
+    as _i14;
 import 'package:mint/presentation/pages/main/checkout/checkout_wrapper_page.dart'
-    as _i12;
+    as _i13;
 import 'package:mint/presentation/pages/main/home/home_page.dart' as _i5;
 import 'package:mint/presentation/pages/main/navigation/navigation_page.dart'
-    as _i10;
-import 'package:mint/presentation/pages/main/navigation/navigation_wrapper_page.dart'
     as _i11;
+import 'package:mint/presentation/pages/main/navigation/navigation_wrapper_page.dart'
+    as _i12;
 import 'package:mint/presentation/pages/main/pick_up_specialist/pick_up_specialist_page.dart'
-    as _i17;
+    as _i18;
 import 'package:mint/presentation/pages/main/pin_code/forgot_pin_otp_wrapper_page.dart'
     as _i6;
 import 'package:mint/presentation/pages/main/pin_code/pin_code_page.dart'
     as _i8;
 import 'package:mint/presentation/pages/main/pin_code/pin_code_wrapper_page.dart'
     as _i7;
-import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i19;
+import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i20;
 import 'package:mint/presentation/pages/main/sessions/sessions_page.dart'
-    as _i18;
+    as _i19;
 import 'package:mint/presentation/pages/main/specialist_details/specialist_details_page.dart'
-    as _i20;
+    as _i21;
 import 'package:mint/presentation/pages/main/specialists/specialists_page.dart'
-    as _i15;
-import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
     as _i16;
+import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
+    as _i17;
 
 abstract class $AppRouter extends _i22.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -116,29 +116,35 @@ abstract class $AppRouter extends _i22.RootStackRouter {
         ),
       );
     },
+    BookingWrapperRoute.name: (routeData) {
+      return _i22.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i22.WrappedRoute(child: const _i10.BookingWrapperPage()),
+      );
+    },
     NavigationRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.NavigationPage(),
+        child: const _i11.NavigationPage(),
       );
     },
     NavigationWrapperRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i22.WrappedRoute(child: const _i11.NavigationWrapperPage()),
+        child: _i22.WrappedRoute(child: const _i12.NavigationWrapperPage()),
       );
     },
     CheckoutWrapperRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i22.WrappedRoute(child: const _i12.CheckoutWrapperPage()),
+        child: _i22.WrappedRoute(child: const _i13.CheckoutWrapperPage()),
       );
     },
     CheckoutPaymentRoute.name: (routeData) {
       final args = routeData.argsAs<CheckoutPaymentRouteArgs>();
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i13.CheckoutPaymentPage(
+        child: _i14.CheckoutPaymentPage(
           key: args.key,
           specialistModel: args.specialistModel,
           date: args.date,
@@ -151,7 +157,7 @@ abstract class $AppRouter extends _i22.RootStackRouter {
       final args = routeData.argsAs<CheckoutDetailsRouteArgs>();
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i14.CheckoutDetailsPage(
+        child: _i15.CheckoutDetailsPage(
           key: args.key,
           specialistModel: args.specialistModel,
           date: args.date,
@@ -163,47 +169,41 @@ abstract class $AppRouter extends _i22.RootStackRouter {
     SpecialistsRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i15.SpecialistsPage(),
+        child: const _i16.SpecialistsPage(),
       );
     },
     SpecialistsWrapperRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i22.WrappedRoute(child: const _i16.SpecialistsWrapperPage()),
+        child: _i22.WrappedRoute(child: const _i17.SpecialistsWrapperPage()),
       );
     },
     PickUpSpecialistRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.PickUpSpecialistPage(),
+        child: const _i18.PickUpSpecialistPage(),
       );
     },
     SessionsRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i18.SessionsPage(),
+        child: const _i19.SessionsPage(),
       );
     },
     ProfileRoute.name: (routeData) {
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i19.ProfilePage(),
+        child: const _i20.ProfilePage(),
       );
     },
     SpecialistDetailsRoute.name: (routeData) {
       final args = routeData.argsAs<SpecialistDetailsRouteArgs>();
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i20.SpecialistDetailsPage(
+        child: _i21.SpecialistDetailsPage(
           key: args.key,
           specialistModel: args.specialistModel,
         ),
-      );
-    },
-    BookingWrapperRoute.name: (routeData) {
-      return _i22.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i22.WrappedRoute(child: const _i21.BookingWrapperPage()),
       );
     },
   };
@@ -375,7 +375,21 @@ class BookingResumeRouteArgs {
 }
 
 /// generated route for
-/// [_i10.NavigationPage]
+/// [_i10.BookingWrapperPage]
+class BookingWrapperRoute extends _i22.PageRouteInfo<void> {
+  const BookingWrapperRoute({List<_i22.PageRouteInfo>? children})
+      : super(
+          BookingWrapperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BookingWrapperRoute';
+
+  static const _i22.PageInfo<void> page = _i22.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i11.NavigationPage]
 class NavigationRoute extends _i22.PageRouteInfo<void> {
   const NavigationRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -389,7 +403,7 @@ class NavigationRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.NavigationWrapperPage]
+/// [_i12.NavigationWrapperPage]
 class NavigationWrapperRoute extends _i22.PageRouteInfo<void> {
   const NavigationWrapperRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -403,7 +417,7 @@ class NavigationWrapperRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.CheckoutWrapperPage]
+/// [_i13.CheckoutWrapperPage]
 class CheckoutWrapperRoute extends _i22.PageRouteInfo<void> {
   const CheckoutWrapperRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -417,7 +431,7 @@ class CheckoutWrapperRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.CheckoutPaymentPage]
+/// [_i14.CheckoutPaymentPage]
 class CheckoutPaymentRoute
     extends _i22.PageRouteInfo<CheckoutPaymentRouteArgs> {
   CheckoutPaymentRoute({
@@ -471,7 +485,7 @@ class CheckoutPaymentRouteArgs {
 }
 
 /// generated route for
-/// [_i14.CheckoutDetailsPage]
+/// [_i15.CheckoutDetailsPage]
 class CheckoutDetailsRoute
     extends _i22.PageRouteInfo<CheckoutDetailsRouteArgs> {
   CheckoutDetailsRoute({
@@ -525,7 +539,7 @@ class CheckoutDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i15.SpecialistsPage]
+/// [_i16.SpecialistsPage]
 class SpecialistsRoute extends _i22.PageRouteInfo<void> {
   const SpecialistsRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -539,7 +553,7 @@ class SpecialistsRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i16.SpecialistsWrapperPage]
+/// [_i17.SpecialistsWrapperPage]
 class SpecialistsWrapperRoute extends _i22.PageRouteInfo<void> {
   const SpecialistsWrapperRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -553,7 +567,7 @@ class SpecialistsWrapperRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i17.PickUpSpecialistPage]
+/// [_i18.PickUpSpecialistPage]
 class PickUpSpecialistRoute extends _i22.PageRouteInfo<void> {
   const PickUpSpecialistRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -567,7 +581,7 @@ class PickUpSpecialistRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i18.SessionsPage]
+/// [_i19.SessionsPage]
 class SessionsRoute extends _i22.PageRouteInfo<void> {
   const SessionsRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -581,7 +595,7 @@ class SessionsRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i19.ProfilePage]
+/// [_i20.ProfilePage]
 class ProfileRoute extends _i22.PageRouteInfo<void> {
   const ProfileRoute({List<_i22.PageRouteInfo>? children})
       : super(
@@ -595,7 +609,7 @@ class ProfileRoute extends _i22.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i20.SpecialistDetailsPage]
+/// [_i21.SpecialistDetailsPage]
 class SpecialistDetailsRoute
     extends _i22.PageRouteInfo<SpecialistDetailsRouteArgs> {
   SpecialistDetailsRoute({
@@ -631,18 +645,4 @@ class SpecialistDetailsRouteArgs {
   String toString() {
     return 'SpecialistDetailsRouteArgs{key: $key, specialistModel: $specialistModel}';
   }
-}
-
-/// generated route for
-/// [_i21.BookingWrapperPage]
-class BookingWrapperRoute extends _i22.PageRouteInfo<void> {
-  const BookingWrapperRoute({List<_i22.PageRouteInfo>? children})
-      : super(
-          BookingWrapperRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'BookingWrapperRoute';
-
-  static const _i22.PageInfo<void> page = _i22.PageInfo<void>(name);
 }

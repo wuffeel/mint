@@ -43,6 +43,7 @@ class App extends StatelessWidget {
               dividerColor: MintColors.separatorLight,
               sliderTheme: MintThemeData.sliderThemeLight,
               tabBarTheme: MintThemeData.tabBarThemeLight,
+              inputDecorationTheme: MintThemeData.inputDecorationLight,
             ),
             darkTheme: ThemeData(
               fontFamily: MintFontFamily.inter,
@@ -59,6 +60,7 @@ class App extends StatelessWidget {
               dividerColor: MintColors.separatorDark.withOpacity(0.6),
               sliderTheme: MintThemeData.sliderThemeDark,
               tabBarTheme: MintThemeData.tabBarThemeDark,
+              inputDecorationTheme: MintThemeData.inputDecorationDark,
             ),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

@@ -149,4 +149,40 @@ class MintThemeData {
     unselectedLabelColor: MintColors.greyDark.withOpacity(0.3),
     indicator: const UnderlineTabIndicator(),
   );
+
+  static final inputDecorationLight = InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.white,
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+    errorStyle: MintTextStyles.caption1,
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    hintStyle: MintTextStyles.body.copyWith(
+      color: MintColors.greyLight.withOpacity(0.3),
+    ),
+  );
+
+  static final inputDecorationDark = InputDecorationTheme(
+    filled: true,
+    fillColor: MintColors.backgroundFillDark,
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+    errorStyle: MintTextStyles.caption1,
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    hintStyle: MintTextStyles.body.copyWith(
+      color: MintColors.greyDark.withOpacity(0.3),
+    ),
+  );
 }

@@ -9,16 +9,18 @@ class CreditCardSelection extends StatelessWidget {
     required this.cards,
     required this.selectedCard,
     required this.onSelect,
+    required this.itemCount,
   });
 
   final List<CreditCardModel> cards;
   final CreditCardModel? selectedCard;
   final void Function(CreditCardModel) onSelect;
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 126.h,
+      height: itemCount == 0 ? 0 : 126.h,
       child: ListView.separated(
         clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
@@ -26,11 +28,12 @@ class CreditCardSelection extends StatelessWidget {
           onTap: () => onSelect(cards[index]),
           child: CreditCardContainer(
             isSelected: cards[index] == selectedCard,
-            cardNumber: cards[index].number,
+            cardLast4: cards[index].last4,
+            brand: cards[index].cardBrand,
           ),
         ),
         separatorBuilder: (_, __) => SizedBox(width: 16.w),
-        itemCount: 3,
+        itemCount: itemCount,
       ),
     );
   }

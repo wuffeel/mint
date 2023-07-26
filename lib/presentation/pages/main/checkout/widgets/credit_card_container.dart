@@ -12,15 +12,12 @@ class CreditCardContainer extends StatelessWidget {
   const CreditCardContainer({
     super.key,
     required this.isSelected,
-    required this.cardNumber,
+    required this.cardLast4, required this.brand,
   });
 
+  final String cardLast4;
+  final String brand;
   final bool isSelected;
-  final String cardNumber;
-
-  String _getLastFourDigits(String cardNumber) {
-    return cardNumber.substring(cardNumber.length - 4);
-  }
 
   Color _getUnselectedColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
@@ -28,14 +25,14 @@ class CreditCardContainer extends StatelessWidget {
         : MintColors.greyLight.withOpacity(0.3);
   }
 
-  SvgGenImage? _getCardIconByNumber(String cardNumber) {
-    final firstDigit = cardNumber.substring(0, 1);
-    switch (firstDigit) {
-      case '3':
+  SvgGenImage? _getCardIconByNumber(String brand) {
+    switch (brand.toLowerCase()) {
+      case 'amex':
+      case 'americanexpress':
         return Assets.svg.americanExpressIcon;
-      case '4':
+      case 'visa':
         return Assets.svg.visaIcon;
-      case '5':
+      case 'mastercard':
         return Assets.svg.mastercardIcon;
     }
     return null;
@@ -44,7 +41,7 @@ class CreditCardContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final cardIcon = _getCardIconByNumber(cardNumber);
+    final cardIcon = _getCardIconByNumber(brand);
     return Container(
       width: 127.w,
       decoration: BoxDecoration(
@@ -118,7 +115,7 @@ class CreditCardContainer extends StatelessWidget {
                   )..insertBetween(SizedBox(width: 3.w)),
                   SizedBox(width: 8.w),
                   Text(
-                    _getLastFourDigits(cardNumber),
+                    cardLast4,
                     style: MintTextStyles.caption10.copyWith(
                       color: isSelected
                           ? MintColors.slightlyBlue

@@ -2,23 +2,24 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/gen/colors.gen.dart';
+import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/checkout/credit_card_bottom_sheet.dart';
+import 'package:mint/presentation/pages/main/checkout/widgets/add_credit_card_button.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/credit_card_selection.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/specialist_payment_tile.dart';
 import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
-import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../../bloc/booking/booking_bloc.dart';
+import '../../../../bloc/credit_card/credit_card_bloc.dart';
 import '../../../../bloc/transaction/transaction_bloc.dart';
 import '../../../../domain/entity/credit_card_model/credit_card_model.dart';
 import '../../../../domain/entity/specialist_model/specialist_model.dart';
 import '../../../../gen/assets.gen.dart';
 
 @RoutePage()
-class CheckoutPaymentPage extends StatefulWidget {
+class CheckoutPaymentPage extends StatelessWidget {
   const CheckoutPaymentPage({
     super.key,
     required this.specialistModel,
@@ -33,31 +34,39 @@ class CheckoutPaymentPage extends StatefulWidget {
   final int durationMinutes;
 
   @override
-  State<CheckoutPaymentPage> createState() => _CheckoutPaymentPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          getIt<CreditCardBloc>()..add(CreditCardListFetchRequested()),
+      child: _CheckoutPaymentView(
+        specialistModel: specialistModel,
+        date: date,
+        time: time,
+        durationMinutes: durationMinutes,
+      ),
+    );
+  }
 }
 
-class _CheckoutPaymentPageState extends State<CheckoutPaymentPage> {
+class _CheckoutPaymentView extends StatefulWidget {
+  const _CheckoutPaymentView({
+    required this.specialistModel,
+    required this.date,
+    required this.time,
+    required this.durationMinutes,
+  });
+
+  final SpecialistModel specialistModel;
+  final DateTime date;
+  final DateTime time;
+  final int durationMinutes;
+
+  @override
+  State<_CheckoutPaymentView> createState() => _CheckoutPaymentViewState();
+}
+
+class _CheckoutPaymentViewState extends State<_CheckoutPaymentView> {
   CreditCardModel? _selectedCard;
-  final _cardList = <CreditCardModel>[
-    const CreditCardModel(
-      number: '3443535633232233',
-      expirationMonth: 5,
-      expirationYear: 2023,
-      cvv: 123,
-    ),
-    const CreditCardModel(
-      number: '4443535633233344',
-      expirationMonth: 5,
-      expirationYear: 2023,
-      cvv: 123,
-    ),
-    const CreditCardModel(
-      number: '5443535633234455',
-      expirationMonth: 5,
-      expirationYear: 2023,
-      cvv: 123,
-    ),
-  ];
 
   void _showCreditCardBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
@@ -65,17 +74,23 @@ class _CheckoutPaymentPageState extends State<CheckoutPaymentPage> {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => const CreditCardBottomSheet(),
+      builder: (_) => BlocProvider.value(
+        value: context.read<CreditCardBloc>(),
+        child: const CreditCardBottomSheet(),
+      ),
     );
   }
 
   void _checkout(BookingState state) {
+    final card = _selectedCard;
+    if (card == null) return;
     if (state is BookingBookSuccess) {
       context.read<TransactionBloc>().add(
             TransactionPayRequested(
-              state.bookingData.id,
-              widget.specialistModel.id,
-              widget.specialistModel.price,
+              bookingId: state.bookingData.id,
+              specialistId: widget.specialistModel.id,
+              paymentMethodId: card.id,
+              amount: widget.specialistModel.price,
             ),
           );
     }
@@ -102,40 +117,26 @@ class _CheckoutPaymentPageState extends State<CheckoutPaymentPage> {
                 SizedBox(height: 16.h),
                 Divider(height: 1.h, thickness: 1.h),
                 SizedBox(height: 16.h),
-                CreditCardSelection(
-                  cards: _cardList,
-                  selectedCard: _selectedCard,
-                  onSelect: (card) => setState(() => _selectedCard = card),
+                BlocBuilder<CreditCardBloc, CreditCardState>(
+                  builder: (context, state) {
+                    if (state is CreditCardListFetchLoading) {
+                      return const Center(child: LoadingIndicator());
+                    }
+                    if (state is CreditCardListFetchSuccess) {
+                      return CreditCardSelection(
+                        cards: state.cardList,
+                        selectedCard: _selectedCard,
+                        onSelect: (card) =>
+                            setState(() => _selectedCard = card),
+                        itemCount: state.cardList.length,
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
                 SizedBox(height: 24.h),
-                InkWell(
+                AddCreditCardButton(
                   onTap: () => _showCreditCardBottomSheet(context),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        width: 28.w,
-                        height: 28.h,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Assets.svg.plusIcon.svg(
-                          width: 17.w,
-                          height: 17.h,
-                          fit: BoxFit.scaleDown,
-                          colorFilter: ColorFilter.mode(
-                            Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : MintColors.quarternary1,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(l10n.addCreditCard, style: MintTextStyles.tab16),
-                    ],
-                  ),
                 ),
                 const Spacer(),
                 BlocBuilder<TransactionBloc, TransactionState>(
@@ -146,7 +147,9 @@ class _CheckoutPaymentPageState extends State<CheckoutPaymentPage> {
                     return Column(
                       children: <Widget>[
                         OutlinedButton(
-                          onPressed: () => _checkout(bookingState),
+                          onPressed: _selectedCard != null
+                              ? () => _checkout(bookingState)
+                              : null,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
@@ -166,7 +169,9 @@ class _CheckoutPaymentPageState extends State<CheckoutPaymentPage> {
                         ),
                         SizedBox(height: 8.h),
                         ElevatedButton(
-                          onPressed: () => _checkout(bookingState),
+                          onPressed: _selectedCard != null
+                              ? () => _checkout(bookingState)
+                              : null,
                           child: Text(
                             '${l10n.pay} ${widget.specialistModel.price}₴',
                           ),
