@@ -6,6 +6,7 @@ import 'package:mint/data/repository/abstract/booking_repository.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';
+import '../../model/upcoming_consultation_data_dto/upcoming_consultation_data_dto.dart';
 
 @Injectable(as: BookingRepository)
 class FirebaseBookingRepository implements BookingRepository {
@@ -17,7 +18,6 @@ class FirebaseBookingRepository implements BookingRepository {
 
   CollectionReference get _bookingsCollectionRef =>
       _firestoreInstance.collection(_bookingsCollection);
-
 
   @override
   Future<SpecialistWorkInfoDto> getSpecialistWorkInfo(
@@ -49,8 +49,6 @@ class FirebaseBookingRepository implements BookingRepository {
     return bookingData.copyWith(id: booking.id);
   }
 
-
-
   Future<bool> _isBookExist(
     String specialistId,
     DateTime bookTime,
@@ -62,5 +60,28 @@ class FirebaseBookingRepository implements BookingRepository {
         .get();
 
     return bookingSnapshot.docs.isNotEmpty;
+  }
+
+  @override
+  Future<List<UpcomingConsultationDataDto>> getUpcomingConsultations(
+    String userId,
+  ) async {
+    final nowUtc = DateTime.now().toUtc();
+    final consultationsSnapshot = await _bookingsCollectionRef
+        .where('userId', isEqualTo: userId)
+        .where('bookTime', isGreaterThan: nowUtc)
+        .orderBy('bookTime')
+        .get();
+
+    return consultationsSnapshot.docs
+        .map((consultation) {
+          final data = consultation.data() as Map<String, dynamic>?;
+          if (data == null) return null;
+          data['id'] = consultation.id;
+
+          return UpcomingConsultationDataDto.fromJson(data);
+        })
+        .whereType<UpcomingConsultationDataDto>()
+        .toList();
   }
 }

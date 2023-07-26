@@ -26,6 +26,12 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
       _firestoreInstance.collection(_reviewCollection);
 
   @override
+  Future<SpecialistModelDto?> getSpecialist(String specialistId) async {
+    final specialist = await _specialistCollectionRef.doc(specialistId).get();
+    return _specialistDtoFromSnapshot(specialist);
+  }
+
+  @override
   Future<List<SpecialistModelDto>> getSpecialistsOnline() async {
     final querySnapshot =
         await _specialistCollectionRef.where('isOnline', isEqualTo: true).get();

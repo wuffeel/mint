@@ -4,6 +4,8 @@ import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import '../../entity/filter_preferences/filter_preferences.dart';
 
 abstract class SpecialistService {
+  Future<SpecialistModel?> getSpecialist(String specialistId);
+
   Future<List<SpecialistModel>> getSpecialistsOnline();
 
   Future<List<SpecialistModel>> getFavoriteSpecialists(String userId);

@@ -12,22 +12,27 @@ import '../../entity/review_model/review_model.dart';
 
 @Injectable(as: SpecialistService)
 class FirebaseSpecialistService implements SpecialistService {
-  FirebaseSpecialistService(
-    this._specialistRepository,
-    this._specialistModelFromDto,
-    this._filterPreferencesToDto,
-    this._reviewModelFromDto,
-    this._reviewDtoFromModel,
-  );
+  FirebaseSpecialistService(this._specialistRepository,
+      this._specialistModelFromDto,
+      this._filterPreferencesToDto,
+      this._reviewModelFromDto,
+      this._reviewDtoFromModel,);
 
   final SpecialistRepository _specialistRepository;
 
   final Factory<Future<SpecialistModel>, SpecialistModelDto>
-      _specialistModelFromDto;
+  _specialistModelFromDto;
   final Factory<FilterPreferencesDto, FilterPreferences>
-      _filterPreferencesToDto;
+  _filterPreferencesToDto;
   final Factory<Future<ReviewModel?>, ReviewModelDto> _reviewModelFromDto;
   final Factory<ReviewModelDto, ReviewModel> _reviewDtoFromModel;
+
+  @override
+  Future<SpecialistModel?> getSpecialist(String specialistId) async {
+    final specialist = await _specialistRepository.getSpecialist(specialistId);
+    if (specialist == null) return null;
+    return _specialistModelFromDto.create(specialist);
+  }
 
   @override
   Future<List<SpecialistModel>> getSpecialistsOnline() async {
@@ -38,7 +43,7 @@ class FirebaseSpecialistService implements SpecialistService {
   @override
   Future<List<SpecialistModel>> getFavoriteSpecialists(String userId) async {
     final favoriteSpecialists =
-        await _specialistRepository.getFavoriteSpecialists(userId);
+    await _specialistRepository.getFavoriteSpecialists(userId);
     return Future.wait(favoriteSpecialists.map(_specialistModelFromDto.create));
   }
 
@@ -54,11 +59,10 @@ class FirebaseSpecialistService implements SpecialistService {
 
   @override
   Future<List<SpecialistModel>> getSpecialistCatalogue(
-    FilterPreferences filter,
-  ) async {
+      FilterPreferences filter,) async {
     final filterDto = _filterPreferencesToDto.create(filter);
     final specialistCatalogue =
-        await _specialistRepository.getSpecialistCatalogue(filterDto);
+    await _specialistRepository.getSpecialistCatalogue(filterDto);
     return Future.wait(specialistCatalogue.map(_specialistModelFromDto.create));
   }
 
