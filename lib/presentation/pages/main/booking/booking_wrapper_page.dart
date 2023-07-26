@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/bloc/transaction/transaction_bloc.dart';
 import 'package:mint/injector/injector.dart';
+import 'package:mint/routes/app_router.gr.dart';
 
 @RoutePage()
 class BookingWrapperPage extends AutoRouter with AutoRouteWrapper {
@@ -20,7 +21,15 @@ class BookingWrapperPage extends AutoRouter with AutoRouteWrapper {
       ],
       child: BlocListener<TransactionBloc, TransactionState>(
         listener: (context, state) {
-          if (state is TransactionPaySuccess) context.router.pop();
+          if (state is TransactionPaySuccess) {
+            context.router.navigate(
+              const NavigationWrapperRoute(
+                children: [
+                  NavigationRoute(children: [HomeRoute()])
+                ],
+              ),
+            );
+          }
         },
         child: this,
       ),
