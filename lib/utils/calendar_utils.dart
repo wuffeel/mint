@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarUtils {
@@ -32,7 +34,9 @@ class CalendarUtils {
 
     final now = DateTime.now();
 
-    final isBooked = daySchedule.every((workTime) {
+
+    // Check if any time slot in daySchedule is not booked
+    return daySchedule.every((workTime) {
       final dayWorkTime = DateTime(
         day.year,
         day.month,
@@ -42,20 +46,11 @@ class CalendarUtils {
         workTime.second,
       );
 
-      // Check if the current time is after workTime
-      if (now.isAfter(dayWorkTime)) {
-        return true; // Time slot is in the past; skip it
-      }
+      log('$dayWorkTime');
+      log('$dayBooks');
 
-      final isBetween = dayWorkTime.isAfter(dayBooks.first) &&
-          dayWorkTime.isBefore(dayBooks.last);
-      final isFirst = dayWorkTime == dayBooks.first;
-      final isLast = dayWorkTime == dayBooks.last;
-
-      return isBetween || isFirst || isLast;
+      return now.isAfter(dayWorkTime) || dayBooks.contains(dayWorkTime);
     });
-
-    return isBooked;
   }
 
   /// Checks if the current time has passed the specified [workDayEnd].
