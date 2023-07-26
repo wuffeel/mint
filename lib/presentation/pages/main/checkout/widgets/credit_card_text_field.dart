@@ -21,7 +21,7 @@ class _CreditCardTextFieldState extends State<CreditCardTextField> {
     return CardField(
       controller: widget.controller,
       numberHintText: 'XXXX XXXX XXXX XXXX',
-      cvcHintText: 'CVC/CVV',
+      cvcHintText: 'CVV',
       expirationHintText: 'MM/YY',
       onCardChanged: widget.onCardChanged,
       dangerouslyGetFullCardDetails: true,
