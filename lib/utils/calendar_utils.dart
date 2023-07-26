@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarUtils {
@@ -45,9 +43,6 @@ class CalendarUtils {
         workTime.minute,
         workTime.second,
       );
-
-      log('$dayWorkTime');
-      log('$dayBooks');
 
       return now.isAfter(dayWorkTime) || dayBooks.contains(dayWorkTime);
     });
