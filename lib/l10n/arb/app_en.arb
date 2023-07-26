@@ -120,5 +120,6 @@
   "edit": "Edit",
   "delete": "Delete",
   "timeIsAlreadyBooked": "The time is already booked. Please book other time.",
-  "bookTimePassed": "The booking time already passed. Please choose other time."
+  "bookTimePassed": "The booking time already passed. Please choose other time.",
+  "creditCardAlreadySaved": "Credit card is already saved"
 }

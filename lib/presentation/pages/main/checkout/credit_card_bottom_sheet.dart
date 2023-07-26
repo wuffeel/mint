@@ -84,7 +84,7 @@ class _CreditCardBottomSheetViewState
                         SizedBox(height: 8.h),
                         Text(
                           state is CreditCardSaveDuplicateFailure
-                              ? 'Duplicate card'
+                              ? context.l10n.creditCardAlreadySaved
                               : context.l10n.somethingWentWrongTryAgain,
                           style: MintTextStyles.buttonsHuge.copyWith(
                             color: MintColors.error,
