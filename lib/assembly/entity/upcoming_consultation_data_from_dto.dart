@@ -5,7 +5,8 @@ import 'package:mint/domain/entity/upcoming_consultation_data/upcoming_consultat
 import 'package:mint/domain/service/abstract/specialist_service.dart';
 
 @Injectable(
-    as: Factory<Future<UpcomingConsultationData?>, UpcomingConsultationDataDto>)
+  as: Factory<Future<UpcomingConsultationData?>, UpcomingConsultationDataDto>,
+)
 class UpcomingConsultationDataFromDto
     implements
         Factory<Future<UpcomingConsultationData?>,

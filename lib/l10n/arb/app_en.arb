@@ -121,5 +121,9 @@
   "delete": "Delete",
   "timeIsAlreadyBooked": "The time is already booked. Please book other time.",
   "bookTimePassed": "The booking time already passed. Please choose other time.",
-  "creditCardAlreadySaved": "Credit card is already saved"
+  "creditCardAlreadySaved": "Credit card is already saved",
+  "exitPaymentTitle": "Exit payment",
+  "doYouWantCancelPayment": "Do you want to cancel payment",
+  "exitBookingTitle": "Exit booking",
+  "doYouWantToCancelBooking": "Do you want to cancel booking"
 }

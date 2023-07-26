@@ -121,5 +121,9 @@
   "delete": "Видалити",
   "timeIsAlreadyBooked": "Час уже заброньовано. Будь ласка, забронюйте інший час.",
   "bookTimePassed": "Час бронювання вже минув. Виберіть інший час",
-  "creditCardAlreadySaved": "Кредитна картка вже збережена"
+  "creditCardAlreadySaved": "Кредитна картка вже збережена",
+  "exitPaymentTitle": "Вийти з оплати",
+  "doYouWantCancelPayment": "Чи хочете відмінити оплату",
+  "exitBookingTitle": "Вийти з бронювання",
+  "doYouWantToCancelBooking": "Чи хочете ви відмінити бронювання"
 }

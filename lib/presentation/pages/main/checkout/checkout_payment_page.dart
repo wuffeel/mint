@@ -7,6 +7,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/checkout/credit_card_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/add_credit_card_button.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/credit_card_selection.dart';
+import 'package:mint/presentation/pages/main/checkout/widgets/exit_payment_dialog.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/specialist_payment_tile.dart';
 import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
@@ -96,94 +97,111 @@ class _CheckoutPaymentViewState extends State<_CheckoutPaymentView> {
     }
   }
 
+  Future<bool?> _showExitConfirmDialog(BuildContext context) async {
+    return showDialog<bool?>(
+      context: context,
+      builder: (context) => ExitPaymentDialog(
+        onExit: () {
+          // TODO(wuffeel): payment cancelled, should booking be deleted?
+          context.router.pop(true);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const MintAppBar(),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: BlocBuilder<BookingBloc, BookingState>(
-          builder: (context, bookingState) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SpecialistPaymentTile(
-                  specialistModel: widget.specialistModel,
-                  date: widget.date,
-                  time: widget.time,
-                ),
-                SizedBox(height: 16.h),
-                Divider(height: 1.h, thickness: 1.h),
-                SizedBox(height: 16.h),
-                BlocBuilder<CreditCardBloc, CreditCardState>(
-                  builder: (context, state) {
-                    if (state is CreditCardListFetchLoading) {
-                      return const Center(child: LoadingIndicator());
-                    }
-                    if (state is CreditCardListFetchSuccess) {
-                      return CreditCardSelection(
-                        cards: state.cardList,
-                        selectedCard: _selectedCard,
-                        onSelect: (card) =>
-                            setState(() => _selectedCard = card),
-                        itemCount: state.cardList.length,
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-                SizedBox(height: 24.h),
-                AddCreditCardButton(
-                  onTap: () => _showCreditCardBottomSheet(context),
-                ),
-                const Spacer(),
-                BlocBuilder<TransactionBloc, TransactionState>(
-                  builder: (context, state) {
-                    if (state is TransactionPayLoading) {
-                      return const Center(child: LoadingIndicator());
-                    }
-                    return Column(
-                      children: <Widget>[
-                        OutlinedButton(
-                          onPressed: _selectedCard != null
-                              ? () => _checkout(bookingState)
-                              : null,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(l10n.payWith),
-                              Assets.svg.appleIcon.svg(
-                                width: 24.w,
-                                height: 24.h,
-                                fit: BoxFit.scaleDown,
-                                colorFilter: ColorFilter.mode(
-                                  Theme.of(context).iconTheme.color ??
-                                      Colors.white,
-                                  BlendMode.srcIn,
+    return WillPopScope(
+      onWillPop: () async {
+        return await _showExitConfirmDialog(context) ?? false;
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: const MintAppBar(),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: BlocBuilder<BookingBloc, BookingState>(
+            builder: (context, bookingState) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SpecialistPaymentTile(
+                    specialistModel: widget.specialistModel,
+                    date: widget.date,
+                    time: widget.time,
+                  ),
+                  SizedBox(height: 16.h),
+                  Divider(height: 1.h, thickness: 1.h),
+                  SizedBox(height: 16.h),
+                  BlocBuilder<CreditCardBloc, CreditCardState>(
+                    builder: (context, state) {
+                      if (state is CreditCardListFetchLoading) {
+                        return const Center(child: LoadingIndicator());
+                      }
+                      if (state is CreditCardListFetchSuccess) {
+                        return CreditCardSelection(
+                          cards: state.cardList,
+                          selectedCard: _selectedCard,
+                          onSelect: (card) =>
+                              setState(() => _selectedCard = card),
+                          itemCount: state.cardList.length,
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                  SizedBox(height: 24.h),
+                  AddCreditCardButton(
+                    onTap: () => _showCreditCardBottomSheet(context),
+                  ),
+                  const Spacer(),
+                  BlocBuilder<TransactionBloc, TransactionState>(
+                    builder: (context, state) {
+                      if (state is TransactionPayLoading) {
+                        return const Center(child: LoadingIndicator());
+                      }
+                      return Column(
+                        children: <Widget>[
+                          OutlinedButton(
+                            onPressed: _selectedCard != null
+                                ? () => _checkout(bookingState)
+                                : null,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(l10n.payWith),
+                                Assets.svg.appleIcon.svg(
+                                  width: 24.w,
+                                  height: 24.h,
+                                  fit: BoxFit.scaleDown,
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).iconTheme.color ??
+                                        Colors.white,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 8.h),
-                        ElevatedButton(
-                          onPressed: _selectedCard != null
-                              ? () => _checkout(bookingState)
-                              : null,
-                          child: Text(
-                            '${l10n.pay} ${widget.specialistModel.price}₴',
+                          SizedBox(height: 8.h),
+                          ElevatedButton(
+                            onPressed: _selectedCard != null
+                                ? () => _checkout(bookingState)
+                                : null,
+                            child: Text(
+                              '${l10n.pay} ${widget.specialistModel.price}₴',
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(height: 26.h),
-              ],
-            );
-          },
+                        ],
+                      );
+                    },
+                  ),
+                  SizedBox(height: 26.h),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

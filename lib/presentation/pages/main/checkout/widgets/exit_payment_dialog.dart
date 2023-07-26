@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_alert_dialog.dart';
 
-class ReviewDeleteDialog extends StatelessWidget {
-  const ReviewDeleteDialog({super.key, required this.onDelete});
+class ExitPaymentDialog extends StatelessWidget {
+  const ExitPaymentDialog({super.key, required this.onExit});
 
-  final VoidCallback onDelete;
+  final VoidCallback onExit;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return MintAlertDialog(
       actionTitle: l10n.yes,
-      title: Text(l10n.deleteReview),
-      content: Text('${context.l10n.doYouWantToDeleteReview}?'),
-      onAction: onDelete,
+      title: Text(l10n.exitPaymentTitle),
+      content: Text('${l10n.doYouWantCancelPayment}?'),
+      onAction: onExit,
     );
   }
 }

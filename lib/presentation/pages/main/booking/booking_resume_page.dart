@@ -6,6 +6,7 @@ import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_details.dart';
+import 'package:mint/presentation/pages/main/booking/widgets/exit_booking_dialog.dart';
 import 'package:mint/presentation/widgets/error_snack_bar.dart';
 import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
@@ -119,6 +120,13 @@ class _BookingResumePageState extends State<_BookingResumeView> {
     }
   }
 
+  Future<bool?> _showExitConfirmDialog(BuildContext context) async {
+    return showDialog<bool?>(
+      context: context,
+      builder: (context) => const ExitBookingDialog(),
+    );
+  }
+
   @override
   void dispose() {
     _notesController.dispose();
@@ -128,55 +136,63 @@ class _BookingResumePageState extends State<_BookingResumeView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Scaffold(
-      appBar: const MintAppBar(),
-      body: BlocListener<BookingBloc, BookingState>(
-        listener: _bookingListener,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SpecialistCardTile(specialistModel: widget.specialistModel),
-                    SizedBox(height: 24.h),
-                    Text(
-                      l10n.consultationSummary,
-                      style: MintTextStyles.headline1,
-                    ),
-                    SizedBox(height: 16.h),
-                    BookingResumeDetails(
-                      date: widget.date,
-                      time: widget.time,
-                      minutesDuration: widget.durationMinutes,
-                    ),
-                    SizedBox(height: 16.h),
-                    MultilineTextField(
-                      controller: _notesController,
-                      maxLines: 3,
-                      hintText: '${l10n.typeHerePersonalNotes}...',
-                    ),
-                    const Spacer(),
-                    SizedBox(height: 20.h),
-                    BlocBuilder<BookingBloc, BookingState>(
-                      builder: (context, state) {
-                        if (state is BookingBookLoading) {
-                          return const Center(child: LoadingIndicator());
-                        }
-                        return ElevatedButton(
-                          onPressed: () => _bookSpecialist(state),
-                          child: Text(l10n.book),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 26.h),
-                  ],
-                ),
-              )
-            ],
+    return WillPopScope(
+      onWillPop: () async {
+        await _showExitConfirmDialog(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: const MintAppBar(),
+        body: BlocListener<BookingBloc, BookingState>(
+          listener: _bookingListener,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SpecialistCardTile(
+                        specialistModel: widget.specialistModel,
+                      ),
+                      SizedBox(height: 24.h),
+                      Text(
+                        l10n.consultationSummary,
+                        style: MintTextStyles.headline1,
+                      ),
+                      SizedBox(height: 16.h),
+                      BookingResumeDetails(
+                        date: widget.date,
+                        time: widget.time,
+                        minutesDuration: widget.durationMinutes,
+                      ),
+                      SizedBox(height: 16.h),
+                      MultilineTextField(
+                        controller: _notesController,
+                        maxLines: 3,
+                        hintText: '${l10n.typeHerePersonalNotes}...',
+                      ),
+                      const Spacer(),
+                      SizedBox(height: 20.h),
+                      BlocBuilder<BookingBloc, BookingState>(
+                        builder: (context, state) {
+                          if (state is BookingBookLoading) {
+                            return const Center(child: LoadingIndicator());
+                          }
+                          return ElevatedButton(
+                            onPressed: () => _bookSpecialist(state),
+                            child: Text(l10n.book),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 26.h),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
