@@ -66,7 +66,11 @@ class UpcomingConsultationsBloc
     try {
       emit(UpcomingConsultationsFetchLoading());
       final consultations = await _fetchUpcomingConsultationsUseCase(user.id);
-      emit(UpcomingConsultationsFetchSuccess(consultations));
+      final now = DateTime.now();
+      final dayAfter = DateTime(now.year, now.month, now.day + 2);
+      final inTwoDays =
+          consultations.where((e) => e.bookTime.isBefore(dayAfter)).toList();
+      emit(UpcomingConsultationsFetchSuccess(inTwoDays));
     } catch (error) {
       log('UpcomingConsultationsFetchFailure: $error');
       emit(UpcomingConsultationsFetchFailure());
