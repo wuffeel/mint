@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/booking_controller.dart';
+import 'package:mint/domain/entity/booking_data/booking_data.dart';
 
 import '../../domain/controller/user_controller.dart';
-import '../../domain/entity/session_data/session_data.dart';
 import '../../domain/entity/user_model/user_model.dart';
 import '../../domain/usecase/fetch_upcoming_sessions_use_case.dart';
 
@@ -67,7 +67,8 @@ class UpcomingSessionsBloc
       emit(UpcomingSessionsFetchLoading());
       final consultations = await _fetchUpcomingSessionsUseCase(user.id);
       final now = DateTime.now();
-      final dayAfter = DateTime(now.year, now.month, now.day + 2);
+      final dayAfter =
+          DateTime(now.year, now.month, now.day + 2, now.hour, now.minute);
       final inTwoDays =
           consultations.where((e) => e.bookTime.isBefore(dayAfter)).toList();
       emit(UpcomingSessionsFetchSuccess(inTwoDays));

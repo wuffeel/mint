@@ -1,5 +1,3 @@
-import 'package:mint/data/model/session_data_dto/session_data_dto.dart';
-
 import '../../model/booking_data_dto/booking_data_dto.dart';
 import '../../model/specialist_work_info_dto/specialist_work_info_dto.dart';
 
@@ -8,5 +6,12 @@ abstract class BookingRepository {
 
   Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData);
 
-  Future<List<SessionDataDto>> getUpcomingSessions(String userId);
+  Future<BookingDataDto> bookReschedule(
+    BookingDataDto previousBookingData,
+    BookingDataDto newBookingData,
+  );
+
+  Future<void> cancelBooking(String bookingId);
+
+  Future<List<BookingDataDto>> getUpcomingSessions(String userId);
 }

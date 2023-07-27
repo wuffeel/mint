@@ -13,7 +13,8 @@ class ExitBookingDialog extends StatelessWidget {
     return MintAlertDialog(
       actionTitle: l10n.yes,
       title: Text(l10n.exitBookingTitle),
-      content: Text('${l10n.doYouWantToCancelBooking}?'),
+      content: Text('${l10n.doYouWantToExitBooking}?'),
+      isDestructiveAction: false,
       onAction: () => context.router.pop(true),
     );
   }

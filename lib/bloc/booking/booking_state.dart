@@ -28,3 +28,5 @@ class BookingBookFailure extends BookingState {}
 class BookingBookLateFailure extends BookingState {}
 
 class BookingBookDuplicateFailure extends BookingState {}
+
+class BookingRescheduleSuccess extends BookingState {}

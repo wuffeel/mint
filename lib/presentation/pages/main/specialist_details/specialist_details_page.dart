@@ -128,8 +128,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
       builder: (_) => BlocProvider(
-        create: (context) => getIt<BookingBloc>()
-          ..add(BookingWorkInfoRequested(widget.specialistModel.id)),
+        create: (context) => getIt<BookingBloc>(),
         child: BookingBottomSheet(
           specialistModel: widget.specialistModel,
         ),

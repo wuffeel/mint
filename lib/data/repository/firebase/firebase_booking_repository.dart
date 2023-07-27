@@ -6,7 +6,6 @@ import 'package:mint/data/repository/abstract/booking_repository.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';
-import '../../model/session_data_dto/session_data_dto.dart';
 
 @Injectable(as: BookingRepository)
 class FirebaseBookingRepository implements BookingRepository {
@@ -36,34 +35,28 @@ class FirebaseBookingRepository implements BookingRepository {
 
   @override
   Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData) async {
-    final bookExists = await _isBookExist(
-      bookingData.specialistId,
-      bookingData.bookTime,
-    );
-
-    if (bookExists) throw BookingDuplicateException();
-
-    final booking = await _bookingsCollectionRef.add(
-      bookingData.toJsonWithoutId(),
-    );
-    return bookingData.copyWith(id: booking.id);
-  }
-
-  Future<bool> _isBookExist(
-    String specialistId,
-    DateTime bookTime,
-  ) async {
-    final bookingSnapshot = await _bookingsCollectionRef
-        .where('specialistId', isEqualTo: specialistId)
-        .where('bookTime', isEqualTo: bookTime)
-        .limit(1)
-        .get();
-
-    return bookingSnapshot.docs.isNotEmpty;
+    return _bookSpecialist(bookingData);
   }
 
   @override
-  Future<List<SessionDataDto>> getUpcomingSessions(
+  Future<BookingDataDto> bookReschedule(
+    BookingDataDto previousBookingData,
+    BookingDataDto newBookingData,
+  ) async {
+    return _bookSpecialist(
+      newBookingData,
+      isReschedule: true,
+      previousBookingData: previousBookingData,
+    );
+  }
+
+  @override
+  Future<void> cancelBooking(String bookingId) {
+    return _bookingsCollectionRef.doc(bookingId).delete();
+  }
+
+  @override
+  Future<List<BookingDataDto>> getUpcomingSessions(
     String userId,
   ) async {
     final nowUtc = DateTime.now().toUtc();
@@ -79,9 +72,54 @@ class FirebaseBookingRepository implements BookingRepository {
           if (data == null) return null;
           data['id'] = consultation.id;
 
-          return SessionDataDto.fromJson(data);
+          return BookingDataDto.fromJson(data);
         })
-        .whereType<SessionDataDto>()
+        .whereType<BookingDataDto>()
         .toList();
+  }
+
+  /// Used to book specialist or reschedule existing booking.
+  ///
+  /// - If [bookingData] with same 'specialistId' and 'bookTime' already exists,
+  /// [BookingDuplicateException] is thrown.
+  ///
+  /// - If [isReschedule] and [previousBookingData] are provided, deletes
+  /// [previousBookingData] from database.
+  ///
+  /// Returns:
+  /// - [BookingDataDto] with generated id by Firebase
+  Future<BookingDataDto> _bookSpecialist(
+    BookingDataDto bookingData, {
+    bool isReschedule = false,
+    BookingDataDto? previousBookingData,
+  }) async {
+    final bookExists = await _isBookExist(
+      bookingData.specialistId,
+      bookingData.bookTime,
+    );
+    if (bookExists) throw BookingDuplicateException();
+
+    if (isReschedule && previousBookingData != null) {
+      await _bookingsCollectionRef.doc(previousBookingData.id).delete();
+    }
+
+    final booking = await _bookingsCollectionRef.add(
+      bookingData.toJsonWithoutId(),
+    );
+    return bookingData.copyWith(id: booking.id);
+  }
+
+  /// Checks for existing book entry in Firebase.
+  Future<bool> _isBookExist(
+    String specialistId,
+    DateTime bookTime,
+  ) async {
+    final bookingSnapshot = await _bookingsCollectionRef
+        .where('specialistId', isEqualTo: specialistId)
+        .where('bookTime', isEqualTo: bookTime)
+        .limit(1)
+        .get();
+
+    return bookingSnapshot.docs.isNotEmpty;
   }
 }

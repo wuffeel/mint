@@ -9,7 +9,7 @@ class BookingDataToDto implements Factory<BookingDataDto, BookingData> {
   @override
   BookingDataDto create(BookingData param) => BookingDataDto(
         id: param.id,
-        specialistId: param.specialistId,
+        specialistId: param.specialistModel.id,
         userId: param.userId,
         notes: param.notes,
         bookTime: param.bookTime.toUtc(),

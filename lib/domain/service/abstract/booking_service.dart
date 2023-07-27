@@ -1,5 +1,4 @@
 import '../../entity/booking_data/booking_data.dart';
-import '../../entity/session_data/session_data.dart';
 import '../../entity/specialist_work_info/specialist_work_info.dart';
 
 abstract class BookingService {
@@ -7,5 +6,12 @@ abstract class BookingService {
 
   Future<BookingData> bookSpecialist(BookingData bookingData);
 
-  Future<List<SessionData>> getUpcomingSessions(String userId);
+  Future<BookingData> bookReschedule(
+    BookingData previousBookingData,
+    BookingData newBookingData,
+  );
+
+  Future<void> cancelBooking(String bookingId);
+
+  Future<List<BookingData>> getUpcomingSessions(String userId);
 }

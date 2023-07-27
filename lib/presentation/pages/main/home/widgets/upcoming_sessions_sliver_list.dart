@@ -27,10 +27,10 @@ class UpcomingSessionsSliverList extends StatelessWidget {
               itemBuilder: (context, index) => UpcomingSessionContainer(
                 onTap: () => context.router.push(
                   WaitingSessionRoute(
-                    sessionData: state.upcomingList[index],
+                    bookingData: state.upcomingList[index],
                   ),
                 ),
-                sessionData: state.upcomingList[index],
+                bookingData: state.upcomingList[index],
               ),
               separatorBuilder: (_, __) => SizedBox(height: 10.h),
               itemCount: state.upcomingList.length,

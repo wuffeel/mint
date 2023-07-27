@@ -10,7 +10,7 @@ class UpcomingSessionsFetchLoading extends UpcomingSessionsState {}
 class UpcomingSessionsFetchSuccess extends UpcomingSessionsState {
   UpcomingSessionsFetchSuccess(this.upcomingList);
 
-  final List<SessionData> upcomingList;
+  final List<BookingData> upcomingList;
 }
 
 class UpcomingSessionsFetchFailure extends UpcomingSessionsState {}

@@ -5,14 +5,21 @@ import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/injector/injector.dart';
 
 @RoutePage()
-class CheckoutWrapperPage extends AutoRouter with AutoRouteWrapper {
-  const CheckoutWrapperPage({super.key});
+class WaitingSessionWrapperPage extends AutoRouter with AutoRouteWrapper {
+  const WaitingSessionWrapperPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<BookingBloc>(),
-      child: this,
+      child: BlocListener<BookingBloc, BookingState>(
+        listener: (context, state) {
+          if (state is BookingRescheduleSuccess) {
+            context.router.pop();
+          }
+        },
+        child: this,
+      ),
     );
   }
 }

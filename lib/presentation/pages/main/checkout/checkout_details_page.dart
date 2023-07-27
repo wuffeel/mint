@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/unordered_list.dart';
@@ -11,29 +12,15 @@ import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../../bloc/booking/booking_bloc.dart';
-import '../../../../domain/entity/specialist_model/specialist_model.dart';
 
 @RoutePage()
 class CheckoutDetailsPage extends StatelessWidget {
-  const CheckoutDetailsPage({
-    super.key,
-    required this.specialistModel,
-    required this.bookTime,
-    required this.durationMinutes,
-  });
+  const CheckoutDetailsPage({super.key, required this.bookingData});
 
-  final SpecialistModel specialistModel;
-  final DateTime bookTime;
-  final int durationMinutes;
+  final BookingData bookingData;
 
   void _navigateToPayment(BuildContext context) {
-    context.router.push(
-      CheckoutPaymentRoute(
-        specialistModel: specialistModel,
-        bookTime: bookTime,
-        durationMinutes: durationMinutes,
-      ),
-    );
+    context.router.push(CheckoutPaymentRoute(bookingData: bookingData));
   }
 
   @override
@@ -51,9 +38,9 @@ class CheckoutDetailsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SpecialistBookingTile(
-                    specialistModel: specialistModel,
-                    bookTime: bookTime,
-                    durationMinutes: durationMinutes,
+                    specialistModel: bookingData.specialistModel,
+                    bookTime: bookingData.bookTime,
+                    durationMinutes: bookingData.durationMinutes,
                   ),
                   SizedBox(height: 24.h),
                   Text(

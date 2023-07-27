@@ -125,7 +125,7 @@
   "exitPaymentTitle": "Exit payment",
   "doYouWantCancelPayment": "Do you want to cancel payment",
   "exitBookingTitle": "Exit booking",
-  "doYouWantToCancelBooking": "Do you want to cancel booking",
+  "doYouWantToExitBooking": "Do you want to exit booking",
   "sessionCancellation": "Session cancellation",
   "areYouSureToCancelMeeting": "Are you sure to cancel this meeting",
   "notesForSession": "Notes for session",

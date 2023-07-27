@@ -6,9 +6,11 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/booking_controller.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
+import 'package:mint/domain/usecase/booking_reschedule_use_case.dart';
 import 'package:mint/domain/usecase/specialist_work_info_fetch_use_case.dart';
 
 import '../../domain/controller/user_controller.dart';
@@ -24,15 +26,18 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     this._userController,
     this._specialistWorkInfoFetchUseCase,
     this._bookingBookUseCase,
+    this._bookingRescheduleUseCase,
     this._bookingController,
   ) : super(BookingInitial()) {
     _subscribeToUserChange();
     on<BookingWorkInfoRequested>(_onWorkInfoRequest);
     on<BookingBookRequested>(_onBookRequest);
+    on<BookingRescheduleRequested>(_onBookReschedule);
   }
 
   final SpecialistWorkInfoFetchUseCase _specialistWorkInfoFetchUseCase;
   final BookingBookUseCase _bookingBookUseCase;
+  final BookingRescheduleUseCase _bookingRescheduleUseCase;
 
   UserModel? _currentUser;
   final UserController _userController;
@@ -72,25 +77,82 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     BookingBookRequested event,
     Emitter<BookingState> emit,
   ) async {
+    await _handleBooking(
+      event.specialistModel,
+      event.bookTime,
+      event.notes,
+      event.durationMinutes,
+      emit,
+    );
+  }
+
+  Future<void> _onBookReschedule(
+    BookingRescheduleRequested event,
+    Emitter<BookingState> emit,
+  ) async {
+    await _handleBooking(
+      event.specialistModel,
+      event.bookTime,
+      event.notes,
+      event.durationMinutes,
+      emit,
+      previousBookingData: event.previousBookingData,
+    );
+  }
+
+  /// Performs the booking or rescheduling process based on the provided
+  /// [event].
+  ///
+  /// Parameters:
+  /// - [event]: The booking event containing details for the booking or
+  /// rescheduling request.
+  /// - [previousBookingData]: (Optional) Previous booking data for reschedule.
+  ///
+  /// Successful states:
+  /// - [BookingRescheduleSuccess] On successful reschedule
+  /// - [BookingBookSuccess] On successful book
+  ///
+  /// Failure states:
+  /// - [BookingBookLateFailure] If the booking time in [event] has
+  /// already passed.
+  /// - [BookingDuplicateException] If a booking with the same specialist
+  /// and book time already exists.
+  /// - [BookingBookFailure] If any other error occurs during the booking or
+  /// rescheduling process.
+  Future<void> _handleBooking(
+    SpecialistModel specialistModel,
+    DateTime bookTime,
+    String notes,
+    int durationMinutes,
+    Emitter<BookingState> emit, {
+    BookingData? previousBookingData,
+  }) async {
     final user = _currentUser;
     if (user == null) return;
     try {
       emit(BookingBookLoading());
-      if (DateTime.now().isAfter(event.bookTime)) {
+      if (DateTime.now().isAfter(bookTime)) {
         emit(BookingBookLateFailure());
         return;
       }
       final bookingData = BookingData(
         id: '',
-        specialistId: event.specialistId,
+        specialistModel: specialistModel,
         userId: user.id,
-        notes: event.notes,
-        bookTime: event.bookTime,
-        durationMinutes: event.durationMinutes,
+        notes: notes,
+        bookTime: bookTime,
+        durationMinutes: durationMinutes,
       );
-      final booking = await _bookingBookUseCase(bookingData);
+      final booking = previousBookingData != null
+          ? await _bookingRescheduleUseCase(previousBookingData, bookingData)
+          : await _bookingBookUseCase(bookingData);
+
+      // Updating bookings stream here to get actual upcoming sessions info
       _bookingController.addToBookingsStream(hasChanged: true);
-      emit(BookingBookSuccess(booking));
+
+      previousBookingData != null
+          ? emit(BookingRescheduleSuccess())
+          : emit(BookingBookSuccess(booking));
     } catch (error) {
       log('BookingBookFailure: $error');
       if (error is BookingDuplicateException) {

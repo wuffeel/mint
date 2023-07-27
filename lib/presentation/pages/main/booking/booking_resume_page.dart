@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/booking/booking_bloc.dart';
+import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_details.dart';
@@ -22,34 +25,57 @@ class BookingResumePage extends StatelessWidget {
     required this.specialistModel,
     required this.bookTime,
     required this.durationMinutes,
+    this.previousBookingData,
   });
 
   final SpecialistModel specialistModel;
   final DateTime bookTime;
   final int durationMinutes;
 
+  /// Provided if reschedule is required
+  final BookingData? previousBookingData;
+
+  /// Requests either booking or reschedule, depending on whether
+  /// [previousBookingData] provided or not respectively
+  void _bookSpecialist(BuildContext context, String notes) {
+    final previousBooking = previousBookingData;
+    final bookingBloc = context.read<BookingBloc>();
+    if (previousBooking != null) {
+      bookingBloc.add(
+        BookingRescheduleRequested(
+          specialistModel,
+          bookTime,
+          notes,
+          durationMinutes,
+          previousBookingData: previousBooking,
+        ),
+      );
+    } else {
+      bookingBloc.add(
+        BookingBookRequested(specialistModel, bookTime, notes, durationMinutes),
+      );
+    }
+  }
+
+  /// Navigates user to checkout on successful booking
+  void _bookingStatusListener(BuildContext context, BookingState state) {
+    if (state is BookingBookSuccess) {
+      context.router.replace(
+        CheckoutDetailsRoute(bookingData: state.bookingData),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<BookingBloc, BookingState>(
-      listener: (context, state) {
-        if (state is BookingBookSuccess) {
-          context.router.replace(
-            CheckoutWrapperRoute(
-              children: [
-                CheckoutDetailsRoute(
-                  specialistModel: specialistModel,
-                  bookTime: bookTime,
-                  durationMinutes: durationMinutes,
-                ),
-              ],
-            ),
-          );
-        }
-      },
+      listener: _bookingStatusListener,
       child: _BookingResumeView(
         specialistModel: specialistModel,
         bookTime: bookTime,
         durationMinutes: durationMinutes,
+        previousBookingData: previousBookingData,
+        onBookSpecialist: (notes) => _bookSpecialist(context, notes),
       ),
     );
   }
@@ -60,11 +86,15 @@ class _BookingResumeView extends StatefulWidget {
     required this.specialistModel,
     required this.bookTime,
     required this.durationMinutes,
+    required this.onBookSpecialist,
+    this.previousBookingData,
   });
 
   final SpecialistModel specialistModel;
   final DateTime bookTime;
   final int durationMinutes;
+  final BookingData? previousBookingData;
+  final void Function(String) onBookSpecialist;
 
   @override
   State<_BookingResumeView> createState() => _BookingResumePageState();
@@ -89,17 +119,6 @@ class _BookingResumePageState extends State<_BookingResumeView> {
         ErrorSnackBar(content: Text(context.l10n.somethingWentWrongTryAgain)),
       );
     }
-  }
-
-  void _bookSpecialist() {
-    context.read<BookingBloc>().add(
-          BookingBookRequested(
-            widget.specialistModel.id,
-            widget.bookTime,
-            _notesController.text.trim(),
-            widget.durationMinutes,
-          ),
-        );
   }
 
   Future<bool?> _showExitConfirmDialog(BuildContext context) async {
@@ -163,7 +182,9 @@ class _BookingResumePageState extends State<_BookingResumeView> {
                             return const Center(child: LoadingIndicator());
                           }
                           return ElevatedButton(
-                            onPressed: _bookSpecialist,
+                            onPressed: () => widget.onBookSpecialist(
+                              _notesController.text.trim(),
+                            ),
                             child: Text(l10n.book),
                           );
                         },

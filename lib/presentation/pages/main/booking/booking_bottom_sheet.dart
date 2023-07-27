@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -16,9 +17,16 @@ import 'package:mint/theme/mint_text_styles.dart';
 import '../../../../bloc/booking/booking_bloc.dart';
 
 class BookingBottomSheet extends StatefulWidget {
-  const BookingBottomSheet({super.key, required this.specialistModel});
+  const BookingBottomSheet({
+    super.key,
+    required this.specialistModel,
+    this.previousBookingData,
+  });
 
   final SpecialistModel specialistModel;
+
+  /// Provided if reschedule is required
+  final BookingData? previousBookingData;
 
   @override
   State<BookingBottomSheet> createState() => _BookingBottomSheetState();
@@ -29,6 +37,14 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
 
   DateTime? _selectedDay;
   DateTime? _selectedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<BookingBloc>()
+        .add(BookingWorkInfoRequested(widget.specialistModel.id));
+  }
 
   void _navigateToBookingResume(SpecialistWorkInfo workInfo) {
     context.router.pop();
@@ -42,17 +58,17 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
       selectedTime.minute,
       selectedTime.second,
     );
-    context.router.push(
-      BookingWrapperRoute(
-        children: [
-          BookingResumeRoute(
-            specialistModel: widget.specialistModel,
-            bookTime: bookTime,
-            durationMinutes: workInfo.consultationMinutes,
-          ),
-        ],
-      ),
+    final bookingResumeRoute = BookingResumeRoute(
+      specialistModel: widget.specialistModel,
+      bookTime: bookTime,
+      durationMinutes: workInfo.consultationMinutes,
+      previousBookingData: widget.previousBookingData,
     );
+    widget.previousBookingData == null
+        ? context.router.push(
+            CheckoutWrapperRoute(children: [bookingResumeRoute]),
+          )
+        : context.router.push(bookingResumeRoute);
   }
 
   void Function()? _onContinue(BookingState state) {
