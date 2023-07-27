@@ -104,7 +104,7 @@ class CalendarUtils {
   ///
   /// final currentTime = DateTime.now() // July 21, 2023, 09:00 AM
   ///
-  /// isTimeUnavailable(selectedDate, time, []) => true
+  /// isTimeUnavailable(selectedDate, currentTime, []) => true
   /// ```
   static bool isTimeUnavailable(
     DateTime time,
