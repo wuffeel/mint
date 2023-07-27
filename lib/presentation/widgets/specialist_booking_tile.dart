@@ -8,8 +8,8 @@ import 'package:mint/presentation/widgets/specialist_full_name_text.dart';
 import 'package:mint/presentation/widgets/specialist_photo_container.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
-class SpecialistCheckoutTile extends StatelessWidget {
-  const SpecialistCheckoutTile({
+class SpecialistBookingTile extends StatelessWidget {
+  const SpecialistBookingTile({
     super.key,
     required this.specialistModel,
     required this.date,
