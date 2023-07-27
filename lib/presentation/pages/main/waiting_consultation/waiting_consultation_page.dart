@@ -1,8 +1,10 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/domain/entity/upcoming_consultation_data/upcoming_consultation_data.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/waiting_consultation/widgets/session_cancellation_dialog.dart';
 import 'package:mint/presentation/pages/main/waiting_consultation/widgets/waiting_consultation_action_list.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
@@ -19,6 +21,18 @@ class WaitingConsultationPage extends StatelessWidget {
 
   String _getNotesString(BuildContext context, String notes) {
     return notes.isNotEmpty ? notes : '${context.l10n.notesWereNotSpecified}.';
+  }
+
+  void _showCancellationDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => SessionCancellationDialog(
+        onCancel: () {
+          // TODO(wuffeel): add cancellation logic
+          context.router.pop();
+        },
+      ),
+    );
   }
 
   @override
@@ -68,9 +82,11 @@ class WaitingConsultationPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    WaitingConsultationActionList(onChat: () {
-                      // TODO(wuffeel): navigate user to chat
-                    }),
+                    WaitingConsultationActionList(
+                      onChat: () {
+                        // TODO(wuffeel): navigate user to chat
+                      },
+                    ),
                     const Spacer(),
                     SizedBox(height: 20.h),
                     Row(
@@ -86,9 +102,7 @@ class WaitingConsultationPage extends StatelessWidget {
                         SizedBox(width: 9.w),
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {
-                              // TODO(wuffeel): dialog booking cancel
-                            },
+                            onPressed: () => _showCancellationDialog(context),
                             child: Text(context.l10n.cancel),
                           ),
                         ),

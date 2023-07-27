@@ -3,7 +3,9 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_alert_dialog.dart';
 
 class SessionCancellationDialog extends StatelessWidget {
-  const SessionCancellationDialog({super.key});
+  const SessionCancellationDialog({super.key, required this.onCancel});
+
+  final VoidCallback onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class SessionCancellationDialog extends StatelessWidget {
       actionTitle: l10n.yes,
       title: Text(l10n.sessionCancellation),
       content: Text('${l10n.areYouSureToCancelMeeting}?'),
-      onAction: () {},
+      onAction: onCancel,
     );
   }
 }
