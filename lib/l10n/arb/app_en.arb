@@ -125,5 +125,13 @@
   "exitPaymentTitle": "Exit payment",
   "doYouWantCancelPayment": "Do you want to cancel payment",
   "exitBookingTitle": "Exit booking",
-  "doYouWantToCancelBooking": "Do you want to cancel booking"
+  "doYouWantToCancelBooking": "Do you want to cancel booking",
+  "sessionCancellation": "Session cancellation",
+  "areYouSureToCancelMeeting": "Are you sure to cancel this meeting",
+  "notesForSession": "Notes for session",
+  "call": "Call",
+  "video": "Video",
+  "chat": "Chat",
+  "reschedule": "Reschedule",
+  "notesWereNotSpecified": "Notes were not specified"
 }

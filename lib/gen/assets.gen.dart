@@ -44,6 +44,12 @@ class $AssetsSvgGen {
   SvgGenImage get calendarIcon =>
       const SvgGenImage('assets/svg/calendar_icon.svg');
 
+  /// File path: assets/svg/call.svg
+  SvgGenImage get call => const SvgGenImage('assets/svg/call.svg');
+
+  /// File path: assets/svg/chat.svg
+  SvgGenImage get chat => const SvgGenImage('assets/svg/chat.svg');
+
   /// File path: assets/svg/check_mark.svg
   SvgGenImage get checkMark => const SvgGenImage('assets/svg/check_mark.svg');
 
@@ -105,6 +111,9 @@ class $AssetsSvgGen {
   SvgGenImage get userPlaceholder =>
       const SvgGenImage('assets/svg/user_placeholder.svg');
 
+  /// File path: assets/svg/video.svg
+  SvgGenImage get video => const SvgGenImage('assets/svg/video.svg');
+
   /// File path: assets/svg/visa_icon.svg
   SvgGenImage get visaIcon => const SvgGenImage('assets/svg/visa_icon.svg');
 
@@ -118,6 +127,8 @@ class $AssetsSvgGen {
         backspaceIconDark,
         bellIcon,
         calendarIcon,
+        call,
+        chat,
         checkMark,
         chevronRight,
         crossIcon,
@@ -135,6 +146,7 @@ class $AssetsSvgGen {
         starIcon,
         starIconFilled,
         userPlaceholder,
+        video,
         visaIcon
       ];
 }

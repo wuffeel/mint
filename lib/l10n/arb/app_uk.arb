@@ -125,5 +125,13 @@
   "exitPaymentTitle": "Вийти з оплати",
   "doYouWantCancelPayment": "Чи хочете відмінити оплату",
   "exitBookingTitle": "Вийти з бронювання",
-  "doYouWantToCancelBooking": "Чи хочете ви відмінити бронювання"
+  "doYouWantToCancelBooking": "Чи хочете ви відмінити бронювання",
+  "sessionCancellation": "Скасування сеансу",
+  "areYouSureToCancelMeeting": "Ви бажаєте скасувати цю зустріч",
+  "notesForSession": "Нотатки до сеансу",
+  "call": "Дзвінок",
+  "video": "Відео-чат",
+  "chat": "Чат",
+  "reschedule": "Перенести",
+  "notesWereNotSpecified": "Нотатки не були вказані"
 }
