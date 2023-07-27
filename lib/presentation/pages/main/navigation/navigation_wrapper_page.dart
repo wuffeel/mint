@@ -7,6 +7,8 @@ import 'package:mint/bloc/user/user_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/routes/app_router.gr.dart';
 
+import '../../../../bloc/upcoming_consultations/upcoming_consultations_bloc.dart';
+
 @RoutePage()
 class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
   const NavigationWrapperPage({super.key});
@@ -25,6 +27,10 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
         BlocProvider(
           create: (context) =>
               getIt<FavoriteBloc>()..add(FavoriteFetchRequested()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<UpcomingConsultationsBloc>()
+            ..add(UpcomingConsultationsFetchRequested()),
         ),
       ],
       child: MultiBlocListener(

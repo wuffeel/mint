@@ -19,19 +19,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => getIt<SpecialistOnlineBloc>()
-            ..add(
-              SpecialistOnlineFetchRequested(),
-            ),
+    return BlocProvider(
+      create: (context) => getIt<SpecialistOnlineBloc>()
+        ..add(
+          SpecialistOnlineFetchRequested(),
         ),
-        BlocProvider(
-          create: (context) => getIt<UpcomingConsultationsBloc>()
-            ..add(UpcomingConsultationsFetchRequested()),
-        )
-      ],
       child: const _HomePageView(),
     );
   }
