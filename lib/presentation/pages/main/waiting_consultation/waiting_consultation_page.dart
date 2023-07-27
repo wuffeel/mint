@@ -68,21 +68,27 @@ class WaitingConsultationPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    WaitingConsultationActionList(onChat: () {}),
+                    WaitingConsultationActionList(onChat: () {
+                      // TODO(wuffeel): navigate user to chat
+                    }),
                     const Spacer(),
                     SizedBox(height: 20.h),
                     Row(
                       children: <Widget>[
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // TODO(wuffeel): add reschedule logic
+                            },
                             child: Text(context.l10n.reschedule),
                           ),
                         ),
                         SizedBox(width: 9.w),
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // TODO(wuffeel): dialog booking cancel
+                            },
                             child: Text(context.l10n.cancel),
                           ),
                         ),
