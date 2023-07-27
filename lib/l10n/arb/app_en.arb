@@ -133,5 +133,6 @@
   "video": "Video",
   "chat": "Chat",
   "reschedule": "Reschedule",
-  "notesWereNotSpecified": "Notes were not specified"
+  "notesWereNotSpecified": "Notes were not specified",
+  "noBookingInfoFound": "No booking info found"
 }

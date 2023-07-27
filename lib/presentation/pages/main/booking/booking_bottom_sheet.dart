@@ -9,6 +9,7 @@ import 'package:mint/presentation/pages/main/booking/widgets/booking_date_calend
 import 'package:mint/presentation/pages/main/booking/widgets/booking_time_calendar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_dynamic_container.dart';
+import 'package:mint/presentation/widgets/no_items_found.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -87,6 +88,14 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
             return SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.6,
               child: const Center(child: CircularProgressIndicator()),
+            );
+          }
+          if (state is BookingInfoFetchFailure) {
+            return SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.6,
+              child: Center(
+                child: NoItemsFound(title: '${l10n.noBookingInfoFound}!'),
+              ),
             );
           }
           if (state is BookingInfoFetchSuccess) {

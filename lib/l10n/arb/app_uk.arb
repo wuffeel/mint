@@ -133,5 +133,6 @@
   "video": "Відео-чат",
   "chat": "Чат",
   "reschedule": "Перенести",
-  "notesWereNotSpecified": "Нотатки не були вказані"
+  "notesWereNotSpecified": "Нотатки не були вказані",
+  "noBookingInfoFound": "Інформацію для бронювання не було знайдено"
 }
