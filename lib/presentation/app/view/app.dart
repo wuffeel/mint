@@ -44,6 +44,7 @@ class App extends StatelessWidget {
               sliderTheme: MintThemeData.sliderThemeLight,
               tabBarTheme: MintThemeData.tabBarThemeLight,
               inputDecorationTheme: MintThemeData.inputDecorationLight,
+              dividerTheme: const DividerThemeData(thickness: 1, space: 1),
             ),
             darkTheme: ThemeData(
               fontFamily: MintFontFamily.inter,
@@ -61,6 +62,7 @@ class App extends StatelessWidget {
               sliderTheme: MintThemeData.sliderThemeDark,
               tabBarTheme: MintThemeData.tabBarThemeDark,
               inputDecorationTheme: MintThemeData.inputDecorationDark,
+              dividerTheme: const DividerThemeData(thickness: 1, space: 1),
             ),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

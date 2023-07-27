@@ -48,7 +48,7 @@ class BookingResumeDetails extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 16.h),
-              child: const Divider(height: 1, thickness: 1),
+              child: const Divider(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +64,7 @@ class BookingResumeDetails extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 16.h),
-              child: const Divider(height: 1, thickness: 1),
+              child: const Divider(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

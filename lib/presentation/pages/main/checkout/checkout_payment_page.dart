@@ -126,7 +126,7 @@ class _CheckoutPaymentViewState extends State<_CheckoutPaymentView> {
                     bookTime: widget.bookTime,
                   ),
                   SizedBox(height: 16.h),
-                  Divider(height: 1.h, thickness: 1.h),
+                  const Divider(),
                   SizedBox(height: 16.h),
                   BlocBuilder<CreditCardBloc, CreditCardState>(
                     builder: (context, state) {

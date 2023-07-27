@@ -58,7 +58,6 @@ class UserReviewsSection extends StatelessWidget {
                   SliverToBoxAdapter(child: SizedBox(height: 12.h)),
                   SliverToBoxAdapter(
                     child: Divider(
-                      height: 1,
                       thickness: 2,
                       color: Theme.of(context).primaryColor,
                     ),
