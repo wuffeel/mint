@@ -24,13 +24,17 @@ class WaitingSessionPage extends StatelessWidget {
   }
 
   void _showCancellationDialog(BuildContext context) {
+    final bookingBloc = context.read<BookingBloc>();
     showDialog<void>(
       context: context,
-      builder: (context) => SessionCancellationDialog(
-        onCancel: () {
-          // TODO(wuffeel): add cancellation logic
-          context.router.pop();
-        },
+      builder: (context) => BlocProvider.value(
+        value: bookingBloc,
+        child: SessionCancellationDialog(
+          onCancel: () {
+            bookingBloc.add(BookingCancelRequested(bookingData.id));
+            context.router.pop();
+          },
+        ),
       ),
     );
   }

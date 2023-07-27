@@ -10,6 +10,7 @@ import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
+import 'package:mint/domain/usecase/booking_cancel_use_case.dart';
 import 'package:mint/domain/usecase/booking_reschedule_use_case.dart';
 import 'package:mint/domain/usecase/specialist_work_info_fetch_use_case.dart';
 
@@ -23,21 +24,24 @@ part 'booking_state.dart';
 @injectable
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc(
-    this._userController,
     this._specialistWorkInfoFetchUseCase,
     this._bookingBookUseCase,
     this._bookingRescheduleUseCase,
+    this._bookingCancelUseCase,
+    this._userController,
     this._bookingController,
   ) : super(BookingInitial()) {
     _subscribeToUserChange();
     on<BookingWorkInfoRequested>(_onWorkInfoRequest);
     on<BookingBookRequested>(_onBookRequest);
     on<BookingRescheduleRequested>(_onBookReschedule);
+    on<BookingCancelRequested>(_onBookingCancel);
   }
 
   final SpecialistWorkInfoFetchUseCase _specialistWorkInfoFetchUseCase;
   final BookingBookUseCase _bookingBookUseCase;
   final BookingRescheduleUseCase _bookingRescheduleUseCase;
+  final BookingCancelUseCase _bookingCancelUseCase;
 
   UserModel? _currentUser;
   final UserController _userController;
@@ -98,6 +102,20 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       emit,
       previousBookingData: event.previousBookingData,
     );
+  }
+
+  Future<void> _onBookingCancel(
+    BookingCancelRequested event,
+    Emitter<BookingState> emit,
+  ) async {
+    try {
+      await _bookingCancelUseCase(event.bookingId);
+      _bookingController.addToBookingsStream(hasChanged: true);
+      emit(BookingCancelSuccess());
+    } catch (error) {
+      log('BookingCancelFailure: $error');
+      emit(BookingCancelFailure());
+    }
   }
 
   /// Performs the booking or rescheduling process based on the provided

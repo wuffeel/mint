@@ -14,7 +14,8 @@ class WaitingSessionWrapperPage extends AutoRouter with AutoRouteWrapper {
       create: (context) => getIt<BookingBloc>(),
       child: BlocListener<BookingBloc, BookingState>(
         listener: (context, state) {
-          if (state is BookingRescheduleSuccess) {
+          if (state is BookingRescheduleSuccess ||
+              state is BookingCancelSuccess) {
             context.router.pop();
           }
         },

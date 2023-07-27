@@ -39,3 +39,9 @@ class BookingRescheduleRequested extends BookingEvent {
   final int durationMinutes;
   final BookingData previousBookingData;
 }
+
+class BookingCancelRequested extends BookingEvent {
+  BookingCancelRequested(this.bookingId);
+
+  final String bookingId;
+}
