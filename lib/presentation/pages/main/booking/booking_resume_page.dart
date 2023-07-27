@@ -35,7 +35,7 @@ class BookingResumePage extends StatelessWidget {
     return BlocListener<BookingBloc, BookingState>(
       listener: (context, state) {
         if (state is BookingBookSuccess) {
-          context.router.push(
+          context.router.replace(
             CheckoutWrapperRoute(
               children: [
                 CheckoutDetailsRoute(
@@ -97,27 +97,16 @@ class _BookingResumePageState extends State<_BookingResumeView> {
     }
   }
 
-  void _bookSpecialist(BookingState state) {
-    if (state is! BookingBookSuccess) {
-      context.read<BookingBloc>().add(
-            BookingBookRequested(
-              widget.specialistModel.id,
-              widget.date,
-              widget.time,
-              _notesController.text.trim(),
-              widget.durationMinutes,
-            ),
-          );
-    } else {
-      context.router.push(
-        CheckoutDetailsRoute(
-          specialistModel: widget.specialistModel,
-          date: widget.date,
-          time: widget.time,
-          durationMinutes: widget.durationMinutes,
-        ),
-      );
-    }
+  void _bookSpecialist() {
+    context.read<BookingBloc>().add(
+          BookingBookRequested(
+            widget.specialistModel.id,
+            widget.date,
+            widget.time,
+            _notesController.text.trim(),
+            widget.durationMinutes,
+          ),
+        );
   }
 
   Future<bool?> _showExitConfirmDialog(BuildContext context) async {
@@ -182,7 +171,7 @@ class _BookingResumePageState extends State<_BookingResumeView> {
                             return const Center(child: LoadingIndicator());
                           }
                           return ElevatedButton(
-                            onPressed: () => _bookSpecialist(state),
+                            onPressed: _bookSpecialist,
                             child: Text(l10n.book),
                           );
                         },
