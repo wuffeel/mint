@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/unordered_list.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
+import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
