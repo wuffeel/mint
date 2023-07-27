@@ -18,22 +18,19 @@ class CheckoutDetailsPage extends StatelessWidget {
   const CheckoutDetailsPage({
     super.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int durationMinutes;
 
   void _navigateToPayment(BuildContext context) {
     context.router.push(
       CheckoutPaymentRoute(
         specialistModel: specialistModel,
-        date: date,
-        time: time,
+        bookTime: bookTime,
         durationMinutes: durationMinutes,
       ),
     );
@@ -55,8 +52,7 @@ class CheckoutDetailsPage extends StatelessWidget {
                 children: <Widget>[
                   SpecialistBookingTile(
                     specialistModel: specialistModel,
-                    date: date,
-                    time: time,
+                    bookTime: bookTime,
                     durationMinutes: durationMinutes,
                   ),
                   SizedBox(height: 24.h),

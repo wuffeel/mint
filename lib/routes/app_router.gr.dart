@@ -110,8 +110,7 @@ abstract class $AppRouter extends _i22.RootStackRouter {
         child: _i9.BookingResumePage(
           key: args.key,
           specialistModel: args.specialistModel,
-          date: args.date,
-          time: args.time,
+          bookTime: args.bookTime,
           durationMinutes: args.durationMinutes,
         ),
       );
@@ -147,8 +146,7 @@ abstract class $AppRouter extends _i22.RootStackRouter {
         child: _i14.CheckoutPaymentPage(
           key: args.key,
           specialistModel: args.specialistModel,
-          date: args.date,
-          time: args.time,
+          bookTime: args.bookTime,
           durationMinutes: args.durationMinutes,
         ),
       );
@@ -160,8 +158,7 @@ abstract class $AppRouter extends _i22.RootStackRouter {
         child: _i15.CheckoutDetailsPage(
           key: args.key,
           specialistModel: args.specialistModel,
-          date: args.date,
-          time: args.time,
+          bookTime: args.bookTime,
           durationMinutes: args.durationMinutes,
         ),
       );
@@ -327,8 +324,7 @@ class BookingResumeRoute extends _i22.PageRouteInfo<BookingResumeRouteArgs> {
   BookingResumeRoute({
     _i23.Key? key,
     required _i24.SpecialistModel specialistModel,
-    required DateTime date,
-    required DateTime time,
+    required DateTime bookTime,
     required int durationMinutes,
     List<_i22.PageRouteInfo>? children,
   }) : super(
@@ -336,8 +332,7 @@ class BookingResumeRoute extends _i22.PageRouteInfo<BookingResumeRouteArgs> {
           args: BookingResumeRouteArgs(
             key: key,
             specialistModel: specialistModel,
-            date: date,
-            time: time,
+            bookTime: bookTime,
             durationMinutes: durationMinutes,
           ),
           initialChildren: children,
@@ -353,8 +348,7 @@ class BookingResumeRouteArgs {
   const BookingResumeRouteArgs({
     this.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
@@ -362,15 +356,13 @@ class BookingResumeRouteArgs {
 
   final _i24.SpecialistModel specialistModel;
 
-  final DateTime date;
-
-  final DateTime time;
+  final DateTime bookTime;
 
   final int durationMinutes;
 
   @override
   String toString() {
-    return 'BookingResumeRouteArgs{key: $key, specialistModel: $specialistModel, date: $date, time: $time, durationMinutes: $durationMinutes}';
+    return 'BookingResumeRouteArgs{key: $key, specialistModel: $specialistModel, bookTime: $bookTime, durationMinutes: $durationMinutes}';
   }
 }
 
@@ -437,8 +429,7 @@ class CheckoutPaymentRoute
   CheckoutPaymentRoute({
     _i23.Key? key,
     required _i24.SpecialistModel specialistModel,
-    required DateTime date,
-    required DateTime time,
+    required DateTime bookTime,
     required int durationMinutes,
     List<_i22.PageRouteInfo>? children,
   }) : super(
@@ -446,8 +437,7 @@ class CheckoutPaymentRoute
           args: CheckoutPaymentRouteArgs(
             key: key,
             specialistModel: specialistModel,
-            date: date,
-            time: time,
+            bookTime: bookTime,
             durationMinutes: durationMinutes,
           ),
           initialChildren: children,
@@ -463,8 +453,7 @@ class CheckoutPaymentRouteArgs {
   const CheckoutPaymentRouteArgs({
     this.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
@@ -472,15 +461,13 @@ class CheckoutPaymentRouteArgs {
 
   final _i24.SpecialistModel specialistModel;
 
-  final DateTime date;
-
-  final DateTime time;
+  final DateTime bookTime;
 
   final int durationMinutes;
 
   @override
   String toString() {
-    return 'CheckoutPaymentRouteArgs{key: $key, specialistModel: $specialistModel, date: $date, time: $time, durationMinutes: $durationMinutes}';
+    return 'CheckoutPaymentRouteArgs{key: $key, specialistModel: $specialistModel, bookTime: $bookTime, durationMinutes: $durationMinutes}';
   }
 }
 
@@ -491,8 +478,7 @@ class CheckoutDetailsRoute
   CheckoutDetailsRoute({
     _i23.Key? key,
     required _i24.SpecialistModel specialistModel,
-    required DateTime date,
-    required DateTime time,
+    required DateTime bookTime,
     required int durationMinutes,
     List<_i22.PageRouteInfo>? children,
   }) : super(
@@ -500,8 +486,7 @@ class CheckoutDetailsRoute
           args: CheckoutDetailsRouteArgs(
             key: key,
             specialistModel: specialistModel,
-            date: date,
-            time: time,
+            bookTime: bookTime,
             durationMinutes: durationMinutes,
           ),
           initialChildren: children,
@@ -517,8 +502,7 @@ class CheckoutDetailsRouteArgs {
   const CheckoutDetailsRouteArgs({
     this.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
@@ -526,15 +510,13 @@ class CheckoutDetailsRouteArgs {
 
   final _i24.SpecialistModel specialistModel;
 
-  final DateTime date;
-
-  final DateTime time;
+  final DateTime bookTime;
 
   final int durationMinutes;
 
   @override
   String toString() {
-    return 'CheckoutDetailsRouteArgs{key: $key, specialistModel: $specialistModel, date: $date, time: $time, durationMinutes: $durationMinutes}';
+    return 'CheckoutDetailsRouteArgs{key: $key, specialistModel: $specialistModel, bookTime: $bookTime, durationMinutes: $durationMinutes}';
   }
 }
 

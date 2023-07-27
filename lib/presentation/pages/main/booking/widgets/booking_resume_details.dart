@@ -9,13 +9,11 @@ import '../../../../../theme/mint_text_styles.dart';
 class BookingResumeDetails extends StatelessWidget {
   const BookingResumeDetails({
     super.key,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.minutesDuration,
   });
 
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int minutesDuration;
 
   Color _getTimeDataTextColor(BuildContext context) {
@@ -41,7 +39,7 @@ class BookingResumeDetails extends StatelessWidget {
               children: <Widget>[
                 Text('${l10n.date}:', style: MintTextStyles.callOut),
                 Text(
-                  DateFormat.yMd(context.l10n.localeName).format(date),
+                  DateFormat.yMd(context.l10n.localeName).format(bookTime),
                   style: MintTextStyles.body.copyWith(
                     color: _getTimeDataTextColor(context),
                   ),
@@ -57,7 +55,7 @@ class BookingResumeDetails extends StatelessWidget {
               children: <Widget>[
                 Text('${l10n.time}:', style: MintTextStyles.callOut),
                 Text(
-                  DateFormat.Hm().format(time),
+                  DateFormat.Hm().format(bookTime),
                   style: MintTextStyles.body.copyWith(
                     color: _getTimeDataTextColor(context),
                   ),

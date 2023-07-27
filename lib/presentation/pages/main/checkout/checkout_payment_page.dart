@@ -24,14 +24,12 @@ class CheckoutPaymentPage extends StatelessWidget {
   const CheckoutPaymentPage({
     super.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int durationMinutes;
 
   @override
@@ -41,8 +39,7 @@ class CheckoutPaymentPage extends StatelessWidget {
           getIt<CreditCardBloc>()..add(CreditCardListFetchRequested()),
       child: _CheckoutPaymentView(
         specialistModel: specialistModel,
-        date: date,
-        time: time,
+        bookTime: bookTime,
         durationMinutes: durationMinutes,
       ),
     );
@@ -52,14 +49,12 @@ class CheckoutPaymentPage extends StatelessWidget {
 class _CheckoutPaymentView extends StatefulWidget {
   const _CheckoutPaymentView({
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int durationMinutes;
 
   @override
@@ -128,8 +123,7 @@ class _CheckoutPaymentViewState extends State<_CheckoutPaymentView> {
                 children: <Widget>[
                   SpecialistPaymentTile(
                     specialistModel: widget.specialistModel,
-                    date: widget.date,
-                    time: widget.time,
+                    bookTime: widget.bookTime,
                   ),
                   SizedBox(height: 16.h),
                   Divider(height: 1.h, thickness: 1.h),

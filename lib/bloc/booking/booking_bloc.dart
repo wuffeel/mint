@@ -76,17 +76,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     if (user == null) return;
     try {
       emit(BookingBookLoading());
-      final selectedDate = event.selectedDate;
-      final selectedTime = event.selectedTime;
-      final bookTime = DateTime(
-        selectedDate.year,
-        selectedDate.month,
-        selectedDate.day,
-        selectedTime.hour,
-        selectedTime.minute,
-        selectedTime.second,
-      );
-      if (DateTime.now().isAfter(bookTime)) {
+      if (DateTime.now().isAfter(event.bookTime)) {
         emit(BookingBookLateFailure());
         return;
       }
@@ -95,7 +85,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         specialistId: event.specialistId,
         userId: user.id,
         notes: event.notes,
-        bookTime: bookTime,
+        bookTime: event.bookTime,
         durationMinutes: event.durationMinutes,
       );
       final booking = await _bookingBookUseCase(bookingData);

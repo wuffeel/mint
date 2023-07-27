@@ -12,14 +12,12 @@ class SpecialistBookingTile extends StatelessWidget {
   const SpecialistBookingTile({
     super.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int durationMinutes;
 
   Color _getDateColor(BuildContext context) {
@@ -95,7 +93,7 @@ class SpecialistBookingTile extends StatelessWidget {
                 ),
               ),
               Text(
-                DateFormat.yMMMd().format(date),
+                DateFormat.yMMMd().format(bookTime),
                 style: MintTextStyles.footnote.copyWith(
                   color: _getDateColor(context),
                 ),
@@ -113,7 +111,7 @@ class SpecialistBookingTile extends StatelessWidget {
                 ),
               ),
               Text(
-                _getTimeString(time, durationMinutes),
+                _getTimeString(bookTime, durationMinutes),
                 style: MintTextStyles.footnote.copyWith(
                   color: _getDateColor(context),
                 ),

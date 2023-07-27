@@ -31,13 +31,22 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
 
   void _navigateToBookingResume(SpecialistWorkInfo workInfo) {
     context.router.pop();
+    final selectedDate = _selectedDay ?? DateTime.now();
+    final selectedTime = _selectedTime ?? DateTime.now();
+    final bookTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+      selectedTime.second,
+    );
     context.router.push(
       BookingWrapperRoute(
         children: [
           BookingResumeRoute(
             specialistModel: widget.specialistModel,
-            date: _selectedDay ?? DateTime.now(),
-            time: _selectedTime ?? DateTime.now(),
+            bookTime: bookTime,
             durationMinutes: workInfo.consultationMinutes,
           ),
         ],

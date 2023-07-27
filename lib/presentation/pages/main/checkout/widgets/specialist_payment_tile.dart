@@ -12,17 +12,15 @@ class SpecialistPaymentTile extends StatelessWidget {
   const SpecialistPaymentTile({
     super.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
 
-  String _getDateString(BuildContext context, DateTime date, DateTime time) {
-    final dateString = DateFormat.yMd(context.l10n.localeName).format(date);
-    final timeString = DateFormat.Hm().format(time);
+  String _getDateString(BuildContext context, DateTime bookTime) {
+    final dateString = DateFormat.yMd(context.l10n.localeName).format(bookTime);
+    final timeString = DateFormat.Hm().format(bookTime);
     return '$dateString, $timeString';
   }
 
@@ -47,7 +45,7 @@ class SpecialistPaymentTile extends StatelessWidget {
               ),
               SizedBox(height: 4.h),
               Text(
-                _getDateString(context, date, time),
+                _getDateString(context, bookTime),
                 style: MintTextStyles.footnoteMedium.copyWith(
                   color: Theme.of(context).hintColor.withOpacity(0.6),
                 ),

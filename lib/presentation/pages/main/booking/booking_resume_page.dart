@@ -20,14 +20,12 @@ class BookingResumePage extends StatelessWidget {
   const BookingResumePage({
     super.key,
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int durationMinutes;
 
   @override
@@ -40,8 +38,7 @@ class BookingResumePage extends StatelessWidget {
               children: [
                 CheckoutDetailsRoute(
                   specialistModel: specialistModel,
-                  date: date,
-                  time: time,
+                  bookTime: bookTime,
                   durationMinutes: durationMinutes,
                 ),
               ],
@@ -51,8 +48,7 @@ class BookingResumePage extends StatelessWidget {
       },
       child: _BookingResumeView(
         specialistModel: specialistModel,
-        date: date,
-        time: time,
+        bookTime: bookTime,
         durationMinutes: durationMinutes,
       ),
     );
@@ -62,14 +58,12 @@ class BookingResumePage extends StatelessWidget {
 class _BookingResumeView extends StatefulWidget {
   const _BookingResumeView({
     required this.specialistModel,
-    required this.date,
-    required this.time,
+    required this.bookTime,
     required this.durationMinutes,
   });
 
   final SpecialistModel specialistModel;
-  final DateTime date;
-  final DateTime time;
+  final DateTime bookTime;
   final int durationMinutes;
 
   @override
@@ -101,8 +95,7 @@ class _BookingResumePageState extends State<_BookingResumeView> {
     context.read<BookingBloc>().add(
           BookingBookRequested(
             widget.specialistModel.id,
-            widget.date,
-            widget.time,
+            widget.bookTime,
             _notesController.text.trim(),
             widget.durationMinutes,
           ),
@@ -153,8 +146,7 @@ class _BookingResumePageState extends State<_BookingResumeView> {
                       ),
                       SizedBox(height: 16.h),
                       BookingResumeDetails(
-                        date: widget.date,
-                        time: widget.time,
+                        bookTime: widget.bookTime,
                         minutesDuration: widget.durationMinutes,
                       ),
                       SizedBox(height: 16.h),
