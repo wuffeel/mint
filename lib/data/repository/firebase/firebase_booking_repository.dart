@@ -6,7 +6,7 @@ import 'package:mint/data/repository/abstract/booking_repository.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';
-import '../../model/upcoming_consultation_data_dto/upcoming_consultation_data_dto.dart';
+import '../../model/session_data_dto/session_data_dto.dart';
 
 @Injectable(as: BookingRepository)
 class FirebaseBookingRepository implements BookingRepository {
@@ -63,7 +63,7 @@ class FirebaseBookingRepository implements BookingRepository {
   }
 
   @override
-  Future<List<UpcomingConsultationDataDto>> getUpcomingConsultations(
+  Future<List<SessionDataDto>> getUpcomingSessions(
     String userId,
   ) async {
     final nowUtc = DateTime.now().toUtc();
@@ -79,9 +79,9 @@ class FirebaseBookingRepository implements BookingRepository {
           if (data == null) return null;
           data['id'] = consultation.id;
 
-          return UpcomingConsultationDataDto.fromJson(data);
+          return SessionDataDto.fromJson(data);
         })
-        .whereType<UpcomingConsultationDataDto>()
+        .whereType<SessionDataDto>()
         .toList();
   }
 }

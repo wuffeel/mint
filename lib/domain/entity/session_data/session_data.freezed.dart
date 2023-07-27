@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'upcoming_consultation_data.dart';
+part of 'session_data.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$UpcomingConsultationData {
+mixin _$SessionData {
   String get id => throw _privateConstructorUsedError;
   SpecialistModel get specialistModel => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
@@ -23,15 +23,15 @@ mixin _$UpcomingConsultationData {
   int get durationMinutes => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $UpcomingConsultationDataCopyWith<UpcomingConsultationData> get copyWith =>
+  $SessionDataCopyWith<SessionData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UpcomingConsultationDataCopyWith<$Res> {
-  factory $UpcomingConsultationDataCopyWith(UpcomingConsultationData value,
-          $Res Function(UpcomingConsultationData) then) =
-      _$UpcomingConsultationDataCopyWithImpl<$Res, UpcomingConsultationData>;
+abstract class $SessionDataCopyWith<$Res> {
+  factory $SessionDataCopyWith(
+          SessionData value, $Res Function(SessionData) then) =
+      _$SessionDataCopyWithImpl<$Res, SessionData>;
   @useResult
   $Res call(
       {String id,
@@ -44,10 +44,9 @@ abstract class $UpcomingConsultationDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UpcomingConsultationDataCopyWithImpl<$Res,
-        $Val extends UpcomingConsultationData>
-    implements $UpcomingConsultationDataCopyWith<$Res> {
-  _$UpcomingConsultationDataCopyWithImpl(this._value, this._then);
+class _$SessionDataCopyWithImpl<$Res, $Val extends SessionData>
+    implements $SessionDataCopyWith<$Res> {
+  _$SessionDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -97,12 +96,11 @@ class _$UpcomingConsultationDataCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UpcomingConsultationDataCopyWith<$Res>
-    implements $UpcomingConsultationDataCopyWith<$Res> {
-  factory _$$_UpcomingConsultationDataCopyWith(
-          _$_UpcomingConsultationData value,
-          $Res Function(_$_UpcomingConsultationData) then) =
-      __$$_UpcomingConsultationDataCopyWithImpl<$Res>;
+abstract class _$$_SessionDataCopyWith<$Res>
+    implements $SessionDataCopyWith<$Res> {
+  factory _$$_SessionDataCopyWith(
+          _$_SessionData value, $Res Function(_$_SessionData) then) =
+      __$$_SessionDataCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -117,12 +115,11 @@ abstract class _$$_UpcomingConsultationDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UpcomingConsultationDataCopyWithImpl<$Res>
-    extends _$UpcomingConsultationDataCopyWithImpl<$Res,
-        _$_UpcomingConsultationData>
-    implements _$$_UpcomingConsultationDataCopyWith<$Res> {
-  __$$_UpcomingConsultationDataCopyWithImpl(_$_UpcomingConsultationData _value,
-      $Res Function(_$_UpcomingConsultationData) _then)
+class __$$_SessionDataCopyWithImpl<$Res>
+    extends _$SessionDataCopyWithImpl<$Res, _$_SessionData>
+    implements _$$_SessionDataCopyWith<$Res> {
+  __$$_SessionDataCopyWithImpl(
+      _$_SessionData _value, $Res Function(_$_SessionData) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -134,7 +131,7 @@ class __$$_UpcomingConsultationDataCopyWithImpl<$Res>
     Object? bookTime = null,
     Object? durationMinutes = null,
   }) {
-    return _then(_$_UpcomingConsultationData(
+    return _then(_$_SessionData(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -161,10 +158,8 @@ class __$$_UpcomingConsultationDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UpcomingConsultationData
-    with DiagnosticableTreeMixin
-    implements _UpcomingConsultationData {
-  const _$_UpcomingConsultationData(
+class _$_SessionData with DiagnosticableTreeMixin implements _SessionData {
+  const _$_SessionData(
       {required this.id,
       required this.specialistModel,
       required this.notes,
@@ -184,14 +179,14 @@ class _$_UpcomingConsultationData
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UpcomingConsultationData(id: $id, specialistModel: $specialistModel, notes: $notes, bookTime: $bookTime, durationMinutes: $durationMinutes)';
+    return 'SessionData(id: $id, specialistModel: $specialistModel, notes: $notes, bookTime: $bookTime, durationMinutes: $durationMinutes)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'UpcomingConsultationData'))
+      ..add(DiagnosticsProperty('type', 'SessionData'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('specialistModel', specialistModel))
       ..add(DiagnosticsProperty('notes', notes))
@@ -203,7 +198,7 @@ class _$_UpcomingConsultationData
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpcomingConsultationData &&
+            other is _$_SessionData &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.specialistModel, specialistModel) ||
                 other.specialistModel == specialistModel) &&
@@ -221,18 +216,17 @@ class _$_UpcomingConsultationData
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpcomingConsultationDataCopyWith<_$_UpcomingConsultationData>
-      get copyWith => __$$_UpcomingConsultationDataCopyWithImpl<
-          _$_UpcomingConsultationData>(this, _$identity);
+  _$$_SessionDataCopyWith<_$_SessionData> get copyWith =>
+      __$$_SessionDataCopyWithImpl<_$_SessionData>(this, _$identity);
 }
 
-abstract class _UpcomingConsultationData implements UpcomingConsultationData {
-  const factory _UpcomingConsultationData(
+abstract class _SessionData implements SessionData {
+  const factory _SessionData(
       {required final String id,
       required final SpecialistModel specialistModel,
       required final String notes,
       required final DateTime bookTime,
-      required final int durationMinutes}) = _$_UpcomingConsultationData;
+      required final int durationMinutes}) = _$_SessionData;
 
   @override
   String get id;
@@ -246,6 +240,6 @@ abstract class _UpcomingConsultationData implements UpcomingConsultationData {
   int get durationMinutes;
   @override
   @JsonKey(ignore: true)
-  _$$_UpcomingConsultationDataCopyWith<_$_UpcomingConsultationData>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$_SessionDataCopyWith<_$_SessionData> get copyWith =>
+      throw _privateConstructorUsedError;
 }

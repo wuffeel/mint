@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'upcoming_consultation_data_dto.dart';
+part of 'session_data_dto.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,13 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-UpcomingConsultationDataDto _$UpcomingConsultationDataDtoFromJson(
-    Map<String, dynamic> json) {
-  return _UpcomingConsultationDataDto.fromJson(json);
+SessionDataDto _$SessionDataDtoFromJson(Map<String, dynamic> json) {
+  return _SessionDataDto.fromJson(json);
 }
 
 /// @nodoc
-mixin _$UpcomingConsultationDataDto {
+mixin _$SessionDataDto {
   String get id => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
@@ -33,17 +32,15 @@ mixin _$UpcomingConsultationDataDto {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UpcomingConsultationDataDtoCopyWith<UpcomingConsultationDataDto>
-      get copyWith => throw _privateConstructorUsedError;
+  $SessionDataDtoCopyWith<SessionDataDto> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UpcomingConsultationDataDtoCopyWith<$Res> {
-  factory $UpcomingConsultationDataDtoCopyWith(
-          UpcomingConsultationDataDto value,
-          $Res Function(UpcomingConsultationDataDto) then) =
-      _$UpcomingConsultationDataDtoCopyWithImpl<$Res,
-          UpcomingConsultationDataDto>;
+abstract class $SessionDataDtoCopyWith<$Res> {
+  factory $SessionDataDtoCopyWith(
+          SessionDataDto value, $Res Function(SessionDataDto) then) =
+      _$SessionDataDtoCopyWithImpl<$Res, SessionDataDto>;
   @useResult
   $Res call(
       {String id,
@@ -56,10 +53,9 @@ abstract class $UpcomingConsultationDataDtoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UpcomingConsultationDataDtoCopyWithImpl<$Res,
-        $Val extends UpcomingConsultationDataDto>
-    implements $UpcomingConsultationDataDtoCopyWith<$Res> {
-  _$UpcomingConsultationDataDtoCopyWithImpl(this._value, this._then);
+class _$SessionDataDtoCopyWithImpl<$Res, $Val extends SessionDataDto>
+    implements $SessionDataDtoCopyWith<$Res> {
+  _$SessionDataDtoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -111,12 +107,11 @@ class _$UpcomingConsultationDataDtoCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UpcomingConsultationDataDtoCopyWith<$Res>
-    implements $UpcomingConsultationDataDtoCopyWith<$Res> {
-  factory _$$_UpcomingConsultationDataDtoCopyWith(
-          _$_UpcomingConsultationDataDto value,
-          $Res Function(_$_UpcomingConsultationDataDto) then) =
-      __$$_UpcomingConsultationDataDtoCopyWithImpl<$Res>;
+abstract class _$$_SessionDataDtoCopyWith<$Res>
+    implements $SessionDataDtoCopyWith<$Res> {
+  factory _$$_SessionDataDtoCopyWith(
+          _$_SessionDataDto value, $Res Function(_$_SessionDataDto) then) =
+      __$$_SessionDataDtoCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -130,13 +125,11 @@ abstract class _$$_UpcomingConsultationDataDtoCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UpcomingConsultationDataDtoCopyWithImpl<$Res>
-    extends _$UpcomingConsultationDataDtoCopyWithImpl<$Res,
-        _$_UpcomingConsultationDataDto>
-    implements _$$_UpcomingConsultationDataDtoCopyWith<$Res> {
-  __$$_UpcomingConsultationDataDtoCopyWithImpl(
-      _$_UpcomingConsultationDataDto _value,
-      $Res Function(_$_UpcomingConsultationDataDto) _then)
+class __$$_SessionDataDtoCopyWithImpl<$Res>
+    extends _$SessionDataDtoCopyWithImpl<$Res, _$_SessionDataDto>
+    implements _$$_SessionDataDtoCopyWith<$Res> {
+  __$$_SessionDataDtoCopyWithImpl(
+      _$_SessionDataDto _value, $Res Function(_$_SessionDataDto) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -150,7 +143,7 @@ class __$$_UpcomingConsultationDataDtoCopyWithImpl<$Res>
     Object? bookTime = null,
     Object? createdAt = null,
   }) {
-    return _then(_$_UpcomingConsultationDataDto(
+    return _then(_$_SessionDataDto(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -185,10 +178,10 @@ class __$$_UpcomingConsultationDataDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UpcomingConsultationDataDto
+class _$_SessionDataDto
     with DiagnosticableTreeMixin
-    implements _UpcomingConsultationDataDto {
-  const _$_UpcomingConsultationDataDto(
+    implements _SessionDataDto {
+  const _$_SessionDataDto(
       {required this.id,
       required this.specialistId,
       required this.userId,
@@ -197,8 +190,8 @@ class _$_UpcomingConsultationDataDto
       @JsonKey(fromJson: DateUtils.convertToDateTime) required this.bookTime,
       @JsonKey(fromJson: DateUtils.convertToDateTime) required this.createdAt});
 
-  factory _$_UpcomingConsultationDataDto.fromJson(Map<String, dynamic> json) =>
-      _$$_UpcomingConsultationDataDtoFromJson(json);
+  factory _$_SessionDataDto.fromJson(Map<String, dynamic> json) =>
+      _$$_SessionDataDtoFromJson(json);
 
   @override
   final String id;
@@ -219,14 +212,14 @@ class _$_UpcomingConsultationDataDto
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UpcomingConsultationDataDto(id: $id, specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, createdAt: $createdAt)';
+    return 'SessionDataDto(id: $id, specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, createdAt: $createdAt)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'UpcomingConsultationDataDto'))
+      ..add(DiagnosticsProperty('type', 'SessionDataDto'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('specialistId', specialistId))
       ..add(DiagnosticsProperty('userId', userId))
@@ -240,7 +233,7 @@ class _$_UpcomingConsultationDataDto
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpcomingConsultationDataDto &&
+            other is _$_SessionDataDto &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.specialistId, specialistId) ||
                 other.specialistId == specialistId) &&
@@ -262,21 +255,19 @@ class _$_UpcomingConsultationDataDto
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpcomingConsultationDataDtoCopyWith<_$_UpcomingConsultationDataDto>
-      get copyWith => __$$_UpcomingConsultationDataDtoCopyWithImpl<
-          _$_UpcomingConsultationDataDto>(this, _$identity);
+  _$$_SessionDataDtoCopyWith<_$_SessionDataDto> get copyWith =>
+      __$$_SessionDataDtoCopyWithImpl<_$_SessionDataDto>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UpcomingConsultationDataDtoToJson(
+    return _$$_SessionDataDtoToJson(
       this,
     );
   }
 }
 
-abstract class _UpcomingConsultationDataDto
-    implements UpcomingConsultationDataDto {
-  const factory _UpcomingConsultationDataDto(
+abstract class _SessionDataDto implements SessionDataDto {
+  const factory _SessionDataDto(
       {required final String id,
       required final String specialistId,
       required final String userId,
@@ -285,10 +276,10 @@ abstract class _UpcomingConsultationDataDto
       @JsonKey(fromJson: DateUtils.convertToDateTime)
           required final DateTime bookTime,
       @JsonKey(fromJson: DateUtils.convertToDateTime)
-          required final DateTime createdAt}) = _$_UpcomingConsultationDataDto;
+          required final DateTime createdAt}) = _$_SessionDataDto;
 
-  factory _UpcomingConsultationDataDto.fromJson(Map<String, dynamic> json) =
-      _$_UpcomingConsultationDataDto.fromJson;
+  factory _SessionDataDto.fromJson(Map<String, dynamic> json) =
+      _$_SessionDataDto.fromJson;
 
   @override
   String get id;
@@ -308,6 +299,6 @@ abstract class _UpcomingConsultationDataDto
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$$_UpcomingConsultationDataDtoCopyWith<_$_UpcomingConsultationDataDto>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$_SessionDataDtoCopyWith<_$_SessionDataDto> get copyWith =>
+      throw _privateConstructorUsedError;
 }

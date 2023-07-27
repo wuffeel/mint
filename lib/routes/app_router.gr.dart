@@ -10,10 +10,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i23;
 import 'package:flutter/material.dart' as _i24;
+import 'package:mint/domain/entity/session_data/session_data.dart' as _i26;
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
     as _i25;
-import 'package:mint/domain/entity/upcoming_consultation_data/upcoming_consultation_data.dart'
-    as _i26;
 import 'package:mint/presentation/pages/auth/enter_phone/enter_phone_page.dart'
     as _i3;
 import 'package:mint/presentation/pages/auth/otp_page/otp_page.dart' as _i2;
@@ -51,7 +50,7 @@ import 'package:mint/presentation/pages/main/specialists/specialists_page.dart'
     as _i16;
 import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
     as _i17;
-import 'package:mint/presentation/pages/main/waiting_consultation/waiting_consultation_page.dart'
+import 'package:mint/presentation/pages/main/waiting_session/waiting_session_page.dart'
     as _i22;
 
 abstract class $AppRouter extends _i23.RootStackRouter {
@@ -207,13 +206,13 @@ abstract class $AppRouter extends _i23.RootStackRouter {
         ),
       );
     },
-    WaitingConsultationRoute.name: (routeData) {
-      final args = routeData.argsAs<WaitingConsultationRouteArgs>();
+    WaitingSessionRoute.name: (routeData) {
+      final args = routeData.argsAs<WaitingSessionRouteArgs>();
       return _i23.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i22.WaitingConsultationPage(
+        child: _i22.WaitingSessionPage(
           key: args.key,
-          upcomingConsultationData: args.upcomingConsultationData,
+          sessionData: args.sessionData,
         ),
       );
     },
@@ -644,40 +643,39 @@ class SpecialistDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i22.WaitingConsultationPage]
-class WaitingConsultationRoute
-    extends _i23.PageRouteInfo<WaitingConsultationRouteArgs> {
-  WaitingConsultationRoute({
+/// [_i22.WaitingSessionPage]
+class WaitingSessionRoute extends _i23.PageRouteInfo<WaitingSessionRouteArgs> {
+  WaitingSessionRoute({
     _i24.Key? key,
-    required _i26.UpcomingConsultationData upcomingConsultationData,
+    required _i26.SessionData sessionData,
     List<_i23.PageRouteInfo>? children,
   }) : super(
-          WaitingConsultationRoute.name,
-          args: WaitingConsultationRouteArgs(
+          WaitingSessionRoute.name,
+          args: WaitingSessionRouteArgs(
             key: key,
-            upcomingConsultationData: upcomingConsultationData,
+            sessionData: sessionData,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'WaitingConsultationRoute';
+  static const String name = 'WaitingSessionRoute';
 
-  static const _i23.PageInfo<WaitingConsultationRouteArgs> page =
-      _i23.PageInfo<WaitingConsultationRouteArgs>(name);
+  static const _i23.PageInfo<WaitingSessionRouteArgs> page =
+      _i23.PageInfo<WaitingSessionRouteArgs>(name);
 }
 
-class WaitingConsultationRouteArgs {
-  const WaitingConsultationRouteArgs({
+class WaitingSessionRouteArgs {
+  const WaitingSessionRouteArgs({
     this.key,
-    required this.upcomingConsultationData,
+    required this.sessionData,
   });
 
   final _i24.Key? key;
 
-  final _i26.UpcomingConsultationData upcomingConsultationData;
+  final _i26.SessionData sessionData;
 
   @override
   String toString() {
-    return 'WaitingConsultationRouteArgs{key: $key, upcomingConsultationData: $upcomingConsultationData}';
+    return 'WaitingSessionRouteArgs{key: $key, sessionData: $sessionData}';
   }
 }

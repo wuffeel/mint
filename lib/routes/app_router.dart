@@ -56,7 +56,7 @@ class AppRouter extends $AppRouter {
                 ),
               ],
             ),
-            AutoRoute(page: WaitingConsultationRoute.page),
+            AutoRoute(page: WaitingSessionRoute.page),
           ],
         ),
       ];

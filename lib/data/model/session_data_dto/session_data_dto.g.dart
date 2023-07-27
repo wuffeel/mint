@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'upcoming_consultation_data_dto.dart';
+part of 'session_data_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UpcomingConsultationDataDto _$$_UpcomingConsultationDataDtoFromJson(
-        Map<String, dynamic> json) =>
-    _$_UpcomingConsultationDataDto(
+_$_SessionDataDto _$$_SessionDataDtoFromJson(Map<String, dynamic> json) =>
+    _$_SessionDataDto(
       id: json['id'] as String,
       specialistId: json['specialistId'] as String,
       userId: json['userId'] as String,
@@ -18,8 +17,7 @@ _$_UpcomingConsultationDataDto _$$_UpcomingConsultationDataDtoFromJson(
       createdAt: DateUtils.convertToDateTime(json['createdAt']),
     );
 
-Map<String, dynamic> _$$_UpcomingConsultationDataDtoToJson(
-        _$_UpcomingConsultationDataDto instance) =>
+Map<String, dynamic> _$$_SessionDataDtoToJson(_$_SessionDataDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'specialistId': instance.specialistId,

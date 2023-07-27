@@ -1,22 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/domain/entity/upcoming_consultation_data/upcoming_consultation_data.dart';
+import 'package:mint/domain/entity/session_data/session_data.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/presentation/pages/main/waiting_consultation/widgets/session_cancellation_dialog.dart';
-import 'package:mint/presentation/pages/main/waiting_consultation/widgets/waiting_consultation_action_list.dart';
+import 'package:mint/presentation/pages/main/waiting_session/widgets/session_cancellation_dialog.dart';
+import 'package:mint/presentation/pages/main/waiting_session/widgets/waiting_session_action_list.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 @RoutePage()
-class WaitingConsultationPage extends StatelessWidget {
-  const WaitingConsultationPage({
-    super.key,
-    required this.upcomingConsultationData,
-  });
+class WaitingSessionPage extends StatelessWidget {
+  const WaitingSessionPage({super.key, required this.sessionData});
 
-  final UpcomingConsultationData upcomingConsultationData;
+  final SessionData sessionData;
 
   String _getNotesString(BuildContext context, String notes) {
     return notes.isNotEmpty ? notes : '${context.l10n.notesWereNotSpecified}.';
@@ -36,8 +33,8 @@ class WaitingConsultationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final specialistModel = upcomingConsultationData.specialistModel;
-    final notes = upcomingConsultationData.notes;
+    final specialistModel = sessionData.specialistModel;
+    final notes = sessionData.notes;
     return Scaffold(
       appBar: const MintAppBar(),
       body: CustomScrollView(
@@ -53,8 +50,8 @@ class WaitingConsultationPage extends StatelessWidget {
                   children: <Widget>[
                     SpecialistBookingTile(
                       specialistModel: specialistModel,
-                      bookTime: upcomingConsultationData.bookTime,
-                      durationMinutes: upcomingConsultationData.durationMinutes,
+                      bookTime: sessionData.bookTime,
+                      durationMinutes: sessionData.durationMinutes,
                     ),
                     SizedBox(height: 16.h),
                     DecoratedBox(
@@ -81,7 +78,7 @@ class WaitingConsultationPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    WaitingConsultationActionList(
+                    WaitingSessionActionList(
                       onChat: () {
                         // TODO(wuffeel): navigate user to chat
                       },
