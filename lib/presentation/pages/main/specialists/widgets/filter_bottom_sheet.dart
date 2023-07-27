@@ -8,24 +8,19 @@ import 'package:mint/presentation/pages/main/specialists/widgets/filter_app_bar.
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_section.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_fixed_container.dart';
 
-class FilterBottomSheet extends StatefulWidget {
+class FilterBottomSheet extends StatelessWidget {
   const FilterBottomSheet({super.key});
 
-  @override
-  State<FilterBottomSheet> createState() => _FilterBottomSheetState();
-}
-
-class _FilterBottomSheetState extends State<FilterBottomSheet> {
   bool _isFilterChanged(SpecialistFilterLoadSuccess state) {
     return state.selectedFilters != state.appliedFilters;
   }
 
-  void _onClear() {
+  void _onClear(BuildContext context) {
     context.read<SpecialistFilterBloc>().add(SpecialistFilterClearRequested());
     context.router.pop();
   }
 
-  void _onFilterApply() {
+  void _onFilterApply(BuildContext context) {
     context.read<SpecialistFilterBloc>().add(SpecialistFilterApplied());
     context.router.pop();
   }
@@ -34,7 +29,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return BottomSheetFixedContainer(
-      appBar: FilterAppBar(onClear: _onClear),
+      appBar: FilterAppBar(onClear: () => _onClear(context)),
       child: BlocBuilder<SpecialistFilterBloc, SpecialistFilterState>(
         builder: (context, state) {
           if (state is SpecialistFilterLoading) {
@@ -59,7 +54,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: ElevatedButton(
-                    onPressed: _isFilterChanged(state) ? _onFilterApply : null,
+                    onPressed: _isFilterChanged(state)
+                        ? () => _onFilterApply(context)
+                        : null,
                     child: Text(l10n.applyFilters),
                   ),
                 ),
