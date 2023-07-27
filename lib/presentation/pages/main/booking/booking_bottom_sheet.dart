@@ -106,27 +106,6 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
                   children: <Widget>[
-                    if (_currentStep != 0) ...[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          child: InkWell(
-                            onTap: () => setState(() => _currentStep -= 1),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Icon(Icons.chevron_left, size: 20.r),
-                                Text(
-                                  context.l10n.previousStep,
-                                  style: MintTextStyles.caption1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                     if (_currentStep == 0)
                       BookingDateCalendar(
                         selectedDay: _selectedDay,
@@ -142,6 +121,7 @@ class _BookingBottomSheetState extends State<BookingBottomSheet> {
                         selectedTime: _selectedTime,
                         onTimeSelected: (time) =>
                             setState(() => _selectedTime = time),
+                        onChangeDate: () => setState(() => _currentStep = 0),
                         bookingInfo: state.bookingInfo,
                       ),
                     SizedBox(height: 20.h),

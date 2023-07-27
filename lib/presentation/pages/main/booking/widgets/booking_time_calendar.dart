@@ -14,12 +14,14 @@ class BookingTimeCalendar extends StatefulWidget {
     required this.selectedDate,
     required this.selectedTime,
     required this.onTimeSelected,
+    required this.onChangeDate,
     required this.bookingInfo,
   });
 
   final DateTime selectedDate;
   final DateTime? selectedTime;
   final void Function(DateTime) onTimeSelected;
+  final VoidCallback onChangeDate;
   final SpecialistWorkInfo bookingInfo;
 
   @override
@@ -39,6 +41,7 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
     final l10n = context.l10n;
     return Column(
       children: <Widget>[
+        SizedBox(height: 24.h),
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -51,7 +54,10 @@ class _BookingTimeCalendarState extends State<BookingTimeCalendar> {
           ),
         ),
         SizedBox(height: 10.h),
-        BookDateContainer(selectedDate: widget.selectedDate),
+        InkWell(
+          onTap: widget.onChangeDate,
+          child: BookDateContainer(selectedDate: widget.selectedDate),
+        ),
         SizedBox(height: 20.h),
         Align(
           alignment: Alignment.centerLeft,
