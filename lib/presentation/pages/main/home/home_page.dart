@@ -34,9 +34,7 @@ class _HomePageView extends StatelessWidget {
 
   void _refreshPage(BuildContext context) {
     context.read<SpecialistOnlineBloc>().add(SpecialistOnlineFetchRequested());
-    context
-        .read<UpcomingSessionsBloc>()
-        .add(UpcomingSessionsFetchRequested());
+    context.read<UpcomingSessionsBloc>().add(UpcomingSessionsFetchRequested());
   }
 
   @override
@@ -45,6 +43,7 @@ class _HomePageView extends StatelessWidget {
       builder: (context, state) {
         final user = state is UserFetchSuccess ? state.user : null;
         final photo = user?.photoUrl;
+        final themeDark = Theme.of(context).brightness == Brightness.dark;
         return Scaffold(
           appBar: HomeAppBar(photo: photo, nameTag: user?.nameTag),
           body: MintRefreshIndicator(
@@ -55,14 +54,22 @@ class _HomePageView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   sliver: const UpcomingSessionsSliverList(),
                 ),
-                SliverStickyHeader(
-                  header: DecoratedBox(
+                SliverStickyHeader.builder(
+                  builder: (context, state) => DecoratedBox(
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15.r),
                         bottomRight: Radius.circular(15.r),
                       ),
+                      boxShadow: [
+                        if (state.isPinned && !themeDark)
+                          BoxShadow(
+                            offset: const Offset(0, 4),
+                            blurRadius: 12.r,
+                            color: Colors.black.withOpacity(0.12),
+                          ),
+                      ],
                     ),
                     child: Column(
                       children: <Widget>[
