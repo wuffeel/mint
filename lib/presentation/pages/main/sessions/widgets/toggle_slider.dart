@@ -32,9 +32,8 @@ class _ToggleSliderState extends State<ToggleSlider> {
       child: IntrinsicHeight(
         child: Stack(
           children: <Widget>[
-            AnimatedAlign(
-              duration: const Duration(milliseconds: 300),
-              alignment:  Alignment(
+            Align(
+              alignment: Alignment(
                 (offset / (widget.items.length - 1)) * 2 - 1,
                 0,
               ),

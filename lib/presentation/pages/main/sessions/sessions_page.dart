@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +32,6 @@ class _SessionsPageState extends State<SessionsPage> {
     if (page != null) {
       _notifier.value = page - _previousPage;
     }
-    log(_notifier.value.toString());
   }
 
   @override
@@ -59,7 +56,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   animation: _notifier,
                   builder: (context, child) => ToggleSlider(
                     currentIndex: _currentIndex,
-                    items: [l10n.upcoming, l10n.previous],
+                    items: [l10n.upcoming, l10n.previous, 'Other', 'Another'],
                     onItemTap: (index) {
                       setState(() => _currentIndex = index.toDouble());
                       _pageController.animateToPage(
@@ -75,10 +72,13 @@ class _SessionsPageState extends State<SessionsPage> {
               Expanded(
                 child: PageView(
                   controller: _pageController,
-                  onPageChanged: (page) =>
-                      setState(() => _currentIndex = page.toDouble()),
+                  onPageChanged: (page) => setState(
+                    () => _currentIndex = page.toDouble(),
+                  ),
                   children: const <Widget>[
                     UpcomingSessionsList(isSliver: false),
+                    Placeholder(),
+                    Placeholder(),
                     Placeholder(),
                   ],
                 ),
