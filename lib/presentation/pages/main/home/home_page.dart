@@ -10,8 +10,8 @@ import 'package:mint/injector/injector.dart';
 import 'package:mint/presentation/pages/main/home/widgets/doctors_online_sliver_list.dart';
 import 'package:mint/presentation/pages/main/home/widgets/home_app_bar.dart';
 import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_button.dart';
-import 'package:mint/presentation/pages/main/home/widgets/upcoming_sessions_sliver_list.dart';
 import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
+import 'package:mint/presentation/widgets/upcoming_sessions_list.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -52,7 +52,7 @@ class _HomePageView extends StatelessWidget {
               slivers: <Widget>[
                 SliverPadding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  sliver: const UpcomingSessionsSliverList(),
+                  sliver: const UpcomingSessionsList(isSliver: true),
                 ),
                 SliverStickyHeader.builder(
                   builder: (context, state) => DecoratedBox(
