@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/sessions/widgets/toggle_slider.dart';
 import 'package:mint/presentation/widgets/upcoming_sessions_list.dart';
+import 'package:mint/theme/mint_text_styles.dart';
 
 @RoutePage()
 class SessionsPage extends StatefulWidget {
@@ -17,21 +18,17 @@ class _SessionsPageState extends State<SessionsPage> {
   late final PageController _pageController;
   final _notifier = ValueNotifier<double>(0);
 
-  double? _currentIndex = 0;
-  int _previousPage = 0;
+  int _currentPage = 0;
 
   @override
   void initState() {
     _pageController = PageController()..addListener(_onScroll);
-    _previousPage = _pageController.initialPage;
     super.initState();
   }
 
   void _onScroll() {
     final page = _pageController.page;
-    if (page != null) {
-      _notifier.value = page - _previousPage;
-    }
+    if (page != null) _notifier.value = page;
   }
 
   @override
@@ -55,14 +52,23 @@ class _SessionsPageState extends State<SessionsPage> {
                 child: AnimatedBuilder(
                   animation: _notifier,
                   builder: (context, child) => ToggleSlider(
-                    currentIndex: _currentIndex,
-                    items: [l10n.upcoming, l10n.previous, 'Other', 'Another'],
+                    currentIndex: _currentPage,
+                    items: [
+                      Text(
+                        l10n.upcoming,
+                        style: MintTextStyles.title3,
+                      ),
+                      Text(
+                        l10n.previous,
+                        style: MintTextStyles.title3,
+                      ),
+                    ],
                     onItemTap: (index) {
-                      setState(() => _currentIndex = index.toDouble());
+                      setState(() => _currentPage = index);
                       _pageController.animateToPage(
                         index,
                         duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
+                        curve: Curves.linear,
                       );
                     },
                     offset: _notifier.value,
@@ -72,13 +78,9 @@ class _SessionsPageState extends State<SessionsPage> {
               Expanded(
                 child: PageView(
                   controller: _pageController,
-                  onPageChanged: (page) => setState(
-                    () => _currentIndex = page.toDouble(),
-                  ),
+                  onPageChanged: (page) => setState(() => _currentPage = page),
                   children: const <Widget>[
                     UpcomingSessionsList(isSliver: false),
-                    Placeholder(),
-                    Placeholder(),
                     Placeholder(),
                   ],
                 ),
