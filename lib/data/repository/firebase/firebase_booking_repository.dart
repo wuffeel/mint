@@ -56,26 +56,13 @@ class FirebaseBookingRepository implements BookingRepository {
   }
 
   @override
-  Future<List<BookingDataDto>> getUpcomingSessions(
-    String userId,
-  ) async {
-    final nowUtc = DateTime.now().toUtc();
-    final consultationsSnapshot = await _bookingsCollectionRef
-        .where('userId', isEqualTo: userId)
-        .where('bookTime', isGreaterThan: nowUtc)
-        .orderBy('bookTime')
-        .get();
+  Future<List<BookingDataDto>> getUpcomingSessions(String userId) async {
+    return _getSessions(userId, isUpcoming: true);
+  }
 
-    return consultationsSnapshot.docs
-        .map((consultation) {
-          final data = consultation.data() as Map<String, dynamic>?;
-          if (data == null) return null;
-          data['id'] = consultation.id;
-
-          return BookingDataDto.fromJson(data);
-        })
-        .whereType<BookingDataDto>()
-        .toList();
+  @override
+  Future<List<BookingDataDto>> getPreviousSessions(String userId) async {
+    return _getSessions(userId, isUpcoming: false);
   }
 
   /// Used to book specialist or reschedule existing booking.
@@ -121,5 +108,31 @@ class FirebaseBookingRepository implements BookingRepository {
         .get();
 
     return bookingSnapshot.docs.isNotEmpty;
+  }
+
+  Future<List<BookingDataDto>> _getSessions(
+    String userId, {
+    required bool isUpcoming,
+  }) async {
+    final nowUtc = DateTime.now().toUtc();
+
+    final query = isUpcoming
+        ? _bookingsCollectionRef.where('bookTime', isGreaterThan: nowUtc)
+        : _bookingsCollectionRef.where('bookTime', isLessThan: nowUtc);
+
+    final sessionsSnapshot = await query
+        .where('userId', isEqualTo: userId)
+        .orderBy('bookTime')
+        .get();
+
+    return sessionsSnapshot.docs
+        .map((consultation) {
+          final data = consultation.data() as Map<String, dynamic>?;
+          if (data == null) return null;
+          data['id'] = consultation.id;
+          return BookingDataDto.fromJson(data);
+        })
+        .whereType<BookingDataDto>()
+        .toList();
   }
 }

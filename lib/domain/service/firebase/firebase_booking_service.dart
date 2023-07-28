@@ -59,17 +59,26 @@ class FirebaseBookingService implements BookingService {
 
   @override
   Future<List<BookingData>> getUpcomingSessions(String userId) async {
-    final consultations = await _bookingRepository.getUpcomingSessions(
-      userId,
+    return _getSessions(userId, isUpcoming: true);
+  }
+
+  @override
+  Future<List<BookingData>> getPreviousSessions(String userId) async {
+    return _getSessions(userId, isUpcoming: false);
+  }
+
+  Future<List<BookingData>> _getSessions(
+    String userId, {
+    required bool isUpcoming,
+  }) async {
+    final sessions = isUpcoming
+        ? await _bookingRepository.getUpcomingSessions(userId)
+        : await _bookingRepository.getPreviousSessions(userId);
+
+    final sessionList = await Future.wait(
+      sessions.map(_bookingDataFromDto.create),
     );
 
-    final consultationList = consultations.map((e) async {
-      final data = await _bookingDataFromDto.create(e);
-      if (data == null) return null;
-      return _bookingDataFromDto.create(e);
-    });
-
-    final list = await Future.wait(consultationList);
-    return list.whereType<BookingData>().toList();
+    return sessionList.whereType<BookingData>().toList();
   }
 }

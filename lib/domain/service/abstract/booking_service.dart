@@ -14,4 +14,6 @@ abstract class BookingService {
   Future<void> cancelBooking(String bookingId);
 
   Future<List<BookingData>> getUpcomingSessions(String userId);
+
+  Future<List<BookingData>> getPreviousSessions(String userId);
 }

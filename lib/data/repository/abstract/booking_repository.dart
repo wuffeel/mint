@@ -14,4 +14,6 @@ abstract class BookingRepository {
   Future<void> cancelBooking(String bookingId);
 
   Future<List<BookingDataDto>> getUpcomingSessions(String userId);
+
+  Future<List<BookingDataDto>> getPreviousSessions(String userId);
 }
