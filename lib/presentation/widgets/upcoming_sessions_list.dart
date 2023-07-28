@@ -41,15 +41,12 @@ class UpcomingSessionsList extends StatelessWidget {
           final separator = SizedBox(height: 10.h);
 
           return isSliver
-              ? SliverPadding(
-                  padding: EdgeInsets.only(top: 24.h),
-                  sliver: SliverList.separated(
-                    itemBuilder: (context, index) =>
-                        buildUpcomingSession(index),
-                    separatorBuilder: (_, __) => separator,
-                    itemCount: itemCount,
-                  ),
-                )
+              ? SliverList.separated(
+                itemBuilder: (context, index) =>
+                    buildUpcomingSession(index),
+                separatorBuilder: (_, __) => separator,
+                itemCount: itemCount,
+              )
               : ListView.separated(
                   itemBuilder: (context, index) => buildUpcomingSession(index),
                   separatorBuilder: (_, __) => separator,

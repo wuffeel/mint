@@ -51,7 +51,7 @@ class _HomePageView extends StatelessWidget {
             child: CustomScrollView(
               slivers: <Widget>[
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
                   sliver: const UpcomingSessionsList(isSliver: true),
                 ),
                 SliverStickyHeader.builder(
