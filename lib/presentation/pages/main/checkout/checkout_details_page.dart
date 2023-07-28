@@ -20,7 +20,7 @@ class CheckoutDetailsPage extends StatelessWidget {
   final BookingData bookingData;
 
   void _navigateToPayment(BuildContext context) {
-    context.router.push(CheckoutPaymentRoute(bookingData: bookingData));
+    context.router.replace(CheckoutPaymentRoute(bookingData: bookingData));
   }
 
   @override
