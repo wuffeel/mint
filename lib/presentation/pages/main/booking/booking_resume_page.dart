@@ -136,10 +136,7 @@ class _BookingResumePageState extends State<_BookingResumeView> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return WillPopScope(
-      onWillPop: () async {
-        await _showExitConfirmDialog(context);
-        return true;
-      },
+      onWillPop: () async => await _showExitConfirmDialog(context) ?? false,
       child: Scaffold(
         appBar: const MintAppBar(),
         body: BlocListener<BookingBloc, BookingState>(
