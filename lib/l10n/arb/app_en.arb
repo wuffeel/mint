@@ -134,5 +134,7 @@
   "chat": "Chat",
   "reschedule": "Reschedule",
   "notesWereNotSpecified": "Notes were not specified",
-  "noBookingInfoFound": "No booking info found"
+  "noBookingInfoFound": "No booking info found",
+  "upcoming": "Upcoming",
+  "previous": "Previous"
 }

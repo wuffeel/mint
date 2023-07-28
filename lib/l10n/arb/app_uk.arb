@@ -134,5 +134,7 @@
   "chat": "Чат",
   "reschedule": "Перенести",
   "notesWereNotSpecified": "Нотатки не були вказані",
-  "noBookingInfoFound": "Інформацію для бронювання не було знайдено"
+  "noBookingInfoFound": "Інформацію для бронювання не було знайдено",
+  "upcoming": "Майбутні",
+  "previous": "Попередні"
 }
