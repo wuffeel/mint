@@ -141,5 +141,6 @@
   "previous": "Попередні",
   "close": "Закрити",
   "sessionExpiredTitle": "Сеанс закінчився",
-  "sessionExpiredContent": "Дія недоступна. Сеанс вже пройшов"
+  "sessionExpiredContent": "Дія недоступна. Сеанс вже пройшов",
+  "message": "Повідомлення"
 }

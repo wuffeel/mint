@@ -9,6 +9,7 @@ import 'package:mint/presentation/pages/main/waiting_session/widgets/session_det
 import 'package:mint/presentation/widgets/error_alert_dialog.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
+import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../../bloc/booking/booking_bloc.dart';
@@ -105,7 +106,9 @@ class SessionDetailsPage extends StatelessWidget {
     if (_isSessionExpired()) {
       _showExpiredSessionDialog(context);
     }
-    // TODO(wuffeel): navigate user to chat
+    context.router.push(
+      ChatRoute(specialistModel: bookingData.specialistModel),
+    );
   }
 
   /// Check if session already started, but not passed

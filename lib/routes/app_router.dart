@@ -58,6 +58,7 @@ class AppRouter extends $AppRouter {
                 AutoRoute(page: BookingResumeRoute.page),
               ],
             ),
+            AutoRoute(page: ChatRoute.page),
           ],
         ),
       ];

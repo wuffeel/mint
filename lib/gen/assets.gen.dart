@@ -29,6 +29,9 @@ class $AssetsSvgGen {
   SvgGenImage get arrowBackIos =>
       const SvgGenImage('assets/svg/arrow_back_ios.svg');
 
+  /// File path: assets/svg/attach_icon.svg
+  SvgGenImage get attachIcon => const SvgGenImage('assets/svg/attach_icon.svg');
+
   /// File path: assets/svg/backspace_icon.svg
   SvgGenImage get backspaceIcon =>
       const SvgGenImage('assets/svg/backspace_icon.svg');
@@ -60,6 +63,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/cross_icon.svg
   SvgGenImage get crossIcon => const SvgGenImage('assets/svg/cross_icon.svg');
 
+  /// File path: assets/svg/emoji_icon.svg
+  SvgGenImage get emojiIcon => const SvgGenImage('assets/svg/emoji_icon.svg');
+
   /// File path: assets/svg/filter_icon.svg
   SvgGenImage get filterIcon => const SvgGenImage('assets/svg/filter_icon.svg');
 
@@ -76,6 +82,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/mastercard_icon.svg
   SvgGenImage get mastercardIcon =>
       const SvgGenImage('assets/svg/mastercard_icon.svg');
+
+  /// File path: assets/svg/microphone_icon.svg
+  SvgGenImage get microphoneIcon =>
+      const SvgGenImage('assets/svg/microphone_icon.svg');
 
   /// File path: assets/svg/pick_up_specialist.svg
   SvgGenImage get pickUpSpecialist =>
@@ -123,6 +133,7 @@ class $AssetsSvgGen {
         appleIcon,
         arrowBackAndroid,
         arrowBackIos,
+        attachIcon,
         backspaceIcon,
         backspaceIconDark,
         bellIcon,
@@ -132,11 +143,13 @@ class $AssetsSvgGen {
         checkMark,
         chevronRight,
         crossIcon,
+        emojiIcon,
         filterIcon,
         heartIcon,
         heartIconFilled,
         homeIcon,
         mastercardIcon,
+        microphoneIcon,
         pickUpSpecialist,
         plusIcon,
         profileIcon,

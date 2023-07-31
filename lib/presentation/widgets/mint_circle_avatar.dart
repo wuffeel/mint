@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../gen/assets.gen.dart';
 
-class SpecialistCircleAvatar extends StatelessWidget {
-  const SpecialistCircleAvatar({
+class MintCircleAvatar extends StatelessWidget {
+  const MintCircleAvatar({
     super.key,
-    required this.size,
+    required this.radius,
     required this.backgroundColor,
     this.photoUrl,
   });
 
-  final double size;
+  final double radius;
   final Color backgroundColor;
   final String? photoUrl;
 
@@ -19,15 +19,17 @@ class SpecialistCircleAvatar extends StatelessWidget {
     final photo = photoUrl;
     return photo != null
         ? CircleAvatar(
-            radius: size,
-            backgroundImage: NetworkImage(photo),
+            radius: radius,
+            child: ClipOval(
+              child: Image.network(photo),
+            ),
           )
         : CircleAvatar(
-            radius: size,
+            radius: radius,
             backgroundColor: backgroundColor,
             child: Assets.svg.userPlaceholder.svg(
-              width: size,
-              height: size,
+              width: radius,
+              height: radius,
               fit: BoxFit.scaleDown,
               colorFilter: ColorFilter.mode(
                 Theme.of(context).primaryColor,

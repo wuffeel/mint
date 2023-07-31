@@ -83,6 +83,10 @@ flutter:
       fonts:
         - asset: assets/fonts/sf_pro_display/SFProDisplay-Regular.ttf
           weight: 400
+    - family: ProximaNova
+      fonts:
+        - asset: assets/fonts/proxima_nova/ProximaNova-Regular.ttf
+          weight: 400
     - family: Inter
       fonts:
         - asset: assets/fonts/inter/Inter-Thin.ttf
