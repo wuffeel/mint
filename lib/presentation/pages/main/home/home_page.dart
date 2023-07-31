@@ -50,6 +50,8 @@ class _HomePageView extends StatelessWidget {
             onRefresh: () => _refreshPage(context),
             child: CustomScrollView(
               slivers: <Widget>[
+                // Makes StickyHeader unpinned if scrolled to the top of page
+                const SliverToBoxAdapter(child: SizedBox(height: 1)),
                 UpcomingSessionsList(
                   isSliver: true,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
