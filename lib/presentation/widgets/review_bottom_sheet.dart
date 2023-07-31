@@ -86,7 +86,6 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
               userReview.copyWith(
                 rating: _selectedRating ?? userReview.rating,
                 content: _reviewController.text.trim(),
-                createdAt: DateTime.now(),
               ),
             ),
           );

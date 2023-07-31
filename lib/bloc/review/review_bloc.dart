@@ -133,7 +133,7 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
     try {
       emit(ReviewAddLoading(state.reviews, state.userReviews));
 
-      final review = event.reviewModel;
+      final review = event.reviewModel.copyWith(createdAt: DateTime.now());
       await _updateReviewUseCase(review);
       final reviews = state.reviews;
       final userReviews = state.userReviews;
