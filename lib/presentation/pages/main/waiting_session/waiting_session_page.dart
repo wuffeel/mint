@@ -56,6 +56,22 @@ class WaitingSessionPage extends StatelessWidget {
     );
   }
 
+  /// Check if session already started, but not passed
+  bool get _isSessionStarted => bookingData.bookTime.isBefore(DateTime.now());
+
+  /// Check if the session has passed
+  bool get _isSessionExpired => bookingData.bookTime.isBefore(
+        DateTime.now().add(Duration(minutes: bookingData.durationMinutes)),
+      );
+
+  /// Determines if the chat button is available or not
+  bool get _isChatEnabled =>
+      bookingData.bookTime.isBefore(DateTime.now()) && !_isSessionExpired;
+
+  /// Determines if audio- and video-call button are available or not
+  bool get _isCallEnabled =>
+      bookingData.bookTime.isAfter(DateTime.now()) && !_isSessionExpired;
+
   @override
   Widget build(BuildContext context) {
     final specialistModel = bookingData.specialistModel;
@@ -104,30 +120,44 @@ class WaitingSessionPage extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     WaitingSessionActionList(
-                      onChat: () {
-                        // TODO(wuffeel): navigate user to chat
-                      },
+                      onVideo: _isCallEnabled
+                          ? () {
+                              // TODO(wuffeel): add video call
+                            }
+                          : null,
+                      onCall: _isCallEnabled
+                          ? () {
+                              // TODO(wuffeel): add audio call
+                            }
+                          : null,
+                      onChat: _isChatEnabled
+                          ? () {
+                              // TODO(wuffeel): navigate user to chat
+                            }
+                          : null,
                     ),
-                    const Spacer(),
-                    SizedBox(height: 20.h),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () => _showBookingBottomSheet(context),
-                            child: Text(context.l10n.reschedule),
+                    if (!_isSessionStarted) ...[
+                      const Spacer(),
+                      SizedBox(height: 20.h),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => _showBookingBottomSheet(context),
+                              child: Text(context.l10n.reschedule),
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 9.w),
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => _showCancellationDialog(context),
-                            child: Text(context.l10n.cancel),
+                          SizedBox(width: 9.w),
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => _showCancellationDialog(context),
+                              child: Text(context.l10n.cancel),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 26.h),
+                        ],
+                      ),
+                      SizedBox(height: 26.h),
+                    ],
                   ],
                 ),
               ),
