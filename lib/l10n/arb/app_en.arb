@@ -142,5 +142,6 @@
   "close": "Close",
   "sessionExpiredTitle": "Session expired",
   "sessionExpiredContent": "Action is unavailable. Session is already passed",
-  "message": "Message"
+  "message": "Message",
+  "bookAgain": "Book again"
 }

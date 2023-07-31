@@ -6,6 +6,7 @@ import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_cancellation_dialog.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_details_action_list.dart';
+import 'package:mint/presentation/pages/main/waiting_session/widgets/upcoming_session_actions.dart';
 import 'package:mint/presentation/widgets/error_alert_dialog.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
@@ -47,12 +48,22 @@ class SessionDetailsPage extends StatelessWidget {
     );
   }
 
-  /// Displays [BookingBottomSheet] to reschedule session.
+  /// Displays [BookingBottomSheet] for booking.
   ///
-  /// If managed to be tapped when session already expired,
-  /// [_showExpiredSessionDialog] is called
-  void _showBookingBottomSheet(BuildContext context) {
-    if (_isSessionExpired()) _showExpiredSessionDialog(context);
+  /// Used for, depending on [isReschedule] value:
+  ///
+  /// - 'true' - reschedule the current booking, replacing it with new one
+  /// - 'false' - book again this specialist
+  ///
+  /// If managed to be tapped when session already expired and [isReschedule]
+  /// is true, [_showExpiredSessionDialog] is called
+  void _showBookingBottomSheet(
+    BuildContext context, {
+    required bool isReschedule,
+  }) {
+    if (isReschedule && _isSessionExpired()) {
+      _showExpiredSessionDialog(context);
+    }
 
     final specialistModel = bookingData.specialistModel;
     showModalBottomSheet<void>(
@@ -64,7 +75,7 @@ class SessionDetailsPage extends StatelessWidget {
         value: context.read<BookingBloc>(),
         child: BookingBottomSheet(
           specialistModel: specialistModel,
-          previousBookingData: bookingData,
+          previousBookingData: isReschedule ? bookingData : null,
         ),
       ),
     );
@@ -129,6 +140,9 @@ class SessionDetailsPage extends StatelessWidget {
     final specialistModel = bookingData.specialistModel;
     final notes = bookingData.notes;
 
+    final isStarted = _isSessionStarted();
+    final isOngoing = _isSessionOngoing();
+    final isExpired = _isSessionExpired();
     return Scaffold(
       appBar: const MintAppBar(),
       body: CustomScrollView(
@@ -173,33 +187,29 @@ class SessionDetailsPage extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     SessionDetailsActionList(
-                      onVideo:
-                          _isSessionOngoing() ? () => _onVideo(context) : null,
-                      onCall:
-                          _isSessionOngoing() ? () => _onCall(context) : null,
-                      onChat:
-                          !_isSessionExpired() ? () => _onChat(context) : null,
+                      onVideo: isOngoing ? () => _onVideo(context) : null,
+                      onCall: isOngoing ? () => _onCall(context) : null,
+                      onChat: !isExpired ? () => _onChat(context) : null,
                     ),
-                    if (!_isSessionStarted()) ...[
+                    if (!isStarted || isExpired) ...[
                       const Spacer(),
                       SizedBox(height: 20.h),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => _showBookingBottomSheet(context),
-                              child: Text(context.l10n.reschedule),
-                            ),
+                      if (!isStarted)
+                        UpcomingSessionActions(
+                          onReschedule: () => _showBookingBottomSheet(
+                            context,
+                            isReschedule: true,
                           ),
-                          SizedBox(width: 9.w),
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () => _showCancellationDialog(context),
-                              child: Text(context.l10n.cancel),
-                            ),
+                          onCancel: () => _showCancellationDialog(context),
+                        )
+                      else if (isExpired)
+                        ElevatedButton(
+                          onPressed: () => _showBookingBottomSheet(
+                            context,
+                            isReschedule: false,
                           ),
-                        ],
-                      ),
+                          child: Text(context.l10n.bookAgain),
+                        ),
                       SizedBox(height: 26.h),
                     ],
                   ],
