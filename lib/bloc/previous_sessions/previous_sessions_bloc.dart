@@ -51,6 +51,7 @@ class PreviousSessionsBloc
     final user = _currentUser;
     if (user == null) return;
     try {
+      emit(PreviousSessionsFetchLoading());
       final previousSessions = await _fetchPreviousSessionsUseCase(user.id);
       emit(PreviousSessionsFetchSuccess(previousSessions));
     } catch (error) {
