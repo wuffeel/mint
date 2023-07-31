@@ -122,7 +122,7 @@ class FirebaseBookingRepository implements BookingRepository {
 
     final sessionsSnapshot = await query
         .where('userId', isEqualTo: userId)
-        .orderBy('bookTime')
+        .orderBy('bookTime', descending: !isUpcoming)
         .get();
 
     return sessionsSnapshot.docs
