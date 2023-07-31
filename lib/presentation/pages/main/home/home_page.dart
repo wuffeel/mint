@@ -50,9 +50,9 @@ class _HomePageView extends StatelessWidget {
             onRefresh: () => _refreshPage(context),
             child: CustomScrollView(
               slivers: <Widget>[
-                SliverPadding(
+                UpcomingSessionsList(
+                  isSliver: true,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
-                  sliver: const UpcomingSessionsList(isSliver: true),
                 ),
                 SliverStickyHeader.builder(
                   builder: (context, state) => DecoratedBox(

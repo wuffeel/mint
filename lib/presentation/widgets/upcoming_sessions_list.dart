@@ -9,9 +9,10 @@ import '../../bloc/upcoming_sessions/upcoming_sessions_bloc.dart';
 import 'loading_indicator.dart';
 
 class UpcomingSessionsList extends StatelessWidget {
-  const UpcomingSessionsList({super.key, required this.isSliver});
+  const UpcomingSessionsList({super.key, required this.isSliver, this.padding});
 
   final bool isSliver;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,12 @@ class UpcomingSessionsList extends StatelessWidget {
           final sessionsList = state.upcomingList;
           final itemCount = sessionsList.length;
 
+          if (itemCount == 0) {
+            return isSliver
+                ? const SliverToBoxAdapter(child: SizedBox.shrink())
+                : const SizedBox.shrink();
+          }
+
           Widget buildUpcomingSession(int index) {
             return UpcomingSessionContainer(
               onTap: () => context.router.push(
@@ -41,16 +48,20 @@ class UpcomingSessionsList extends StatelessWidget {
           final separator = SizedBox(height: 10.h);
 
           return isSliver
-              ? SliverList.separated(
-                itemBuilder: (context, index) =>
-                    buildUpcomingSession(index),
-                separatorBuilder: (_, __) => separator,
-                itemCount: itemCount,
-              )
+              ? SliverPadding(
+                  padding: padding ?? EdgeInsets.zero,
+                  sliver: SliverList.separated(
+                    itemBuilder: (context, index) =>
+                        buildUpcomingSession(index),
+                    separatorBuilder: (_, __) => separator,
+                    itemCount: itemCount,
+                  ),
+                )
               : ListView.separated(
                   itemBuilder: (context, index) => buildUpcomingSession(index),
                   separatorBuilder: (_, __) => separator,
                   itemCount: itemCount,
+                  padding: padding,
                 );
         } else {
           return isSliver
