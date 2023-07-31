@@ -109,76 +109,72 @@ class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
             final filter = state.pickUpFilter;
             final preferences = state.pickUpPreferences;
             final selectedSpecializations = preferences.specializations ?? [];
-            return Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 16.w,
-                top: 16.h,
-                bottom: 26.h,
-              ),
-              child: PickUpStepper(
-                currentStep: _currentStep,
-                onNextStep: _isNextAvailable(state, _currentStep)
-                    ? () => setState(() => _currentStep += 1)
-                    : null,
-                onPreviousStep: () => setState(() => _currentStep -= 1),
-                onFinish:
-                    _isNextAvailable(state, _currentStep) ? _onFinish : null,
-                steps: <Widget>[
-                  PickUpStepTitle(
-                    title: context.l10n.whoWillCommunicate,
-                    child: PickUpRadioButtonList(
-                      items: filter.communicationMembers,
-                      itemTitles: filter.communicationMembers,
-                      selectedItem: preferences.communicationMember,
-                      onSelect: (communication) => _onValueSelected(
-                        preferences.copyWith(
-                          communicationMember: communication,
-                        ),
+            return PickUpStepper(
+              currentStep: _currentStep,
+              onNextStep: _isNextAvailable(state, _currentStep)
+                  ? () => setState(() => _currentStep += 1)
+                  : null,
+              onPreviousStep: () => setState(() => _currentStep -= 1),
+              onFinish:
+                  _isNextAvailable(state, _currentStep) ? _onFinish : null,
+              steps: <Widget>[
+                PickUpStepTitle(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  title: context.l10n.whoWillCommunicate,
+                  child: PickUpRadioButtonList(
+                    items: filter.communicationMembers,
+                    itemTitles: filter.communicationMembers,
+                    selectedItem: preferences.communicationMember,
+                    onSelect: (communication) => _onValueSelected(
+                      preferences.copyWith(
+                        communicationMember: communication,
                       ),
                     ),
                   ),
-                  PickUpStepTitle(
-                    title: context.l10n.haveYouEverBeenToTherapy,
-                    child: PickUpRadioButtonList(
-                      items: _haveYouBeenToTherapy.values.toList(),
-                      itemTitles: _haveYouBeenToTherapy.keys.toList(),
-                      selectedItem: preferences.haveBeenToTherapy,
-                      onSelect: (haveYouBeenToTherapy) => _onValueSelected(
-                        preferences.copyWith(
-                          haveBeenToTherapy: haveYouBeenToTherapy,
-                        ),
+                ),
+                PickUpStepTitle(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  title: context.l10n.haveYouEverBeenToTherapy,
+                  child: PickUpRadioButtonList(
+                    items: _haveYouBeenToTherapy.values.toList(),
+                    itemTitles: _haveYouBeenToTherapy.keys.toList(),
+                    selectedItem: preferences.haveBeenToTherapy,
+                    onSelect: (haveYouBeenToTherapy) => _onValueSelected(
+                      preferences.copyWith(
+                        haveBeenToTherapy: haveYouBeenToTherapy,
                       ),
                     ),
                   ),
-                  PickUpStepTitle(
-                    title: context.l10n.howMuchCanIPay,
-                    child: PickUpRadioButtonList(
-                      items: filter.priceRange,
-                      itemTitles: _getPriceRangeTitles(filter.priceRange),
-                      selectedItem: preferences.priceRange,
-                      onSelect: (priceRange) => _onValueSelected(
-                        preferences.copyWith(priceRange: priceRange),
-                      ),
+                ),
+                PickUpStepTitle(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  title: context.l10n.howMuchCanIPay,
+                  child: PickUpRadioButtonList(
+                    items: filter.priceRange,
+                    itemTitles: _getPriceRangeTitles(filter.priceRange),
+                    selectedItem: preferences.priceRange,
+                    onSelect: (priceRange) => _onValueSelected(
+                      preferences.copyWith(priceRange: priceRange),
                     ),
                   ),
-                  PickUpStepTitle(
-                    title: context.l10n.whichTopicsAreYouInterestedIn,
-                    child: MintMultiItemSelection(
-                      items: filter.specializations,
-                      itemTitles: filter.specializations,
-                      selectedItems: selectedSpecializations,
-                      onItemSelected: (specializations) => _onValueSelected(
-                        preferences.copyWith(specializations: specializations),
-                      ),
-                      itemInnerPadding: EdgeInsets.symmetric(
-                        vertical: 12.h,
-                        horizontal: 8.w,
-                      ),
+                ),
+                PickUpStepTitle(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  title: context.l10n.whichTopicsAreYouInterestedIn,
+                  child: MintMultiItemSelection(
+                    items: filter.specializations,
+                    itemTitles: filter.specializations,
+                    selectedItems: selectedSpecializations,
+                    onItemSelected: (specializations) => _onValueSelected(
+                      preferences.copyWith(specializations: specializations),
+                    ),
+                    itemInnerPadding: EdgeInsets.symmetric(
+                      vertical: 12.h,
+                      horizontal: 8.w,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           }
           return const SizedBox.shrink();

@@ -31,12 +31,11 @@ class _PickUpStepperState extends State<PickUpStepper> {
   final _pageController = PageController();
 
   /// Determine whether to call onNextStep or onFinish
-  VoidCallback? get _nextAction =>
-      widget.currentStep + 1 < widget.steps.length
-          ? widget.onNextStep != null
-              ? _onNextStep
-              : null
-          : widget.onFinish;
+  VoidCallback? get _nextAction => widget.currentStep + 1 < widget.steps.length
+      ? widget.onNextStep != null
+          ? _onNextStep
+          : null
+      : widget.onFinish;
 
   void _onNextStep() {
     final onNext = widget.onNextStep;
@@ -73,36 +72,50 @@ class _PickUpStepperState extends State<PickUpStepper> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(context.l10n.helpUsMatchYou, style: MintTextStyles.title1),
-        SizedBox(height: 16.h),
-        Row(
-          children: List.generate(
-            widget.steps.length,
-            (index) => Expanded(
-              child: AnimatedContainer(
-                height: 3.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: widget.currentStep == index
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).dividerColor,
-                ),
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(context.l10n.helpUsMatchYou, style: MintTextStyles.title1),
+              SizedBox(height: 16.h),
+              Row(
+                children: List.generate(
+                  widget.steps.length,
+                  (index) => Expanded(
+                    child: AnimatedContainer(
+                      height: 3.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: widget.currentStep == index
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).dividerColor,
+                      ),
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                )..insertBetween(SizedBox(width: 8.w)),
               ),
-            ),
-          )..insertBetween(SizedBox(width: 8.w)),
+            ],
+          ),
         ),
         SizedBox(height: 24.h),
         if (widget.currentStep != 0) ...[
-          InkWell(
-            onTap: _onPreviousStep,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Icon(Icons.chevron_left),
-                Text(context.l10n.previousStep, style: MintTextStyles.caption1),
-              ],
+          Padding(
+            padding: EdgeInsets.only(left: 16.w),
+            child: InkWell(
+              onTap: _onPreviousStep,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Icon(Icons.chevron_left),
+                  Text(
+                    context.l10n.previousStep,
+                    style: MintTextStyles.caption1,
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(height: 16.h),
@@ -115,10 +128,14 @@ class _PickUpStepperState extends State<PickUpStepper> {
             children: widget.steps,
           ),
         ),
-        ElevatedButton(
-          onPressed: _nextAction,
-          child: Text(context.l10n.next),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: ElevatedButton(
+            onPressed: _nextAction,
+            child: Text(context.l10n.next),
+          ),
         ),
+        SizedBox(height: 26.h),
       ],
     );
   }
