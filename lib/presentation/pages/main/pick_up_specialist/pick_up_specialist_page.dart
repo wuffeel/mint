@@ -37,8 +37,6 @@ class _PickUpSpecialistView extends StatefulWidget {
 }
 
 class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
-  int _currentStep = 0;
-
   final Map<String, bool> _haveYouBeenToTherapy = {
     'Yes': true,
     'No': false,
@@ -110,13 +108,8 @@ class _PickUpSpecialistViewState extends State<_PickUpSpecialistView> {
             final preferences = state.pickUpPreferences;
             final selectedSpecializations = preferences.specializations ?? [];
             return PickUpStepper(
-              currentStep: _currentStep,
-              onNextStep: _isNextAvailable(state, _currentStep)
-                  ? () => setState(() => _currentStep += 1)
-                  : null,
-              onPreviousStep: () => setState(() => _currentStep -= 1),
-              onFinish:
-                  _isNextAvailable(state, _currentStep) ? _onFinish : null,
+              stepAvailableBuilder: (index) => _isNextAvailable(state, index),
+              onFinish: _onFinish,
               steps: <Widget>[
                 PickUpStepTitle(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),

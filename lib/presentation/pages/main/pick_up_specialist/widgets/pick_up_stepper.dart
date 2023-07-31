@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/utils/extended_widget_list.dart';
+import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_page_display.dart';
 
 import '../../../../../theme/mint_text_styles.dart';
 
@@ -9,20 +9,13 @@ class PickUpStepper extends StatefulWidget {
   const PickUpStepper({
     super.key,
     required this.steps,
-    required this.currentStep,
-    required this.onNextStep,
-    required this.onPreviousStep,
     required this.onFinish,
-  }) : assert(
-          0 <= currentStep && currentStep < steps.length,
-          'Current step do not fit in bounds from 0 to ${steps.length}',
-        );
+    required this.stepAvailableBuilder,
+  });
 
   final List<Widget> steps;
-  final int currentStep;
-  final VoidCallback? onNextStep;
-  final VoidCallback? onPreviousStep;
   final VoidCallback? onFinish;
+  final bool Function(int) stepAvailableBuilder;
 
   @override
   State<PickUpStepper> createState() => _PickUpStepperState();
@@ -30,20 +23,22 @@ class PickUpStepper extends StatefulWidget {
 
 class _PickUpStepperState extends State<PickUpStepper> {
   final _pageController = PageController();
+  int _currentStep = 0;
 
   /// Determine whether to call onNextStep or onFinish
-  VoidCallback? get _nextAction => widget.currentStep + 1 < widget.steps.length
-      ? widget.onNextStep != null
-          ? _onNextStep
-          : null
-      : widget.onFinish;
+  VoidCallback? get _nextAction {
+    return _currentStep + 1 < widget.steps.length
+        ? widget.stepAvailableBuilder(_currentStep)
+            ? _onNextStep
+            : null
+        : widget.stepAvailableBuilder(_currentStep)
+            ? widget.onFinish
+            : null;
+  }
 
   void _onNextStep() {
-    final onNext = widget.onNextStep;
-    if (widget.currentStep + 1 < widget.steps.length) {
-      if (onNext != null) onNext();
-      _pageController.animateToPage(
-        widget.currentStep + 1,
+    if (_currentStep < widget.steps.length) {
+      _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -51,15 +46,10 @@ class _PickUpStepperState extends State<PickUpStepper> {
   }
 
   void _onPreviousStep() {
-    final onPrevious = widget.onPreviousStep;
-    if (widget.currentStep > 0) {
-      if (onPrevious != null) onPrevious();
-      _pageController.animateToPage(
-        widget.currentStep - 1,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -80,29 +70,15 @@ class _PickUpStepperState extends State<PickUpStepper> {
             children: [
               Text(context.l10n.helpUsMatchYou, style: MintTextStyles.title1),
               SizedBox(height: 16.h),
-              Row(
-                children: List.generate(
-                  widget.steps.length,
-                  (index) => Expanded(
-                    child: AnimatedContainer(
-                      height: 3.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: widget.currentStep == index
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).dividerColor,
-                      ),
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                )..insertBetween(SizedBox(width: 8.w)),
+              PickUpPageDisplay(
+                itemCount: widget.steps.length,
+                currentStep: _currentStep,
               ),
             ],
           ),
         ),
         SizedBox(height: 24.h),
-        if (widget.currentStep != 0) ...[
+        if (_currentStep != 0) ...[
           Padding(
             padding: EdgeInsets.only(left: 16.w),
             child: InkWell(
@@ -125,7 +101,7 @@ class _PickUpStepperState extends State<PickUpStepper> {
           child: PageView(
             clipBehavior: Clip.none,
             controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) => setState(() => _currentStep = index),
             children: widget.steps,
           ),
         ),
