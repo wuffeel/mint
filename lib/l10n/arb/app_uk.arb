@@ -139,5 +139,7 @@
   "noBookingInfoFound": "Інформацію для бронювання не було знайдено",
   "upcoming": "Майбутні",
   "previous": "Попередні",
-  "close": "Закрити"
+  "close": "Закрити",
+  "sessionExpiredTitle": "Сеанс закінчився",
+  "sessionExpiredContent": "Дія недоступна. Сеанс вже пройшов"
 }

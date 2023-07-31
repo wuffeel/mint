@@ -6,6 +6,7 @@ import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_cancellation_dialog.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_details_action_list.dart';
+import 'package:mint/presentation/widgets/error_alert_dialog.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
 import 'package:mint/theme/mint_text_styles.dart';
@@ -23,7 +24,13 @@ class SessionDetailsPage extends StatelessWidget {
     return notes.isNotEmpty ? notes : '${context.l10n.notesWereNotSpecified}.';
   }
 
+  /// Displays session cancel confirmation alert dialog
+  ///
+  /// If managed to be tapped when session already expired,
+  /// [_showExpiredSessionDialog] is called
   void _showCancellationDialog(BuildContext context) {
+    if (_isSessionExpired()) _showExpiredSessionDialog(context);
+
     final bookingBloc = context.read<BookingBloc>();
     showDialog<void>(
       context: context,
@@ -39,7 +46,13 @@ class SessionDetailsPage extends StatelessWidget {
     );
   }
 
+  /// Displays [BookingBottomSheet] to reschedule session.
+  ///
+  /// If managed to be tapped when session already expired,
+  /// [_showExpiredSessionDialog] is called
   void _showBookingBottomSheet(BuildContext context) {
+    if (_isSessionExpired()) _showExpiredSessionDialog(context);
+
     final specialistModel = bookingData.specialistModel;
     showModalBottomSheet<void>(
       context: context,
@@ -56,24 +69,63 @@ class SessionDetailsPage extends StatelessWidget {
     );
   }
 
+  /// Displays alert dialog messaging that session has expired. On tapping alert
+  /// action, closes the page
+  void _showExpiredSessionDialog(BuildContext context) {
+    final l10n = context.l10n;
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => ErrorAlertDialog(
+        actionTitle: l10n.close,
+        title: Text(l10n.sessionExpiredTitle),
+        content: Text(l10n.sessionExpiredContent),
+        onAction: () {
+          context.router.pop();
+          dialogContext.router.pop();
+        },
+      ),
+    );
+  }
+
+  void _onVideo(BuildContext context) {
+    if (_isSessionExpired()) {
+      _showExpiredSessionDialog(context);
+    }
+    // TODO(wuffeel): add video call
+  }
+
+  void _onCall(BuildContext context) {
+    if (_isSessionExpired()) {
+      _showExpiredSessionDialog(context);
+    }
+    // TODO(wuffeel): add audio call
+  }
+
+  void _onChat(BuildContext context) {
+    if (_isSessionExpired()) {
+      _showExpiredSessionDialog(context);
+    }
+    // TODO(wuffeel): navigate user to chat
+  }
+
   /// Check if session already started, but not passed
-  bool get _isSessionStarted => bookingData.bookTime.isBefore(DateTime.now());
+  bool _isSessionStarted() => bookingData.bookTime.isBefore(DateTime.now());
 
   /// Check if the session has passed
-  bool get _isSessionExpired => DateTime.now().isAfter(
+  bool _isSessionExpired() => DateTime.now().isAfter(
         bookingData.bookTime.add(
           Duration(minutes: bookingData.durationMinutes),
         ),
       );
 
-  /// Determines if audio- and video-call button are available or not
-  bool get _isCallEnabled =>
-      bookingData.bookTime.isBefore(DateTime.now()) && !_isSessionExpired;
+  /// Determines if session currently ongoing
+  bool _isSessionOngoing() => _isSessionStarted() && !_isSessionExpired();
 
   @override
   Widget build(BuildContext context) {
     final specialistModel = bookingData.specialistModel;
     final notes = bookingData.notes;
+
     return Scaffold(
       appBar: const MintAppBar(),
       body: CustomScrollView(
@@ -118,23 +170,14 @@ class SessionDetailsPage extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
                     SessionDetailsActionList(
-                      onVideo: _isCallEnabled
-                          ? () {
-                              // TODO(wuffeel): add video call
-                            }
-                          : null,
-                      onCall: _isCallEnabled
-                          ? () {
-                              // TODO(wuffeel): add audio call
-                            }
-                          : null,
-                      onChat: !_isSessionExpired
-                          ? () {
-                              // TODO(wuffeel): navigate user to chat
-                            }
-                          : null,
+                      onVideo:
+                          _isSessionOngoing() ? () => _onVideo(context) : null,
+                      onCall:
+                          _isSessionOngoing() ? () => _onCall(context) : null,
+                      onChat:
+                          !_isSessionExpired() ? () => _onChat(context) : null,
                     ),
-                    if (!_isSessionStarted) ...[
+                    if (!_isSessionStarted()) ...[
                       const Spacer(),
                       SizedBox(height: 20.h),
                       Row(
