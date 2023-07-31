@@ -52,9 +52,9 @@ class AppRouter extends $AppRouter {
               ],
             ),
             AutoRoute(
-              page: WaitingSessionWrapperRoute.page,
+              page: SessionDetailsWrapperRoute.page,
               children: [
-                AutoRoute(path: '', page: WaitingSessionRoute.page),
+                AutoRoute(path: '', page: SessionDetailsRoute.page),
                 AutoRoute(page: BookingResumeRoute.page),
               ],
             ),

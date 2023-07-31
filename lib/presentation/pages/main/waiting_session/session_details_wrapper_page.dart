@@ -5,8 +5,8 @@ import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/injector/injector.dart';
 
 @RoutePage()
-class WaitingSessionWrapperPage extends AutoRouter with AutoRouteWrapper {
-  const WaitingSessionWrapperPage({super.key});
+class SessionDetailsWrapperPage extends AutoRouter with AutoRouteWrapper {
+  const SessionDetailsWrapperPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {

@@ -48,9 +48,9 @@ import 'package:mint/presentation/pages/main/specialists/specialists_page.dart'
     as _i15;
 import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
     as _i16;
-import 'package:mint/presentation/pages/main/waiting_session/waiting_session_page.dart'
+import 'package:mint/presentation/pages/main/waiting_session/session_details_page.dart'
     as _i21;
-import 'package:mint/presentation/pages/main/waiting_session/waiting_session_wrapper_page.dart'
+import 'package:mint/presentation/pages/main/waiting_session/session_details_wrapper_page.dart'
     as _i22;
 
 abstract class $AppRouter extends _i23.RootStackRouter {
@@ -197,20 +197,20 @@ abstract class $AppRouter extends _i23.RootStackRouter {
         ),
       );
     },
-    WaitingSessionRoute.name: (routeData) {
-      final args = routeData.argsAs<WaitingSessionRouteArgs>();
+    SessionDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<SessionDetailsRouteArgs>();
       return _i23.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i21.WaitingSessionPage(
+        child: _i21.SessionDetailsPage(
           key: args.key,
           bookingData: args.bookingData,
         ),
       );
     },
-    WaitingSessionWrapperRoute.name: (routeData) {
+    SessionDetailsWrapperRoute.name: (routeData) {
       return _i23.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i23.WrappedRoute(child: const _i22.WaitingSessionWrapperPage()),
+        child: _i23.WrappedRoute(child: const _i22.SessionDetailsWrapperPage()),
       );
     },
   };
@@ -611,29 +611,29 @@ class SpecialistDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i21.WaitingSessionPage]
-class WaitingSessionRoute extends _i23.PageRouteInfo<WaitingSessionRouteArgs> {
-  WaitingSessionRoute({
+/// [_i21.SessionDetailsPage]
+class SessionDetailsRoute extends _i23.PageRouteInfo<SessionDetailsRouteArgs> {
+  SessionDetailsRoute({
     _i24.Key? key,
     required _i26.BookingData bookingData,
     List<_i23.PageRouteInfo>? children,
   }) : super(
-          WaitingSessionRoute.name,
-          args: WaitingSessionRouteArgs(
+          SessionDetailsRoute.name,
+          args: SessionDetailsRouteArgs(
             key: key,
             bookingData: bookingData,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'WaitingSessionRoute';
+  static const String name = 'SessionDetailsRoute';
 
-  static const _i23.PageInfo<WaitingSessionRouteArgs> page =
-      _i23.PageInfo<WaitingSessionRouteArgs>(name);
+  static const _i23.PageInfo<SessionDetailsRouteArgs> page =
+      _i23.PageInfo<SessionDetailsRouteArgs>(name);
 }
 
-class WaitingSessionRouteArgs {
-  const WaitingSessionRouteArgs({
+class SessionDetailsRouteArgs {
+  const SessionDetailsRouteArgs({
     this.key,
     required this.bookingData,
   });
@@ -644,20 +644,20 @@ class WaitingSessionRouteArgs {
 
   @override
   String toString() {
-    return 'WaitingSessionRouteArgs{key: $key, bookingData: $bookingData}';
+    return 'SessionDetailsRouteArgs{key: $key, bookingData: $bookingData}';
   }
 }
 
 /// generated route for
-/// [_i22.WaitingSessionWrapperPage]
-class WaitingSessionWrapperRoute extends _i23.PageRouteInfo<void> {
-  const WaitingSessionWrapperRoute({List<_i23.PageRouteInfo>? children})
+/// [_i22.SessionDetailsWrapperPage]
+class SessionDetailsWrapperRoute extends _i23.PageRouteInfo<void> {
+  const SessionDetailsWrapperRoute({List<_i23.PageRouteInfo>? children})
       : super(
-          WaitingSessionWrapperRoute.name,
+          SessionDetailsWrapperRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'WaitingSessionWrapperRoute';
+  static const String name = 'SessionDetailsWrapperRoute';
 
   static const _i23.PageInfo<void> page = _i23.PageInfo<void>(name);
 }

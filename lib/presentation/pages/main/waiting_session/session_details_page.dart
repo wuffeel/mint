@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_cancellation_dialog.dart';
-import 'package:mint/presentation/pages/main/waiting_session/widgets/waiting_session_action_list.dart';
+import 'package:mint/presentation/pages/main/waiting_session/widgets/session_details_action_list.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
 import 'package:mint/theme/mint_text_styles.dart';
@@ -14,8 +14,8 @@ import '../../../../bloc/booking/booking_bloc.dart';
 import '../booking/booking_bottom_sheet.dart';
 
 @RoutePage()
-class WaitingSessionPage extends StatelessWidget {
-  const WaitingSessionPage({super.key, required this.bookingData});
+class SessionDetailsPage extends StatelessWidget {
+  const SessionDetailsPage({super.key, required this.bookingData});
 
   final BookingData bookingData;
 
@@ -115,7 +115,7 @@ class WaitingSessionPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    WaitingSessionActionList(
+                    SessionDetailsActionList(
                       onVideo: _isCallEnabled
                           ? () {
                               // TODO(wuffeel): add video call

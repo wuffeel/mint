@@ -4,8 +4,8 @@ import 'package:mint/gen/colors.gen.dart';
 
 import '../../../../../gen/assets.gen.dart';
 
-class WaitingSessionAction extends StatelessWidget {
-  const WaitingSessionAction({
+class SessionDetailsAction extends StatelessWidget {
+  const SessionDetailsAction({
     super.key,
     required this.svgIcon,
     required this.title,

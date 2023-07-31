@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/presentation/pages/main/waiting_session/widgets/waiting_session_action.dart';
+import 'package:mint/presentation/pages/main/waiting_session/widgets/session_details_action.dart';
 
 import '../../../../../gen/assets.gen.dart';
 
-class WaitingSessionActionList extends StatelessWidget {
-  const WaitingSessionActionList({
+class SessionDetailsActionList extends StatelessWidget {
+  const SessionDetailsActionList({
     super.key,
     this.onCall,
     this.onVideo,
@@ -33,7 +33,7 @@ class WaitingSessionActionList extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: WaitingSessionAction(
+                  child: SessionDetailsAction(
                     svgIcon: Assets.svg.call,
                     title: l10n.call,
                     onTap: onCall,
@@ -41,7 +41,7 @@ class WaitingSessionActionList extends StatelessWidget {
                 ),
                 const VerticalDivider(),
                 Expanded(
-                  child: WaitingSessionAction(
+                  child: SessionDetailsAction(
                     svgIcon: Assets.svg.video,
                     title: l10n.video,
                     onTap: onVideo,
@@ -49,7 +49,7 @@ class WaitingSessionActionList extends StatelessWidget {
                 ),
                 const VerticalDivider(),
                 Expanded(
-                  child: WaitingSessionAction(
+                  child: SessionDetailsAction(
                     svgIcon: Assets.svg.chat,
                     title: l10n.chat,
                     onTap: onChat,

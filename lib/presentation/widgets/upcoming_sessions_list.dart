@@ -37,9 +37,7 @@ class UpcomingSessionsList extends StatelessWidget {
           Widget buildUpcomingSession(int index) {
             return UpcomingSessionContainer(
               onTap: () => context.router.push(
-                WaitingSessionRoute(
-                  bookingData: sessionsList[index],
-                ),
+                SessionDetailsRoute(bookingData: sessionsList[index]),
               ),
               bookingData: sessionsList[index],
             );

@@ -24,9 +24,7 @@ class PreviousSessionsList extends StatelessWidget {
             separatorBuilder: (_, __) => SizedBox(height: 10.h),
             itemBuilder: (context, index) => UpcomingSessionContainer(
               onTap: () => context.router.push(
-                WaitingSessionRoute(
-                  bookingData: sessionsList[index],
-                ),
+                SessionDetailsRoute(bookingData: sessionsList[index]),
               ),
               bookingData: sessionsList[index],
             ),
