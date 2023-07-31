@@ -5,9 +5,9 @@ import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/expandable_text.dart';
 import 'package:mint/presentation/widgets/mint_rating_bar.dart';
+import 'package:mint/presentation/widgets/specialist_circle_avatar.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../utils/time_ago/time_ago_util.dart';
 
 class ReviewCardTile extends StatelessWidget {
@@ -43,7 +43,6 @@ class ReviewCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localPhoto = reviewModel.user.photoUrl;
     final content = reviewModel.content;
     final userReview = isUserReview;
     return Container(
@@ -59,25 +58,11 @@ class ReviewCardTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (localPhoto != null)
-                CircleAvatar(
-                  radius: 20.r,
-                  backgroundImage: NetworkImage(localPhoto),
-                )
-              else
-                CircleAvatar(
-                  radius: 20.r,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  child: Assets.svg.userPlaceholder.svg(
-                    width: 20.w,
-                    height: 20.h,
-                    fit: BoxFit.scaleDown,
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context).primaryColor,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
+              SpecialistCircleAvatar(
+                size: 20.w,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                photoUrl: reviewModel.user.photoUrl,
+              ),
               SizedBox(width: 8.w),
               Expanded(
                 child: Column(
