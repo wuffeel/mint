@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/mastercard_container.dart';
-import 'package:mint/presentation/pages/main/pick_up_specialist/widgets/pick_up_stepper.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint/utils/extended_widget_list.dart';
 
 import '../../../../../gen/assets.gen.dart';
 

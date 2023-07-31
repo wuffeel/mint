@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/utils/extended_widget_list.dart';
 
 import '../../../../../theme/mint_text_styles.dart';
 
@@ -138,19 +139,5 @@ class _PickUpStepperState extends State<PickUpStepper> {
         SizedBox(height: 26.h),
       ],
     );
-  }
-}
-
-// TODO(wuffeel): where this extension should be?
-extension ExtendedWidgetList on List<Widget> {
-  /// Insert [widget] between each member of this list
-  List<Widget> insertBetween(Widget widget) {
-    if (length > 1) {
-      for (var i = length - 1; i > 0; i--) {
-        insert(i, widget);
-      }
-    }
-
-    return this;
   }
 }
