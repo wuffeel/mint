@@ -64,13 +64,9 @@ class WaitingSessionPage extends StatelessWidget {
         DateTime.now().add(Duration(minutes: bookingData.durationMinutes)),
       );
 
-  /// Determines if the chat button is available or not
-  bool get _isChatEnabled =>
-      bookingData.bookTime.isBefore(DateTime.now()) && !_isSessionExpired;
-
   /// Determines if audio- and video-call button are available or not
   bool get _isCallEnabled =>
-      bookingData.bookTime.isAfter(DateTime.now()) && !_isSessionExpired;
+      bookingData.bookTime.isBefore(DateTime.now()) && !_isSessionExpired;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +126,7 @@ class WaitingSessionPage extends StatelessWidget {
                               // TODO(wuffeel): add audio call
                             }
                           : null,
-                      onChat: _isChatEnabled
+                      onChat: !_isSessionExpired
                           ? () {
                               // TODO(wuffeel): navigate user to chat
                             }
