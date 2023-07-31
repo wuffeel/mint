@@ -95,7 +95,9 @@ class _SessionsViewState extends State<_SessionsView> {
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   child: PageView(
                     controller: _pageController,
-                    onPageChanged: (page) => setState(() => _currentPage = page),
+                    onPageChanged: (page) => setState(
+                      () => _currentPage = page,
+                    ),
                     children: const <Widget>[
                       UpcomingSessionsList(isSliver: false),
                       PreviousSessionsList(),
