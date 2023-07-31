@@ -5,5 +5,5 @@ class BookingDuplicateException implements Exception {
   final String? message;
 
   @override
-  String toString() => '$code: $message';
+  String toString() => '[$code]: $message';
 }

@@ -84,7 +84,12 @@ class FirebaseBookingRepository implements BookingRepository {
       bookingData.specialistId,
       bookingData.bookTime,
     );
-    if (bookExists) throw BookingDuplicateException();
+    if (bookExists) {
+      throw BookingDuplicateException(
+        code: 'already-booked',
+        message: 'The time is already exist in bookings',
+      );
+    }
 
     if (isReschedule && previousBookingData != null) {
       await _bookingsCollectionRef.doc(previousBookingData.id).delete();
