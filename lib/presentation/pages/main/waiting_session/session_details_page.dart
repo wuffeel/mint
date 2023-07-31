@@ -60,8 +60,10 @@ class SessionDetailsPage extends StatelessWidget {
   bool get _isSessionStarted => bookingData.bookTime.isBefore(DateTime.now());
 
   /// Check if the session has passed
-  bool get _isSessionExpired => bookingData.bookTime.isBefore(
-        DateTime.now().add(Duration(minutes: bookingData.durationMinutes)),
+  bool get _isSessionExpired => DateTime.now().isAfter(
+        bookingData.bookTime.add(
+          Duration(minutes: bookingData.durationMinutes),
+        ),
       );
 
   /// Determines if audio- and video-call button are available or not
