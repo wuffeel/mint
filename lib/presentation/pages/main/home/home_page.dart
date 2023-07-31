@@ -57,7 +57,8 @@ class _HomePageView extends StatelessWidget {
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
                 ),
                 SliverStickyHeader.builder(
-                  builder: (context, state) => DecoratedBox(
+                  builder: (context, state) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.only(
