@@ -8,9 +8,11 @@ class MintAlertDialog extends StatelessWidget {
     super.key,
     required this.actionTitle,
     this.isDestructiveAction = true,
+    this.hasCancelButton = true,
     this.title,
     this.content,
     this.onAction,
+    this.cancelButtonTitle,
   });
 
   final String actionTitle;
@@ -18,6 +20,8 @@ class MintAlertDialog extends StatelessWidget {
   final Widget? title;
   final Widget? content;
   final VoidCallback? onAction;
+  final bool hasCancelButton;
+  final String? cancelButtonTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +31,9 @@ class MintAlertDialog extends StatelessWidget {
             title: title,
             content: content,
             actions: [
-              TextButton(
+              if (hasCancelButton) TextButton(
                 onPressed: () => context.router.pop(false),
-                child: Text(l10n.cancel),
+                child: Text(cancelButtonTitle ?? l10n.cancel),
               ),
               TextButton(
                 onPressed: onAction,
@@ -41,9 +45,9 @@ class MintAlertDialog extends StatelessWidget {
             title: title,
             content: content,
             actions: [
-              CupertinoDialogAction(
+              if (hasCancelButton) CupertinoDialogAction(
                 onPressed: () => context.router.pop(false),
-                child: Text(l10n.cancel),
+                child: Text(cancelButtonTitle ?? l10n.cancel),
               ),
               CupertinoDialogAction(
                 isDestructiveAction: isDestructiveAction,

@@ -8,6 +8,7 @@ import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_details.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/exit_booking_dialog.dart';
+import 'package:mint/presentation/widgets/error_alert_dialog.dart';
 import 'package:mint/presentation/widgets/error_snack_bar.dart';
 import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
@@ -100,23 +101,49 @@ class _BookingResumeView extends StatefulWidget {
 
 class _BookingResumePageState extends State<_BookingResumeView> {
   final _notesController = TextEditingController();
+  var _shouldPop = false;
 
   void _bookingListener(BuildContext context, BookingState state) {
-    if (state is BookingBookDuplicateFailure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        ErrorSnackBar(content: Text(context.l10n.timeIsAlreadyBooked)),
-      );
-    }
-    if (state is BookingBookLateFailure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        ErrorSnackBar(content: Text(context.l10n.bookTimePassed)),
-      );
+    if (state is BookingBookDuplicateFailure ||
+        state is BookingBookLateFailure) {
+      _showErrorDialog(context, state);
     }
     if (state is BookingBookFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
         ErrorSnackBar(content: Text(context.l10n.somethingWentWrongTryAgain)),
       );
     }
+  }
+
+  void _showErrorDialog(BuildContext context, BookingState state) {
+    final l10n = context.l10n;
+    final String errorTitle;
+    final String content;
+
+    if (state is BookingBookDuplicateFailure) {
+      errorTitle = l10n.timeIsBookedTitle;
+      content = l10n.chosenTimeAlreadyBooked;
+    } else if (state is BookingBookLateFailure) {
+      errorTitle = l10n.bookTimePassedTitle;
+      content = l10n.chosenBookTimePassed;
+    } else {
+      return;
+    }
+
+    setState(() => _shouldPop = true);
+    showDialog<void>(
+      context: context,
+      useRootNavigator: false,
+      builder: (dialogContext) => ErrorAlertDialog(
+        actionTitle: l10n.close,
+        title: Text(errorTitle),
+        content: Text(content),
+        onAction: () {
+          context.router.popUntilRoot();
+          dialogContext.router.pop();
+        },
+      ),
+    );
   }
 
   Future<bool?> _showExitConfirmDialog(BuildContext context) async {
@@ -136,7 +163,8 @@ class _BookingResumePageState extends State<_BookingResumeView> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return WillPopScope(
-      onWillPop: () async => await _showExitConfirmDialog(context) ?? false,
+      onWillPop: () async =>
+          _shouldPop || (await _showExitConfirmDialog(context) ?? false),
       child: Scaffold(
         appBar: const MintAppBar(),
         body: BlocListener<BookingBloc, BookingState>(

@@ -119,8 +119,10 @@
   "wrongCvv": "Некоректний CVV",
   "edit": "Редагувати",
   "delete": "Видалити",
-  "timeIsAlreadyBooked": "Час уже заброньовано. Будь ласка, забронюйте інший час.",
-  "bookTimePassed": "Час бронювання вже минув. Виберіть інший час",
+  "timeIsBookedTitle": "Час заброньовано",
+  "chosenTimeAlreadyBooked": "Обраний час вже заброньовано. Будь ласка, забронюйте інший час.",
+  "bookTimePassedTitle": "Час бронювання минув",
+  "chosenBookTimePassed": "Обраний час бронювання вже минув. Виберіть інший час",
   "creditCardAlreadySaved": "Кредитна картка вже збережена",
   "exitPaymentTitle": "Вийти з оплати",
   "doYouWantCancelPayment": "Чи хочете відмінити оплату",
@@ -136,5 +138,6 @@
   "notesWereNotSpecified": "Нотатки не були вказані",
   "noBookingInfoFound": "Інформацію для бронювання не було знайдено",
   "upcoming": "Майбутні",
-  "previous": "Попередні"
+  "previous": "Попередні",
+  "close": "Закрити"
 }

@@ -119,8 +119,10 @@
   "wrongCvv": "Wrong CVV",
   "edit": "Edit",
   "delete": "Delete",
-  "timeIsAlreadyBooked": "The time is already booked. Please book other time.",
-  "bookTimePassed": "The booking time already passed. Please choose other time.",
+  "timeIsBookedTitle": "Time is booked",
+  "chosenTimeAlreadyBooked": "The chosen time is already booked. Please book other time.",
+  "bookTimePassedTitle": "Booking time passed",
+  "chosenBookTimePassed": "The chosen booking time already passed. Please choose other time.",
   "creditCardAlreadySaved": "Credit card is already saved",
   "exitPaymentTitle": "Exit payment",
   "doYouWantCancelPayment": "Do you want to cancel payment",
@@ -136,5 +138,6 @@
   "notesWereNotSpecified": "Notes were not specified",
   "noBookingInfoFound": "No booking info found",
   "upcoming": "Upcoming",
-  "previous": "Previous"
+  "previous": "Previous",
+  "close": "Close"
 }
