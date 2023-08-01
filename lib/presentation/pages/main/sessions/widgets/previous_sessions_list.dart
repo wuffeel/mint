@@ -8,7 +8,9 @@ import '../../../../../routes/app_router.gr.dart';
 import '../../home/widgets/upcoming_session_container.dart';
 
 class PreviousSessionsList extends StatelessWidget {
-  const PreviousSessionsList({super.key});
+  const PreviousSessionsList({super.key, this.padding});
+
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class PreviousSessionsList extends StatelessWidget {
           final sessionsList = state.previousList;
 
           return ListView.separated(
+            padding: padding ?? EdgeInsets.zero,
             itemCount: sessionsList.length,
             separatorBuilder: (_, __) => SizedBox(height: 10.h),
             itemBuilder: (context, index) => UpcomingSessionContainer(

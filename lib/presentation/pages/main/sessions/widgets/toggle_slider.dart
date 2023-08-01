@@ -14,6 +14,8 @@ class ToggleSlider extends StatefulWidget {
   final int currentIndex;
   final List<Widget> items;
   final void Function(int) onItemTap;
+
+  /// Field represents the Align offset of container for currently selected item
   final double offset;
 
   @override
@@ -23,7 +25,6 @@ class ToggleSlider extends StatefulWidget {
 class _ToggleSliderState extends State<ToggleSlider> {
   @override
   Widget build(BuildContext context) {
-    final offset = widget.offset;
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.r),
       child: DecoratedBox(
@@ -35,7 +36,7 @@ class _ToggleSliderState extends State<ToggleSlider> {
             children: <Widget>[
               Align(
                 alignment: Alignment(
-                  (offset / (widget.items.length - 1)) * 2 - 1,
+                  (widget.offset / (widget.items.length - 1)) * 2 - 1,
                   0,
                 ),
                 child: FractionallySizedBox(

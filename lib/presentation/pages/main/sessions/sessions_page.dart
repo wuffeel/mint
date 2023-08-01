@@ -60,24 +60,18 @@ class _SessionsViewState extends State<_SessionsView> {
     final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 16.h),
-              AnimatedBuilder(
-                animation: _notifier,
-                builder: (context, child) => ToggleSlider(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 16.h),
+            AnimatedBuilder(
+              animation: _notifier,
+              builder: (context, child) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: ToggleSlider(
                   currentIndex: _currentPage,
                   items: [
-                    Text(
-                      l10n.upcoming,
-                      style: MintTextStyles.title3,
-                    ),
-                    Text(
-                      l10n.previous,
-                      style: MintTextStyles.title3,
-                    ),
+                    Text(l10n.upcoming, style: MintTextStyles.title3),
+                    Text(l10n.previous, style: MintTextStyles.title3),
                   ],
                   onItemTap: (index) {
                     setState(() => _currentPage = index);
@@ -90,23 +84,28 @@ class _SessionsViewState extends State<_SessionsView> {
                   offset: _notifier.value,
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (page) => setState(
-                      () => _currentPage = page,
-                    ),
-                    children: const <Widget>[
-                      UpcomingSessionsList(isSliver: false),
-                      PreviousSessionsList(),
-                    ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (page) => setState(
+                    () => _currentPage = page,
                   ),
+                  children: <Widget>[
+                    UpcomingSessionsList(
+                      isSliver: false,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    ),
+                    PreviousSessionsList(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
