@@ -12,6 +12,7 @@ class BookingData with _$BookingData {
     required String userId,
     required String notes,
     required DateTime bookTime,
+    required DateTime endTime,
     required int durationMinutes,
   }) = _BookingData;
 }

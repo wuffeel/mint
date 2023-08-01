@@ -17,6 +17,8 @@ class BookingDataDto with _$BookingDataDto {
     @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
     required DateTime bookTime,
     @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+    required DateTime endTime,
+    @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
     required DateTime createdAt,
   }) = _BookingDataDto;
 

@@ -28,6 +28,8 @@ mixin _$BookingDataDto {
   @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get bookTime => throw _privateConstructorUsedError;
   @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  DateTime get endTime => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,6 +53,8 @@ abstract class $BookingDataDtoCopyWith<$Res> {
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           DateTime bookTime,
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          DateTime endTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           DateTime createdAt});
 }
 
@@ -73,6 +77,7 @@ class _$BookingDataDtoCopyWithImpl<$Res, $Val extends BookingDataDto>
     Object? notes = null,
     Object? durationMinutes = null,
     Object? bookTime = null,
+    Object? endTime = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -100,6 +105,10 @@ class _$BookingDataDtoCopyWithImpl<$Res, $Val extends BookingDataDto>
           ? _value.bookTime
           : bookTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -125,6 +134,8 @@ abstract class _$$_BookingDataDtoCopyWith<$Res>
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           DateTime bookTime,
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          DateTime endTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           DateTime createdAt});
 }
 
@@ -145,6 +156,7 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
     Object? notes = null,
     Object? durationMinutes = null,
     Object? bookTime = null,
+    Object? endTime = null,
     Object? createdAt = null,
   }) {
     return _then(_$_BookingDataDto(
@@ -172,6 +184,10 @@ class __$$_BookingDataDtoCopyWithImpl<$Res>
           ? _value.bookTime
           : bookTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -191,6 +207,8 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
       required this.durationMinutes,
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           required this.bookTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          required this.endTime,
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           required this.createdAt})
       : super._();
@@ -213,11 +231,14 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
   final DateTime bookTime;
   @override
   @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  final DateTime endTime;
+  @override
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   final DateTime createdAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BookingDataDto(id: $id, specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, createdAt: $createdAt)';
+    return 'BookingDataDto(id: $id, specialistId: $specialistId, userId: $userId, notes: $notes, durationMinutes: $durationMinutes, bookTime: $bookTime, endTime: $endTime, createdAt: $createdAt)';
   }
 
   @override
@@ -231,6 +252,7 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('durationMinutes', durationMinutes))
       ..add(DiagnosticsProperty('bookTime', bookTime))
+      ..add(DiagnosticsProperty('endTime', endTime))
       ..add(DiagnosticsProperty('createdAt', createdAt));
   }
 
@@ -248,6 +270,7 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
                 other.durationMinutes == durationMinutes) &&
             (identical(other.bookTime, bookTime) ||
                 other.bookTime == bookTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -255,7 +278,7 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, specialistId, userId, notes,
-      durationMinutes, bookTime, createdAt);
+      durationMinutes, bookTime, endTime, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -281,6 +304,8 @@ abstract class _BookingDataDto extends BookingDataDto {
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           required final DateTime bookTime,
       @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+          required final DateTime endTime,
+      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
           required final DateTime createdAt}) = _$_BookingDataDto;
   const _BookingDataDto._() : super._();
 
@@ -300,6 +325,9 @@ abstract class _BookingDataDto extends BookingDataDto {
   @override
   @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get bookTime;
+  @override
+  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  DateTime get endTime;
   @override
   @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
   DateTime get createdAt;

@@ -22,6 +22,7 @@ class BookingDataFromDto
       userId: param.userId,
       notes: param.notes,
       bookTime: param.bookTime.toLocal(),
+      endTime: param.endTime.toLocal(),
       durationMinutes: param.durationMinutes,
     );
   }

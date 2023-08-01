@@ -13,6 +13,7 @@ class BookingDataToDto implements Factory<BookingDataDto, BookingData> {
         userId: param.userId,
         notes: param.notes,
         bookTime: param.bookTime.toUtc(),
+        endTime: param.endTime.toUtc(),
         durationMinutes: param.durationMinutes,
         createdAt: DateTime.now().toUtc(),
       );

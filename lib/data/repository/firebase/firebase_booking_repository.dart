@@ -115,6 +115,14 @@ class FirebaseBookingRepository implements BookingRepository {
     return bookingSnapshot.docs.isNotEmpty;
   }
 
+  /// Retrieves a list of sessions (consultations) for a given user.
+  ///
+  /// [isUpcoming] boolean defines which sessions list should be fetched.
+  ///
+  /// Will contain sessions that either:
+  /// - have an 'endTime' greater than the current UTC time (upcoming sessions)
+  /// - 'endTime' less than the current UTC time (previous sessions).
+  ///
   Future<List<BookingDataDto>> _getSessions(
     String userId, {
     required bool isUpcoming,
@@ -122,12 +130,12 @@ class FirebaseBookingRepository implements BookingRepository {
     final nowUtc = DateTime.now().toUtc();
 
     final query = isUpcoming
-        ? _bookingsCollectionRef.where('bookTime', isGreaterThan: nowUtc)
-        : _bookingsCollectionRef.where('bookTime', isLessThan: nowUtc);
+        ? _bookingsCollectionRef.where('endTime', isGreaterThan: nowUtc)
+        : _bookingsCollectionRef.where('endTime', isLessThan: nowUtc);
 
     final sessionsSnapshot = await query
         .where('userId', isEqualTo: userId)
-        .orderBy('bookTime', descending: !isUpcoming)
+        .orderBy('endTime', descending: !isUpcoming)
         .get();
 
     return sessionsSnapshot.docs

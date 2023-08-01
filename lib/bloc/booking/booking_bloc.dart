@@ -159,6 +159,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         userId: user.id,
         notes: notes,
         bookTime: bookTime,
+        endTime: bookTime.add(Duration(minutes: durationMinutes)),
         durationMinutes: durationMinutes,
       );
       final booking = previousBookingData != null

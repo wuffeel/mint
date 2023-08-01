@@ -14,6 +14,7 @@ _$_BookingDataDto _$$_BookingDataDtoFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String,
       durationMinutes: json['durationMinutes'] as int,
       bookTime: DateUtils.convertToDateTime(json['bookTime']),
+      endTime: DateUtils.convertToDateTime(json['endTime']),
       createdAt: DateUtils.convertToDateTime(json['createdAt']),
     );
 
@@ -25,5 +26,6 @@ Map<String, dynamic> _$$_BookingDataDtoToJson(_$_BookingDataDto instance) =>
       'notes': instance.notes,
       'durationMinutes': instance.durationMinutes,
       'bookTime': _toDateTime(instance.bookTime),
+      'endTime': _toDateTime(instance.endTime),
       'createdAt': _toDateTime(instance.createdAt),
     };
