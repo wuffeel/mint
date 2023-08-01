@@ -3,13 +3,6 @@ part of 'booking_bloc.dart';
 @immutable
 abstract class BookingEvent {}
 
-class BookingWorkInfoRequested extends BookingEvent {
-  BookingWorkInfoRequested(this.specialistId, {this.isReschedule = false});
-
-  final String specialistId;
-  final bool isReschedule;
-}
-
 class BookingBookRequested extends BookingEvent {
   BookingBookRequested(
     this.specialistModel,

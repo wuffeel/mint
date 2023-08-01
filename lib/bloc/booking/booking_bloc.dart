@@ -7,12 +7,10 @@ import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/booking_controller.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
-import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
 import 'package:mint/domain/usecase/booking_cancel_use_case.dart';
 import 'package:mint/domain/usecase/booking_reschedule_use_case.dart';
-import 'package:mint/domain/usecase/specialist_work_info_fetch_use_case.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/user_model/user_model.dart';
@@ -24,7 +22,6 @@ part 'booking_state.dart';
 @injectable
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc(
-    this._specialistWorkInfoFetchUseCase,
     this._bookingBookUseCase,
     this._bookingRescheduleUseCase,
     this._bookingCancelUseCase,
@@ -32,13 +29,11 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     this._bookingController,
   ) : super(BookingInitial()) {
     _subscribeToUserChange();
-    on<BookingWorkInfoRequested>(_onWorkInfoRequest);
     on<BookingBookRequested>(_onBookRequest);
     on<BookingRescheduleRequested>(_onBookReschedule);
     on<BookingCancelRequested>(_onBookingCancel);
   }
 
-  final SpecialistWorkInfoFetchUseCase _specialistWorkInfoFetchUseCase;
   final BookingBookUseCase _bookingBookUseCase;
   final BookingRescheduleUseCase _bookingRescheduleUseCase;
   final BookingCancelUseCase _bookingCancelUseCase;
@@ -59,22 +54,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   Future<void> close() async {
     await _userSubscription.cancel();
     return super.close();
-  }
-
-  Future<void> _onWorkInfoRequest(
-    BookingWorkInfoRequested event,
-    Emitter<BookingState> emit,
-  ) async {
-    emit(BookingInfoLoading());
-    try {
-      final bookingInfo = await _specialistWorkInfoFetchUseCase(
-        event.specialistId,
-      );
-      emit(BookingInfoFetchSuccess(bookingInfo));
-    } catch (error) {
-      log('BookingInfoFetchFailure: $error');
-      emit(BookingInfoFetchFailure());
-    }
   }
 
   Future<void> _onBookRequest(

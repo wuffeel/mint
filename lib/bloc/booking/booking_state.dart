@@ -5,16 +5,6 @@ abstract class BookingState {}
 
 class BookingInitial extends BookingState {}
 
-class BookingInfoLoading extends BookingState {}
-
-class BookingInfoFetchSuccess extends BookingState {
-  BookingInfoFetchSuccess(this.bookingInfo);
-
-  final SpecialistWorkInfo bookingInfo;
-}
-
-class BookingInfoFetchFailure extends BookingState {}
-
 class BookingBookLoading extends BookingState {}
 
 class BookingBookSuccess extends BookingState {

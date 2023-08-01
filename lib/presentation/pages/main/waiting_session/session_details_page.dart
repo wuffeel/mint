@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/work_info/work_info_bloc.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
+import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_cancellation_dialog.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_details_action_list.dart';
@@ -71,8 +73,8 @@ class SessionDetailsPage extends StatelessWidget {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => BlocProvider.value(
-        value: context.read<BookingBloc>(),
+      builder: (_) => BlocProvider(
+        create: (context) => getIt<WorkInfoBloc>(),
         child: BookingBottomSheet(
           specialistModel: specialistModel,
           previousBookingData: isReschedule ? bookingData : null,
