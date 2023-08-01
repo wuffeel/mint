@@ -35,19 +35,29 @@ class FirebaseBookingRepository implements BookingRepository {
 
   @override
   Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData) async {
-    return _bookSpecialist(bookingData);
+    final bookExists = await _isBookExist(
+      bookingData.specialistId,
+      bookingData.bookTime,
+    );
+    if (bookExists) {
+      throw BookingDuplicateException(
+        code: 'already-booked',
+        message: 'The time is already exist in bookings',
+      );
+    }
+
+    final booking = await _bookingsCollectionRef.add(
+      bookingData.toJsonWithoutId(),
+    );
+
+    return bookingData.copyWith(id: booking.id);
   }
 
   @override
-  Future<BookingDataDto> bookReschedule(
-    BookingDataDto previousBookingData,
-    BookingDataDto newBookingData,
-  ) async {
-    return _bookSpecialist(
-      newBookingData,
-      isReschedule: true,
-      previousBookingData: previousBookingData,
-    );
+  Future<void> bookReschedule(BookingDataDto newBookingData) async {
+    return _bookingsCollectionRef
+        .doc(newBookingData.id)
+        .update(newBookingData.toJsonWithoutId());
   }
 
   @override
@@ -63,42 +73,6 @@ class FirebaseBookingRepository implements BookingRepository {
   @override
   Future<List<BookingDataDto>> getPreviousSessions(String userId) async {
     return _getSessions(userId, isUpcoming: false);
-  }
-
-  /// Used to book specialist or reschedule existing booking.
-  ///
-  /// - If [bookingData] with same 'specialistId' and 'bookTime' already exists,
-  /// [BookingDuplicateException] is thrown.
-  ///
-  /// - If [isReschedule] and [previousBookingData] are provided, deletes
-  /// [previousBookingData] from database.
-  ///
-  /// Returns:
-  /// - [BookingDataDto] with generated id by Firebase
-  Future<BookingDataDto> _bookSpecialist(
-    BookingDataDto bookingData, {
-    bool isReschedule = false,
-    BookingDataDto? previousBookingData,
-  }) async {
-    final bookExists = await _isBookExist(
-      bookingData.specialistId,
-      bookingData.bookTime,
-    );
-    if (bookExists) {
-      throw BookingDuplicateException(
-        code: 'already-booked',
-        message: 'The time is already exist in bookings',
-      );
-    }
-
-    if (isReschedule && previousBookingData != null) {
-      await _bookingsCollectionRef.doc(previousBookingData.id).delete();
-    }
-
-    final booking = await _bookingsCollectionRef.add(
-      bookingData.toJsonWithoutId(),
-    );
-    return bookingData.copyWith(id: booking.id);
   }
 
   /// Checks for existing book entry in Firebase.

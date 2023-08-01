@@ -8,10 +8,7 @@ class BookingRescheduleUseCase {
 
   final BookingService _service;
 
-  Future<BookingData> call(
-    BookingData previousBookingData,
-    BookingData newBookingData,
-  ) {
-    return _service.bookReschedule(previousBookingData, newBookingData);
+  Future<void> call(BookingData newBookingData) {
+    return _service.bookReschedule(newBookingData);
   }
 }

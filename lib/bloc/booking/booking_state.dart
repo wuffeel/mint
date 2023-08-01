@@ -31,6 +31,8 @@ class BookingBookDuplicateFailure extends BookingState {}
 
 class BookingRescheduleSuccess extends BookingState {}
 
+class BookingRescheduleFailure extends BookingState {}
+
 class BookingCancelSuccess extends BookingState {}
 
 class BookingCancelFailure extends BookingState {}

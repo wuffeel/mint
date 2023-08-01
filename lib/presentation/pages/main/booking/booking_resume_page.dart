@@ -37,17 +37,11 @@ class BookingResumePage extends StatelessWidget {
   /// Requests either booking or reschedule, depending on whether
   /// [previousBookingData] provided or not respectively
   void _bookSpecialist(BuildContext context, String notes) {
-    final previousBooking = previousBookingData;
+    final previous = previousBookingData;
     final bookingBloc = context.read<BookingBloc>();
-    if (previousBooking != null) {
+    if (previous != null) {
       bookingBloc.add(
-        BookingRescheduleRequested(
-          specialistModel,
-          bookTime,
-          notes,
-          durationMinutes,
-          previousBookingData: previousBooking,
-        ),
+        BookingRescheduleRequested(previous, bookTime, notes, durationMinutes),
       );
     } else {
       bookingBloc.add(

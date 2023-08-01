@@ -11,6 +11,12 @@ class UpcomingSessionsBookingAdded extends UpcomingSessionsEvent {
   final BookingData bookingData;
 }
 
+class UpcomingSessionsBookingRescheduled extends UpcomingSessionsEvent {
+  UpcomingSessionsBookingRescheduled(this.bookingData);
+
+  final BookingData bookingData;
+}
+
 class UpcomingSessionsBookingCancelled extends UpcomingSessionsEvent {
   UpcomingSessionsBookingCancelled(this.bookingId);
 

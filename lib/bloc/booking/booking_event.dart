@@ -26,18 +26,16 @@ class BookingBookRequested extends BookingEvent {
 
 class BookingRescheduleRequested extends BookingEvent {
   BookingRescheduleRequested(
-    this.specialistModel,
+    this.previousBooking,
     this.bookTime,
     this.notes,
-    this.durationMinutes, {
-    required this.previousBookingData,
-  });
+    this.durationMinutes,
+  );
 
-  final SpecialistModel specialistModel;
+  final BookingData previousBooking;
   final DateTime bookTime;
   final String notes;
   final int durationMinutes;
-  final BookingData previousBookingData;
 }
 
 class BookingCancelRequested extends BookingEvent {

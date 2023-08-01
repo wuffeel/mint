@@ -41,15 +41,10 @@ class FirebaseBookingService implements BookingService {
   }
 
   @override
-  Future<BookingData> bookReschedule(
-    BookingData previousBookingData,
-    BookingData newBookingData,
-  ) async {
-    final booking = await _bookingRepository.bookReschedule(
-      _bookingDataToDto.create(previousBookingData),
+  Future<void> bookReschedule(BookingData newBookingData) async {
+    return _bookingRepository.bookReschedule(
       _bookingDataToDto.create(newBookingData),
     );
-    return newBookingData.copyWith(id: booking.id);
   }
 
   @override

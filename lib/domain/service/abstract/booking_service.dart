@@ -6,10 +6,7 @@ abstract class BookingService {
 
   Future<BookingData> bookSpecialist(BookingData bookingData);
 
-  Future<BookingData> bookReschedule(
-    BookingData previousBookingData,
-    BookingData newBookingData,
-  );
+  Future<void> bookReschedule(BookingData newBookingData);
 
   Future<void> cancelBooking(String bookingId);
 

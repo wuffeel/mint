@@ -6,10 +6,7 @@ abstract class BookingRepository {
 
   Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData);
 
-  Future<BookingDataDto> bookReschedule(
-    BookingDataDto previousBookingData,
-    BookingDataDto newBookingData,
-  );
+  Future<void> bookReschedule(BookingDataDto newBookingData);
 
   Future<void> cancelBooking(String bookingId);
 

@@ -27,6 +27,7 @@ class UpcomingSessionsBloc
     _subscribeToBookingChange();
     on<UpcomingSessionsFetchRequested>(_onUpcomingFetch);
     on<UpcomingSessionsBookingAdded>(_onNewBooking);
+    on<UpcomingSessionsBookingRescheduled>(_onRescheduleBooking);
     on<UpcomingSessionsBookingCancelled>(_onCancelBooking);
   }
 
@@ -38,6 +39,7 @@ class UpcomingSessionsBloc
 
   late final StreamSubscription<UserModel?> _userSubscription;
   late final StreamSubscription<BookingData> _newBookingSubscription;
+  late final StreamSubscription<BookingData> _rescheduleSubscription;
   late final StreamSubscription<String> _cancelBookingSubscription;
 
   void _subscribeToUserChange() {
@@ -51,6 +53,10 @@ class UpcomingSessionsBloc
         _bookingController.newBooking.listen((bookingData) {
       add(UpcomingSessionsBookingAdded(bookingData));
     });
+    _rescheduleSubscription =
+        _bookingController.rescheduleBooking.listen((newBookingData) {
+      add(UpcomingSessionsBookingRescheduled(newBookingData));
+    });
     _cancelBookingSubscription =
         _bookingController.cancelBooking.listen((bookingId) {
       add(UpcomingSessionsBookingCancelled(bookingId));
@@ -61,6 +67,7 @@ class UpcomingSessionsBloc
   Future<void> close() async {
     await _userSubscription.cancel();
     await _newBookingSubscription.cancel();
+    await _rescheduleSubscription.cancel();
     await _cancelBookingSubscription.cancel();
     return super.close();
   }
@@ -94,6 +101,20 @@ class UpcomingSessionsBloc
       ..sort((a, b) => a.bookTime.compareTo(b.bookTime));
     final twoDaysList = _getTwoDaysList(upcomingList);
 
+    emit(UpcomingSessionsFetchSuccess(upcomingList, twoDaysList));
+  }
+
+  void _onRescheduleBooking(
+    UpcomingSessionsBookingRescheduled event,
+    Emitter<UpcomingSessionsState> emit,
+  ) {
+    final state = this.state;
+    if (state is! UpcomingSessionsFetchSuccess) return;
+
+    final upcomingList = state.upcomingList.map((session) {
+      return session.id == event.bookingData.id ? event.bookingData : session;
+    }).toList();
+    final twoDaysList = _getTwoDaysList(upcomingList);
     emit(UpcomingSessionsFetchSuccess(upcomingList, twoDaysList));
   }
 
