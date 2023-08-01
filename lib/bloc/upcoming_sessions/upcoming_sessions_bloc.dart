@@ -26,6 +26,8 @@ class UpcomingSessionsBloc
     _subscribeToUserChange();
     _subscribeToBookingChange();
     on<UpcomingSessionsFetchRequested>(_onUpcomingFetch);
+    on<UpcomingSessionsBookingAdded>(_onNewBooking);
+    on<UpcomingSessionsBookingCancelled>(_onCancelBooking);
   }
 
   final FetchUpcomingSessionsUseCase _fetchUpcomingSessionsUseCase;
@@ -35,7 +37,8 @@ class UpcomingSessionsBloc
   final BookingController _bookingController;
 
   late final StreamSubscription<UserModel?> _userSubscription;
-  late final StreamSubscription<bool> _bookingSubscription;
+  late final StreamSubscription<BookingData> _newBookingSubscription;
+  late final StreamSubscription<String> _cancelBookingSubscription;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
@@ -44,15 +47,21 @@ class UpcomingSessionsBloc
   }
 
   void _subscribeToBookingChange() {
-    _bookingSubscription = _bookingController.bookings.listen((_) {
-      add(UpcomingSessionsFetchRequested());
+    _newBookingSubscription =
+        _bookingController.newBooking.listen((bookingData) {
+      add(UpcomingSessionsBookingAdded(bookingData));
+    });
+    _cancelBookingSubscription =
+        _bookingController.cancelBooking.listen((bookingId) {
+      add(UpcomingSessionsBookingCancelled(bookingId));
     });
   }
 
   @override
   Future<void> close() async {
     await _userSubscription.cancel();
-    await _bookingSubscription.cancel();
+    await _newBookingSubscription.cancel();
+    await _cancelBookingSubscription.cancel();
     return super.close();
   }
 
@@ -76,5 +85,30 @@ class UpcomingSessionsBloc
       log('UpcomingSessionsFetchFailure: $error');
       emit(UpcomingSessionsFetchFailure());
     }
+  }
+
+  void _onNewBooking(
+    UpcomingSessionsBookingAdded event,
+    Emitter<UpcomingSessionsState> emit,
+  ) {
+    final state = this.state;
+    if (state is! UpcomingSessionsFetchSuccess) return;
+
+    final updatedList = [...state.upcomingList, event.bookingData]
+      ..sort((a, b) => a.bookTime.compareTo(b.bookTime));
+    emit(UpcomingSessionsFetchSuccess(updatedList));
+  }
+
+  void _onCancelBooking(
+    UpcomingSessionsBookingCancelled event,
+    Emitter<UpcomingSessionsState> emit,
+  ) {
+    final state = this.state;
+    if (state is! UpcomingSessionsFetchSuccess) return;
+
+    final updatedList = state.upcomingList
+      ..removeWhere((session) => session.id == event.bookingId);
+
+    emit(UpcomingSessionsFetchSuccess(updatedList));
   }
 }

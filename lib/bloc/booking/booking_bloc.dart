@@ -109,8 +109,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     Emitter<BookingState> emit,
   ) async {
     try {
-      await _bookingCancelUseCase(event.bookingId);
-      _bookingController.addToBookingsStream(hasChanged: true);
+      final bookingId = event.bookingId;
+      await _bookingCancelUseCase(bookingId);
+      _bookingController.addToCancelBookingStream(bookingId);
       emit(BookingCancelSuccess());
     } catch (error) {
       log('BookingCancelFailure: $error');
@@ -167,7 +168,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           : await _bookingBookUseCase(bookingData);
 
       // Updating bookings stream here to get actual upcoming sessions info
-      _bookingController.addToBookingsStream(hasChanged: true);
+      _bookingController.addToNewBookingStream(bookingData);
 
       previousBookingData != null
           ? emit(BookingRescheduleSuccess())

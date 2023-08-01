@@ -1,13 +1,19 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:mint/domain/entity/booking_data/booking_data.dart';
 
 @lazySingleton
 class BookingController {
-  final _bookingController = StreamController<bool>.broadcast();
+  final _newBookingController = StreamController<BookingData>.broadcast();
+  final _cancelBookingController = StreamController<String>.broadcast();
 
-  Stream<bool> get bookings => _bookingController.stream;
+  Stream<BookingData> get newBooking => _newBookingController.stream;
+  Stream<String> get cancelBooking => _cancelBookingController.stream;
 
-  void addToBookingsStream({required bool hasChanged}) =>
-      _bookingController.add(hasChanged);
+  void addToNewBookingStream(BookingData bookingData) =>
+      _newBookingController.add(bookingData);
+
+  void addToCancelBookingStream(String bookingId) =>
+      _cancelBookingController.add(bookingId);
 }
