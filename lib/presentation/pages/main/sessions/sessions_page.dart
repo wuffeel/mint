@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/previous_sessions/previous_sessions_bloc.dart';
+import 'package:mint/bloc/upcoming_sessions/upcoming_sessions_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/sessions/widgets/previous_sessions_list.dart';
 import 'package:mint/presentation/pages/main/sessions/widgets/toggle_slider.dart';
+import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
 import 'package:mint/presentation/widgets/upcoming_sessions_list.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
@@ -46,6 +48,11 @@ class _SessionsViewState extends State<_SessionsView> {
   void _onScroll() {
     final page = _pageController.page;
     if (page != null) _notifier.value = page;
+  }
+
+  void _onSessionsRefresh() {
+    context.read<UpcomingSessionsBloc>().add(UpcomingSessionsFetchRequested());
+    context.read<PreviousSessionsBloc>().add(PreviousSessionsFetchRequested());
   }
 
   @override
@@ -94,12 +101,18 @@ class _SessionsViewState extends State<_SessionsView> {
                     () => _currentPage = page,
                   ),
                   children: <Widget>[
-                    UpcomingSessionsList(
-                      isSliver: false,
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    MintRefreshIndicator(
+                      onRefresh: _onSessionsRefresh,
+                      child: UpcomingSessionsList(
+                        isSliver: false,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      ),
                     ),
-                    PreviousSessionsList(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    MintRefreshIndicator(
+                      onRefresh: _onSessionsRefresh,
+                      child: PreviousSessionsList(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      ),
                     ),
                   ],
                 ),
