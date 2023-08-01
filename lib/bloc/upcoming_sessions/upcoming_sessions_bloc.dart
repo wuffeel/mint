@@ -74,13 +74,9 @@ class UpcomingSessionsBloc
 
     try {
       emit(UpcomingSessionsFetchLoading());
-      final consultations = await _fetchUpcomingSessionsUseCase(user.id);
-      final now = DateTime.now();
-      final dayAfter =
-          DateTime(now.year, now.month, now.day + 2, now.hour, now.minute);
-      final inTwoDays =
-          consultations.where((e) => e.bookTime.isBefore(dayAfter)).toList();
-      emit(UpcomingSessionsFetchSuccess(inTwoDays));
+      final upcomingList = await _fetchUpcomingSessionsUseCase(user.id);
+      final twoDaysList = _getTwoDaysList(upcomingList);
+      emit(UpcomingSessionsFetchSuccess(upcomingList, twoDaysList));
     } catch (error) {
       log('UpcomingSessionsFetchFailure: $error');
       emit(UpcomingSessionsFetchFailure());
@@ -94,9 +90,11 @@ class UpcomingSessionsBloc
     final state = this.state;
     if (state is! UpcomingSessionsFetchSuccess) return;
 
-    final updatedList = [...state.upcomingList, event.bookingData]
+    final upcomingList = [...state.upcomingList, event.bookingData]
       ..sort((a, b) => a.bookTime.compareTo(b.bookTime));
-    emit(UpcomingSessionsFetchSuccess(updatedList));
+    final twoDaysList = _getTwoDaysList(upcomingList);
+
+    emit(UpcomingSessionsFetchSuccess(upcomingList, twoDaysList));
   }
 
   void _onCancelBooking(
@@ -106,9 +104,25 @@ class UpcomingSessionsBloc
     final state = this.state;
     if (state is! UpcomingSessionsFetchSuccess) return;
 
-    final updatedList = state.upcomingList
+    final upcomingList = state.upcomingList
       ..removeWhere((session) => session.id == event.bookingId);
+    final twoDaysList = _getTwoDaysList(upcomingList);
 
-    emit(UpcomingSessionsFetchSuccess(updatedList));
+    emit(UpcomingSessionsFetchSuccess(upcomingList, twoDaysList));
+  }
+
+  /// Returns [upcomingList] where bookTime is within the next two days
+  List<BookingData> _getTwoDaysList(List<BookingData> upcomingList) {
+    final now = DateTime.now();
+    final twoDaysAfter = DateTime(
+      now.year,
+      now.month,
+      now.day + 2,
+      now.hour,
+      now.minute,
+    );
+    return upcomingList
+        .where((e) => e.bookTime.isBefore(twoDaysAfter))
+        .toList();
   }
 }

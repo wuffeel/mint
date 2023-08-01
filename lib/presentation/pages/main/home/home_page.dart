@@ -54,6 +54,7 @@ class _HomePageView extends StatelessWidget {
                 const SliverToBoxAdapter(child: SizedBox(height: 1)),
                 UpcomingSessionsList(
                   isSliver: true,
+                  isTwoDaysList: true,
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
                 ),
                 SliverStickyHeader.builder(

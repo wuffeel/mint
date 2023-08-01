@@ -9,10 +9,19 @@ import '../../bloc/upcoming_sessions/upcoming_sessions_bloc.dart';
 import 'loading_indicator.dart';
 
 class UpcomingSessionsList extends StatelessWidget {
-  const UpcomingSessionsList({super.key, required this.isSliver, this.padding});
+  const UpcomingSessionsList({
+    super.key,
+    required this.isSliver,
+    this.isTwoDaysList = false,
+    this.padding,
+  });
 
   final bool isSliver;
   final EdgeInsetsGeometry? padding;
+
+  /// Identifies whether to show the entire upcoming list or only bookings
+  /// within the next two days.
+  final bool isTwoDaysList;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +34,8 @@ class UpcomingSessionsList extends StatelessWidget {
                 )
               : const Center(child: LoadingIndicator());
         } else if (state is UpcomingSessionsFetchSuccess) {
-          final sessionsList = state.upcomingList;
+          final sessionsList =
+              isTwoDaysList ? state.twoDaysList : state.upcomingList;
           final itemCount = sessionsList.length;
 
           if (itemCount == 0) {
