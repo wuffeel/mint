@@ -13,12 +13,12 @@ class SpecialistBookingTile extends StatelessWidget {
     super.key,
     required this.specialistModel,
     required this.bookTime,
-    required this.durationMinutes,
+    required this.endTime,
   });
 
   final SpecialistModel specialistModel;
   final DateTime bookTime;
-  final int durationMinutes;
+  final DateTime endTime;
 
   Color _getDateColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
@@ -26,10 +26,9 @@ class SpecialistBookingTile extends StatelessWidget {
         : MintColors.quarternary1;
   }
 
-  String _getTimeString(DateTime time, int durationMinutes) {
-    final consultationEnd = time.add(Duration(minutes: durationMinutes));
-    final start = DateFormat('h:mm').format(time);
-    final end = DateFormat('h:mm a').format(consultationEnd);
+  String _getTimeString(DateTime startTime, DateTime endTime) {
+    final start = DateFormat('h:mm').format(startTime);
+    final end = DateFormat('h:mm a').format(endTime);
     return '$start-$end';
   }
 
@@ -111,7 +110,7 @@ class SpecialistBookingTile extends StatelessWidget {
                 ),
               ),
               Text(
-                _getTimeString(bookTime, durationMinutes),
+                _getTimeString(bookTime, endTime),
                 style: MintTextStyles.footnote.copyWith(
                   color: _getDateColor(context),
                 ),

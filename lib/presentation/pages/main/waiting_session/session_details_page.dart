@@ -128,11 +128,7 @@ class SessionDetailsPage extends StatelessWidget {
   bool _isSessionStarted() => bookingData.bookTime.isBefore(DateTime.now());
 
   /// Check if the session has passed
-  bool _isSessionExpired() => DateTime.now().isAfter(
-        bookingData.bookTime.add(
-          Duration(minutes: bookingData.durationMinutes),
-        ),
-      );
+  bool _isSessionExpired() => DateTime.now().isAfter(bookingData.endTime);
 
   /// Determines if session currently ongoing
   bool _isSessionOngoing() => _isSessionStarted() && !_isSessionExpired();
@@ -161,7 +157,7 @@ class SessionDetailsPage extends StatelessWidget {
                     SpecialistBookingTile(
                       specialistModel: specialistModel,
                       bookTime: bookingData.bookTime,
-                      durationMinutes: bookingData.durationMinutes,
+                      endTime: bookingData.endTime,
                     ),
                     SizedBox(height: 16.h),
                     DecoratedBox(
