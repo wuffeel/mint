@@ -46,7 +46,6 @@ class FirebaseUserRepository implements UserRepository {
 
   Future<void> _addNewUser(User user) async {
     await _userCollectionRef.doc(user.uid).set({
-      'id': user.uid,
       'phoneNumber': user.phoneNumber,
     });
   }
