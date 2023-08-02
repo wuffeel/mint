@@ -55,7 +55,7 @@ class CheckoutDetailsPage extends StatelessWidget {
                     SpecialistBookingTile(
                       specialistModel: bookingData.specialistModel,
                       bookTime: bookingData.bookTime,
-                      durationMinutes: bookingData.durationMinutes,
+                      endTime: bookingData.endTime,
                     ),
                     SizedBox(height: 24.h),
                     Text(
