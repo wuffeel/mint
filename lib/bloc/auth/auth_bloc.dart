@@ -12,6 +12,7 @@ import 'package:mint/domain/usecase/verify_otp_use_case.dart';
 import 'package:mint/domain/usecase/verify_phone_use_case.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 @injectable
@@ -100,7 +101,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         otpCode: event.otpCode,
         verificationId: localState.phoneCodeSentData.verificationId,
       );
-      emit(AuthOtpVerificationSuccess());
+      emit(
+        AuthOtpVerificationSuccess(
+          localState.phoneNumber,
+          localState.phoneCodeSentData,
+        ),
+      );
     } catch (error) {
       log('OtpVerificationError: $error');
       if (error.toString().contains('invalid-verification-code')) {

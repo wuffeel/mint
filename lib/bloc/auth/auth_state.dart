@@ -44,6 +44,8 @@ class AuthOtpResendFailure extends AuthPhoneVerificationSuccess {
   AuthOtpResendFailure(super.phoneNumber, super.phoneCodeSentData);
 }
 
-class AuthOtpVerificationSuccess extends AuthState {}
+class AuthOtpVerificationSuccess extends AuthPhoneVerificationSuccess {
+  AuthOtpVerificationSuccess(super.phoneNumber, super.phoneCodeSentData);
+}
 
 class AuthForgotPinLoading extends AuthState {}
