@@ -8,6 +8,7 @@ import 'package:mint/presentation/app/app.dart';
 import 'injector/injector.dart';
 
 Future<void> main() async {
+  // TODO(wuffel): where this one should be moved?
   Stripe.publishableKey = 'pk_test_51NXisMDM3y3HeQ88i2SIRHpLikPb7J63tZj5lQvKbK'
       'sWK3rJQJDs1ZmNX3wvxajQW58bSQmmblaD9YUHh8WZ86jx00qBiTC44O';
   WidgetsFlutterBinding.ensureInitialized();
