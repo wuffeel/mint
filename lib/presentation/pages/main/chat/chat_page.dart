@@ -189,9 +189,6 @@ class _ChatViewState extends State<_ChatView> {
               children: <Widget>[
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(_focusNode);
-                    },
                     onTapDown: _storeTapPosition,
                     child: ui.Chat(
                       bubbleBuilder: _bubbleBuilder,
@@ -226,6 +223,13 @@ class _ChatViewState extends State<_ChatView> {
                       hideBackgroundOnEmojiMessages:
                           _hideBackgroundOnEmojiMessages,
                       messages: state.messages,
+                      onBackgroundTap: () {
+                        if (!_emojiPanelHidden) {
+                          setState(
+                            () => _emojiPanelHidden = true,
+                          );
+                        }
+                      },
                       onMessageTap: _handleMessageTap,
                       onMessageLongPress: _showMessageActionsMenu,
                       onPreviewDataFetched: _previewDataFetched,
