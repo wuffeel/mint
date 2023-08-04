@@ -143,5 +143,7 @@
   "sessionExpiredTitle": "Session expired",
   "sessionExpiredContent": "Action is unavailable. Session is already passed",
   "message": "Message",
-  "bookAgain": "Book again"
+  "bookAgain": "Book again",
+  "attachImage": "Attach image",
+  "attachFile": "Attach file"
 }

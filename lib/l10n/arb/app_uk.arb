@@ -143,5 +143,7 @@
   "sessionExpiredTitle": "Сеанс закінчився",
   "sessionExpiredContent": "Дія недоступна. Сеанс вже пройшов",
   "message": "Повідомлення",
-  "bookAgain": "Забронювати знову"
+  "bookAgain": "Забронювати знову",
+  "attachImage": "Прикріпити зображення",
+  "attachFile": "Прикріпити файл"
 }

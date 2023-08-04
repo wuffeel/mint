@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/bloc/work_info/work_info_bloc.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/injector/injector.dart';
@@ -21,6 +22,32 @@ import '../booking/booking_bottom_sheet.dart';
 @RoutePage()
 class SessionDetailsPage extends StatelessWidget {
   const SessionDetailsPage({super.key, required this.bookingData});
+
+  final BookingData bookingData;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<ChatBloc>(),
+      child: BlocListener<ChatBloc, ChatState>(
+        listener: (context, state) {
+          if (state is ChatFetchRoomSuccess) {
+            context.router.push(
+              ChatRoute(
+                specialistModel: bookingData.specialistModel,
+                room: state.room,
+              ),
+            );
+          }
+        },
+        child: _SessionDetailsView(bookingData: bookingData),
+      ),
+    );
+  }
+}
+
+class _SessionDetailsView extends StatelessWidget {
+  const _SessionDetailsView({required this.bookingData});
 
   final BookingData bookingData;
 
@@ -119,9 +146,9 @@ class SessionDetailsPage extends StatelessWidget {
     if (_isSessionExpired()) {
       _showExpiredSessionDialog(context);
     }
-    context.router.push(
-      ChatRoute(specialistModel: bookingData.specialistModel),
-    );
+    context
+        .read<ChatBloc>()
+        .add(ChatFetchRoomRequested(bookingData.specialistModel.id));
   }
 
   /// Check if session already started, but not passed
