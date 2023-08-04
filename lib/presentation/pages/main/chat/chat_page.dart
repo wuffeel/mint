@@ -157,6 +157,12 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: _emojiPanelHidden,
