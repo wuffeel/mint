@@ -3,13 +3,12 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 abstract class FilePickerService {
   Future<void> loadFile(
     String localFileId,
-    String fileUri,
-    String fileExtension, {
+    String fileUri, {
     void Function()? onLoadingCallback,
     void Function()? onLoadedCallback,
   });
 
-  Future<void> openFile(String localFileId, String fileExtension);
+  Future<void> openFile(String localFileId);
 
   Future<types.PartialImage?> pickImage();
 

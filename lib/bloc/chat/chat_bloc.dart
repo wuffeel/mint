@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/service/abstract/chat_service.dart';
 import 'package:mint/domain/service/abstract/file_picker_service.dart';
-import 'package:mint/utils/file_utils.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/user_model/user_model.dart';
@@ -192,12 +191,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       final uuid = message.metadata?['uuid'] as String?;
       final messagePath = uuid ?? message.name;
-      final fileExtension = FileUtils.getFileExtensionByPath(message.name);
 
       await _filePickerService.loadFile(
         messagePath,
         message.uri,
-        fileExtension,
         onLoadingCallback: () {
           final loadingMessageList = messageList.map((element) {
             return element.id != message.id
@@ -215,7 +212,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           emit(ChatFetchMessagesSuccess(loadedMessageList, state.roomId));
         },
       );
-      await _filePickerService.openFile(messagePath, fileExtension);
+      await _filePickerService.openFile(messagePath);
     } catch (error) {
       log('ChatFileLoadFailure: $error');
       emit(ChatFileLoadFailure(messageList, state.roomId));
