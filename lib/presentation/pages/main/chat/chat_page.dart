@@ -11,6 +11,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_attach_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_bottom_bar.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_date_header.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_emoji_picker.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/message_bubble.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
@@ -213,7 +214,14 @@ class _ChatViewState extends State<_ChatView> {
                         ),
                       ),
                       dateLocale: context.l10n.localeName,
-                      dateHeaderBuilder: (_) => const SizedBox.shrink(),
+                      dateHeaderBuilder: (date) {
+                        return ChatDateHeader(
+                          date: date.dateTime,
+                          text: date.text,
+                        );
+                      },
+                      // 24 hours
+                      dateHeaderThreshold: 86400000,
                       emojiEnlargementBehavior: _emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
                           _hideBackgroundOnEmojiMessages,
