@@ -9,14 +9,20 @@ class ChatBottomBar extends StatefulWidget {
     super.key,
     required this.controller,
     required this.onSend,
+    required this.onEmoji,
     required this.onAttach,
     required this.onAudio,
+    this.isEmojiSelected = false,
+    this.onTextFieldTap,
   });
 
   final TextEditingController controller;
   final VoidCallback onSend;
+  final VoidCallback onEmoji;
   final VoidCallback onAttach;
   final VoidCallback onAudio;
+  final bool isEmojiSelected;
+  final VoidCallback? onTextFieldTap;
 
   @override
   State<ChatBottomBar> createState() => _ChatBottomBarState();
@@ -60,6 +66,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
           SizedBox(width: 9.w),
           Expanded(
             child: TextField(
+              onTap: widget.onTextFieldTap,
               controller: _textController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -72,10 +79,13 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: InkWell(
-                        onTap: () {
-                          // TODO(wuffeel): handle emoji tap
-                        },
-                        child: _BottomBarIcon(Assets.svg.emojiIcon),
+                        onTap: widget.onEmoji,
+                        child: _BottomBarIcon(
+                          Assets.svg.emojiIcon,
+                          color: widget.isEmojiSelected
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                        ),
                       ),
                     ),
                     Visibility(
@@ -87,7 +97,10 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                         opacity: _sendButtonVisible ? 1 : 0,
                         child: IconButton(
                           onPressed: widget.onSend,
-                          icon: const Icon(Icons.send),
+                          icon: Icon(
+                            Icons.send,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),
@@ -109,9 +122,10 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
 }
 
 class _BottomBarIcon extends StatelessWidget {
-  const _BottomBarIcon(this.svgImage);
+  const _BottomBarIcon(this.svgImage, {this.color});
 
   final SvgGenImage svgImage;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +134,7 @@ class _BottomBarIcon extends StatelessWidget {
       height: 24.h,
       fit: BoxFit.scaleDown,
       colorFilter: ColorFilter.mode(
-        Theme.of(context).hintColor.withOpacity(0.6),
+        color ?? Theme.of(context).hintColor.withOpacity(0.6),
         BlendMode.srcIn,
       ),
     );

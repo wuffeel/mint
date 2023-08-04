@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
@@ -10,6 +11,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_attach_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_bottom_bar.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_emoji_picker.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/message_bubble.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
@@ -47,15 +49,31 @@ class _ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<_ChatView> {
+  final _focusNode = FocusNode();
   final _messageController = TextEditingController();
 
   var _tapPosition = Offset.zero;
+  var _emojiPanelHidden = true;
   final _emojiEnlargementBehavior = ui.EmojiEnlargementBehavior.single;
   final _hideBackgroundOnEmojiMessages = true;
 
   late final _user = widget.room.users.firstWhere(
     (e) => e.id != widget.specialistModel.id,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  void _handleFocusChange() {
+    if (_focusNode.hasFocus) {
+      setState(() {
+        _emojiPanelHidden = true;
+      });
+    }
+  }
 
   void _previewDataFetched(
     types.TextMessage message,
@@ -122,6 +140,14 @@ class _ChatViewState extends State<_ChatView> {
     context.read<ChatBloc>().add(ChatInitializeRequested(widget.room));
   }
 
+  void _onEmojiBackspace() {
+    _messageController
+      ..text = _messageController.text.characters.toString()
+      ..selection = TextSelection.fromPosition(
+        TextPosition(offset: _messageController.text.length),
+      );
+  }
+
   Widget _bubbleBuilder(
     Widget child, {
     required types.Message message,
@@ -147,6 +173,7 @@ class _ChatViewState extends State<_ChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: _emojiPanelHidden,
       appBar: ChatAppBar(specialistModel: widget.specialistModel),
       body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
@@ -157,35 +184,63 @@ class _ChatViewState extends State<_ChatView> {
             return ErrorTryAgainText(onRefresh: _refreshChat);
           }
           if (state is ChatFetchMessagesSuccess) {
-            return GestureDetector(
-              onTapDown: _storeTapPosition,
-              child: ui.Chat(
-                bubbleBuilder: _bubbleBuilder,
-                customBottomWidget: ChatBottomBar(
-                  controller: _messageController,
-                  onSend: _handleSendPressed,
-                  onAttach: _handleAttachmentPressed,
-                  onAudio: () {
-                    // TODO(wuffeel): implement audio attachment
-                  },
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(_focusNode);
+                    },
+                    onTapDown: _storeTapPosition,
+                    child: ui.Chat(
+                      bubbleBuilder: _bubbleBuilder,
+                      customBottomWidget: ChatBottomBar(
+                        controller: _messageController,
+                        onSend: _handleSendPressed,
+                        onEmoji: () {
+                          setState(() {
+                            _emojiPanelHidden = !_emojiPanelHidden;
+                          });
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
+                        onAttach: _handleAttachmentPressed,
+                        onAudio: () {
+                          // TODO(wuffeel): implement audio attachment
+                        },
+                        isEmojiSelected: !_emojiPanelHidden,
+                        onTextFieldTap: () => setState(
+                          () => _emojiPanelHidden = true,
+                        ),
+                      ),
+                      dateLocale: context.l10n.localeName,
+                      dateHeaderBuilder: (_) => const SizedBox.shrink(),
+                      emojiEnlargementBehavior: _emojiEnlargementBehavior,
+                      hideBackgroundOnEmojiMessages:
+                          _hideBackgroundOnEmojiMessages,
+                      messages: state.messages,
+                      onMessageTap: _handleMessageTap,
+                      onMessageLongPress: _showMessageActionsMenu,
+                      onPreviewDataFetched: _previewDataFetched,
+                      onSendPressed: (_) {
+                        // TODO(wuffel): implemented in customBottomWidget
+                      },
+                      theme: MintChatTheme(context),
+                      textMessageOptions: const ui.TextMessageOptions(
+                        isTextSelectable: false,
+                      ),
+                      user: _user,
+                    ),
+                  ),
                 ),
-                dateLocale: context.l10n.localeName,
-                dateHeaderBuilder: (_) => const SizedBox.shrink(),
-                emojiEnlargementBehavior: _emojiEnlargementBehavior,
-                hideBackgroundOnEmojiMessages: _hideBackgroundOnEmojiMessages,
-                messages: state.messages,
-                onMessageTap: _handleMessageTap,
-                onMessageLongPress: _showMessageActionsMenu,
-                onPreviewDataFetched: _previewDataFetched,
-                onSendPressed: (_) {
-                  // TODO(wuffel): implemented in customBottomWidget
-                },
-                theme: MintChatTheme(context),
-                textMessageOptions: const ui.TextMessageOptions(
-                  isTextSelectable: false,
-                ),
-                user: _user,
-              ),
+                if (!_emojiPanelHidden)
+                  SizedBox(
+                    height: 300.h,
+                    child: ChatEmojiPicker(
+                      controller: _messageController,
+                      onBackSpace: _onEmojiBackspace,
+                    ),
+                  ),
+              ],
             );
           }
           return const Center(child: CircularProgressIndicator());

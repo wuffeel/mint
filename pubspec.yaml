@@ -12,6 +12,7 @@ dependencies:
   bloc_concurrency: ^0.2.2
   cloud_firestore: ^4.8.2
   cloud_functions: ^4.3.4
+  emoji_picker_flutter: ^1.6.1
   file_picker: ^5.3.3
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
