@@ -50,7 +50,6 @@ class _ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<_ChatView> {
-  final _focusNode = FocusNode();
   final _messageController = TextEditingController();
 
   var _tapPosition = Offset.zero;
@@ -61,20 +60,6 @@ class _ChatViewState extends State<_ChatView> {
   late final _user = widget.room.users.firstWhere(
     (e) => e.id != widget.specialistModel.id,
   );
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      setState(() {
-        _emojiPanelHidden = true;
-      });
-    }
-  }
 
   void _previewDataFetched(
     types.TextMessage message,
