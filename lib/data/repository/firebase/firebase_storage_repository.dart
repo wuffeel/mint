@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/storage_repository.dart';
+import 'package:mint/utils/file_utils.dart';
 
 @Injectable(as: StorageRepository)
 class FirebaseStorageRepository implements StorageRepository {
@@ -35,9 +36,9 @@ class FirebaseStorageRepository implements StorageRepository {
     String roomId,
   ) async {
     final file = File(filePath);
-    final extension = file.path.split('.').last;
+    final fileExtension = FileUtils.getFileExtensionByPath(file.path);
     final uploadedFile = await _storageRef
-        .child('files/$roomId/$fileId.$extension')
+        .child('files/$roomId/$fileId.$fileExtension')
         .putFile(file);
 
     return uploadedFile.ref.getDownloadURL();

@@ -24,12 +24,13 @@ class FilePickerServiceImpl implements FilePickerService {
   @override
   Future<void> loadFile(
     String localFileId,
-    String fileUri, {
+    String fileUri,
+    String fileExtension, {
     void Function()? onLoadingCallback,
     void Function()? onLoadedCallback,
   }) async {
     final documentsDir = (await getApplicationDocumentsDirectory()).path;
-    final localPath = '$documentsDir/$localFileId';
+    final localPath = '$documentsDir/$localFileId.$fileExtension';
     final localExists = File(localPath).existsSync();
 
     if (fileUri.startsWith('http') && !localExists) {
@@ -53,9 +54,9 @@ class FilePickerServiceImpl implements FilePickerService {
   /// Looks for file at application document directory, which will be opened if
   /// found
   @override
-  Future<void> openFile(String localFileId) async {
+  Future<void> openFile(String localFileId, String fileExtension) async {
     final documentsDir = (await getApplicationDocumentsDirectory()).path;
-    final localPath = '$documentsDir/$localFileId';
+    final localPath = '$documentsDir/$localFileId.$fileExtension';
     await OpenFilex.open(localPath);
   }
 
@@ -94,6 +95,7 @@ class FilePickerServiceImpl implements FilePickerService {
     if (file != null && file.files.single.path != null) {
       final uuid = const Uuid().v4();
       final pickFile = file.files.single;
+      final extension = pickFile.name.split('.').last;
 
       final message = types.PartialFile(
         name: pickFile.name,
@@ -105,7 +107,7 @@ class FilePickerServiceImpl implements FilePickerService {
       final bytes = pickFile.bytes;
       if (bytes != null) {
         final documentsDir = (await getApplicationDocumentsDirectory()).path;
-        final localPath = '$documentsDir/$uuid';
+        final localPath = '$documentsDir/$uuid.$extension';
         final localFile = File(localPath);
         await localFile.writeAsBytes(bytes);
       }
