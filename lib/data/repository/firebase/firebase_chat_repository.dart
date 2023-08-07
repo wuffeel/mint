@@ -4,9 +4,15 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/chat_repository.dart';
 
+import '../../../assembly/factory.dart';
+
 @Injectable(as: ChatRepository)
 class FirebaseChatRepository implements ChatRepository {
+  FirebaseChatRepository(this._chatUserFromMap);
+
   final _chatCoreInstance = FirebaseChatCore.instance;
+
+  final Factory<types.User, Map<String, dynamic>> _chatUserFromMap;
 
   @override
   Future<types.Room> createRoom(String userId, String specialistId) async {
@@ -18,11 +24,8 @@ class FirebaseChatRepository implements ChatRepository {
     if (data == null) {
       return const types.Room(id: '', type: types.RoomType.direct, users: []);
     }
-    data['createdAt'] = (data['createdAt'] as Timestamp).millisecondsSinceEpoch;
     data['id'] = specialist.id;
-    data['lastSeen'] = (data['lastSeen'] as Timestamp).millisecondsSinceEpoch;
-    data['updatedAt'] = (data['updatedAt'] as Timestamp).millisecondsSinceEpoch;
-    final user = types.User.fromJson(data);
+    final user = _chatUserFromMap.create(data);
     return _chatCoreInstance.createRoom(user);
   }
 
