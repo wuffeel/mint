@@ -56,7 +56,6 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
   }
 
   Future<void> _startRecord() async {
-    // TODO(wuffeel): implement audio attachment
     final permission = await _recorderController.checkPermission();
     if (permission) {
       await _recorderController.record();
