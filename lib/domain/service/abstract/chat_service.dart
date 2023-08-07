@@ -7,9 +7,7 @@ abstract class ChatService {
 
   Future<void> sendMessage(dynamic partialMessage, String roomId);
 
-  Future<void> updateMessage(dynamic message, String roomId);
-
-  Future<void> deleteMessage(String roomId, dynamic message);
+  Future<void> deleteMessage(String roomId, types.Message message);
 
   Future<void> onPreviewDataFetched(
     types.TextMessage message,

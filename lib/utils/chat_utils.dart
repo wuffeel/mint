@@ -4,13 +4,12 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class ChatUtils {
-  /// Shows pop-up menu on given [tapPosition] for [message] with actions _Edit_
-  /// and _Delete_
+  /// Shows pop-up menu on given [tapPosition] for [message] with _Delete_
+  /// action
   static void showMessageActionsMenu(
     BuildContext context,
     Message message,
     Offset tapPosition, {
-    required void Function(Message) onEdit,
     required void Function(Message) onDelete,
   }) {
     final overlaySize =
@@ -20,11 +19,6 @@ class ChatUtils {
     final l10n = context.l10n;
 
     final items = <PopupMenuEntry<void>>[
-      PopupMenuItem(
-        onTap: () => onEdit(message),
-        child: Text(l10n.edit, style: MintTextStyles.headline1),
-      ),
-      const PopupMenuDivider(),
       PopupMenuItem(
         onTap: () => onDelete(message),
         child: Text(l10n.delete, style: MintTextStyles.headline1),

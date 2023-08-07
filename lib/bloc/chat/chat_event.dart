@@ -21,12 +21,6 @@ class ChatSendMessageRequested extends ChatEvent {
   final dynamic message;
 }
 
-class ChatUpdateMessageRequested extends ChatEvent {
-  ChatUpdateMessageRequested(this.message);
-
-  final types.Message message;
-}
-
 class ChatDeleteMessageRequested extends ChatEvent {
   ChatDeleteMessageRequested(this.message);
 
@@ -41,11 +35,20 @@ class ChatPreviewDataFetched extends ChatEvent {
 }
 
 class ChatFileLoadRequested extends ChatEvent {
-  ChatFileLoadRequested(this.message);
+  ChatFileLoadRequested(this.message, {required this.shouldOpen});
 
-  final types.FileMessage message;
+  final types.Message message;
+
+  /// Variable to specify if the file should be opened after load
+  final bool shouldOpen;
 }
 
 class ChatImagePickRequested extends ChatEvent {}
 
 class ChatFilePickRequested extends ChatEvent {}
+
+class ChatSaveAudioRequested extends ChatEvent {
+  ChatSaveAudioRequested(this.audioMessage);
+
+  final types.PartialAudio audioMessage;
+}

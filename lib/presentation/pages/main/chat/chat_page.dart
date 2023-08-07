@@ -10,6 +10,7 @@ import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_attach_bottom_sheet.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_audio_message.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_bottom_bar.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_date_header.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_emoji_picker.dart';
@@ -97,8 +98,14 @@ class _ChatViewState extends State<_ChatView> {
   /// Used to handle file open attached to [message] with [types.FileMessage]
   /// type
   void _handleMessageTap(BuildContext _, types.Message message) {
-    if (message is types.FileMessage) {
-      return context.read<ChatBloc>().add(ChatFileLoadRequested(message));
+    final shouldOpen = message is types.FileMessage;
+    if (message is types.FileMessage || message is types.AudioMessage) {
+      return context.read<ChatBloc>().add(
+            ChatFileLoadRequested(
+              message,
+              shouldOpen: shouldOpen,
+            ),
+          );
     }
   }
 
@@ -108,7 +115,6 @@ class _ChatViewState extends State<_ChatView> {
       context,
       message,
       _tapPosition,
-      onEdit: context.router.pop,
       onDelete: (message) {
         context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
         context.router.pop();
@@ -182,6 +188,15 @@ class _ChatViewState extends State<_ChatView> {
                   child: GestureDetector(
                     onTapDown: _storeTapPosition,
                     child: ui.Chat(
+                      audioMessageBuilder: (
+                        audio, {
+                        required int messageWidth,
+                      }) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.w),
+                          child: ChatAudioMessage(audioMessage: audio),
+                        );
+                      },
                       bubbleBuilder: _bubbleBuilder,
                       customBottomWidget: ChatBottomBar(
                         controller: _messageController,
@@ -190,11 +205,14 @@ class _ChatViewState extends State<_ChatView> {
                           setState(() {
                             _emojiPanelHidden = !_emojiPanelHidden;
                           });
+                          // Removes keyboard if it is shown
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onAttach: _handleAttachmentPressed,
-                        onAudio: () {
-                          // TODO(wuffeel): implement audio attachment
+                        onAudioStop: (audioMessage) {
+                          context
+                              .read<ChatBloc>()
+                              .add(ChatSaveAudioRequested(audioMessage));
                         },
                         isEmojiSelected: !_emojiPanelHidden,
                         onTextFieldTap: () => setState(
