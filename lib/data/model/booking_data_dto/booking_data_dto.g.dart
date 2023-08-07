@@ -6,8 +6,7 @@ part of 'booking_data_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_BookingDataDto _$$_BookingDataDtoFromJson(Map<String, dynamic> json) =>
-    _$_BookingDataDto(
+_$_BookingDataDto _$$_BookingDataDtoFromJson(Map json) => _$_BookingDataDto(
       id: json['id'] as String,
       specialistId: json['specialistId'] as String,
       userId: json['userId'] as String,

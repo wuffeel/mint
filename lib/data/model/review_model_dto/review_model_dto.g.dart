@@ -6,8 +6,7 @@ part of 'review_model_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ReviewModelDto _$$_ReviewModelDtoFromJson(Map<String, dynamic> json) =>
-    _$_ReviewModelDto(
+_$_ReviewModelDto _$$_ReviewModelDtoFromJson(Map json) => _$_ReviewModelDto(
       id: json['id'] as String,
       userId: json['userId'] as String,
       specialistId: json['specialistId'] as String,

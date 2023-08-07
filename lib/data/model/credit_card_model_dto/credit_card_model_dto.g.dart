@@ -6,8 +6,7 @@ part of 'credit_card_model_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CreditCardModelDto _$$_CreditCardModelDtoFromJson(
-        Map<String, dynamic> json) =>
+_$_CreditCardModelDto _$$_CreditCardModelDtoFromJson(Map json) =>
     _$_CreditCardModelDto(
       id: json['id'] as String,
       last4: json['last4'] as String,

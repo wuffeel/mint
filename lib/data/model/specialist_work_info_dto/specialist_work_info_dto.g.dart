@@ -6,13 +6,12 @@ part of 'specialist_work_info_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SpecialistWorkInfoDto _$$_SpecialistWorkInfoDtoFromJson(
-        Map<String, dynamic> json) =>
+_$_SpecialistWorkInfoDto _$$_SpecialistWorkInfoDtoFromJson(Map json) =>
     _$_SpecialistWorkInfoDto(
       bookingDaysAdvance: json['bookingDaysAdvance'] as int,
       consultationMinutes: json['consultationMinutes'] as int,
       specialistId: json['specialistId'] as String,
-      workHours: json['workHours'],
+      workHours: Map<String, dynamic>.from(json['workHours'] as Map),
       excludedDays: json['excludedDays'] == null
           ? const <DateTime>[]
           : DateUtils.convertToDateTimeList(json['excludedDays'] as List),

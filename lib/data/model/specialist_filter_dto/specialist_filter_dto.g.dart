@@ -6,8 +6,7 @@ part of 'specialist_filter_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SpecialistFilterDto _$$_SpecialistFilterDtoFromJson(
-        Map<String, dynamic> json) =>
+_$_SpecialistFilterDto _$$_SpecialistFilterDtoFromJson(Map json) =>
     _$_SpecialistFilterDto(
       minPrice: json['minPrice'] as int,
       maxPrice: json['maxPrice'] as int,

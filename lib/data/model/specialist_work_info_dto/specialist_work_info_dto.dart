@@ -12,7 +12,7 @@ class SpecialistWorkInfoDto with _$SpecialistWorkInfoDto {
     required int bookingDaysAdvance,
     required int consultationMinutes,
     required String specialistId,
-    required dynamic workHours,
+    required Map<String, dynamic> workHours,
     @Default(<DateTime>[])
     @JsonKey(fromJson: DateUtils.convertToDateTimeList)
     /// Vacations and exclusions

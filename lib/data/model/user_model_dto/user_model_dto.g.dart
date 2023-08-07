@@ -6,8 +6,7 @@ part of 'user_model_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UserModelDto _$$_UserModelDtoFromJson(Map<String, dynamic> json) =>
-    _$_UserModelDto(
+_$_UserModelDto _$$_UserModelDtoFromJson(Map json) => _$_UserModelDto(
       id: json['id'] as String,
       phoneNumber: json['phoneNumber'] as String?,
       pinCode: json['pinCode'] as String?,

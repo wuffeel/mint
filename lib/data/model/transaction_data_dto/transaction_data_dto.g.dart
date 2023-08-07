@@ -6,8 +6,7 @@ part of 'transaction_data_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TransactionDataDto _$$_TransactionDataDtoFromJson(
-        Map<String, dynamic> json) =>
+_$_TransactionDataDto _$$_TransactionDataDtoFromJson(Map json) =>
     _$_TransactionDataDto(
       id: json['id'] as String,
       bookingId: json['bookingId'] as String,

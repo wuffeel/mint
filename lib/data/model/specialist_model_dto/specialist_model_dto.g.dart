@@ -6,8 +6,7 @@ part of 'specialist_model_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SpecialistModelDto _$$_SpecialistModelDtoFromJson(
-        Map<String, dynamic> json) =>
+_$_SpecialistModelDto _$$_SpecialistModelDtoFromJson(Map json) =>
     _$_SpecialistModelDto(
       id: json['id'] as String,
       firstName: json['firstName'] as String,
