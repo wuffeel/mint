@@ -22,6 +22,12 @@ class FirebaseChatService implements ChatService {
     return _chatRepository.getMessages(room);
   }
 
+  /// Function to send message.
+  ///
+  /// [partialMessage] should be one of Partial message models, which then
+  /// will be converted to full model. [partialMessage] is dynamic here because
+  /// flutter\_chat\_types package do not provide abstraction for Partial message
+  /// models.
   @override
   Future<void> sendMessage(dynamic partialMessage, String roomId) async {
     if (partialMessage is types.PartialImage) {
