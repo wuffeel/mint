@@ -65,7 +65,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
             : Colors.black;
   }
 
-  Color _getProperTransculentColor() {
+  Color _getProperTranslucentColor() {
     return _isThemeDark()
         ? Colors.white54
         : widget.isSender
@@ -128,7 +128,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
                     playerController: _playerController,
                     animationDuration: const Duration(milliseconds: 300),
                     playerWaveStyle: PlayerWaveStyle(
-                      fixedWaveColor: _getProperTransculentColor(),
+                      fixedWaveColor: _getProperTranslucentColor(),
                       liveWaveColor: _getProperOpaqueColor(),
                     ),
                     waveformData: _waveFormData,
