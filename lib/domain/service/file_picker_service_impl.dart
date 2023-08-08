@@ -91,7 +91,9 @@ class FilePickerServiceImpl implements FilePickerService {
   Future<types.PartialFile?> pickFile() async {
     final file = await FilePicker.platform.pickFiles(withData: true);
 
-    if (file != null && file.files.single.path != null) {
+    if (file != null &&
+        file.files.isNotEmpty &&
+        file.files.single.path != null) {
       final uuid = const Uuid().v4();
       final pickFile = file.files.single;
 
