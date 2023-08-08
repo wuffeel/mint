@@ -64,6 +64,23 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
     }
   }
 
+  /// Stops recording and saves audio file. Calls onAudioStop function with
+  /// message formed by audio file info.
+  Future<void> _stopRecord() async {
+    setState(() => _isAudioRecording = false);
+    final audioPath = await _recorderController.stop();
+    if (audioPath != null) {
+      final file = File(audioPath);
+      final message = types.PartialAudio(
+        duration: _recorderController.recordedDuration,
+        name: file.path.split(Platform.pathSeparator).last,
+        size: file.lengthSync(),
+        uri: file.uri.toString(),
+      );
+      widget.onAudioStop(message);
+    }
+  }
+
   void _showPermissionDeniedDialog() {
     showDialog<void>(
       context: context,
@@ -123,29 +140,18 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
           Offstage(
             offstage: _isAudioRecording,
             child: InkWell(
-              onTap: _recorderController.hasPermission
-                  ? _startRecord
-                  : _showPermissionDeniedDialog,
+              onTap: () async {
+                _recorderController.hasPermission
+                    ? _startRecord()
+                    : _showPermissionDeniedDialog();
+              },
               child: _BottomBarIcon(Assets.svg.microphoneIcon),
             ),
           ),
           Offstage(
             offstage: !_isAudioRecording,
             child: InkWell(
-              onTap: () async {
-                setState(() => _isAudioRecording = false);
-                final audioPath = await _recorderController.stop();
-                if (audioPath != null) {
-                  final file = File(audioPath);
-                  final message = types.PartialAudio(
-                    duration: _recorderController.recordedDuration,
-                    name: file.path.split(Platform.pathSeparator).last,
-                    size: file.lengthSync(),
-                    uri: file.uri.toString(),
-                  );
-                  widget.onAudioStop(message);
-                }
-              },
+              onTap: _stopRecord,
               child: Icon(
                 Icons.stop_circle_rounded,
                 color: Theme.of(context).colorScheme.primary,
