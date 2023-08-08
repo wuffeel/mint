@@ -21,6 +21,12 @@ class MintChatTheme extends DefaultChatTheme {
               MintTextStyles.proximaNova14Regular.copyWith(
             color: _getMessageTextColor(context, false),
           ),
+          receivedMessageDocumentIconColor: Theme.of(context).primaryColor,
+          receivedMessageLinkTitleTextStyle: MintTextStyles.headline1.copyWith(
+            color: Theme.of(context).primaryColor,
+          ),
+          receivedMessageLinkDescriptionTextStyle: MintTextStyles.body1
+              .copyWith(color: Theme.of(context).primaryColor),
         );
 
   static bool _isThemeDark(BuildContext context) {
