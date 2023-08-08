@@ -24,7 +24,8 @@ mixin _$SpecialistWorkInfoDto {
   int get bookingDaysAdvance => throw _privateConstructorUsedError;
   int get consultationMinutes => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
-  Map<String, dynamic> get workHours => throw _privateConstructorUsedError;
+  Map<String, WorkDayPeriod> get workHours =>
+      throw _privateConstructorUsedError;
   @JsonKey(fromJson: DateUtils.convertToDateTimeList)
   List<DateTime> get excludedDays => throw _privateConstructorUsedError;
   @JsonKey(fromJson: DateUtils.convertToDateTimeList)
@@ -46,7 +47,7 @@ abstract class $SpecialistWorkInfoDtoCopyWith<$Res> {
       {int bookingDaysAdvance,
       int consultationMinutes,
       String specialistId,
-      Map<String, dynamic> workHours,
+      Map<String, WorkDayPeriod> workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
           List<DateTime> excludedDays,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
@@ -90,7 +91,7 @@ class _$SpecialistWorkInfoDtoCopyWithImpl<$Res,
       workHours: null == workHours
           ? _value.workHours
           : workHours // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
+              as Map<String, WorkDayPeriod>,
       excludedDays: null == excludedDays
           ? _value.excludedDays
           : excludedDays // ignore: cast_nullable_to_non_nullable
@@ -115,7 +116,7 @@ abstract class _$$_SpecialistWorkInfoDtoCopyWith<$Res>
       {int bookingDaysAdvance,
       int consultationMinutes,
       String specialistId,
-      Map<String, dynamic> workHours,
+      Map<String, WorkDayPeriod> workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
           List<DateTime> excludedDays,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
@@ -156,7 +157,7 @@ class __$$_SpecialistWorkInfoDtoCopyWithImpl<$Res>
       workHours: null == workHours
           ? _value._workHours
           : workHours // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
+              as Map<String, WorkDayPeriod>,
       excludedDays: null == excludedDays
           ? _value._excludedDays
           : excludedDays // ignore: cast_nullable_to_non_nullable
@@ -178,7 +179,7 @@ class _$_SpecialistWorkInfoDto
       {required this.bookingDaysAdvance,
       required this.consultationMinutes,
       required this.specialistId,
-      required final Map<String, dynamic> workHours,
+      required final Map<String, WorkDayPeriod> workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
           final List<DateTime> excludedDays = const <DateTime>[],
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
@@ -196,9 +197,9 @@ class _$_SpecialistWorkInfoDto
   final int consultationMinutes;
   @override
   final String specialistId;
-  final Map<String, dynamic> _workHours;
+  final Map<String, WorkDayPeriod> _workHours;
   @override
-  Map<String, dynamic> get workHours {
+  Map<String, WorkDayPeriod> get workHours {
     if (_workHours is EqualUnmodifiableMapView) return _workHours;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_workHours);
@@ -290,7 +291,7 @@ abstract class _SpecialistWorkInfoDto implements SpecialistWorkInfoDto {
       {required final int bookingDaysAdvance,
       required final int consultationMinutes,
       required final String specialistId,
-      required final Map<String, dynamic> workHours,
+      required final Map<String, WorkDayPeriod> workHours,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
           final List<DateTime> excludedDays,
       @JsonKey(fromJson: DateUtils.convertToDateTimeList)
@@ -306,7 +307,7 @@ abstract class _SpecialistWorkInfoDto implements SpecialistWorkInfoDto {
   @override
   String get specialistId;
   @override
-  Map<String, dynamic> get workHours;
+  Map<String, WorkDayPeriod> get workHours;
   @override
   @JsonKey(fromJson: DateUtils.convertToDateTimeList)
   List<DateTime> get excludedDays;

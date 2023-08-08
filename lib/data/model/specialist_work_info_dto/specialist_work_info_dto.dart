@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mint/data/model/work_day_period/work_day_period.dart';
 import 'package:mint/utils/date_utils.dart';
 
 part 'specialist_work_info_dto.freezed.dart';
@@ -12,7 +13,7 @@ class SpecialistWorkInfoDto with _$SpecialistWorkInfoDto {
     required int bookingDaysAdvance,
     required int consultationMinutes,
     required String specialistId,
-    required Map<String, dynamic> workHours,
+    required Map<String, WorkDayPeriod> workHours,
     @Default(<DateTime>[])
     @JsonKey(fromJson: DateUtils.convertToDateTimeList)
     /// Vacations and exclusions
