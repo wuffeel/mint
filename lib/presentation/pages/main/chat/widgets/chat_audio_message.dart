@@ -55,6 +55,14 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
     });
   }
 
+  Future<void> _handlePlayerAction() async {
+    _playerController.playerState.isPlaying
+        ? await _playerController.pausePlayer()
+        : await _playerController.startPlayer(
+            finishMode: FinishMode.pause,
+          );
+  }
+
   bool _isThemeDark() => Theme.of(context).brightness == Brightness.dark;
 
   Color _getProperOpaqueColor() {
@@ -103,13 +111,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               InkWell(
-                onTap: () async {
-                  _playerController.playerState.isPlaying
-                      ? await _playerController.pausePlayer()
-                      : await _playerController.startPlayer(
-                          finishMode: FinishMode.pause,
-                        );
-                },
+                onTap: _handlePlayerAction,
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 child: Icon(
@@ -159,9 +161,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
                     )
                   else
                     _DurationMinutesText(
-                      Duration(
-                        milliseconds: _playerController.maxDuration,
-                      ),
+                      Duration(milliseconds: _playerController.maxDuration),
                       color: _getProperOpaqueColor(),
                     ),
                 ],
