@@ -64,9 +64,13 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
       bloc: _cubit,
       builder: (context, state) {
         if (state is AudioMessageLoading) {
-          return const CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
+          return SizedBox(
+            height: 24.h,
+            width: 24.w,
+            child: const CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 2,
+            ),
           );
         }
         if (state is AudioMessageLoadFailure) {
