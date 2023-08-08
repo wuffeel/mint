@@ -14,10 +14,12 @@ class ChatAudioMessage extends StatefulWidget {
   const ChatAudioMessage({
     super.key,
     required this.audioMessage,
+    required this.isSender,
     this.height,
   });
 
   final types.AudioMessage audioMessage;
+  final bool isSender;
   final double? height;
 
   @override
@@ -32,6 +34,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
   late final StreamSubscription<PlayerState> _playerStateSubscription;
 
   late final _playerSize = MediaQuery.sizeOf(context).width / 2;
+  late final List<double> _waveFormData;
 
   @override
   void initState() {
@@ -48,7 +51,26 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
         _playerController,
         _playerSize,
       );
+      _waveFormData = _playerController.waveformData;
     });
+  }
+
+  bool _isThemeDark() => Theme.of(context).brightness == Brightness.dark;
+
+  Color _getProperOpaqueColor() {
+    return _isThemeDark()
+        ? Colors.white
+        : widget.isSender
+            ? Colors.white
+            : Colors.black;
+  }
+
+  Color _getProperTransculentColor() {
+    return _isThemeDark()
+        ? Colors.white54
+        : widget.isSender
+            ? Colors.white54
+            : Colors.black54;
   }
 
   @override
@@ -67,8 +89,8 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
           return SizedBox(
             height: 24.h,
             width: 24.w,
-            child: const CircularProgressIndicator(
-              color: Colors.white,
+            child: CircularProgressIndicator(
+              color: _getProperOpaqueColor(),
               strokeWidth: 2,
             ),
           );
@@ -94,7 +116,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
                   _playerController.playerState.isPlaying
                       ? Icons.stop
                       : Icons.play_arrow,
-                  color: Colors.white,
+                  color: _getProperOpaqueColor(),
                 ),
               ),
               SizedBox(width: 8.w),
@@ -104,7 +126,12 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
                   AudioFileWaveforms(
                     size: Size(_playerSize, widget.height ?? 40.h),
                     playerController: _playerController,
-                    waveformData: widget.audioMessage.waveForm ?? [],
+                    animationDuration: const Duration(milliseconds: 300),
+                    playerWaveStyle: PlayerWaveStyle(
+                      fixedWaveColor: _getProperTransculentColor(),
+                      liveWaveColor: _getProperOpaqueColor(),
+                    ),
+                    waveformData: _waveFormData,
                     waveformType: WaveformType.fitWidth,
                   ),
                   SizedBox(height: 4.h),
@@ -118,13 +145,15 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
                           if (currentDuration != null) {
                             return _DurationMinutesText(
                               Duration(milliseconds: currentDuration),
+                              color: _getProperOpaqueColor(),
                             );
                           }
                         }
                         return Text(
                           '00:00',
-                          style: MintTextStyles.callOut3
-                              .copyWith(color: Colors.white),
+                          style: MintTextStyles.callOut3.copyWith(
+                            color: _getProperOpaqueColor(),
+                          ),
                         );
                       },
                     )
@@ -133,6 +162,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
                       Duration(
                         milliseconds: _playerController.maxDuration,
                       ),
+                      color: _getProperOpaqueColor(),
                     ),
                 ],
               ),
@@ -146,9 +176,13 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
 }
 
 class _DurationMinutesText extends StatelessWidget {
-  const _DurationMinutesText(this.duration);
+  const _DurationMinutesText(
+    this.duration, {
+    required this.color,
+  });
 
   final Duration duration;
+  final Color color;
 
   String _getTimeDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -161,9 +195,7 @@ class _DurationMinutesText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       _getTimeDuration(duration),
-      style: MintTextStyles.callOut3.copyWith(
-        color: Colors.white,
-      ),
+      style: MintTextStyles.callOut3.copyWith(color: color),
     );
   }
 }

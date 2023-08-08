@@ -194,7 +194,10 @@ class _ChatViewState extends State<_ChatView> {
                       }) {
                         return Padding(
                           padding: EdgeInsets.all(8.w),
-                          child: ChatAudioMessage(audioMessage: audio),
+                          child: ChatAudioMessage(
+                            audioMessage: audio,
+                            isSender: _user.id == audio.author.id,
+                          ),
                         );
                       },
                       bubbleBuilder: _bubbleBuilder,
