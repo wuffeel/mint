@@ -145,5 +145,6 @@
   "message": "Message",
   "bookAgain": "Book again",
   "attachImage": "Attach image",
-  "attachFile": "Attach file"
+  "attachFile": "Attach file",
+  "today": "Today"
 }

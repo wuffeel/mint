@@ -7,6 +7,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  audio_waveforms: ^1.0.4
   auto_route: ^7.5.0
   bloc: ^8.1.2
   bloc_concurrency: ^0.2.2
@@ -23,7 +24,10 @@ dependencies:
   flutter_chat_types: ^3.6.2
   flutter_chat_ui: ^1.6.9
   flutter_dotenv: ^5.1.0
-  flutter_firebase_chat_core: ^1.6.7
+  flutter_firebase_chat_core:
+    git:
+      url: https://github.com/wuffeel/flutter_firebase_chat_core.git
+      ref: main
   flutter_libphonenumber: ^2.1.4
   flutter_localizations:
     sdk: flutter

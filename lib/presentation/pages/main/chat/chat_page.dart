@@ -10,7 +10,9 @@ import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_attach_bottom_sheet.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_audio_message.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_bottom_bar.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_date_header.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_emoji_picker.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/message_bubble.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
@@ -49,7 +51,6 @@ class _ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<_ChatView> {
-  final _focusNode = FocusNode();
   final _messageController = TextEditingController();
 
   var _tapPosition = Offset.zero;
@@ -60,20 +61,6 @@ class _ChatViewState extends State<_ChatView> {
   late final _user = widget.room.users.firstWhere(
     (e) => e.id != widget.specialistModel.id,
   );
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      setState(() {
-        _emojiPanelHidden = true;
-      });
-    }
-  }
 
   void _previewDataFetched(
     types.TextMessage message,
@@ -111,8 +98,14 @@ class _ChatViewState extends State<_ChatView> {
   /// Used to handle file open attached to [message] with [types.FileMessage]
   /// type
   void _handleMessageTap(BuildContext _, types.Message message) {
-    if (message is types.FileMessage) {
-      return context.read<ChatBloc>().add(ChatFileLoadRequested(message));
+    final shouldOpen = message is types.FileMessage;
+    if (message is types.FileMessage || message is types.AudioMessage) {
+      return context.read<ChatBloc>().add(
+            ChatFileLoadRequested(
+              message,
+              shouldOpen: shouldOpen,
+            ),
+          );
     }
   }
 
@@ -122,7 +115,6 @@ class _ChatViewState extends State<_ChatView> {
       context,
       message,
       _tapPosition,
-      onEdit: context.router.pop,
       onDelete: (message) {
         context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
         context.router.pop();
@@ -171,6 +163,12 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: _emojiPanelHidden,
@@ -188,11 +186,17 @@ class _ChatViewState extends State<_ChatView> {
               children: <Widget>[
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(_focusNode);
-                    },
                     onTapDown: _storeTapPosition,
                     child: ui.Chat(
+                      audioMessageBuilder: (
+                        audio, {
+                        required int messageWidth,
+                      }) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.w),
+                          child: ChatAudioMessage(audioMessage: audio),
+                        );
+                      },
                       bubbleBuilder: _bubbleBuilder,
                       customBottomWidget: ChatBottomBar(
                         controller: _messageController,
@@ -201,11 +205,14 @@ class _ChatViewState extends State<_ChatView> {
                           setState(() {
                             _emojiPanelHidden = !_emojiPanelHidden;
                           });
+                          // Removes keyboard if it is shown
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onAttach: _handleAttachmentPressed,
-                        onAudio: () {
-                          // TODO(wuffeel): implement audio attachment
+                        onAudioStop: (audioMessage) {
+                          context
+                              .read<ChatBloc>()
+                              .add(ChatSaveAudioRequested(audioMessage));
                         },
                         isEmojiSelected: !_emojiPanelHidden,
                         onTextFieldTap: () => setState(
@@ -213,11 +220,25 @@ class _ChatViewState extends State<_ChatView> {
                         ),
                       ),
                       dateLocale: context.l10n.localeName,
-                      dateHeaderBuilder: (_) => const SizedBox.shrink(),
+                      dateHeaderBuilder: (date) {
+                        return ChatDateHeader(
+                          date: date.dateTime,
+                          text: date.text,
+                        );
+                      },
+                      // 24 hours
+                      dateHeaderThreshold: 86400000,
                       emojiEnlargementBehavior: _emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
                           _hideBackgroundOnEmojiMessages,
                       messages: state.messages,
+                      onBackgroundTap: () {
+                        if (!_emojiPanelHidden) {
+                          setState(
+                            () => _emojiPanelHidden = true,
+                          );
+                        }
+                      },
                       onMessageTap: _handleMessageTap,
                       onMessageLongPress: _showMessageActionsMenu,
                       onPreviewDataFetched: _previewDataFetched,

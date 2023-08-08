@@ -40,11 +40,6 @@ class FirebaseChatRepository implements ChatRepository {
   }
 
   @override
-  Future<void> updateMessage(dynamic message, String roomId) async {
-    return _chatCoreInstance.updateMessage(message as types.Message, roomId);
-  }
-
-  @override
   Future<void> deleteMessage(String roomId, String messageId) async {
     return _chatCoreInstance.deleteMessage(roomId, messageId);
   }
