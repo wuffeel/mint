@@ -11,7 +11,10 @@ _$_SpecialistWorkInfoDto _$$_SpecialistWorkInfoDtoFromJson(Map json) =>
       bookingDaysAdvance: json['bookingDaysAdvance'] as int,
       consultationMinutes: json['consultationMinutes'] as int,
       specialistId: json['specialistId'] as String,
-      workHours: Map<String, dynamic>.from(json['workHours'] as Map),
+      workHours: (json['workHours'] as Map).map(
+        (k, e) => MapEntry(k as String,
+            WorkDayPeriod.fromJson(Map<String, dynamic>.from(e as Map))),
+      ),
       excludedDays: json['excludedDays'] == null
           ? const <DateTime>[]
           : DateUtils.convertToDateTimeList(json['excludedDays'] as List),
@@ -26,7 +29,7 @@ Map<String, dynamic> _$$_SpecialistWorkInfoDtoToJson(
       'bookingDaysAdvance': instance.bookingDaysAdvance,
       'consultationMinutes': instance.consultationMinutes,
       'specialistId': instance.specialistId,
-      'workHours': instance.workHours,
+      'workHours': instance.workHours.map((k, e) => MapEntry(k, e.toJson())),
       'excludedDays':
           instance.excludedDays.map((e) => e.toIso8601String()).toList(),
       'bookedTimes':

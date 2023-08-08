@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:mint/assembly/factory.dart';
+import 'package:mint/data/model/work_day_period/work_day_period.dart';
 
 import '../../data/model/specialist_work_info_dto/specialist_work_info_dto.dart';
 import '../../domain/entity/specialist_work_info/specialist_work_info.dart';
@@ -59,19 +60,19 @@ class SpecialistWorkInfoFromDto
   /// }
   /// ```
   Map<String, List<DateTime>> _getWorkHours(
-    Map<String, dynamic> workHours,
+    Map<String, WorkDayPeriod> workHours,
     int consultationMinutes,
   ) {
     final result = <String, List<DateTime>>{};
 
     for (final workHour in workHours.entries) {
-      if (workHour.value == null) continue;
       final weekday = workHour.key;
-      final timeData = Map<String, dynamic>.from(workHour.value as Map);
+      final timeData = workHour.value;
 
-      final startDateTime = _getStartDateTime(timeData);
-      var endDateTime = _getEndDateTime(timeData);
-      if (startDateTime == null || endDateTime == null) continue;
+      final startDateTime =
+          DateFormat('h:mm a').parse(timeData.start, true).toLocal();
+      var endDateTime =
+          DateFormat('h:mm a').parse(timeData.end, true).toLocal();
 
       if (endDateTime.isBefore(startDateTime)) {
         endDateTime = endDateTime.add(const Duration(days: 1));
@@ -98,28 +99,6 @@ class SpecialistWorkInfoFromDto
     }
 
     return result;
-  }
-
-  /// Parses the start time from [timeData] and returns the corresponding
-  /// DateTime instance.
-  DateTime? _getStartDateTime(Map<String, dynamic> timeData) {
-    final startTime = timeData['start'] as String?;
-    if (startTime == null) {
-      return null;
-    }
-
-    return DateFormat('h:mm a').parse(startTime, true).toLocal();
-  }
-
-  /// Parses the end time from [timeData] and returns the corresponding DateTime
-  /// instance.
-  DateTime? _getEndDateTime(Map<String, dynamic> timeData) {
-    final endTime = timeData['end'] as String?;
-    if (endTime == null) {
-      return null;
-    }
-
-    return DateFormat('h:mm a').parse(endTime, true).toLocal();
   }
 
   /// Generates a list of DateTime instances representing work hours between
