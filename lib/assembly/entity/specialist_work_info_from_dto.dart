@@ -41,6 +41,22 @@ class SpecialistWorkInfoFromDto
   ///     1970-01-01 13:00:00.000,
   ///   ],
   /// }
+  ///
+  /// final extendedWorkHours = {'Monday': {'start: '8:00 PM', end: '10:00 PM'}}
+  ///
+  /// _getWorkHours(extendedWorkHours, consultationMinutes) =>
+  /// (UTC+3 timezone)
+  /// {
+  ///  'Monday':
+  ///   [
+  ///     1970-01-01 23:00:00.000,
+  ///   ],
+  ///  'Tuesday':
+  ///   [
+  ///     1970-01-02 00:00:00.000,
+  ///     1970-01-02 01:00:00.000,
+  ///   ],
+  /// }
   /// ```
   Map<String, List<DateTime>> _getWorkHours(
     Map<String, dynamic> workHours,
@@ -48,77 +64,137 @@ class SpecialistWorkInfoFromDto
   ) {
     final result = <String, List<DateTime>>{};
 
-    workHours.forEach((day, timeData) {
-      if (timeData != null && timeData is Map) {
-        final startTime = timeData['start'] as String?;
-        final endTime = timeData['end'] as String?;
+    for (final workHour in workHours.entries) {
+      if (workHour.value == null) continue;
+      final weekday = workHour.key;
+      final timeData = Map<String, dynamic>.from(workHour.value as Map);
 
-        if (startTime != null && endTime != null) {
-          final startDateTime =
-              DateFormat('h:mm a').parse(startTime, true).toLocal();
-          var endDateTime = DateFormat('h:mm a').parse(endTime, true).toLocal();
+      final startDateTime = _getStartDateTime(timeData);
+      var endDateTime = _getEndDateTime(timeData);
+      if (startDateTime == null || endDateTime == null) continue;
 
-          if (endDateTime.isBefore(startDateTime)) {
-            endDateTime = endDateTime.add(const Duration(days: 1));
-          }
-
-          final workHoursList = <DateTime>[];
-
-          // Generate the List<DateTime> representing the work hours for the day
-          var currentHour = startDateTime;
-          while (currentHour.isBefore(endDateTime) &&
-              currentHour.day == startDateTime.day) {
-            workHoursList.add(currentHour);
-
-            currentHour = currentHour.add(
-              Duration(minutes: consultationMinutes),
-            );
-          }
-
-          // If the work hours extend to the next day, add the next day's hours
-          // to the result
-          if (endDateTime.day > startDateTime.day) {
-            final nextDayWorkHours = <DateTime>[];
-            while (currentHour.isBefore(endDateTime)) {
-              nextDayWorkHours.add(currentHour);
-              currentHour = currentHour.add(
-                Duration(minutes: consultationMinutes),
-              );
-            }
-
-            final weekdayNum = _weekdayName[day];
-            if (weekdayNum != null) {
-              var targetIndex = (weekdayNum + 1) % 7;
-
-              if (targetIndex == 0) {
-                targetIndex = 7;
-              }
-
-              final resultDay = _weekdayName.entries
-                  .singleWhere((entry) => entry.value == targetIndex)
-                  .key;
-
-              final dayList = result[resultDay];
-              if (dayList == null) {
-                result[resultDay] = nextDayWorkHours;
-              } else {
-                result[resultDay] = [...nextDayWorkHours, ...dayList];
-              }
-            }
-          }
-
-          final dayList = result[day];
-          if (dayList == null) {
-            result[day] = workHoursList;
-          } else {
-            dayList.addAll(workHoursList);
-            result[day] = dayList;
-          }
-        }
+      if (endDateTime.isBefore(startDateTime)) {
+        endDateTime = endDateTime.add(const Duration(days: 1));
       }
-    });
+
+      final workHoursList = _generateWorkHoursList(
+        startDateTime,
+        endDateTime,
+        consultationMinutes,
+      );
+
+      if (endDateTime.day == startDateTime.day) {
+        _addWorkHoursToResult(result, weekday, workHoursList);
+      } else {
+        _addWorkHoursToNextDay(
+          result,
+          weekday,
+          workHoursList,
+          endDateTime,
+          consultationMinutes,
+        );
+        _addWorkHoursToResult(result, weekday, workHoursList);
+      }
+    }
 
     return result;
+  }
+
+  /// Parses the start time from [timeData] and returns the corresponding
+  /// DateTime instance.
+  DateTime? _getStartDateTime(Map<String, dynamic> timeData) {
+    final startTime = timeData['start'] as String?;
+    if (startTime == null) {
+      return null;
+    }
+
+    return DateFormat('h:mm a').parse(startTime, true).toLocal();
+  }
+
+  /// Parses the end time from [timeData] and returns the corresponding DateTime
+  /// instance.
+  DateTime? _getEndDateTime(Map<String, dynamic> timeData) {
+    final endTime = timeData['end'] as String?;
+    if (endTime == null) {
+      return null;
+    }
+
+    return DateFormat('h:mm a').parse(endTime, true).toLocal();
+  }
+
+  /// Generates a list of DateTime instances representing work hours between
+  /// [startDateTime] and [endDateTime].
+  List<DateTime> _generateWorkHoursList(
+    DateTime startDateTime,
+    DateTime endDateTime,
+    int consultationMinutes,
+  ) {
+    final workHoursList = <DateTime>[];
+
+    var currentHour = startDateTime;
+    while (currentHour.isBefore(endDateTime) &&
+        currentHour.day == startDateTime.day) {
+      workHoursList.add(currentHour);
+
+      currentHour = currentHour.add(
+        Duration(minutes: consultationMinutes),
+      );
+    }
+
+    return workHoursList;
+  }
+
+  /// Adds work hours to the [result] map for a specific weekday.
+  void _addWorkHoursToResult(
+    Map<String, List<DateTime>> result,
+    String weekday,
+    List<DateTime> workHoursList,
+  ) {
+    final dayList = result[weekday];
+    if (dayList == null) {
+      result[weekday] = workHoursList;
+    } else {
+      dayList.addAll(workHoursList);
+      result[weekday] = dayList;
+    }
+  }
+
+  /// Adds work hours to the next day of [result] map in case work hours
+  /// extend beyond the current day.
+  void _addWorkHoursToNextDay(
+    Map<String, List<DateTime>> result,
+    String weekday,
+    List<DateTime> workHoursList,
+    DateTime endDateTime,
+    int consultationMinutes,
+  ) {
+    final nextDayWorkHours = <DateTime>[];
+    var currentHour = workHoursList.last.add(
+      Duration(minutes: consultationMinutes),
+    );
+    while (currentHour.isBefore(endDateTime)) {
+      nextDayWorkHours.add(currentHour);
+      currentHour = currentHour.add(
+        Duration(minutes: consultationMinutes),
+      );
+    }
+
+    final weekdayNum = _weekdayName[weekday];
+    if (weekdayNum == null) return;
+
+    var targetIndex = (weekdayNum + 1) % 7;
+    if (targetIndex == 0) targetIndex = 7;
+
+    final resultDay = _weekdayName.entries
+        .singleWhere((entry) => entry.value == targetIndex)
+        .key;
+
+    final dayList = result[resultDay];
+    if (dayList == null) {
+      result[resultDay] = nextDayWorkHours;
+    } else {
+      result[resultDay] = [...nextDayWorkHours, ...dayList];
+    }
   }
 
   @override
@@ -128,10 +204,7 @@ class SpecialistWorkInfoFromDto
       consultationMinutes: param.consultationMinutes,
       specialistId: param.specialistId,
       excludedDays: [...param.excludedDays],
-      workHours: _getWorkHours(
-        Map<String, dynamic>.from(param.workHours as Map),
-        param.consultationMinutes,
-      ),
+      workHours: _getWorkHours(param.workHours, param.consultationMinutes),
       bookedTimes: [...param.bookedTimes.map((e) => e.toLocal())],
     );
   }
