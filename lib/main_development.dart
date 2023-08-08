@@ -5,6 +5,7 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mint/bootstrap.dart';
+import 'package:mint/env_constants.dart';
 import 'package:mint/presentation/app/app.dart';
 
 import 'injector/injector.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
   await dotenv.load();
   await Firebase.initializeApp();
   await init();
-  Stripe.publishableKey = dotenv.env['STRIPE_PUBLIC_KEY'] ?? '';
+  Stripe.publishableKey = stripePublicKey;
   await Stripe.instance.applySettings();
   FirebaseChatCore.instance.setConfig(
     const FirebaseChatCoreConfig(null, 'chat_rooms', 'chat_users'),
