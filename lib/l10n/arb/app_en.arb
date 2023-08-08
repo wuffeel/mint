@@ -146,5 +146,7 @@
   "bookAgain": "Book again",
   "attachImage": "Attach image",
   "attachFile": "Attach file",
-  "today": "Today"
+  "today": "Today",
+  "permissionDeniedTitle": "Permission denied",
+  "permissionDeniedContent": "Permission was not granted. Go to settings and enable permission"
 }

@@ -42,6 +42,10 @@ class ChatPreviewDataApplyFailure extends ChatFetchMessagesSuccess {
   ChatPreviewDataApplyFailure(super.messages, super.roomId);
 }
 
+class ChatFilePickPermissionDenied extends ChatFetchMessagesSuccess {
+  ChatFilePickPermissionDenied(super.messages, super.roomId);
+}
+
 class ChatFileLoadFailure extends ChatFetchMessagesSuccess {
   ChatFileLoadFailure(super.messages, super.roomId);
 }

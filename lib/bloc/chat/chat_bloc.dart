@@ -179,12 +179,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatFilePickRequested event,
     Emitter<ChatState> emit,
   ) async {
+    final state = this.state;
+    if (state is! ChatFetchMessagesSuccess) return;
+
     try {
       final message = await _pickFileUseCase();
 
       if (message != null) add(ChatSendMessageRequested(message));
     } catch (error) {
       log('ChatFilePickFailure: $error');
+      if (error.toString().contains('read_external_storage_denied')) {
+        emit(ChatFilePickPermissionDenied(state.messages, state.roomId));
+      }
     }
   }
 

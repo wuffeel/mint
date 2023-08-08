@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 
 import '../../../../../gen/assets.gen.dart';
 
@@ -56,11 +57,18 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
   }
 
   Future<void> _startRecord() async {
-    final permission = await _recorderController.checkPermission();
+    final permission = _recorderController.hasPermission;
     if (permission) {
       await _recorderController.record();
       setState(() => _isAudioRecording = true);
     }
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (context) => const PermissionDeniedDialog(),
+    );
   }
 
   @override
@@ -115,7 +123,9 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
           Offstage(
             offstage: _isAudioRecording,
             child: InkWell(
-              onTap: _startRecord,
+              onTap: _recorderController.hasPermission
+                  ? _startRecord
+                  : _showPermissionDeniedDialog,
               child: _BottomBarIcon(Assets.svg.microphoneIcon),
             ),
           ),
