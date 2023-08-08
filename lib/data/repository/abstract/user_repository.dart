@@ -6,4 +6,6 @@ abstract class UserRepository {
   Future<void> changePinCode(String userUid, String? pinCode);
 
   Future<void> logOut();
+
+  Future<UserModelDto?> getUserData(String userId);
 }

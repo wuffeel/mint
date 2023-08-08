@@ -13,6 +13,9 @@ class MintFontFamily {
   /// Font family: Inter
   static const String inter = 'Inter';
 
+  /// Font family: ProximaNova
+  static const String proximaNova = 'ProximaNova';
+
   /// Font family: SfProDisplay
   static const String sfProDisplay = 'SfProDisplay';
 }

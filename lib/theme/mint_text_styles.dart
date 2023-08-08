@@ -3,6 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/fonts.gen.dart';
 
 class MintTextStyles {
+  static const proximaNovaRegular = TextStyle(
+    fontFamily: MintFontFamily.proximaNova,
+    fontWeight: FontWeight.w400,
+  );
+
+  static final proximaNova14Regular = TextStyle(
+    fontFamily: MintFontFamily.proximaNova,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+  );
+
   static final sfProDisplay37Regular400 = TextStyle(
     fontFamily: MintFontFamily.sfProDisplay,
     fontSize: 37.sp,

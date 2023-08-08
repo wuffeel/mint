@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/theme/mint_text_styles.dart';
@@ -79,6 +80,7 @@ class _OtpCodeFieldState extends State<OtpCodeField> {
       onCompleted: widget.onCompleted,
       errorPinTheme: errorPinTheme,
       forceErrorState: widget.isError,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
     );
   }
 }

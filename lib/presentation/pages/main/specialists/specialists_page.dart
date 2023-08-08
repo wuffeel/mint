@@ -27,14 +27,14 @@ class SpecialistsPage extends StatefulWidget {
 
 class _SpecialistsPageState extends State<SpecialistsPage> {
   void _showFilterModalBottomSheet(BuildContext context) {
+    context.read<SpecialistFilterBloc>().add(SpecialistFilterGetSelected());
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: Colors.transparent,
       builder: (_) => BlocProvider.value(
-        value: context.read<SpecialistFilterBloc>()
-          ..add(SpecialistFilterGetSelected()),
+        value: context.read<SpecialistFilterBloc>(),
         child: const FilterBottomSheet(),
       ),
     );

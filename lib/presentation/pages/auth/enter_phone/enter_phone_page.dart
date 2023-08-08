@@ -59,6 +59,12 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _phoneController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(

@@ -6,8 +6,7 @@ part of 'pick_up_filter_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_PickUpFilterDto _$$_PickUpFilterDtoFromJson(Map<String, dynamic> json) =>
-    _$_PickUpFilterDto(
+_$_PickUpFilterDto _$$_PickUpFilterDtoFromJson(Map json) => _$_PickUpFilterDto(
       communicationMembers: (json['communicationMembers'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),

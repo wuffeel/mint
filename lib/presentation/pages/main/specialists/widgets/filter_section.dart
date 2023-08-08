@@ -87,6 +87,10 @@ class FilterSection extends StatelessWidget {
             context,
             selectedFilters.copyWith(experience: experience),
           ),
+          itemInnerPadding: EdgeInsets.symmetric(
+            vertical: 10.h,
+            horizontal: 8.w,
+          ),
         ),
         SizedBox(height: 24.h),
         Text(l10n.specialities, style: MintTextStyles.headline),
@@ -99,6 +103,10 @@ class FilterSection extends StatelessWidget {
           onItemSelected: (specializations) => _onPreferencesChange(
             context,
             selectedFilters.copyWith(specializations: specializations),
+          ),
+          itemInnerPadding: EdgeInsets.symmetric(
+            vertical: 10.h,
+            horizontal: 8.w,
           ),
         ),
       ],

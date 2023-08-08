@@ -99,4 +99,13 @@ class MintColors {
 
   /// Color: #E6E6E6
   static const Color separatorLight = Color(0xFFE6E6E6);
+
+  /// Color: #B2D7FF
+  static const Color slightlyBlue = Color(0xFFB2D7FF);
+
+  /// Color: #767680
+  static const Color timeCalendarSeparatorDark = Color(0xFF767680);
+
+  /// Color: #EDEDED
+  static const Color timeCalendarSeparatorLight = Color(0xFFEDEDED);
 }

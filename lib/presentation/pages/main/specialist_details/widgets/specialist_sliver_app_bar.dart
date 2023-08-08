@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/fade_on_scroll.dart';
 
 class SpecialistSliverAppBar extends StatefulWidget {
@@ -38,34 +39,48 @@ class SpecialistSliverAppBar extends StatefulWidget {
 }
 
 class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
-  final GlobalKey _childKey = GlobalKey();
+  /// Used to set the key for initially displayed widget, the size of which
+  /// will be calculated
+  final GlobalKey _initialWidgetKey = GlobalKey();
 
-  // As long as the height is 0 instead of the sliver app bar
-  // a sliver to box adapter will be used  to calculate dynamically the size
-  // for the sliver app bar
-  double? _height = 0;
+  /// Variable used for setting SliverAppBar's expanded height for flexible
+  /// space to be shown
+  ///
+  /// As long as the height is 0 instead of the sliver app bar
+  /// a sliver to box adapter will be used to calculate dynamically the size
+  /// for the sliver app bar
+  double? _flexibleSpaceHeight = 0;
 
   @override
   void initState() {
     super.initState();
-    _updateHeight();
+    _updateFlexibleSpaceHeight();
   }
 
-  void _updateHeight() {
+  /// Function to set the [_flexibleSpaceHeight] based on widget height
+  /// associated with [_initialWidgetKey]
+  void _updateFlexibleSpaceHeight() {
     // Gets the new height and updates the sliver app bar. Needs to be called
     // after the last frame has been rebuild otherwise this will throw an error
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (_childKey.currentContext == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_initialWidgetKey.currentContext == null) return;
       setState(() {
-        _height = (_childKey.currentContext?.findRenderObject() as RenderBox?)
-            ?.size
-            .height;
+        final initialWidget =
+            _initialWidgetKey.currentContext?.findRenderObject() as RenderBox?;
+
+        _flexibleSpaceHeight = initialWidget?.size.height;
+        // Adding status bar height to total height
+        var heightLocal = _flexibleSpaceHeight;
+        if (heightLocal != null) {
+          heightLocal += MediaQuery.paddingOf(context).top;
+        }
+        _flexibleSpaceHeight = heightLocal;
       });
     });
   }
 
   double _getFadeOffset() {
-    var height = _height;
+    var height = _flexibleSpaceHeight;
     if (height == null) return 0;
 
     final bottom = widget.bottom;
@@ -76,42 +91,38 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
   @override
   void didUpdateWidget(covariant SpecialistSliverAppBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _updateHeight();
+    _updateFlexibleSpaceHeight();
   }
 
   @override
   Widget build(BuildContext context) {
     // Needed to lay out the flexibleSpace the first time,
     // so we can calculate its intrinsic height
-    if (_height == 0) {
+    if (_flexibleSpaceHeight == 0) {
       return SliverToBoxAdapter(
         child: Stack(
           children: [
-            Padding(
-              // Padding which centers the flexible space within the app bar
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.paddingOf(context).top / 2,
-              ),
-              child: Container(
-                key: _childKey,
-                child: widget.flexibleSpace ??
-                    const SizedBox(
-                      height: kToolbarHeight,
-                    ),
-              ),
+            Column(
+              children: [
+                Container(
+                  key: _initialWidgetKey,
+                  child: widget.flexibleSpace ??
+                      const SizedBox(height: kToolbarHeight),
+                ),
+                widget.bottom ?? const SizedBox.shrink(),
+              ],
             ),
             Positioned.fill(
-              // 10 is the magic number which the app bar is pushed down within
-              // the sliver app bar. Couldn't find exactly where this number
-              // comes from and found it through trial and error.
-              top: 10,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: AppBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
+                  automaticallyImplyLeading: widget.automaticallyImplyLeading,
                   leading: widget.leading,
+                  leadingWidth: 80.w,
                   actions: widget.actions,
+                  toolbarHeight: widget.toolbarHeight,
                 ),
               ),
             )
@@ -131,7 +142,7 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
       pinned: widget.pinned,
       snap: widget.snap,
       toolbarHeight: widget.toolbarHeight,
-      expandedHeight: _height,
+      expandedHeight: _flexibleSpaceHeight,
       leadingWidth: widget.leadingWidth,
       flexibleSpace: FadeOnScroll(
         scrollController: widget.scrollController,

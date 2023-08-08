@@ -6,4 +6,6 @@ abstract class UserService {
   Future<void> changePinCode(String userUid, String? pinCode);
 
   Future<void> logOut();
+
+  Future<UserModel?> getUserData(String userId);
 }

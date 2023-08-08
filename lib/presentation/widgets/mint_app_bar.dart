@@ -8,6 +8,7 @@ class MintAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.leading,
     this.title,
+    this.centerTitle,
     this.actions,
     this.leadingWidth,
   });
@@ -15,6 +16,7 @@ class MintAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final double? leadingWidth;
   final Widget? title;
+  final bool? centerTitle;
   final List<Widget>? actions;
 
   @override
@@ -26,6 +28,7 @@ class MintAppBar extends StatelessWidget implements PreferredSizeWidget {
           leading ?? (context.router.canPop() ? const MintBackButton() : null),
       title: title,
       actions: actions,
+      centerTitle: centerTitle,
       backgroundColor: Colors.transparent,
       elevation: 0,
     );

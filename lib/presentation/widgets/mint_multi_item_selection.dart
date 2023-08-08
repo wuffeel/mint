@@ -10,6 +10,12 @@ class MintMultiItemSelection<T> extends StatelessWidget {
     required this.selectedItems,
     required this.onItemSelected,
     this.hasCheckMark = false,
+    this.itemAlignment,
+    this.itemInnerPadding,
+    this.itemTextStyle,
+    this.unselectedTextStyle,
+    this.disabledTextStyle,
+    this.itemWidth,
   });
 
   final List<T> items;
@@ -17,6 +23,12 @@ class MintMultiItemSelection<T> extends StatelessWidget {
   final List<T> selectedItems;
   final void Function(List<T>?) onItemSelected;
   final bool hasCheckMark;
+  final AlignmentGeometry? itemAlignment;
+  final EdgeInsetsGeometry? itemInnerPadding;
+  final TextStyle? itemTextStyle;
+  final TextStyle? unselectedTextStyle;
+  final TextStyle? disabledTextStyle;
+  final double? itemWidth;
 
   List<T>? _updateList(T item, bool isSelected) {
     final updated = isSelected
@@ -41,6 +53,11 @@ class MintMultiItemSelection<T> extends StatelessWidget {
               isSelected: isSelected,
               onSelect: (item) => onItemSelected(_updateList(item, isSelected)),
               hasCheckMark: hasCheckMark,
+              itemInnerPadding: itemInnerPadding,
+              itemTextStyle: itemTextStyle,
+              unselectedTextStyle: unselectedTextStyle,
+              disabledTextStyle: disabledTextStyle,
+              width: itemWidth,
             );
           },
         ),

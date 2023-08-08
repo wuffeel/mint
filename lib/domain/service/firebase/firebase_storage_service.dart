@@ -19,4 +19,14 @@ class FirebaseStorageService implements StorageService {
   Future<String?> getUserPhoto(String? storageUrl) async {
     return _storageRepository.getUserPhoto(storageUrl);
   }
+
+  @override
+  Future<String> uploadChatFile(String filePath, String fileId, String roomId) {
+    return _storageRepository.uploadChatFile(filePath, fileId, roomId);
+  }
+
+  @override
+  Future<void> deleteStorageFile(String fileUrl) {
+    return _storageRepository.deleteStorageFile(fileUrl);
+  }
 }

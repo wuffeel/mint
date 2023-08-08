@@ -29,4 +29,11 @@ class FirebaseUserService implements UserService {
   Future<void> logOut() async {
     await _userRepository.logOut();
   }
+
+  @override
+  Future<UserModel?> getUserData(String userId) async {
+    final user = await _userRepository.getUserData(userId);
+    if (user == null) return null;
+    return _userModelFromDto.create(user);
+  }
 }

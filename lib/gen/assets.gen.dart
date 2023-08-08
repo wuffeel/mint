@@ -14,6 +14,13 @@ import 'package:flutter/services.dart';
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/american_express_icon.svg
+  SvgGenImage get americanExpressIcon =>
+      const SvgGenImage('assets/svg/american_express_icon.svg');
+
+  /// File path: assets/svg/apple_icon.svg
+  SvgGenImage get appleIcon => const SvgGenImage('assets/svg/apple_icon.svg');
+
   /// File path: assets/svg/arrow_back_android.svg
   SvgGenImage get arrowBackAndroid =>
       const SvgGenImage('assets/svg/arrow_back_android.svg');
@@ -21,6 +28,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/arrow_back_ios.svg
   SvgGenImage get arrowBackIos =>
       const SvgGenImage('assets/svg/arrow_back_ios.svg');
+
+  /// File path: assets/svg/attach_icon.svg
+  SvgGenImage get attachIcon => const SvgGenImage('assets/svg/attach_icon.svg');
 
   /// File path: assets/svg/backspace_icon.svg
   SvgGenImage get backspaceIcon =>
@@ -33,11 +43,28 @@ class $AssetsSvgGen {
   /// File path: assets/svg/bell_icon.svg
   SvgGenImage get bellIcon => const SvgGenImage('assets/svg/bell_icon.svg');
 
+  /// File path: assets/svg/calendar_icon.svg
+  SvgGenImage get calendarIcon =>
+      const SvgGenImage('assets/svg/calendar_icon.svg');
+
+  /// File path: assets/svg/call.svg
+  SvgGenImage get call => const SvgGenImage('assets/svg/call.svg');
+
+  /// File path: assets/svg/chat.svg
+  SvgGenImage get chat => const SvgGenImage('assets/svg/chat.svg');
+
   /// File path: assets/svg/check_mark.svg
   SvgGenImage get checkMark => const SvgGenImage('assets/svg/check_mark.svg');
 
+  /// File path: assets/svg/chevron_right.svg
+  SvgGenImage get chevronRight =>
+      const SvgGenImage('assets/svg/chevron_right.svg');
+
   /// File path: assets/svg/cross_icon.svg
   SvgGenImage get crossIcon => const SvgGenImage('assets/svg/cross_icon.svg');
+
+  /// File path: assets/svg/emoji_icon.svg
+  SvgGenImage get emojiIcon => const SvgGenImage('assets/svg/emoji_icon.svg');
 
   /// File path: assets/svg/filter_icon.svg
   SvgGenImage get filterIcon => const SvgGenImage('assets/svg/filter_icon.svg');
@@ -52,9 +79,20 @@ class $AssetsSvgGen {
   /// File path: assets/svg/home_icon.svg
   SvgGenImage get homeIcon => const SvgGenImage('assets/svg/home_icon.svg');
 
+  /// File path: assets/svg/mastercard_icon.svg
+  SvgGenImage get mastercardIcon =>
+      const SvgGenImage('assets/svg/mastercard_icon.svg');
+
+  /// File path: assets/svg/microphone_icon.svg
+  SvgGenImage get microphoneIcon =>
+      const SvgGenImage('assets/svg/microphone_icon.svg');
+
   /// File path: assets/svg/pick_up_specialist.svg
   SvgGenImage get pickUpSpecialist =>
       const SvgGenImage('assets/svg/pick_up_specialist.svg');
+
+  /// File path: assets/svg/plus_icon.svg
+  SvgGenImage get plusIcon => const SvgGenImage('assets/svg/plus_icon.svg');
 
   /// File path: assets/svg/profile_icon.svg
   SvgGenImage get profileIcon =>
@@ -83,27 +121,46 @@ class $AssetsSvgGen {
   SvgGenImage get userPlaceholder =>
       const SvgGenImage('assets/svg/user_placeholder.svg');
 
+  /// File path: assets/svg/video.svg
+  SvgGenImage get video => const SvgGenImage('assets/svg/video.svg');
+
+  /// File path: assets/svg/visa_icon.svg
+  SvgGenImage get visaIcon => const SvgGenImage('assets/svg/visa_icon.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
+        americanExpressIcon,
+        appleIcon,
         arrowBackAndroid,
         arrowBackIos,
+        attachIcon,
         backspaceIcon,
         backspaceIconDark,
         bellIcon,
+        calendarIcon,
+        call,
+        chat,
         checkMark,
+        chevronRight,
         crossIcon,
+        emojiIcon,
         filterIcon,
         heartIcon,
         heartIconFilled,
         homeIcon,
+        mastercardIcon,
+        microphoneIcon,
         pickUpSpecialist,
+        plusIcon,
         profileIcon,
         questionMark,
         sessionsIcon,
         specialistsIcon,
         starIcon,
         starIconFilled,
-        userPlaceholder
+        userPlaceholder,
+        video,
+        visaIcon
       ];
 }
 

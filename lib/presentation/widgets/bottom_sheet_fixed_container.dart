@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
 
-class BottomSheetContainer extends StatelessWidget {
-  const BottomSheetContainer({
+class BottomSheetFixedContainer extends StatelessWidget {
+  const BottomSheetFixedContainer({
     super.key,
+    required this.appBar,
     required this.child,
-    this.padding,
+    this.height,
   });
 
+  final Widget appBar;
   final Widget child;
-  final EdgeInsetsGeometry? padding;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.9,
+      height: height ?? MediaQuery.sizeOf(context).height * 0.9,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
@@ -37,6 +39,7 @@ class BottomSheetContainer extends StatelessWidget {
               color: MintColors.bottomSheetTopLine,
             ),
           ),
+          appBar,
           Expanded(child: child),
         ],
       ),

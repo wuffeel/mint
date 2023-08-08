@@ -10,6 +10,13 @@ class MintSelectionButton<T> extends StatelessWidget {
     required this.isSelected,
     this.hasCheckMark = false,
     this.onSelect,
+    this.isDisabled,
+    this.itemAlignment,
+    this.itemInnerPadding,
+    this.itemTextStyle,
+    this.unselectedTextStyle,
+    this.disabledTextStyle,
+    this.width,
   });
 
   final T value;
@@ -17,15 +24,44 @@ class MintSelectionButton<T> extends StatelessWidget {
   final bool isSelected;
   final bool hasCheckMark;
   final void Function(T)? onSelect;
+  final bool? isDisabled;
+  final AlignmentGeometry? itemAlignment;
+  final EdgeInsetsGeometry? itemInnerPadding;
+  final TextStyle? itemTextStyle;
+  final TextStyle? unselectedTextStyle;
+  final TextStyle? disabledTextStyle;
+  final double? width;
+
+  TextStyle? _getTextStyle() {
+    final disabled = isDisabled;
+    if (disabled != null && disabled && disabledTextStyle != null) {
+      return disabledTextStyle;
+    } else if (!isSelected && unselectedTextStyle != null) {
+      return unselectedTextStyle;
+    } else {
+      return itemTextStyle ?? TextStyle(fontSize: 16.sp, height: 1.3);
+    }
+  }
+
+  bool get buttonDisabled {
+    final disabled = isDisabled;
+    return disabled != null && disabled;
+  }
 
   @override
   Widget build(BuildContext context) {
     final onSelectLocal = onSelect;
     return InkWell(
-      onTap: onSelectLocal != null ? () => onSelectLocal(value) : null,
+      onTap: buttonDisabled
+          ? null
+          : onSelectLocal != null
+              ? () => onSelectLocal(value)
+              : null,
       borderRadius: BorderRadius.circular(10.r),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+        width: width,
+        padding: itemInnerPadding,
+        alignment: itemAlignment,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(10.r),
@@ -46,10 +82,10 @@ class MintSelectionButton<T> extends StatelessWidget {
                     isSelected: isSelected,
                   ),
                   SizedBox(width: 4.w),
-                  Text(title, style: TextStyle(fontSize: 16.sp, height: 1.3)),
+                  Text(title, style: _getTextStyle()),
                 ],
               )
-            : Text(title, style: TextStyle(fontSize: 16.sp, height: 1.3)),
+            : Text(title, style: _getTextStyle()),
       ),
     );
   }

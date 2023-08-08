@@ -10,6 +10,7 @@ import 'package:mint/domain/usecase/fetch_specialist_catalogue_use_case.dart';
 import 'package:mint/utils/specialist_model_extensions.dart';
 
 import '../../domain/controller/applied_filter_controller.dart';
+import '../../domain/controller/specialist_rating_controller.dart';
 import '../../domain/entity/filter_preferences/filter_preferences.dart';
 
 part 'specialist_catalogue_event.dart';
@@ -22,13 +23,16 @@ class SpecialistCatalogueBloc
   SpecialistCatalogueBloc(
     this._fetchSpecialistCatalogueUseCase,
     this._filterController,
+    this._ratingController,
   ) : super(SpecialistCatalogueInitial()) {
     _subscribeToAppliedFilterChange();
+    _subscribeToRatingChange();
     on<SpecialistCatalogueFetchRequested>(
       _onSpecialistCatalogueFetch,
       transformer: restartable(),
     );
     on<SpecialistCatalogueRefreshRequested>(_onSpecialistCatalogueRefresh);
+    on<SpecialistCatalogueRatingUpdated>(_onRatingUpdate);
   }
 
   final FetchSpecialistCatalogueUseCase _fetchSpecialistCatalogueUseCase;
@@ -36,9 +40,13 @@ class SpecialistCatalogueBloc
   final AppliedFilterController _filterController;
   late final StreamSubscription<FilterPreferences> _appliedSubscription;
 
+  final SpecialistRatingController _ratingController;
+  late final StreamSubscription<SpecialistRating> _ratingSubscription;
+
   @override
   Future<void> close() async {
     await _appliedSubscription.cancel();
+    await _ratingSubscription.cancel();
     return super.close();
   }
 
@@ -47,6 +55,12 @@ class SpecialistCatalogueBloc
     _appliedSubscription =
         _filterController.appliedFilters.listen((appliedFilters) {
       add(SpecialistCatalogueFetchRequested(preferences: appliedFilters));
+    });
+  }
+
+  void _subscribeToRatingChange() {
+    _ratingSubscription = _ratingController.rating.listen((newRating) {
+      add(SpecialistCatalogueRatingUpdated(newRating));
     });
   }
 
@@ -104,6 +118,32 @@ class SpecialistCatalogueBloc
               )
             : specialistCatalogue,
         preferences: preferences,
+      ),
+    );
+  }
+
+  void _onRatingUpdate(
+    SpecialistCatalogueRatingUpdated event,
+    Emitter<SpecialistCatalogueState> emit,
+  ) {
+    final state = this.state;
+    if (state is! SpecialistCatalogueFetchSuccess) return;
+
+    final specialists = state.specialistList;
+    if (specialists.isEmpty) return;
+
+    final updatedSpecialists = specialists.map((specialist) {
+      final rating = event.updatedRating;
+      if (specialist.id == rating.$3) {
+        return specialist.copyWith(rating: rating.$1, reviewCount: rating.$2);
+      }
+      return specialist;
+    }).toList();
+
+    emit(
+      SpecialistCatalogueFetchSuccess(
+        specialistList: updatedSpecialists,
+        preferences: state.preferences,
       ),
     );
   }

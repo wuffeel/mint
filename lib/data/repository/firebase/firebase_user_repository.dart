@@ -46,8 +46,15 @@ class FirebaseUserRepository implements UserRepository {
 
   Future<void> _addNewUser(User user) async {
     await _userCollectionRef.doc(user.uid).set({
-      'id': user.uid,
       'phoneNumber': user.phoneNumber,
     });
+  }
+
+  @override
+  Future<UserModelDto?> getUserData(String userId) async {
+    final userSnapshot = await _userCollectionRef.doc(userId).get();
+    final user = userSnapshot.data() as Map<String, dynamic>?;
+    if (user == null) return null;
+    return UserModelDto.fromJson(user);
   }
 }

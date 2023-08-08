@@ -32,19 +32,22 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
   /// Current pin-code typed
   String _pinCode = '';
 
-  /// Sets the [_pinCode] to empty string dependent on [state]
+  /// Used for these situations:
+  ///
+  /// __Set the [_pinCode] to empty string on specific [state]__
+  ///
+  /// __If pin code thrown a failure => launch pin code shake animation__
   void _pinCodeListener(PinCodeState state) {
-    if (state is PinCodeMismatch || state is PinCodeFailure) {
-      setState(() {
-        _shakeWidgetKey.currentState?.shake();
-        _pinCode = '';
-      });
-    } else if (state is PinCodeEnterSuccess ||
+    final needsToBeCleared = state is PinCodeEnterSuccess ||
         (state is PinCodeInitial &&
-            state.status == PinCodeStatusInitial.changeNew)) {
-      setState(() {
-        _pinCode = '';
-      });
+            state.status == PinCodeStatusInitial.changeNew);
+
+    if (state is PinCodeMismatch || state is PinCodeFailure) {
+      _shakeWidgetKey.currentState?.shake();
+    }
+
+    if (needsToBeCleared && state is! PinCodeConfirmed) {
+      _pinCode = '';
     }
   }
 

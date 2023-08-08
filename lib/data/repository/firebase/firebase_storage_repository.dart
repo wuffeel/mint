@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/storage_repository.dart';
 
 @Injectable(as: StorageRepository)
 class FirebaseStorageRepository implements StorageRepository {
-  final _storageRef = FirebaseStorage.instance.ref();
+  final _storage = FirebaseStorage.instance;
+
+  Reference get _storageRef => _storage.ref();
 
   @override
   Future<String?> getSpecialistPhoto(String? storageUrl) async {
@@ -22,5 +26,25 @@ class FirebaseStorageRepository implements StorageRepository {
     }
 
     return null;
+  }
+
+  @override
+  Future<String> uploadChatFile(
+    String filePath,
+    String fileId,
+    String roomId,
+  ) async {
+    final file = File(filePath);
+    final extension = file.path.split('.').last;
+    final uploadedFile = await _storageRef
+        .child('files/$roomId/$fileId.$extension')
+        .putFile(file);
+
+    return uploadedFile.ref.getDownloadURL();
+  }
+
+  @override
+  Future<void> deleteStorageFile(String fileUrl) {
+    return _storage.refFromURL(fileUrl).delete();
   }
 }

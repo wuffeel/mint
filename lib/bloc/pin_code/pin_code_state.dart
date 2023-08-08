@@ -3,6 +3,8 @@ part of 'pin_code_bloc.dart';
 @immutable
 abstract class PinCodeState {}
 
+mixin PinCodeConfirmed on PinCodeState {}
+
 class PinCodeInitial extends PinCodeState {
   PinCodeInitial(this.status);
 
@@ -24,11 +26,20 @@ class PinCodeFailure extends PinCodeEnterSuccess {
   PinCodeFailure(super.status, super.pinCode);
 }
 
-class PinCodeSignInConfirmSuccess extends PinCodeState {}
+class PinCodeSignInConfirmSuccess extends PinCodeEnterSuccess
+    with PinCodeConfirmed {
+  PinCodeSignInConfirmSuccess(super.status, super.pinCode);
+}
 
-class PinCodeSignUpConfirmSuccess extends PinCodeState {}
+class PinCodeSignUpConfirmSuccess extends PinCodeEnterSuccess
+    with PinCodeConfirmed {
+  PinCodeSignUpConfirmSuccess(super.status, super.pinCode);
+}
 
-class PinCodeNewConfirmSuccess extends PinCodeState {}
+class PinCodeNewConfirmSuccess extends PinCodeEnterSuccess
+    with PinCodeConfirmed {
+  PinCodeNewConfirmSuccess(super.status, super.pinCode);
+}
 
 class PinCodeResetSuccess extends PinCodeState {}
 

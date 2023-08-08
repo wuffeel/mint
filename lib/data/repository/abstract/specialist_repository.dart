@@ -1,7 +1,10 @@
 import 'package:mint/data/model/filter_preferences_dto/filter_preferences_dto.dart';
+import 'package:mint/data/model/review_model_dto/review_model_dto.dart';
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
 
 abstract class SpecialistRepository {
+  Future<SpecialistModelDto?> getSpecialist(String specialistId);
+
   Future<List<SpecialistModelDto>> getSpecialistsOnline();
 
   Future<List<SpecialistModelDto>> getFavoriteSpecialists(String userId);
@@ -13,4 +16,12 @@ abstract class SpecialistRepository {
   Future<List<SpecialistModelDto>> getSpecialistCatalogue(
     FilterPreferencesDto filter,
   );
+
+  Future<List<ReviewModelDto>> getSpecialistReviews(String specialistId);
+
+  Future<ReviewModelDto> addSpecialistReview(ReviewModelDto reviewModelDto);
+
+  Future<void> updateSpecialistReview(ReviewModelDto reviewModelDto);
+
+  Future<void> deleteSpecialistReview(ReviewModelDto reviewModelDto);
 }
