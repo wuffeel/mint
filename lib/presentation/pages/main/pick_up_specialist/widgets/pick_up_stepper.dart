@@ -102,6 +102,7 @@ class _PickUpStepperState extends State<PickUpStepper> {
             clipBehavior: Clip.none,
             controller: _pageController,
             onPageChanged: (index) => setState(() => _currentStep = index),
+            physics: const NeverScrollableScrollPhysics(),
             children: widget.steps,
           ),
         ),
