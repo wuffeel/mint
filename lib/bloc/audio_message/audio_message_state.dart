@@ -7,10 +7,6 @@ class AudioMessageInitial extends AudioMessageState {}
 
 class AudioMessageLoading extends AudioMessageState {}
 
-class AudioMessageLoadSuccess extends AudioMessageState {
-  AudioMessageLoadSuccess(this.audioPath);
-
-  final String audioPath;
-}
+class AudioMessageLoadSuccess extends AudioMessageState {}
 
 class AudioMessageLoadFailure extends AudioMessageState {}

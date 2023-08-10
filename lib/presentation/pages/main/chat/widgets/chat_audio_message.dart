@@ -35,7 +35,6 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
   late final StreamSubscription<PlayerState> _playerStateSubscription;
 
   late final _playerSize = MediaQuery.sizeOf(context).width / 2;
-  late final List<double> _waveFormData;
 
   @override
   bool get wantKeepAlive => true;
@@ -49,14 +48,11 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
         // TODO(wuffeel): refreshes state on starting or stopping player
       });
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.loadAudioMessage(
-        widget.audioMessage,
-        _playerController,
-        _playerSize,
-      );
-      _waveFormData = _playerController.waveformData;
-    });
+    _cubit.loadAudioMessage(
+      widget.audioMessage,
+      _playerController,
+      _playerSize,
+    );
   }
 
   Future<void> _handlePlayerAction() async {
@@ -89,6 +85,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
   void dispose() {
     _playerController.dispose();
     _playerStateSubscription.cancel();
+    _cubit.close();
     super.dispose();
   }
 
@@ -138,7 +135,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
                       fixedWaveColor: _getProperTranslucentColor(),
                       liveWaveColor: _getProperOpaqueColor(),
                     ),
-                    waveformData: _waveFormData,
+                    waveformData: _playerController.waveformData,
                     waveformType: WaveformType.fitWidth,
                   ),
                   SizedBox(height: 4.h),
@@ -156,11 +153,9 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
                             );
                           }
                         }
-                        return Text(
-                          '00:00',
-                          style: MintTextStyles.callOut3.copyWith(
-                            color: _getProperOpaqueColor(),
-                          ),
+                        return _DurationMinutesText(
+                          Duration.zero,
+                          color: _getProperOpaqueColor(),
                         );
                       },
                     )

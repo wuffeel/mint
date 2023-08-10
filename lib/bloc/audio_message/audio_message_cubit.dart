@@ -30,7 +30,7 @@ class AudioMessageCubit extends Cubit<AudioMessageState> {
         path: audioPath,
         noOfSamples: const PlayerWaveStyle().getSamplesForWidth(playerSize),
       );
-      emit(AudioMessageLoadSuccess(audioPath));
+      emit(AudioMessageLoadSuccess());
     } catch (error) {
       log('AudioMessageLoadFailure: $error');
       emit(AudioMessageLoadFailure());
