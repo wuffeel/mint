@@ -26,7 +26,8 @@ class ChatAudioMessage extends StatefulWidget {
   State<ChatAudioMessage> createState() => _ChatAudioMessageState();
 }
 
-class _ChatAudioMessageState extends State<ChatAudioMessage> {
+class _ChatAudioMessageState extends State<ChatAudioMessage>
+    with AutomaticKeepAliveClientMixin {
   final _cubit = getIt<AudioMessageCubit>();
 
   final _playerController = PlayerController()
@@ -35,6 +36,9 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
 
   late final _playerSize = MediaQuery.sizeOf(context).width / 2;
   late final List<double> _waveFormData;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -90,6 +94,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<AudioMessageCubit, AudioMessageState>(
       bloc: _cubit,
       builder: (context, state) {
