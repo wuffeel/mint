@@ -27,7 +27,6 @@ class FirebaseUserRepository implements UserRepository {
     final userData = userDoc.data() as Map<String, dynamic>?;
 
     if (userData == null) {
-      await _addNewUser(user);
       return UserModelDto(id: user.uid, phoneNumber: user.phoneNumber);
     }
     userData['id'] = user.uid;
@@ -42,12 +41,6 @@ class FirebaseUserRepository implements UserRepository {
   @override
   Future<void> logOut() async {
     await _firebaseAuth.signOut();
-  }
-
-  Future<void> _addNewUser(User user) async {
-    await _userCollectionRef.doc(user.uid).set({
-      'phoneNumber': user.phoneNumber,
-    });
   }
 
   @override
