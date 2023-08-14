@@ -24,12 +24,12 @@ import 'package:mint/utils/chat_utils.dart';
 class ChatPage extends StatelessWidget {
   const ChatPage({
     super.key,
-    required this.specialistModel,
     required this.room,
+    required this.specialistModel,
   });
 
-  final SpecialistModel specialistModel;
   final types.Room room;
+  final SpecialistModel specialistModel;
 
   void _showPermissionDeniedDialog(BuildContext context) {
     showDialog<void>(
@@ -42,8 +42,7 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-      getIt<ChatBloc>()
-        ..add(ChatInitializeRequested(room)),
+          getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
       child: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {
           if (state is ChatFilePickPermissionDenied) {
@@ -75,11 +74,13 @@ class _ChatViewState extends State<_ChatView> {
   final _hideBackgroundOnEmojiMessages = true;
 
   late final _user = widget.room.users.firstWhere(
-        (e) => e.id != widget.specialistModel.id,
+    (e) => e.id != widget.specialistModel.id,
   );
 
-  void _previewDataFetched(types.TextMessage message,
-      types.PreviewData previewData,) {
+  void _previewDataFetched(
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
     return context
         .read<ChatBloc>()
         .add(ChatPreviewDataFetched(message, previewData));
@@ -94,11 +95,10 @@ class _ChatViewState extends State<_ChatView> {
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) =>
-          ChatAttachBottomSheet(
-            onImageAttach: _handleImageSelection,
-            onFileAttach: _handleFileSelection,
-          ),
+      builder: (BuildContext context) => ChatAttachBottomSheet(
+        onImageAttach: _handleImageSelection,
+        onFileAttach: _handleFileSelection,
+      ),
     );
   }
 
@@ -116,11 +116,11 @@ class _ChatViewState extends State<_ChatView> {
     final shouldOpen = message is types.FileMessage;
     if (message is types.FileMessage || message is types.AudioMessage) {
       return context.read<ChatBloc>().add(
-        ChatFileLoadRequested(
-          message,
-          shouldOpen: shouldOpen,
-        ),
-      );
+            ChatFileLoadRequested(
+              message,
+              shouldOpen: shouldOpen,
+            ),
+          );
     }
   }
 
@@ -155,7 +155,8 @@ class _ChatViewState extends State<_ChatView> {
       );
   }
 
-  Widget _bubbleBuilder(Widget child, {
+  Widget _bubbleBuilder(
+    Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
   }) {
@@ -202,7 +203,8 @@ class _ChatViewState extends State<_ChatView> {
                   child: GestureDetector(
                     onTapDown: _storeTapPosition,
                     child: ui.Chat(
-                      audioMessageBuilder: (audio, {
+                      audioMessageBuilder: (
+                        audio, {
                         required int messageWidth,
                       }) {
                         return Padding(
@@ -231,10 +233,9 @@ class _ChatViewState extends State<_ChatView> {
                               .add(ChatSaveAudioRequested(audioMessage));
                         },
                         isEmojiSelected: !_emojiPanelHidden,
-                        onTextFieldTap: () =>
-                            setState(
-                                  () => _emojiPanelHidden = true,
-                            ),
+                        onTextFieldTap: () => setState(
+                          () => _emojiPanelHidden = true,
+                        ),
                       ),
                       dateLocale: context.l10n.localeName,
                       dateHeaderBuilder: (date) {
@@ -247,12 +248,12 @@ class _ChatViewState extends State<_ChatView> {
                       dateHeaderThreshold: 86400000,
                       emojiEnlargementBehavior: _emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
-                      _hideBackgroundOnEmojiMessages,
+                          _hideBackgroundOnEmojiMessages,
                       messages: state.messages,
                       onBackgroundTap: () {
                         if (!_emojiPanelHidden) {
                           setState(
-                                () => _emojiPanelHidden = true,
+                            () => _emojiPanelHidden = true,
                           );
                         }
                       },
