@@ -48,11 +48,13 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
         // TODO(wuffeel): refreshes state on starting or stopping player
       });
     });
-    _cubit.loadAudioMessage(
-      widget.audioMessage,
-      _playerController,
-      _playerSize,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _cubit.loadAudioMessage(
+        widget.audioMessage,
+        _playerController,
+        _playerSize,
+      );
+    });
   }
 
   Future<void> _handlePlayerAction() async {
