@@ -4,17 +4,32 @@ import 'package:mint/data/repository/abstract/chat_repository.dart';
 import 'package:mint/domain/service/abstract/chat_service.dart';
 import 'package:mint/domain/service/abstract/storage_service.dart';
 
+import '../../../assembly/factory.dart';
+
 @Injectable(as: ChatService)
 class FirebaseChatService implements ChatService {
-  FirebaseChatService(this._chatRepository, this._storageService);
+  FirebaseChatService(
+    this._chatRepository,
+    this._storageService,
+    this._chatRoomFromMap,
+  );
 
   final ChatRepository _chatRepository;
 
   final StorageService _storageService;
 
+  final Factory<types.Room?, Map<String, dynamic>> _chatRoomFromMap;
+
   @override
   Future<types.Room> createRoom(String userId, String specialistId) {
     return _chatRepository.createRoom(userId, specialistId);
+  }
+
+  @override
+  Future<types.Room?> fetchRoom(String roomId) async {
+    final room = await _chatRepository.fetchRoom(roomId);
+    if (room == null) return null;
+    return _chatRoomFromMap.create(room);
   }
 
   @override

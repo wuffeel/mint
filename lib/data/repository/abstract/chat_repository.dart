@@ -14,4 +14,6 @@ abstract class ChatRepository {
     types.PreviewData previewData,
     String roomId,
   );
+
+  Future<Map<String, dynamic>?> fetchRoom(String roomId);
 }

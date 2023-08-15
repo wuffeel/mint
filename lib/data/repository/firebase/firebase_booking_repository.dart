@@ -75,6 +75,16 @@ class FirebaseBookingRepository implements BookingRepository {
     return _getSessions(userId, isUpcoming: false);
   }
 
+  @override
+  Future<BookingDataDto?> getSession(String bookingId) async {
+    final bookingSnap = await _bookingsCollectionRef.doc(bookingId).get();
+    final bookingData = bookingSnap.data() as Map<String, dynamic>?;
+    if (bookingData == null) return null;
+
+    bookingData['id'] = bookingSnap.id;
+    return BookingDataDto.fromJson(bookingData);
+  }
+
   /// Checks for existing book entry in Firebase.
   Future<bool> _isBookExist(
     String specialistId,

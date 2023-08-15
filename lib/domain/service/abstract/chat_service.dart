@@ -14,4 +14,6 @@ abstract class ChatService {
     types.PreviewData previewData,
     String roomId,
   );
+
+  Future<types.Room?> fetchRoom(String roomId);
 }
