@@ -10,10 +10,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i24;
 import 'package:flutter/material.dart' as _i25;
-import 'package:flutter_chat_types/flutter_chat_types.dart' as _i27;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as _i26;
 import 'package:mint/domain/entity/booking_data/booking_data.dart' as _i28;
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
-    as _i26;
+    as _i27;
 import 'package:mint/presentation/pages/auth/enter_phone/enter_phone_page.dart'
     as _i3;
 import 'package:mint/presentation/pages/auth/otp_page/otp_page.dart' as _i2;
@@ -114,8 +114,8 @@ abstract class $AppRouter extends _i24.RootStackRouter {
         routeData: routeData,
         child: _i9.ChatPage(
           key: args.key,
-          specialistModel: args.specialistModel,
           room: args.room,
+          specialistModel: args.specialistModel,
         ),
       );
     },
@@ -346,15 +346,15 @@ class PinCodeRoute extends _i24.PageRouteInfo<void> {
 class ChatRoute extends _i24.PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     _i25.Key? key,
-    required _i26.SpecialistModel specialistModel,
-    required _i27.Room room,
+    required _i26.Room room,
+    required _i27.SpecialistModel specialistModel,
     List<_i24.PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
           args: ChatRouteArgs(
             key: key,
-            specialistModel: specialistModel,
             room: room,
+            specialistModel: specialistModel,
           ),
           initialChildren: children,
         );
@@ -368,19 +368,19 @@ class ChatRoute extends _i24.PageRouteInfo<ChatRouteArgs> {
 class ChatRouteArgs {
   const ChatRouteArgs({
     this.key,
-    required this.specialistModel,
     required this.room,
+    required this.specialistModel,
   });
 
   final _i25.Key? key;
 
-  final _i26.SpecialistModel specialistModel;
+  final _i26.Room room;
 
-  final _i27.Room room;
+  final _i27.SpecialistModel specialistModel;
 
   @override
   String toString() {
-    return 'ChatRouteArgs{key: $key, specialistModel: $specialistModel, room: $room}';
+    return 'ChatRouteArgs{key: $key, room: $room, specialistModel: $specialistModel}';
   }
 }
 
@@ -389,7 +389,7 @@ class ChatRouteArgs {
 class BookingResumeRoute extends _i24.PageRouteInfo<BookingResumeRouteArgs> {
   BookingResumeRoute({
     _i25.Key? key,
-    required _i26.SpecialistModel specialistModel,
+    required _i27.SpecialistModel specialistModel,
     required DateTime bookTime,
     required int durationMinutes,
     _i28.BookingData? previousBookingData,
@@ -423,7 +423,7 @@ class BookingResumeRouteArgs {
 
   final _i25.Key? key;
 
-  final _i26.SpecialistModel specialistModel;
+  final _i27.SpecialistModel specialistModel;
 
   final DateTime bookTime;
 
@@ -633,7 +633,7 @@ class SpecialistDetailsRoute
     extends _i24.PageRouteInfo<SpecialistDetailsRouteArgs> {
   SpecialistDetailsRoute({
     _i25.Key? key,
-    required _i26.SpecialistModel specialistModel,
+    required _i27.SpecialistModel specialistModel,
     List<_i24.PageRouteInfo>? children,
   }) : super(
           SpecialistDetailsRoute.name,
@@ -658,7 +658,7 @@ class SpecialistDetailsRouteArgs {
 
   final _i25.Key? key;
 
-  final _i26.SpecialistModel specialistModel;
+  final _i27.SpecialistModel specialistModel;
 
   @override
   String toString() {
