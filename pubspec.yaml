@@ -17,6 +17,7 @@ dependencies:
   file_picker: ^5.3.3
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
+  firebase_messaging: ^14.6.5
   firebase_storage: ^11.2.4
   flutter:
     sdk: flutter
@@ -28,6 +29,7 @@ dependencies:
     git:
       url: https://github.com/wuffeel/flutter_firebase_chat_core.git
       ref: main
+  flutter_local_notifications: ^15.1.0+1
   flutter_localizations:
     sdk: flutter
   flutter_multi_formatter: ^2.11.7
