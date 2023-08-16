@@ -148,5 +148,10 @@
   "attachFile": "Attach file",
   "today": "Today",
   "permissionDeniedTitle": "Permission denied",
-  "permissionDeniedContent": "Permission was not granted. Go to settings and enable permission"
+  "permissionDeniedContent": "Permission was not granted. Go to settings and enable permission",
+  "personalData": "Personal Data",
+  "myCreditCards": "My credit cards",
+  "favouriteDoctors": "Favourite doctors",
+  "notifications": "Notifications",
+  "patient": "Patient"
 }

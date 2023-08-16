@@ -148,5 +148,10 @@
   "attachFile": "Прикріпити файл",
   "today": "Сьогодні",
   "permissionDeniedTitle": "У дозволі відмовлено",
-  "permissionDeniedContent": "Дозвіл не надано. Перейдіть до налаштувань і ввімкніть дозвіл"
+  "permissionDeniedContent": "Дозвіл не надано. Перейдіть до налаштувань і ввімкніть дозвіл",
+  "personalData": "Особисті дані",
+  "myCreditCards": "Мої кредитні картки",
+  "favouriteDoctors": "Обрані лікарі",
+  "notifications": "Сповіщення",
+  "patient": "Пацієнт"
 }

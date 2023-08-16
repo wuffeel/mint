@@ -50,6 +50,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/call.svg
   SvgGenImage get call => const SvgGenImage('assets/svg/call.svg');
 
+  /// File path: assets/svg/change_pin.svg
+  SvgGenImage get changePin => const SvgGenImage('assets/svg/change_pin.svg');
+
   /// File path: assets/svg/chat.svg
   SvgGenImage get chat => const SvgGenImage('assets/svg/chat.svg');
 
@@ -59,6 +62,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/chevron_right.svg
   SvgGenImage get chevronRight =>
       const SvgGenImage('assets/svg/chevron_right.svg');
+
+  /// File path: assets/svg/credit_cards.svg
+  SvgGenImage get creditCards =>
+      const SvgGenImage('assets/svg/credit_cards.svg');
 
   /// File path: assets/svg/cross_icon.svg
   SvgGenImage get crossIcon => const SvgGenImage('assets/svg/cross_icon.svg');
@@ -79,6 +86,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/home_icon.svg
   SvgGenImage get homeIcon => const SvgGenImage('assets/svg/home_icon.svg');
 
+  /// File path: assets/svg/logout.svg
+  SvgGenImage get logout => const SvgGenImage('assets/svg/logout.svg');
+
   /// File path: assets/svg/mastercard_icon.svg
   SvgGenImage get mastercardIcon =>
       const SvgGenImage('assets/svg/mastercard_icon.svg');
@@ -86,6 +96,14 @@ class $AssetsSvgGen {
   /// File path: assets/svg/microphone_icon.svg
   SvgGenImage get microphoneIcon =>
       const SvgGenImage('assets/svg/microphone_icon.svg');
+
+  /// File path: assets/svg/notifications_bell.svg
+  SvgGenImage get notificationsBell =>
+      const SvgGenImage('assets/svg/notifications_bell.svg');
+
+  /// File path: assets/svg/personal_data.svg
+  SvgGenImage get personalData =>
+      const SvgGenImage('assets/svg/personal_data.svg');
 
   /// File path: assets/svg/pick_up_specialist.svg
   SvgGenImage get pickUpSpecialist =>
@@ -139,17 +157,22 @@ class $AssetsSvgGen {
         bellIcon,
         calendarIcon,
         call,
+        changePin,
         chat,
         checkMark,
         chevronRight,
+        creditCards,
         crossIcon,
         emojiIcon,
         filterIcon,
         heartIcon,
         heartIconFilled,
         homeIcon,
+        logout,
         mastercardIcon,
         microphoneIcon,
+        notificationsBell,
+        personalData,
         pickUpSpecialist,
         plusIcon,
         profileIcon,
