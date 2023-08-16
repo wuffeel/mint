@@ -153,5 +153,9 @@
   "myCreditCards": "My credit cards",
   "favouriteDoctors": "Favourite doctors",
   "notifications": "Notifications",
-  "patient": "Patient"
+  "patient": "Patient",
+  "save": "Save",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "dateOfBirth": "Date of birth"
 }

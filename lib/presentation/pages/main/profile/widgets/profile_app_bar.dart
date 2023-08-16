@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/profile/widgets/profile_avatar.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
+import 'package:mint/presentation/widgets/mint_back_button.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../../../bloc/user/user_bloc.dart';
@@ -14,6 +16,7 @@ class ProfileAppBar extends StatelessWidget {
     required this.minHeight,
     required this.maxHeight,
     this.collapseFactor = 0.8,
+    this.onPickPhoto,
   })  : assert(
           collapseFactor > 0 && collapseFactor < 1,
           'collapseFactor should be in range of 0.0 to 1.0. '
@@ -42,6 +45,11 @@ class ProfileAppBar extends StatelessWidget {
   /// Value of 1.0 stands for collapse on reaching [minHeight]
   final double collapseFactor;
 
+  /// Used to display photo change button and trigger according callback.
+  ///
+  /// Photo change is only possible in extended app-bar mode.
+  final VoidCallback? onPickPhoto;
+
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
@@ -49,6 +57,7 @@ class ProfileAppBar extends StatelessWidget {
         minHeight: minHeight,
         maxHeight: maxHeight,
         collapseFactor: collapseFactor,
+        onPickPhoto: onPickPhoto,
       ),
       pinned: true,
     );
@@ -60,11 +69,13 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
     required this.minHeight,
     required this.maxHeight,
     required this.collapseFactor,
+    this.onPickPhoto,
   });
 
   final double minHeight;
   final double maxHeight;
   final double collapseFactor;
+  final VoidCallback? onPickPhoto;
 
   @override
   double get minExtent => minHeight;
@@ -107,17 +118,25 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
         }
         if (state is UserFetchSuccess) {
           final phone = state.user.phoneNumber;
-          return Container(
+          return ColoredBox(
             color: Theme.of(context).colorScheme.primary,
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: SafeArea(
               bottom: false,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: percentage >= collapseFactor
                     ? Row(
-                        children: [
-                          ProfileAvatar(size: avatarRadius),
+                        children: <Widget>[
+                          if (context.router.canPop())
+                            Padding(
+                              padding: EdgeInsets.only(left: 8.w),
+                              child: const MintBackButton(),
+                            ),
+                          SizedBox(width: 16.w),
+                          ProfileAvatar(
+                            size: avatarRadius,
+                            scaleFactor: scaleFactor,
+                          ),
                           SizedBox(width: 8.w),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -128,27 +147,46 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
                                 lastName: state.user.lastName,
                                 fontSize: 16.sp,
                               ),
-                              if (phone != null) _PhoneNumberText(
-                                phoneNumber: phone,
-                                fontSize: 11.sp,
-                              ),
+                              if (phone != null)
+                                _PhoneNumberText(
+                                  phoneNumber: phone,
+                                  fontSize: 11.sp,
+                                ),
                             ],
                           ),
                         ],
                       )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ProfileAvatar(size: avatarRadius),
-                          SizedBox(height: 5.h),
-                          _UserNameText(
-                            firstName: state.user.firstName,
-                            lastName: state.user.lastName,
-                            fontSize: 20.sp * textScaleFactor,
-                          ),
-                          if (phone != null) _PhoneNumberText(
-                            phoneNumber: phone,
-                            fontSize: 13.sp * textScaleFactor,
+                    : Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          if (context.router.canPop(ignoreParentRoutes: true))
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                                child: const MintBackButton(),
+                              ),
+                            ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              ProfileAvatar(
+                                size: avatarRadius,
+                                scaleFactor: scaleFactor,
+                                onPickPhoto: onPickPhoto,
+                              ),
+                              SizedBox(height: 5.h),
+                              _UserNameText(
+                                firstName: state.user.firstName,
+                                lastName: state.user.lastName,
+                                fontSize: 20.sp * textScaleFactor,
+                              ),
+                              if (phone != null)
+                                _PhoneNumberText(
+                                  phoneNumber: phone,
+                                  fontSize: 13.sp * textScaleFactor,
+                                ),
+                            ],
                           ),
                         ],
                       ),

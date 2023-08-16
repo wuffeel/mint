@@ -50,6 +50,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/call.svg
   SvgGenImage get call => const SvgGenImage('assets/svg/call.svg');
 
+  /// File path: assets/svg/camera_icon.svg
+  SvgGenImage get cameraIcon => const SvgGenImage('assets/svg/camera_icon.svg');
+
   /// File path: assets/svg/change_pin.svg
   SvgGenImage get changePin => const SvgGenImage('assets/svg/change_pin.svg');
 
@@ -157,6 +160,7 @@ class $AssetsSvgGen {
         bellIcon,
         calendarIcon,
         call,
+        cameraIcon,
         changePin,
         chat,
         checkMark,

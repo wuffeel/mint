@@ -153,5 +153,9 @@
   "myCreditCards": "Мої кредитні картки",
   "favouriteDoctors": "Обрані лікарі",
   "notifications": "Сповіщення",
-  "patient": "Пацієнт"
+  "patient": "Пацієнт",
+  "save": "Зберегти",
+  "firstName": "Ім'я",
+  "lastName": "Прізвище",
+  "dateOfBirth": "Дата народження"
 }

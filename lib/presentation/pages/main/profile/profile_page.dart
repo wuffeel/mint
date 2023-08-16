@@ -23,6 +23,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  void _onPersonalData() {
+    context.router.push(const ProfilePersonalDataRoute());
+  }
+
   void _onPinChange() {
     context.read<PinCodeBloc>().add(PinCodeChangeRequested());
     context.router.push(const PinCodeWrapperRoute());
@@ -41,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ProfileAppBar(
             minHeight: kToolbarHeight + MediaQuery.paddingOf(context).top,
             maxHeight: 244.h,
-            collapseFactor: 0.4,
+            collapseFactor: 0.5,
           ),
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -54,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ProfileButtonGroup(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: _onPersonalData,
                         child: ProfileButtonContent(
                           title: l10n.personalData,
                           svgIcon: Assets.svg.personalData,
@@ -74,31 +78,39 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: l10n.myCreditCards,
                     svgIcon: Assets.svg.creditCards,
                     foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () {},
+                    onTap: () {
+                      // TODO(wuffeel): add credit cards page
+                    },
                   ),
                   SizedBox(height: 8.h),
                   ProfileButton(
                     title: l10n.favouriteDoctors,
                     svgIcon: Assets.svg.heartIcon,
                     foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () {},
+                    onTap: () {
+                      // TODO(wuffeel): add favorite doctors page
+                    },
                   ),
                   SizedBox(height: 8.h),
                   ProfileButton(
                     title: l10n.notifications,
                     svgIcon: Assets.svg.notificationsBell,
                     foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () {},
+                    onTap: () {
+                      // TODO(wuffeel): add notifications page
+                    },
                   ),
                   const Spacer(),
-                  ProfileButton(
-                    title: l10n.logOut,
-                    svgIcon: Assets.svg.logout,
-                    isChevronVisible: false,
-                    foregroundColor: MintColors.error,
-                    onTap: _onLogout,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    child: ProfileButton(
+                      title: l10n.logOut,
+                      svgIcon: Assets.svg.logout,
+                      isChevronVisible: false,
+                      foregroundColor: MintColors.error,
+                      onTap: _onLogout,
+                    ),
                   ),
-                  SizedBox(height: 16.h),
                 ],
               ),
             ),
