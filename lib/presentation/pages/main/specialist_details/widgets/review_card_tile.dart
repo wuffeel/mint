@@ -24,9 +24,11 @@ class ReviewCardTile extends StatelessWidget {
   final void Function(ReviewModel)? onEdit;
   final void Function(ReviewModel)? onDelete;
 
-  String _getFullName() {
+  String _getFullName(BuildContext context) {
     final user = reviewModel.user;
-    if (user.firstName == null || user.lastName == null) return 'Patient';
+    if (user.firstName == null || user.lastName == null) {
+      return context.l10n.patient;
+    }
     return '${user.firstName} ${user.lastName}';
   }
 
@@ -69,7 +71,7 @@ class ReviewCardTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      _getFullName(),
+                      _getFullName(context),
                       style: MintTextStyles.title3,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
