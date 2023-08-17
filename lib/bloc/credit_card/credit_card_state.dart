@@ -30,3 +30,17 @@ class CreditCardSaveFailure extends CreditCardListFetchSuccess {
 class CreditCardSaveDuplicateFailure extends CreditCardSaveFailure {
   CreditCardSaveDuplicateFailure({required super.cardList});
 }
+
+class CreditCardDeleteSuccess extends CreditCardListFetchSuccess {
+  CreditCardDeleteSuccess({required super.cardList});
+}
+
+class CreditCardDeleteLoading extends CreditCardListFetchSuccess {
+  CreditCardDeleteLoading(this.cardId, {required super.cardList});
+
+  final String cardId;
+}
+
+class CreditCardDeleteFailure extends CreditCardListFetchSuccess {
+  CreditCardDeleteFailure({required super.cardList});
+}

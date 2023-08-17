@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/domain/usecase/credit_card_delete_use_case.dart';
 import 'package:mint/domain/usecase/credit_card_list_fetch_use_case.dart';
 import 'package:mint/domain/usecase/credit_card_save_use_case.dart';
 
@@ -18,17 +19,20 @@ part 'credit_card_state.dart';
 @injectable
 class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
   CreditCardBloc(
-    this._creditCardSaveUseCase,
     this._creditCardListFetchUseCase,
+    this._creditCardSaveUseCase,
+    this._creditCardDeleteUseCase,
     this._userController,
   ) : super(CreditCardInitial()) {
     _subscribeToUserChange();
     on<CreditCardListFetchRequested>(_onCardListFetch);
     on<CreditCardSaveRequested>(_onCreditCardSave);
+    on<CreditCardDeleteRequested>(_onCreditCardDelete);
   }
 
-  final CreditCardSaveUseCase _creditCardSaveUseCase;
   final CreditCardListFetchUseCase _creditCardListFetchUseCase;
+  final CreditCardSaveUseCase _creditCardSaveUseCase;
+  final CreditCardDeleteUseCase _creditCardDeleteUseCase;
 
   UserModel? _currentUser;
   final UserController _userController;
@@ -100,8 +104,8 @@ class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
           .map((e) {
             final expirationChanged =
                 e.fingerprint == databaseCard.fingerprint &&
-                        e.expirationMonth != databaseCard.expirationMonth ||
-                    e.expirationYear != databaseCard.expirationYear;
+                    (e.expirationMonth != databaseCard.expirationMonth ||
+                        e.expirationYear != databaseCard.expirationYear);
             final duplicate = e.fingerprint == databaseCard.fingerprint &&
                 e.expirationMonth == databaseCard.expirationMonth &&
                 e.expirationYear == databaseCard.expirationYear;
@@ -121,6 +125,29 @@ class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
         log('CreditCardSaveFailure: $error');
         emit(CreditCardSaveFailure(cardList: state.cardList));
       }
+    }
+  }
+
+  Future<void> _onCreditCardDelete(
+    CreditCardDeleteRequested event,
+    Emitter<CreditCardState> emit,
+  ) async {
+    final state = this.state;
+    if (state is! CreditCardListFetchSuccess) return;
+
+    final cardId = event.paymentMethodId;
+
+    try {
+      emit(CreditCardDeleteLoading(cardId, cardList: state.cardList));
+      await _creditCardDeleteUseCase(cardId);
+      emit(
+        CreditCardDeleteSuccess(
+          cardList: state.cardList..removeWhere((card) => card.id == cardId),
+        ),
+      );
+    } catch (error) {
+      log('CreditCardDeleteFailure: $error');
+      emit(CreditCardDeleteFailure(cardList: state.cardList));
     }
   }
 }
