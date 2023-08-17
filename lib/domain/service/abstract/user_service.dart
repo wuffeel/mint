@@ -8,4 +8,6 @@ abstract class UserService {
   Future<void> logOut();
 
   Future<UserModel?> getUserData(String userId);
+
+  Future<UserModel> updateUserData(UserModel userData);
 }

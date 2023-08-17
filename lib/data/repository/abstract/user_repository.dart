@@ -8,4 +8,6 @@ abstract class UserRepository {
   Future<void> logOut();
 
   Future<UserModelDto?> getUserData(String userId);
+
+  Future<void> updateUserData(UserModelDto userDataDto);
 }

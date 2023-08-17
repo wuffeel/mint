@@ -51,4 +51,23 @@ class FirebaseUserRepository implements UserRepository {
     user['id'] = userSnapshot.id;
     return UserModelDto.fromJson(user);
   }
+
+  @override
+  Future<void> updateUserData(UserModelDto userDataDto) {
+    final dateOfBirth = userDataDto.dateOfBirth;
+    final dateTimestamp =
+        dateOfBirth != null ? Timestamp.fromDate(dateOfBirth) : null;
+
+    final userDataMap = {
+      'firstName': userDataDto.firstName,
+      'lastName': userDataDto.lastName,
+      'dateOfBirth': dateTimestamp,
+    };
+
+    final photoUrl = userDataDto.photoUrl;
+    if (photoUrl != null && !photoUrl.startsWith('http')) {
+      userDataMap['photoUrl'] = photoUrl;
+    }
+    return _userCollectionRef.doc(userDataDto.id).update(userDataMap);
+  }
 }
