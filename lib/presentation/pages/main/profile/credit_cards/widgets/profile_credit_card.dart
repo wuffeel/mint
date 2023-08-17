@@ -28,8 +28,11 @@ class ProfileCreditCard extends StatelessWidget {
       case 'amex':
       case 'americanexpress':
         return '**** ****** *';
-      default:
+      case 'mastercard':
+      case 'visa':
         return '**** **** **** ';
+      default:
+        return '**** ';
     }
   }
 
