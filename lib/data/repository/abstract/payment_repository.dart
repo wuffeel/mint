@@ -10,5 +10,7 @@ abstract class PaymentRepository {
     required bool isSaveForFuture,
   });
 
+  Future<void> deletePaymentMethod(String paymentMethodId);
+
   Future<void> payForSession(TransactionDataDto transactionData);
 }

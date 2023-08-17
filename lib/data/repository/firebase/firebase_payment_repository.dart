@@ -14,11 +14,26 @@ class FirebasePaymentRepository implements PaymentRepository {
   final _stripeInstance = Stripe.instance;
 
   static const _saveCardFunction = 'savePaymentMethod';
+  static const _deleteCardFunction = 'deletePaymentMethod';
   static const _fetchCardsFunction = 'fetchUserPaymentCards';
   static const _transactionsCollection = 'transactions';
 
   CollectionReference get _transactionCollectionRef =>
       _firestoreInstance.collection(_transactionsCollection);
+
+  @override
+  Future<List<CreditCardModelDto>> getPaymentCards(String userId) async {
+    final callable = _functionsInstance.httpsCallable(_fetchCardsFunction);
+
+    final result = await callable.call<List<dynamic>>({'userId': userId});
+
+    final data =
+        result.data.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+
+    if (data.isEmpty) return <CreditCardModelDto>[];
+
+    return data.map(CreditCardModelDto.fromJson).toList();
+  }
 
   @override
   Future<CreditCardModelDto> savePaymentMethod(
@@ -45,17 +60,9 @@ class FirebasePaymentRepository implements PaymentRepository {
   }
 
   @override
-  Future<List<CreditCardModelDto>> getPaymentCards(String userId) async {
-    final callable = _functionsInstance.httpsCallable(_fetchCardsFunction);
-
-    final result = await callable.call<List<dynamic>>({'userId': userId});
-
-    final data =
-        result.data.map((e) => Map<String, dynamic>.from(e as Map)).toList();
-
-    if (data.isEmpty) return <CreditCardModelDto>[];
-
-    return data.map(CreditCardModelDto.fromJson).toList();
+  Future<void> deletePaymentMethod(String paymentMethodId) async {
+    final callable = _functionsInstance.httpsCallable(_deleteCardFunction);
+    await callable.call<void>({'paymentMethodId': paymentMethodId});
   }
 
   @override
