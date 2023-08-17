@@ -1,58 +1,111 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/profile/widgets/profile_app_bar.dart';
-import 'package:mint/presentation/widgets/mint_text_field.dart';
+import 'package:mint/presentation/pages/main/profile/widgets/profile_date_of_birth.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 import '../../../../bloc/user/user_bloc.dart';
+import '../../../widgets/mint_text_form_field.dart';
 
 @RoutePage()
-class ProfilePersonalDataPage extends StatefulWidget {
-  const ProfilePersonalDataPage({super.key});
+class ProfilePersonalDataPage extends StatelessWidget {
+  const ProfilePersonalDataPage({
+    super.key,
+    required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.photoUrl,
+  });
+
+  final String? firstName;
+  final String? lastName;
+  final DateTime? dateOfBirth;
+  final String? photoUrl;
 
   @override
-  State<ProfilePersonalDataPage> createState() =>
-      _ProfilePersonalDataPageState();
+  Widget build(BuildContext context) {
+    return BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserDataUpdateSuccess) context.router.pop();
+      },
+      child: _ProfilePersonalDataView(
+        firstName: firstName,
+        lastName: lastName,
+        dateOfBirth: dateOfBirth,
+        photoUrl: photoUrl,
+      ),
+    );
+  }
 }
 
-class _ProfilePersonalDataPageState extends State<ProfilePersonalDataPage> {
+class _ProfilePersonalDataView extends StatefulWidget {
+  const _ProfilePersonalDataView({
+    required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.photoUrl,
+  });
+
+  final String? firstName;
+  final String? lastName;
+  final DateTime? dateOfBirth;
+  final String? photoUrl;
+
+  @override
+  State<_ProfilePersonalDataView> createState() =>
+      _ProfilePersonalDataViewState();
+}
+
+class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
+  final _formKey = GlobalKey<FormState>();
+
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  DateTime? _dateOfBirth;
+  var _autoValidateMode = AutovalidateMode.disabled;
+  late DateTime? _dateOfBirth = widget.dateOfBirth;
+  String? _photoPath;
 
-  Future<void> _showDatePicker(DateTime? dateOfBirth) async {
-    final now = DateTime.now();
-    final date = await showDatePicker(
-      context: context,
-      initialDate: dateOfBirth ?? DateTime.now(),
-      firstDate: DateTime(now.year - 80),
-      lastDate: now,
-      currentDate: dateOfBirth,
-      locale: Locale(context.l10n.localeName),
-    );
-    if (date != null) {
-      setState(() {
-        _dateOfBirth = date;
-      });
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController.text = widget.firstName ?? '';
+    _lastNameController.text = widget.lastName ?? '';
+  }
+
+  void _onSaveData() {
+    final formState = _formKey.currentState;
+    if (formState == null || !formState.validate() || _dateOfBirth == null) {
+      setState(() => _autoValidateMode = AutovalidateMode.onUserInteraction);
+      return;
     }
+
+    final firstName = _firstNameController.text.trim();
+    final lastName = _lastNameController.text.trim();
+    final updateEvent = UserDataUpdateRequested(
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: _dateOfBirth,
+      photoPath: _photoPath ?? widget.photoUrl,
+    );
+    context.read<UserBloc>().add(updateEvent);
   }
 
-  String _getDateOfBirthText(DateTime? dateOfBirth) {
-    final l10n = context.l10n;
-    return dateOfBirth != null
-        ? DateFormat.yMd(l10n.localeName).format(dateOfBirth)
-        : l10n.dateOfBirth;
+  Future<void> _onPickPhoto() async {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (image != null) setState(() => _photoPath = image.path);
   }
 
-  Color _getDateOfBirthColor(DateTime? dateOfBirth) {
-    return dateOfBirth != null
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).hintColor.withOpacity(0.3);
-  }
+  bool get _dataChanged =>
+      _firstNameController.text.trim() != widget.firstName ||
+      _lastNameController.text.trim() != widget.lastName ||
+      _dateOfBirth != widget.dateOfBirth ||
+      _photoPath != null;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +117,8 @@ class _ProfilePersonalDataPageState extends State<ProfilePersonalDataPage> {
             minHeight: kToolbarHeight + MediaQuery.paddingOf(context).top,
             maxHeight: 244.h,
             collapseFactor: 0.5,
-            onPickPhoto: () {
-              // TODO(wuffeel): add onPickPhoto callback
-            },
+            onPickPhoto: _onPickPhoto,
+            localPhotoUrl: _photoPath,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -75,47 +127,73 @@ class _ProfilePersonalDataPageState extends State<ProfilePersonalDataPage> {
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {
                   if (state is UserFetchSuccess) {
-                    final dateOfBirth = state.user.dateOfBirth ?? _dateOfBirth;
-                    return Column(
-                      children: <Widget>[
-                        MintTextField(
-                          controller: _firstNameController,
-                          hintText: l10n.firstName,
-                        ),
-                        SizedBox(height: 8.h),
-                        MintTextField(
-                          controller: _lastNameController,
-                          hintText: l10n.lastName,
-                        ),
-                        SizedBox(height: 8.h),
-                        InkWell(
-                          onTap: () => _showDatePicker(dateOfBirth),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.r),
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 14.h,
-                              horizontal: 16.w,
-                            ),
-                            child: Text(
-                              _getDateOfBirthText(dateOfBirth),
-                              style: MintTextStyles.body.copyWith(
-                                color: _getDateOfBirthColor(dateOfBirth),
-                              ),
-                            ),
+                    return Form(
+                      key: _formKey,
+                      autovalidateMode: _autoValidateMode,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          MintTextFormField(
+                            controller: _firstNameController,
+                            hintText: l10n.firstName,
+                            onChanged: (_) => setState(() {
+                              // TODO(wuffel): updates state
+                            }),
+                            validator: (firstName) {
+                              final isNotValid =
+                                  firstName == null || firstName.trim().isEmpty;
+                              if (isNotValid) return l10n.pleaseEnterFirstName;
+                              return null;
+                            },
                           ),
-                        ),
-                        const Spacer(),
-                        ElevatedButton(
-                          onPressed: () {
-                            // TODO(wuffeel): add save user data functionality
-                          },
-                          child: Text(l10n.save),
-                        ),
-                      ],
+                          SizedBox(height: 8.h),
+                          MintTextFormField(
+                            controller: _lastNameController,
+                            hintText: l10n.lastName,
+                            onChanged: (_) => setState(() {
+                              // TODO(wuffel): updates state
+                            }),
+                            validator: (lastName) {
+                              final isNotValid =
+                                  lastName == null || lastName.trim().isEmpty;
+                              if (isNotValid) return l10n.pleaseEnterLastName;
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+                          ProfileDateOfBirth(
+                            dateOfBirth: _dateOfBirth,
+                            onDateChange: (date) {
+                              setState(() => _dateOfBirth = date);
+                            },
+                          ),
+                          if (_dateOfBirth == null &&
+                              _autoValidateMode !=
+                                  AutovalidateMode.disabled) ...[
+                            SizedBox(height: 8.h),
+                            Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Text(
+                                l10n.pleaseEnterDateOfBirth,
+                                style: MintTextStyles.caption1.copyWith(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                            )
+                          ],
+                          const Spacer(),
+                          SizedBox(height: 16.h),
+                          if (state is! UserDataUpdateLoading)
+                            ElevatedButton(
+                              onPressed: _dataChanged ? _onSaveData : null,
+                              child: Text(l10n.save),
+                            )
+                          else
+                            const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                        ],
+                      ),
                     );
                   }
                   return const SizedBox.shrink();

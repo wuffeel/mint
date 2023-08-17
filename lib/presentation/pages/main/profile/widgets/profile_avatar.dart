@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,40 +13,54 @@ class ProfileAvatar extends StatelessWidget {
     required this.scaleFactor,
     this.photoUrl,
     this.onPickPhoto,
+    this.localPhotoUrl,
   });
 
   final double size;
   final double scaleFactor;
-  final String? photoUrl;
   final VoidCallback? onPickPhoto;
+
+  /// Network url to user's photo.
+  final String? photoUrl;
+
+  /// Url to locally picked image file.
+  final String? localPhotoUrl;
 
   @override
   Widget build(BuildContext context) {
     final photo = photoUrl;
-    return photo != null
+    final localPhoto = localPhotoUrl;
+    return localPhoto != null
         ? _PhotoContainer(
             size: size,
             scaleFactor: scaleFactor,
             onPickPhoto: onPickPhoto,
-            child: ClipOval(child: Image.network(photo)),
+            child: ClipOval(child: Image.file(File(localPhoto))),
           )
-        : _PhotoContainer(
-            size: size,
-            scaleFactor: scaleFactor,
-            alignment: Alignment.center,
-            backgroundColor: Theme.of(context).brightness == Brightness.dark
-                ? Theme.of(context).colorScheme.secondary
-                : MintColors.elementsGreyDark,
-            onPickPhoto: onPickPhoto,
-            child: Assets.svg.userPlaceholder.svg(
-              width: size * 0.4,
-              height: size * 0.4,
-              colorFilter: const ColorFilter.mode(
-                Colors.white,
-                BlendMode.srcIn,
-              ),
-            ),
-          );
+        : photo != null
+            ? _PhotoContainer(
+                size: size,
+                scaleFactor: scaleFactor,
+                onPickPhoto: onPickPhoto,
+                child: ClipOval(child: Image.network(photo)),
+              )
+            : _PhotoContainer(
+                size: size,
+                scaleFactor: scaleFactor,
+                alignment: Alignment.center,
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.secondary
+                    : MintColors.elementsGreyDark,
+                onPickPhoto: onPickPhoto,
+                child: Assets.svg.userPlaceholder.svg(
+                  width: size * 0.4,
+                  height: size * 0.4,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              );
   }
 }
 

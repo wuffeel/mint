@@ -157,5 +157,8 @@
   "save": "Зберегти",
   "firstName": "Ім'я",
   "lastName": "Прізвище",
-  "dateOfBirth": "Дата народження"
+  "dateOfBirth": "Дата народження",
+  "pleaseEnterFirstName": "Будь ласка, введіть ім'я",
+  "pleaseEnterLastName": "Будь ласка, введіть прізвище",
+  "pleaseEnterDateOfBirth": "Будь ласка, введіть дату народження"
 }

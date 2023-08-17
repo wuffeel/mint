@@ -157,5 +157,8 @@
   "save": "Save",
   "firstName": "First name",
   "lastName": "Last name",
-  "dateOfBirth": "Date of birth"
+  "dateOfBirth": "Date of birth",
+  "pleaseEnterFirstName": "Please enter first name",
+  "pleaseEnterLastName": "Please enter last name",
+  "pleaseEnterDateOfBirth": "Please enter date of birth"
 }

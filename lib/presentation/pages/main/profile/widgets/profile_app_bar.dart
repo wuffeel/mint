@@ -17,6 +17,7 @@ class ProfileAppBar extends StatelessWidget {
     required this.maxHeight,
     this.collapseFactor = 0.8,
     this.onPickPhoto,
+    this.localPhotoUrl,
   })  : assert(
           collapseFactor > 0 && collapseFactor < 1,
           'collapseFactor should be in range of 0.0 to 1.0. '
@@ -50,6 +51,11 @@ class ProfileAppBar extends StatelessWidget {
   /// Photo change is only possible in extended app-bar mode.
   final VoidCallback? onPickPhoto;
 
+  /// Used to display picked photo with [onPickPhoto] callback.
+  ///
+  /// If null, current user's photo will be displayed.
+  final String? localPhotoUrl;
+
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
@@ -58,6 +64,7 @@ class ProfileAppBar extends StatelessWidget {
         maxHeight: maxHeight,
         collapseFactor: collapseFactor,
         onPickPhoto: onPickPhoto,
+        localPhotoUrl: localPhotoUrl,
       ),
       pinned: true,
     );
@@ -70,12 +77,14 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
     required this.maxHeight,
     required this.collapseFactor,
     this.onPickPhoto,
+    this.localPhotoUrl,
   });
 
   final double minHeight;
   final double maxHeight;
   final double collapseFactor;
   final VoidCallback? onPickPhoto;
+  final String? localPhotoUrl;
 
   @override
   double get minExtent => minHeight;
@@ -136,6 +145,8 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
                           ProfileAvatar(
                             size: avatarRadius,
                             scaleFactor: scaleFactor,
+                            localPhotoUrl: localPhotoUrl,
+                            photoUrl: state.user.photoUrl,
                           ),
                           SizedBox(width: 8.w),
                           Column(
@@ -174,6 +185,8 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
                                 size: avatarRadius,
                                 scaleFactor: scaleFactor,
                                 onPickPhoto: onPickPhoto,
+                                localPhotoUrl: localPhotoUrl,
+                                photoUrl: state.user.photoUrl,
                               ),
                               SizedBox(height: 5.h),
                               _UserNameText(
@@ -241,14 +254,17 @@ class _UserNameText extends StatelessWidget {
     String? firstName,
     String? lastName,
   ) {
-    String? userName;
-    if (firstName != null) {
-      userName = firstName;
+    final patientFallback = context.l10n.patient;
+
+    if (firstName != null && lastName != null) {
+      return '$firstName $lastName';
+    } else if (firstName != null) {
+      return firstName;
     } else if (lastName != null) {
-      userName = lastName;
+      return lastName;
     }
 
-    return userName ?? context.l10n.patient;
+    return patientFallback;
   }
 
   @override

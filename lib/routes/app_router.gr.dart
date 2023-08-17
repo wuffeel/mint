@@ -236,9 +236,16 @@ abstract class $AppRouter extends _i26.RootStackRouter {
       );
     },
     ProfilePersonalDataRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfilePersonalDataRouteArgs>();
       return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i25.ProfilePersonalDataPage(),
+        child: _i25.ProfilePersonalDataPage(
+          key: args.key,
+          firstName: args.firstName,
+          lastName: args.lastName,
+          dateOfBirth: args.dateOfBirth,
+          photoUrl: args.photoUrl,
+        ),
       );
     },
   };
@@ -749,14 +756,54 @@ class ProfileTabRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i25.ProfilePersonalDataPage]
-class ProfilePersonalDataRoute extends _i26.PageRouteInfo<void> {
-  const ProfilePersonalDataRoute({List<_i26.PageRouteInfo>? children})
-      : super(
+class ProfilePersonalDataRoute
+    extends _i26.PageRouteInfo<ProfilePersonalDataRouteArgs> {
+  ProfilePersonalDataRoute({
+    _i27.Key? key,
+    required String? firstName,
+    required String? lastName,
+    required DateTime? dateOfBirth,
+    required String? photoUrl,
+    List<_i26.PageRouteInfo>? children,
+  }) : super(
           ProfilePersonalDataRoute.name,
+          args: ProfilePersonalDataRouteArgs(
+            key: key,
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: dateOfBirth,
+            photoUrl: photoUrl,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'ProfilePersonalDataRoute';
 
-  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
+  static const _i26.PageInfo<ProfilePersonalDataRouteArgs> page =
+      _i26.PageInfo<ProfilePersonalDataRouteArgs>(name);
+}
+
+class ProfilePersonalDataRouteArgs {
+  const ProfilePersonalDataRouteArgs({
+    this.key,
+    required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.photoUrl,
+  });
+
+  final _i27.Key? key;
+
+  final String? firstName;
+
+  final String? lastName;
+
+  final DateTime? dateOfBirth;
+
+  final String? photoUrl;
+
+  @override
+  String toString() {
+    return 'ProfilePersonalDataRouteArgs{key: $key, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth, photoUrl: $photoUrl}';
+  }
 }

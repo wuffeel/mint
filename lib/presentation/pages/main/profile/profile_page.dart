@@ -23,8 +23,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  void _onPersonalData() {
-    context.router.push(const ProfilePersonalDataRoute());
+  void _onPersonalData({
+    String? firstName,
+    String? lastName,
+    DateTime? dateOfBirth,
+    String? photoUrl,
+  }) {
+    context.router.push(
+      ProfilePersonalDataRoute(
+        firstName: firstName,
+        lastName: lastName,
+        dateOfBirth: dateOfBirth,
+        photoUrl: photoUrl,
+      ),
+    );
   }
 
   void _onPinChange() {
@@ -57,12 +69,24 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: 19.h),
                   ProfileButtonGroup(
                     children: [
-                      InkWell(
-                        onTap: _onPersonalData,
-                        child: ProfileButtonContent(
-                          title: l10n.personalData,
-                          svgIcon: Assets.svg.personalData,
-                        ),
+                      BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is UserFetchSuccess) {
+                            return InkWell(
+                              onTap: () => _onPersonalData(
+                                firstName: state.user.firstName,
+                                lastName: state.user.lastName,
+                                dateOfBirth: state.user.dateOfBirth,
+                                photoUrl: state.user.photoUrl,
+                              ),
+                              child: ProfileButtonContent(
+                                title: l10n.personalData,
+                                svgIcon: Assets.svg.personalData,
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                       InkWell(
                         onTap: _onPinChange,
