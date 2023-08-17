@@ -160,5 +160,9 @@
   "dateOfBirth": "Дата народження",
   "pleaseEnterFirstName": "Будь ласка, введіть ім'я",
   "pleaseEnterLastName": "Будь ласка, введіть прізвище",
-  "pleaseEnterDateOfBirth": "Будь ласка, введіть дату народження"
+  "pleaseEnterDateOfBirth": "Будь ласка, введіть дату народження",
+  "noPaymentCards": "Платіжні картки відсутні. Додайте картку для комфортної роботи",
+  "couldNotLoadCreditCard": "Не вдалося завантажити список кредитних карток",
+  "deleteCreditCard": "Видалити кредитну картку",
+  "doYouWantToDeleteCreditCard": "Бажаєте видалити кредитну картку"
 }

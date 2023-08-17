@@ -102,9 +102,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: l10n.myCreditCards,
                     svgIcon: Assets.svg.creditCards,
                     foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () {
-                      // TODO(wuffeel): add credit cards page
-                    },
+                    onTap: () =>
+                        context.router.push(const ProfileCreditCardsRoute()),
                   ),
                   SizedBox(height: 8.h),
                   ProfileButton(

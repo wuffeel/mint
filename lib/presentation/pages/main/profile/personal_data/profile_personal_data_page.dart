@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint/presentation/pages/main/profile/personal_data/widgets/profile_date_of_birth.dart';
 import 'package:mint/presentation/pages/main/profile/widgets/profile_app_bar.dart';
-import 'package:mint/presentation/pages/main/profile/widgets/profile_date_of_birth.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
-import '../../../../bloc/user/user_bloc.dart';
-import '../../../widgets/mint_text_form_field.dart';
+import '../../../../../bloc/user/user_bloc.dart';
+import '../../../../widgets/mint_text_form_field.dart';
 
 @RoutePage()
 class ProfilePersonalDataPage extends StatelessWidget {

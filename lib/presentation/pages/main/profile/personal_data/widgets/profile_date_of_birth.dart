@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mint/l10n/l10n.dart';
 
-import '../../../../../theme/mint_text_styles.dart';
+import '../../../../../../theme/mint_text_styles.dart';
 
 class ProfileDateOfBirth extends StatelessWidget {
   const ProfileDateOfBirth({

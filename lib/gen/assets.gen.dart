@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/american_express_colored.svg
+  SvgGenImage get americanExpressColored =>
+      const SvgGenImage('assets/svg/american_express_colored.svg');
+
   /// File path: assets/svg/american_express_icon.svg
   SvgGenImage get americanExpressIcon =>
       const SvgGenImage('assets/svg/american_express_icon.svg');
@@ -92,6 +96,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/logout.svg
   SvgGenImage get logout => const SvgGenImage('assets/svg/logout.svg');
 
+  /// File path: assets/svg/mastercard_colored.svg
+  SvgGenImage get mastercardColored =>
+      const SvgGenImage('assets/svg/mastercard_colored.svg');
+
   /// File path: assets/svg/mastercard_icon.svg
   SvgGenImage get mastercardIcon =>
       const SvgGenImage('assets/svg/mastercard_icon.svg');
@@ -145,11 +153,16 @@ class $AssetsSvgGen {
   /// File path: assets/svg/video.svg
   SvgGenImage get video => const SvgGenImage('assets/svg/video.svg');
 
+  /// File path: assets/svg/visa_colored.svg
+  SvgGenImage get visaColored =>
+      const SvgGenImage('assets/svg/visa_colored.svg');
+
   /// File path: assets/svg/visa_icon.svg
   SvgGenImage get visaIcon => const SvgGenImage('assets/svg/visa_icon.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        americanExpressColored,
         americanExpressIcon,
         appleIcon,
         arrowBackAndroid,
@@ -173,6 +186,7 @@ class $AssetsSvgGen {
         heartIconFilled,
         homeIcon,
         logout,
+        mastercardColored,
         mastercardIcon,
         microphoneIcon,
         notificationsBell,
@@ -187,6 +201,7 @@ class $AssetsSvgGen {
         starIconFilled,
         userPlaceholder,
         video,
+        visaColored,
         visaIcon
       ];
 }

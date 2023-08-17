@@ -160,5 +160,9 @@
   "dateOfBirth": "Date of birth",
   "pleaseEnterFirstName": "Please enter first name",
   "pleaseEnterLastName": "Please enter last name",
-  "pleaseEnterDateOfBirth": "Please enter date of birth"
+  "pleaseEnterDateOfBirth": "Please enter date of birth",
+  "noPaymentCards": "No payment cards available. Add card for comfortable work",
+  "couldNotLoadCreditCard": "Could not load credit card list",
+  "deleteCreditCard": "Delete credit card",
+  "doYouWantToDeleteCreditCard": "Do you want to delete credit card"
 }
