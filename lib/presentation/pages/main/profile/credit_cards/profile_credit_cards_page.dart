@@ -8,6 +8,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/profile/credit_cards/widgets/credit_card_delete_dialog.dart';
 import 'package:mint/presentation/pages/main/profile/credit_cards/widgets/no_credit_cards_text.dart';
 import 'package:mint/presentation/pages/main/profile/credit_cards/widgets/profile_credit_card.dart';
+import 'package:mint/presentation/widgets/error_snack_bar.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
@@ -23,7 +24,18 @@ class ProfileCreditCardsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           getIt<CreditCardBloc>()..add(CreditCardListFetchRequested()),
-      child: const _ProfileCreditCardsView(),
+      child: BlocListener<CreditCardBloc, CreditCardState>(
+        listener: (context, state) {
+          if (state is CreditCardDeleteFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              ErrorSnackBar(
+                content: Text(context.l10n.couldNotDeleteCreditCard),
+              ),
+            );
+          }
+        },
+        child: const _ProfileCreditCardsView(),
+      ),
     );
   }
 }

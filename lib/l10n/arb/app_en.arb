@@ -164,5 +164,6 @@
   "noPaymentCards": "No payment cards available. Add card for comfortable work",
   "couldNotLoadCreditCard": "Could not load credit card list",
   "deleteCreditCard": "Delete credit card",
-  "doYouWantToDeleteCreditCard": "Do you want to delete credit card"
+  "doYouWantToDeleteCreditCard": "Do you want to delete credit card",
+  "couldNotDeleteCreditCard": "Could not delete credit card. Try again"
 }

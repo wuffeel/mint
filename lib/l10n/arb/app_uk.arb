@@ -164,5 +164,6 @@
   "noPaymentCards": "Платіжні картки відсутні. Додайте картку для комфортної роботи",
   "couldNotLoadCreditCard": "Не вдалося завантажити список кредитних карток",
   "deleteCreditCard": "Видалити кредитну картку",
-  "doYouWantToDeleteCreditCard": "Бажаєте видалити кредитну картку"
+  "doYouWantToDeleteCreditCard": "Бажаєте видалити кредитну картку",
+  "couldNotDeleteCreditCard": "Не вдалося видалити кредитну картку. Спробуйте знову"
 }
