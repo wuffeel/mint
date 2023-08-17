@@ -85,7 +85,7 @@ class ProfileCreditCard extends StatelessWidget {
                         : UndefinedCreditCardIcon(
                             width: 31.w,
                             height: 31.h,
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColor,
                           ),
                   ),
                   SizedBox(width: 10.w),
