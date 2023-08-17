@@ -139,7 +139,7 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
                           if (context.router.canPop())
                             Padding(
                               padding: EdgeInsets.only(left: 8.w),
-                              child: const MintBackButton(),
+                              child: const MintBackButton(color: Colors.white),
                             ),
                           SizedBox(width: 16.w),
                           ProfileAvatar(
@@ -175,7 +175,9 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
                               alignment: Alignment.topLeft,
                               child: Padding(
                                 padding: EdgeInsets.only(left: 8.w, top: 8.h),
-                                child: const MintBackButton(),
+                                child: const MintBackButton(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           Column(
