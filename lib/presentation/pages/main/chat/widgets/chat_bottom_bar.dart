@@ -218,7 +218,7 @@ class _ChatToolbar extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       opacity: isSendButtonVisible ? 1 : 0,
                       child: IconButton(
-                        constraints: BoxConstraints(),
+                        constraints: const BoxConstraints(),
                         onPressed: onSendTap,
                         icon: Icon(
                           Icons.send,
