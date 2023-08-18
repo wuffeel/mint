@@ -11,10 +11,18 @@ class FavoriteButton extends StatelessWidget {
     super.key,
     required this.specialistModel,
     this.isIconButton = false,
+    this.iconButtonPadding,
+    this.iconButtonConstraints,
   });
 
   final SpecialistModel specialistModel;
   final bool isIconButton;
+
+  /// [isIconButton] should be true
+  final EdgeInsetsGeometry? iconButtonPadding;
+
+  /// [isIconButton] should be true
+  final BoxConstraints? iconButtonConstraints;
 
   void _toggleFavorite(BuildContext context, bool isFavorite) {
     isFavorite
@@ -37,8 +45,8 @@ class FavoriteButton extends StatelessWidget {
           return isIconButton
               ? IconButton(
                   onPressed: () => _toggleFavorite(context, isFavorite),
-                  padding: isIconButton ? null : EdgeInsets.zero,
-                  constraints: isIconButton ? null : const BoxConstraints(),
+                  padding: iconButtonPadding,
+                  constraints: iconButtonConstraints,
                   icon: FavoriteIcon(isFavorite: isFavorite),
                 )
               : InkWell(
