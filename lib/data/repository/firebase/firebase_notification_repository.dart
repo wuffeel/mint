@@ -99,8 +99,6 @@ class FirebaseNotificationRepository implements NotificationRepository {
     FirebaseMessaging.onMessage.listen((message) async {
       final notification = message.notification;
       final android = message.notification?.android;
-      log('ANDROID: ${android?.toMap()}');
-      log('notification: $notification');
       if (notification == null || android == null) return;
 
       log('onMessage: ${message.toMap()}');
@@ -136,12 +134,6 @@ class FirebaseNotificationRepository implements NotificationRepository {
     await _messagingInstance.getInitialMessage().then((terminatedMessage) {
       if (terminatedMessage == null) return;
       log('getInitialMessage: ${terminatedMessage.toMap()}');
-      final notificationType = terminatedMessage.data['notificationType'];
-      if (notificationType != null && notificationType == 'chat') {
-        _handleChatNotification(terminatedMessage);
-      } else if (notificationType == 'booking') {
-        _handleBookingNotification(terminatedMessage);
-      }
     });
   }
 
