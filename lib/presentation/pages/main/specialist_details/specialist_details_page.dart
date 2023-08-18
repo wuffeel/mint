@@ -182,7 +182,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                       actions: [
                         FavoriteButton(
                           specialistModel: widget.specialistModel,
-                          isActionButton: true,
+                          isIconButton: true,
                         ),
                       ],
                       flexibleSpace: SpecialistDetailsWidget(
