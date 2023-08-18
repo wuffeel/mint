@@ -88,66 +88,71 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.w),
+    return ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: Row(
-        children: <Widget>[
-          if (!_isAudioRecording)
-            Expanded(
-              child: _ChatToolbar(
-                messageController: _textController,
-                onAttachTap: widget.onAttach,
-                onSendTap: widget.onSend,
-                onEmojiTap: widget.onEmoji,
-                onTextFieldTap: widget.onTextFieldTap,
-                isEmojiSelected: widget.isEmojiSelected,
-                isSendButtonVisible: _isSendButtonVisible,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.h),
+        child: Row(
+          children: <Widget>[
+            if (!_isAudioRecording)
+              Expanded(
+                child: _ChatToolbar(
+                  messageController: _textController,
+                  onAttachTap: widget.onAttach,
+                  onSendTap: widget.onSend,
+                  onEmojiTap: widget.onEmoji,
+                  onTextFieldTap: widget.onTextFieldTap,
+                  isEmojiSelected: widget.isEmojiSelected,
+                  isSendButtonVisible: _isSendButtonVisible,
+                ),
+              )
+            else
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: AudioWaveforms(
+                        recorderController: _recorderController,
+                        size: Size(constraints.maxWidth, 30.h),
+                        enableGesture: true,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        margin: EdgeInsets.only(right: 10.w),
+                        padding: EdgeInsets.all(10.w),
+                        waveStyle: const WaveStyle(
+                          waveColor: Colors.white,
+                          showMiddleLine: false,
+                          extendWaveform: true,
+                          spacing: 6,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-            )
-          else
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return AudioWaveforms(
-                    recorderController: _recorderController,
-                    size: Size(constraints.maxWidth, 30.h),
-                    enableGesture: true,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    margin: EdgeInsets.only(right: 10.w),
-                    padding: EdgeInsets.all(10.w),
-                    waveStyle: const WaveStyle(
-                      waveColor: Colors.white,
-                      showMiddleLine: false,
-                      extendWaveform: true,
-                      spacing: 6,
-                    ),
-                  );
-                },
-              ),
-            ),
-          Offstage(
-            offstage: _isAudioRecording,
-            child: InkWell(
-              onTap: _startRecord,
-              child: _BottomBarIcon(Assets.svg.microphoneIcon),
-            ),
-          ),
-          Offstage(
-            offstage: !_isAudioRecording,
-            child: InkWell(
-              onTap: _stopRecord,
-              child: Icon(
-                Icons.stop_circle_rounded,
-                color: Theme.of(context).colorScheme.primary,
-                size: 24.w,
+            Offstage(
+              offstage: _isAudioRecording,
+              child: IconButton(
+                onPressed: _startRecord,
+                icon: _BottomBarIcon(Assets.svg.microphoneIcon),
               ),
             ),
-          ),
-        ],
+            Offstage(
+              offstage: !_isAudioRecording,
+              child: IconButton(
+                onPressed: _stopRecord,
+                icon: Icon(
+                  Icons.stop_circle_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 24.w,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -176,11 +181,10 @@ class _ChatToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        InkWell(
-          onTap: onAttachTap,
-          child: _BottomBarIcon(Assets.svg.attachIcon),
+        IconButton(
+          onPressed: onAttachTap,
+          icon: _BottomBarIcon(Assets.svg.attachIcon),
         ),
-        SizedBox(width: 9.w),
         Expanded(
           child: TextField(
             onTap: onTextFieldTap,
@@ -194,10 +198,11 @@ class _ChatToolbar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: InkWell(
-                      onTap: onEmojiTap,
-                      child: _BottomBarIcon(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: IconButton(
+                      onPressed: onEmojiTap,
+                      constraints: const BoxConstraints(),
+                      icon: _BottomBarIcon(
                         Assets.svg.emojiIcon,
                         color: isEmojiSelected
                             ? Theme.of(context).colorScheme.primary
@@ -213,6 +218,7 @@ class _ChatToolbar extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       opacity: isSendButtonVisible ? 1 : 0,
                       child: IconButton(
+                        constraints: BoxConstraints(),
                         onPressed: onSendTap,
                         icon: Icon(
                           Icons.send,
@@ -227,7 +233,6 @@ class _ChatToolbar extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 9.w),
       ],
     );
   }
