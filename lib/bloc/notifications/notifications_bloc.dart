@@ -91,20 +91,23 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     NotificationsChatRoomRequested event,
     Emitter<NotificationsState> emit,
   ) async {
-
+    try {
       final user = _currentUser;
       final room = await _fetchChatRoomUseCase(event.roomId);
       if (room == null || user == null) return;
 
       final specialist = room.users.singleWhere(
-        (roomUser) => roomUser.id != user.id,
+            (roomUser) => roomUser.id != user.id,
       );
       final specialistModel = await _fetchSpecialistUseCase(specialist.id);
 
       if (specialistModel == null) return;
 
       emit(NotificationsFetchChatRoomSuccess(room, specialistModel));
-
+    } catch (error) {
+      log('NotificationsFetchChatRoomFailure: $error');
+      emit(NotificationsFetchChatRoomFailure());
+    }
   }
 
   Future<void> _onFetchSessionData(
