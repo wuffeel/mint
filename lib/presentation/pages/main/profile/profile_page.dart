@@ -107,12 +107,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 8.h),
                   ProfileButton(
-                    title: l10n.favouriteDoctors,
+                    title: l10n.favoriteDoctors,
                     svgIcon: Assets.svg.heartIcon,
                     foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () {
-                      // TODO(wuffeel): add favorite doctors page
-                    },
+                    onTap: () => context.router.push(
+                      const FavoriteDoctorsRoute(),
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   ProfileButton(

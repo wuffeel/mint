@@ -11,9 +11,16 @@ import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class SpecialistCardTile extends StatelessWidget {
-  const SpecialistCardTile({super.key, required this.specialistModel});
+  const SpecialistCardTile({
+    super.key,
+    required this.specialistModel,
+    this.showDialogOnFavoriteRemove = false,
+  });
 
   final SpecialistModel specialistModel;
+
+  /// See [FavoriteButton.showDialogOnFavoriteRemove]
+  final bool showDialogOnFavoriteRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +79,10 @@ class SpecialistCardTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                FavoriteButton(specialistModel: specialistModel),
+                FavoriteButton(
+                  specialistModel: specialistModel,
+                  showDialogOnFavoriteRemove: showDialogOnFavoriteRemove,
+                ),
                 Text(
                   '₴${specialistModel.price}',
                   style: TextStyle(

@@ -151,7 +151,7 @@
   "permissionDeniedContent": "Дозвіл не надано. Перейдіть до налаштувань і ввімкніть дозвіл",
   "personalData": "Особисті дані",
   "myCreditCards": "Мої кредитні картки",
-  "favouriteDoctors": "Обрані лікарі",
+  "favoriteDoctors": "Обрані лікарі",
   "notifications": "Сповіщення",
   "patient": "Пацієнт",
   "save": "Зберегти",
@@ -165,5 +165,16 @@
   "couldNotLoadCreditCard": "Не вдалося завантажити список кредитних карток",
   "deleteCreditCard": "Видалити кредитну картку",
   "doYouWantToDeleteCreditCard": "Бажаєте видалити кредитну картку",
-  "couldNotDeleteCreditCard": "Не вдалося видалити кредитну картку. Спробуйте знову"
+  "couldNotDeleteCreditCard": "Не вдалося видалити кредитну картку. Спробуйте знову",
+  "noFavoriteSpecialistsYet": "Улюблених спеціалістів ще немає",
+  "removeFavoriteTitle": "Видалити з улюблених",
+  "removeFavoriteContent": "Бажаєете видалити {specialistName} з улюблених",
+  "@removeFavoriteContent": {
+    "placeholders": {
+      "specialistName": {
+        "type": "String",
+        "example": "Олександр"
+      }
+    }
+  }
 }
