@@ -18,7 +18,6 @@ part 'review_event.dart';
 
 part 'review_state.dart';
 
-// TODO(wuffeel): do we need a user controller here to handle user name changes?
 @injectable
 class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
   ReviewBloc(

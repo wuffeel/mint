@@ -16,13 +16,11 @@ class ReviewCardTile extends StatelessWidget {
     required this.reviewModel,
     this.isUserReview,
     this.onEdit,
-    this.onDelete,
   });
 
   final ReviewModel reviewModel;
   final bool? isUserReview;
   final void Function(ReviewModel)? onEdit;
-  final void Function(ReviewModel)? onDelete;
 
   String _getFullName(BuildContext context) {
     final user = reviewModel.user;
@@ -101,10 +99,6 @@ class ReviewCardTile extends StatelessWidget {
                         PopupMenuItem(
                           value: _ReviewPopupMenuItem(onTap: onEdit),
                           child: Text(context.l10n.edit),
-                        ),
-                        PopupMenuItem(
-                          value: _ReviewPopupMenuItem(onTap: onDelete),
-                          child: Text(context.l10n.delete),
                         ),
                       ],
                       child: const Icon(Icons.more_horiz),

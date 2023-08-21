@@ -10,7 +10,6 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/booking_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/add_review_sliver_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/review_delete_dialog.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_book_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
@@ -92,17 +91,6 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
     return context
         .read<ReviewBloc>()
         .add(ReviewFetchRequested(widget.specialistModel.id));
-  }
-
-  void _onReviewDelete(ReviewModel review) {
-    showDialog<void>(
-      context: context,
-      builder: (_) => ReviewDeleteDialog(
-        onDelete: () {
-          return context.read<ReviewBloc>().add(ReviewDeleteRequested(review));
-        },
-      ),
-    );
   }
 
   void _showReviewBottomSheet(ReviewModel? userReview) {
@@ -249,7 +237,6 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                               ),
                               UserReviewsSection(
                                 onEdit: _showReviewBottomSheet,
-                                onDelete: _onReviewDelete,
                               ),
                               ReviewSliverList(onRefresh: _onReviewRefresh),
                               SliverToBoxAdapter(
