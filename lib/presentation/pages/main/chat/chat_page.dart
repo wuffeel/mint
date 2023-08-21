@@ -126,15 +126,17 @@ class _ChatViewState extends State<_ChatView> {
 
   /// Shows pop-up menu on [_tapPosition] with 'Edit' and 'Delete' actions
   void _showMessageActionsMenu(BuildContext context, types.Message message) {
-    return ChatUtils.showMessageActionsMenu(
-      context,
-      message,
-      _tapPosition,
-      onDelete: (message) {
-        context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
-        context.router.pop();
-      },
-    );
+    if (message.author.id == _user.id) {
+      return ChatUtils.showMessageActionsMenu(
+        context,
+        message,
+        _tapPosition,
+        onDelete: (message) {
+          context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
+          context.router.pop();
+        },
+      );
+    }
   }
 
   /// Stores [details] tap position in [_tapPosition] for further use by message
