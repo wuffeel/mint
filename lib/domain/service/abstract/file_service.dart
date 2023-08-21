@@ -1,6 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-abstract class FilePickerService {
+abstract class FileService {
   /// [fileName] should be with file extension provided
   Future<String> loadFile(
     String fileName,

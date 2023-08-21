@@ -5,14 +5,14 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/service/abstract/file_picker_service.dart';
+import 'package:mint/domain/service/abstract/file_service.dart';
 import 'package:mint/utils/file_utils.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
-@Injectable(as: FilePickerService)
-class FilePickerServiceImpl implements FilePickerService {
+@Injectable(as: FileService)
+class FileServiceImpl implements FileService {
   /// Handles file load. Returns path to the file.
   ///
   /// Looks for local file existence by given [fileName]. If it do not exist

@@ -1,11 +1,11 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/service/abstract/file_picker_service.dart';
+import 'package:mint/domain/service/abstract/file_service.dart';
 
 @injectable
 class LoadFileUseCase {
   LoadFileUseCase(this._service);
 
-  final FilePickerService _service;
+  final FileService _service;
 
   Future<String> call(
     String fileName,
