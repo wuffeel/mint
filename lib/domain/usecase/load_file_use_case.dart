@@ -8,13 +8,13 @@ class LoadFileUseCase {
   final FilePickerService _service;
 
   Future<String> call(
-    String localFileId,
+    String fileName,
     String fileUri, {
     void Function()? onLoadingCallback,
     void Function()? onLoadedCallback,
   }) =>
       _service.loadFile(
-        localFileId,
+        fileName,
         fileUri,
         onLoadingCallback: onLoadingCallback,
         onLoadedCallback: onLoadedCallback,

@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/utils/file_utils.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/user_model/user_model.dart';
@@ -217,10 +218,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               ? message.uri
               : null;
       if (messageName == null || messageUri == null) return;
-      final messagePath = uuid ?? messageName;
+      final extension = getFileExtension(messageName);
+      final messageId = uuid != null ? '$uuid.$extension' : messageName;
 
       await _loadFileUseCase(
-        messagePath,
+        messageId,
         messageUri,
         onLoadingCallback: () {
           final loadingMessageList = messageList.map((element) {
@@ -239,7 +241,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           emit(ChatFetchMessagesSuccess(loadedMessageList, state.roomId));
         },
       );
-      if (event.shouldOpen) await _openFileUseCase(messagePath);
+      if (event.shouldOpen) await _openFileUseCase(messageId);
     } catch (error) {
       log('ChatFileLoadFailure: $error');
       emit(ChatFileLoadFailure(messageList, state.roomId));

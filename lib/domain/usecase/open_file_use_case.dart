@@ -7,5 +7,5 @@ class OpenFileUseCase {
 
   final FilePickerService _service;
 
-  Future<void> call(String localFileId) => _service.openFile(localFileId);
+  Future<void> call(String fileName) => _service.openFile(fileName);
 }
