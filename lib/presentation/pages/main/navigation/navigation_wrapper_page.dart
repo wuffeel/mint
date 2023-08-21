@@ -7,7 +7,10 @@ import 'package:mint/bloc/pin_code/pin_code_bloc.dart';
 import 'package:mint/bloc/user/user_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/routes/app_router.gr.dart';
+import 'package:mint/utils/notification_utils.dart';
 
+import '../../../../backbone/pin_code_status_entered.dart';
+import '../../../../backbone/pin_code_status_initial.dart';
 import '../../../../bloc/upcoming_sessions/upcoming_sessions_bloc.dart';
 
 @RoutePage()
@@ -30,24 +33,31 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
   void _notificationsBlocListener(
     BuildContext context,
     NotificationsState state,
+    PinCodeState pinCodeState,
   ) {
-    if (state is NotificationsFetchChatRoomSuccess) {
-      context.router.navigate(
-        ChatRoute(
-          room: state.chatRoom,
-          specialistModel: state.specialistModel,
-        ),
-      );
+    if (_isNavigateByNotification(state) &&
+        (!_isPinSignIn(pinCodeState) && !_isPinSignUp(pinCodeState))) {
+      NotificationUtils.navigateByNotification(context, state);
     }
-    if (state is NotificationsFetchSessionDataSuccess) {
-      context.router.navigate(
-        SessionDetailsWrapperRoute(
-          children: [
-            SessionDetailsRoute(bookingData: state.bookingData),
-          ],
-        ),
-      );
-    }
+  }
+
+  bool _isNavigateByNotification(NotificationsState state) {
+    return state is NotificationsFetchChatRoomSuccess ||
+        state is NotificationsFetchSessionDataSuccess;
+  }
+
+  bool _isPinSignIn(PinCodeState state) {
+    return state is! PinCodeConfirmed &&
+        (state is PinCodeEnterSuccess &&
+            state.status == PinCodeStatusEntered.signIn);
+  }
+
+  bool _isPinSignUp(PinCodeState state) {
+    return state is! PinCodeConfirmed &&
+        ((state is PinCodeInitial &&
+                state.status == PinCodeStatusInitial.signUp) ||
+            (state is PinCodeEnterSuccess &&
+                state.status == PinCodeStatusEntered.signUp));
   }
 
   @override
@@ -81,11 +91,16 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
           BlocListener<PinCodeBloc, PinCodeState>(
             listener: _pinCodeBlocListener,
           ),
-          BlocListener<NotificationsBloc, NotificationsState>(
-            listener: _notificationsBlocListener,
-          ),
         ],
-        child: this,
+        child: BlocBuilder<PinCodeBloc, PinCodeState>(
+          builder: (context, pinCodeState) {
+            return BlocListener<NotificationsBloc, NotificationsState>(
+              listener: (context, state) =>
+                  _notificationsBlocListener(context, state, pinCodeState),
+              child: this,
+            );
+          },
+        ),
       ),
     );
   }

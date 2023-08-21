@@ -20,6 +20,11 @@ part 'notifications_event.dart';
 
 part 'notifications_state.dart';
 
+typedef ChatNavigationData = ({
+  types.Room room,
+  SpecialistModel specialistModel,
+});
+
 @injectable
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc(
@@ -34,6 +39,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<NotificationsInitializeRequested>(_onInitializeNotifications);
     on<NotificationsChatRoomRequested>(_onFetchChatRoom);
     on<NotificationsSessionDataRequested>(_onFetchSessionData);
+    on<NotificationsStateResetRequested>(
+      (event, emit) => emit(NotificationsInitial()),
+    );
   }
 
   final InitializeNotificationsUseCase _initializeNotificationsUseCase;
@@ -97,7 +105,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       if (room == null || user == null) return;
 
       final specialist = room.users.singleWhere(
-            (roomUser) => roomUser.id != user.id,
+        (roomUser) => roomUser.id != user.id,
       );
       final specialistModel = await _fetchSpecialistUseCase(specialist.id);
 

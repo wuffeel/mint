@@ -16,3 +16,5 @@ class NotificationsSessionDataRequested extends NotificationsEvent {
 
   final String bookingId;
 }
+
+class NotificationsStateResetRequested extends NotificationsEvent {}

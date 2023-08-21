@@ -12,14 +12,26 @@ import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
+import '../../../../bloc/notifications/notifications_bloc.dart';
+import '../../../../utils/notification_utils.dart';
+
 @RoutePage()
 class PinCodePage extends StatelessWidget {
   const PinCodePage({super.key});
 
-  void _pinCodeListener(BuildContext context, PinCodeState state) {
+  void _pinCodeListener(
+    BuildContext context,
+    PinCodeState state,
+    NotificationsState notificationsState,
+  ) {
     if (state is PinCodeSignUpConfirmSuccess ||
         state is PinCodeSignInConfirmSuccess) {
-      context.router.replace(const NavigationRoute());
+      if (!NotificationUtils.navigateByNotification(
+        context,
+        notificationsState,
+      )) {
+        context.router.replace(const NavigationRoute());
+      }
     } else if (state is PinCodeNewConfirmSuccess) {
       context.router.navigate(const NavigationRoute());
     }
@@ -27,9 +39,14 @@ class PinCodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PinCodeBloc, PinCodeState>(
-      listener: _pinCodeListener,
-      child: const _PinCodeView(),
+    return BlocBuilder<NotificationsBloc, NotificationsState>(
+      builder: (context, notificationsState) {
+        return BlocListener<PinCodeBloc, PinCodeState>(
+          listener: (context, state) =>
+              _pinCodeListener(context, state, notificationsState),
+          child: const _PinCodeView(),
+        );
+      },
     );
   }
 }
