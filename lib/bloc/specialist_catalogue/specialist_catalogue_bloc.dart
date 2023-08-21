@@ -133,9 +133,12 @@ class SpecialistCatalogueBloc
     if (specialists.isEmpty) return;
 
     final updatedSpecialists = specialists.map((specialist) {
-      final rating = event.updatedRating;
-      if (specialist.id == rating.$3) {
-        return specialist.copyWith(rating: rating.$1, reviewCount: rating.$2);
+      final newRating = event.updatedRating;
+      if (specialist.id == newRating.specialistId) {
+        return specialist.copyWith(
+          rating: newRating.rating,
+          reviewCount: newRating.reviewCount,
+        );
       }
       return specialist;
     }).toList();
