@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -133,6 +134,17 @@ class FileServiceImpl implements FileService {
       metadata: {'uuid': uuid},
     );
     return message;
+  }
+
+  @override
+  Future<void> deleteLocalFile(String fileName) async {
+    try {
+      final localPath = await _getLocalFilePath(fileName);
+      final file = File(localPath);
+      await file.delete();
+    } catch (error) {
+      log('FileService error. Could not delete local file: $error');
+    }
   }
 
   /// Downloads a file from the given [fileUri] and saves it to the [localPath].

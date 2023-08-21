@@ -17,4 +17,6 @@ abstract class FileService {
   Future<types.PartialFile?> pickFile();
 
   Future<types.PartialAudio> saveAudio(types.PartialAudio audioMessage);
+
+  Future<void> deleteLocalFile(String fileName);
 }

@@ -2,7 +2,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/chat_repository.dart';
 import 'package:mint/domain/service/abstract/chat_service.dart';
+import 'package:mint/domain/service/abstract/file_service.dart';
 import 'package:mint/domain/service/abstract/storage_service.dart';
+import 'package:mint/utils/file_utils.dart';
 
 import '../../../assembly/factory.dart';
 
@@ -11,12 +13,14 @@ class FirebaseChatService implements ChatService {
   FirebaseChatService(
     this._chatRepository,
     this._storageService,
+    this._fileService,
     this._chatRoomFromMap,
   );
 
   final ChatRepository _chatRepository;
 
   final StorageService _storageService;
+  final FileService _fileService;
 
   final Factory<types.Room?, Map<String, dynamic>> _chatRoomFromMap;
 
@@ -58,12 +62,13 @@ class FirebaseChatService implements ChatService {
 
   @override
   Future<void> deleteMessage(String roomId, types.Message message) {
+    final uuid = message.metadata?['uuid'] as String?;
     if (message is types.ImageMessage) {
-      _storageService.deleteStorageFile(message.uri);
+      _handleFileDeletion(message.uri, message.name, uuid);
     } else if (message is types.FileMessage) {
-      _storageService.deleteStorageFile(message.uri);
+      _handleFileDeletion(message.uri, message.name, uuid);
     } else if (message is types.AudioMessage) {
-      _storageService.deleteStorageFile(message.uri);
+      _handleFileDeletion(message.uri, message.name, uuid);
     }
     return _chatRepository.deleteMessage(
       roomId,
@@ -148,5 +153,16 @@ class FirebaseChatService implements ChatService {
     );
 
     return _chatRepository.sendMessage(message, roomId);
+  }
+
+  Future<void> _handleFileDeletion(
+    String uri,
+    String messageName,
+    String? uuid,
+  ) async {
+    await _storageService.deleteStorageFile(uri);
+    final extension = getFileExtension(messageName);
+    final fileName = uuid != null ? '$uuid.$extension' : messageName;
+    await _fileService.deleteLocalFile(fileName);
   }
 }
