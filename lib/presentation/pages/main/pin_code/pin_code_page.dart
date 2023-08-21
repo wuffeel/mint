@@ -19,6 +19,11 @@ import '../../../../utils/notification_utils.dart';
 class PinCodePage extends StatelessWidget {
   const PinCodePage({super.key});
 
+  /// Navigates user to appropriate page on entering a pin-code.
+  ///
+  /// If user pressed notification that navigates to certain page, user will
+  /// be navigated only after entering a pin-code. Otherwise, navigates normally
+  /// to application's home-screen.
   void _pinCodeListener(
     BuildContext context,
     PinCodeState state,

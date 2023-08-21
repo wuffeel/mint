@@ -23,6 +23,7 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
     }
   }
 
+  /// Updates currently logged-in user pin-code
   void _pinCodeBlocListener(BuildContext context, PinCodeState state) {
     if (state is PinCodeSignUpConfirmSuccess ||
         state is PinCodeNewConfirmSuccess) {
@@ -30,6 +31,10 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
     }
   }
 
+  /// Navigates user to appropriate screen by pressed notification.
+  ///
+  /// If user is currently on pin-code sign-in or sign-up step, navigation
+  /// is handled on PinCodePage.
   void _notificationsBlocListener(
     BuildContext context,
     NotificationsState state,
@@ -41,17 +46,20 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
     }
   }
 
+  /// Checks if navigation should be handled by notification
   bool _isNavigateByNotification(NotificationsState state) {
     return state is NotificationsFetchChatRoomSuccess ||
         state is NotificationsFetchSessionDataSuccess;
   }
 
+  /// Checks if user is currently on pin-code sign-in screen
   bool _isPinSignIn(PinCodeState state) {
     return state is! PinCodeConfirmed &&
         (state is PinCodeEnterSuccess &&
             state.status == PinCodeStatusEntered.signIn);
   }
 
+  /// Checks if user currently on pin-code sign-up screen
   bool _isPinSignUp(PinCodeState state) {
     return state is! PinCodeConfirmed &&
         ((state is PinCodeInitial &&
