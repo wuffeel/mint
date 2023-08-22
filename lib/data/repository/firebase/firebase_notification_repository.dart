@@ -92,7 +92,8 @@ class FirebaseNotificationRepository implements NotificationRepository {
       _handleNotificationBasedOnType(message);
     });
 
-    // Handling foreground notifications.
+    // Handling foreground notifications. Necessary for android only.
+    // https://firebase.flutter.dev/docs/messaging/notifications/#foreground-notifications
     FirebaseMessaging.onMessage.listen((message) async {
       final notification = message.notification;
       final android = message.notification?.android;
@@ -115,9 +116,7 @@ class FirebaseNotificationRepository implements NotificationRepository {
             channelDescription: _androidChannel.description,
             icon: android.smallIcon,
             largeIcon: base64Image != null
-                ? ByteArrayAndroidBitmap.fromBase64String(
-                    base64Image,
-                  )
+                ? ByteArrayAndroidBitmap.fromBase64String(base64Image)
                 : null,
             importance: Importance.max,
             priority: Priority.high,
