@@ -128,10 +128,7 @@ class FirebaseNotificationRepository implements NotificationRepository {
     });
 
     // Terminated notification. Gets the notification info.
-    await _messagingInstance.getInitialMessage().then((terminatedMessage) {
-      if (terminatedMessage == null) return;
-      log('getInitialMessage: ${terminatedMessage.toMap()}');
-    });
+    await _messagingInstance.getInitialMessage();
   }
 
   /// Handles notifications by type.
@@ -201,12 +198,7 @@ class FirebaseNotificationRepository implements NotificationRepository {
           jsonDecode(payload) as Map<String, dynamic>,
         );
         log('foreground tap: ${message.toMap()}');
-        final notificationType = message.data['notificationType'];
-        if (notificationType != null && notificationType == 'chat') {
-          _handleChatNotification(message);
-        } else if (notificationType == 'booking') {
-          _handleBookingNotification(message);
-        }
+        _handleNotificationBasedOnType(message);
       },
     );
 
