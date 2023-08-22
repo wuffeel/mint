@@ -1,5 +1,6 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
@@ -38,7 +39,6 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
 
   late final TextEditingController _textController;
   bool _isSendButtonVisible = false;
-  bool _isAudioRecording = false;
 
   @override
   void initState() {
@@ -54,11 +54,10 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
     });
   }
 
-  Future<void> _startRecord() async {
-    final permission = await _recorderController.checkPermission();
-    if (permission) {
-      await _recorderController.record();
-      setState(() => _isAudioRecording = true);
+  void _audioRecordBlocListener(AudioRecordState state) {
+    if (state is AudioRecordStopSuccess) {
+      final message = state.message;
+      if (message != null) widget.onAudioStop(message);
     }
   }
 
