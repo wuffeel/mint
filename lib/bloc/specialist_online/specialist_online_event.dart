@@ -5,6 +5,8 @@ abstract class SpecialistOnlineEvent {}
 
 class SpecialistOnlineFetchRequested extends SpecialistOnlineEvent {}
 
+class SpecialistOnlineRefreshRequested extends SpecialistOnlineEvent {}
+
 class SpecialistOnlineRatingUpdated extends SpecialistOnlineEvent {
   SpecialistOnlineRatingUpdated(this.updatedRating);
 

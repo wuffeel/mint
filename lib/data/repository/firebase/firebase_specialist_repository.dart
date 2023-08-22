@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
@@ -32,19 +34,55 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   @override
-  Future<List<SpecialistModelDto>> getSpecialistsOnline() async {
-    final querySnapshot =
-        await _specialistCollectionRef.where('isOnline', isEqualTo: true).get();
+  Future<List<SpecialistModelDto>> getSpecialistsOnline({
+    String? lastSpecialistId,
+    int? limit,
+  }) async {
+    var query = _specialistCollectionRef.where(
+      'isOnline',
+      isEqualTo: true,
+    );
 
-    return _specialistDtoListFromSnapshot(querySnapshot);
+    log('lastId: $lastSpecialistId');
+
+    if (lastSpecialistId != null) {
+      final lastDoc =
+          await _specialistCollectionRef.doc(lastSpecialistId).get();
+      query = query.startAfterDocument(lastDoc);
+    }
+
+    if (limit != null) {
+      query = query.limit(limit);
+    }
+
+    return _specialistDtoListFromSnapshot(await query.get());
   }
 
   @override
-  Future<List<SpecialistModelDto>> getFavoriteSpecialists(String userId) async {
-    final favoriteSnapshot = await _favoriteCollectionRef
+  Future<List<SpecialistModelDto>> getFavoriteSpecialists(
+    String userId, {
+    String? lastSpecialistId,
+    int? limit,
+  }) async {
+    var query = _favoriteCollectionRef
         .where('userId', isEqualTo: userId)
-        .orderBy(_orderByDate)
-        .get();
+        .orderBy(_orderByDate);
+
+    if (lastSpecialistId != null) {
+      final lastSpecSnap = await _favoriteCollectionRef
+          .where('specialistId', isEqualTo: lastSpecialistId)
+          .get();
+      log('${lastSpecSnap.docs.map((e) => e.data())}');
+      if (lastSpecSnap.docs.isNotEmpty && lastSpecSnap.docs.length == 1) {
+        query = query.startAfterDocument(lastSpecSnap.docs.first);
+      }
+    }
+
+    if (limit != null) {
+      query = query.limit(limit);
+    }
+
+    final favoriteSnapshot = await query.get();
 
     final favoriteIds = favoriteSnapshot.docs
         .map((doc) => (doc.data() as Map<String, dynamic>?)?['specialistId'])
@@ -78,15 +116,28 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
 
   @override
   Future<List<SpecialistModelDto>> getSpecialistCatalogue(
-    FilterPreferencesDto filter,
-  ) async {
+    FilterPreferencesDto filter, {
+    String? lastSpecialistId,
+    int? limit,
+  }) async {
+    Query<Object?> query = _specialistCollectionRef;
+
+    if (lastSpecialistId != null) {
+      final lastDoc =
+          await _specialistCollectionRef.doc(lastSpecialistId).get();
+      query = query.startAfterDocument(lastDoc);
+    }
+
+    if (limit != null) {
+      query = query.limit(limit);
+    }
+
     if (filter.isEmpty) {
-      final specialistSnapshot = await _specialistCollectionRef.get();
+      final specialistSnapshot = await query.get();
       return _specialistDtoListFromSnapshot(specialistSnapshot);
     }
 
-    final queries =
-        _getSpecializationsQueries(_specialistCollectionRef, filter);
+    final queries = _getSpecializationsQueries(query, filter);
 
     final queryResults = <List<SpecialistModelDto>>[];
 
@@ -161,6 +212,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   List<SpecialistModelDto> _specialistDtoListFromSnapshot(
     QuerySnapshot snapshot,
   ) {
+    if (snapshot.docs.isEmpty) return [];
     return snapshot.docs
         .map(_specialistDtoFromSnapshot)
         .whereType<SpecialistModelDto>()
