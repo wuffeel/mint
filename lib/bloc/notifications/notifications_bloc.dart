@@ -20,11 +20,6 @@ part 'notifications_event.dart';
 
 part 'notifications_state.dart';
 
-typedef ChatNavigationData = ({
-  types.Room room,
-  SpecialistModel specialistModel,
-});
-
 @injectable
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc(
