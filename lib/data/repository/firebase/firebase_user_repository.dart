@@ -29,8 +29,7 @@ class FirebaseUserRepository implements UserRepository {
     if (userData == null) {
       return UserModelDto(id: user.uid, phoneNumber: user.phoneNumber);
     }
-    userData['id'] = user.uid;
-    return UserModelDto.fromJson(userData);
+    return UserModelDto.fromJsonWithId(userData, user.uid);
   }
 
   @override
@@ -48,8 +47,7 @@ class FirebaseUserRepository implements UserRepository {
     final userSnapshot = await _userCollectionRef.doc(userId).get();
     final user = userSnapshot.data() as Map<String, dynamic>?;
     if (user == null) return null;
-    user['id'] = userSnapshot.id;
-    return UserModelDto.fromJson(user);
+    return UserModelDto.fromJsonWithId(user, userSnapshot.id);
   }
 
   @override
