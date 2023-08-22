@@ -6,9 +6,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
+import 'package:mint/backbone/notification_type.dart';
 import 'package:mint/data/model/fcm_token_dto/fcm_token_dto.dart';
 import 'package:mint/data/repository/abstract/notification_repository.dart';
 import 'package:mint/domain/controller/notification_controller.dart';
+import 'package:mint/utils/notification_to_short_string.dart';
 
 @Injectable(as: NotificationRepository)
 class FirebaseNotificationRepository implements NotificationRepository {
@@ -87,12 +89,7 @@ class FirebaseNotificationRepository implements NotificationRepository {
     // Handles user navigation on message tap for background notification.
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       log('onMessageOpenedApp: ${message.toMap()}');
-      final notificationType = message.data['notificationType'];
-      if (notificationType != null && notificationType == 'chat') {
-        _handleChatNotification(message);
-      } else if (notificationType == 'booking') {
-        _handleBookingNotification(message);
-      }
+      _handleNotificationBasedOnType(message);
     });
 
     // Handling foreground notifications.
@@ -137,14 +134,50 @@ class FirebaseNotificationRepository implements NotificationRepository {
     });
   }
 
+  /// Handles notifications by type.
+  ///
+  /// Processes incoming notifications based on their 'notificationType'
+  /// field.
+  /// If a matching notification type is found, the corresponding handler is
+  /// invoked.
+  void _handleNotificationBasedOnType(RemoteMessage message) {
+    final notificationType = message.data['notificationType'] as String?;
+    NotificationType? type;
+
+    for (final enumType in NotificationType.values) {
+      if (enumType.toShortString() == notificationType) {
+        type = enumType;
+        break;
+      }
+    }
+
+    if (type != null) {
+      switch (type) {
+        case NotificationType.chat:
+          _handleChatNotification(message);
+          break;
+        case NotificationType.booking:
+          _handleBookingNotification(message);
+          break;
+      }
+    }
+  }
+
+  /// Handles chat notifications.
+  ///
+  /// Retrieves the 'roomId' from the [message] data and adds it to the chat
+  /// stream for further processing.
   Future<void> _handleChatNotification(RemoteMessage message) async {
     final roomId = message.data['roomId'] as String?;
     if (roomId == null) return;
     _notificationController.addToChatStream(roomId);
   }
 
+  /// Handles booking notifications.
+  ///
+  /// Retrieves the 'bookingId' from the [message] data and adds it to the
+  /// session stream for further processing.
   Future<void> _handleBookingNotification(RemoteMessage message) async {
-    // TODO(wuffeel): add back-end logic for booking messages
     final bookingId = message.data['bookingId'] as String?;
     if (bookingId == null) return;
     _notificationController.addToSessionStream(bookingId);
