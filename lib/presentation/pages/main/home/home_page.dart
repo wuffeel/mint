@@ -20,21 +20,43 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<SpecialistOnlineBloc>()
-        ..add(
-          SpecialistOnlineFetchRequested(),
-        ),
+      create: (context) =>
+          getIt<SpecialistOnlineBloc>()..add(SpecialistOnlineFetchRequested()),
       child: const _HomePageView(),
     );
   }
 }
 
-class _HomePageView extends StatelessWidget {
+class _HomePageView extends StatefulWidget {
   const _HomePageView();
 
+  @override
+  State<_HomePageView> createState() => _HomePageViewState();
+}
+
+class _HomePageViewState extends State<_HomePageView> {
+  final _paginationScroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _paginationScroll.addListener(() {
+      if (_paginationScroll.position.pixels >
+          _paginationScroll.position.maxScrollExtent * 0.8) {
+        // TODO(wuffeel): find another solution to prevent multiple event calls
+        _loadNextPage(context);
+      }
+    });
+  }
+
   void _refreshPage(BuildContext context) {
-    context.read<SpecialistOnlineBloc>().add(SpecialistOnlineFetchRequested());
+    final specialistRefreshEvent = SpecialistOnlineRefreshRequested();
+    context.read<SpecialistOnlineBloc>().add(specialistRefreshEvent);
     context.read<UpcomingSessionsBloc>().add(UpcomingSessionsFetchRequested());
+  }
+
+  void _loadNextPage(BuildContext context) {
+    context.read<SpecialistOnlineBloc>().add(SpecialistOnlineFetchRequested());
   }
 
   @override
@@ -53,6 +75,7 @@ class _HomePageView extends StatelessWidget {
           body: MintRefreshIndicator(
             onRefresh: () => _refreshPage(context),
             child: CustomScrollView(
+              controller: _paginationScroll,
               slivers: <Widget>[
                 // Makes StickyHeader unpinned if scrolled to the top of page
                 const SliverToBoxAdapter(child: SizedBox(height: 1)),
