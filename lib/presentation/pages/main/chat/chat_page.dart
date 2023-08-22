@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
 import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
@@ -40,9 +41,14 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
+        ),
+        BlocProvider(create: (context) => getIt<AudioRecordBloc>()),
+      ],
       child: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {
           if (state is ChatFilePickPermissionDenied) {
