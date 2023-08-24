@@ -44,23 +44,23 @@ import 'package:mint/presentation/pages/main/pin_code/pin_code_wrapper_page.dart
 import 'package:mint/presentation/pages/main/profile/credit_cards/profile_credit_cards_page.dart'
     as _i20;
 import 'package:mint/presentation/pages/main/profile/favorite_doctors/favorite_doctors_page.dart'
-    as _i27;
-import 'package:mint/presentation/pages/main/profile/personal_data/profile_personal_data_page.dart'
     as _i21;
-import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i22;
+import 'package:mint/presentation/pages/main/profile/personal_data/profile_personal_data_page.dart'
+    as _i22;
+import 'package:mint/presentation/pages/main/profile/profile_page.dart' as _i23;
 import 'package:mint/presentation/pages/main/sessions/sessions_page.dart'
     as _i19;
 import 'package:mint/presentation/pages/main/specialist_details/specialist_details_page.dart'
-    as _i23;
+    as _i24;
 import 'package:mint/presentation/pages/main/specialists/specialists_page.dart'
     as _i16;
 import 'package:mint/presentation/pages/main/specialists/specialists_wrapper_page.dart'
     as _i17;
 import 'package:mint/presentation/pages/main/waiting_session/session_details_page.dart'
-    as _i24;
-import 'package:mint/presentation/pages/main/waiting_session/session_details_wrapper_page.dart'
     as _i25;
-import 'package:mint/routes/app_router.dart' as _i26;
+import 'package:mint/presentation/pages/main/waiting_session/session_details_wrapper_page.dart'
+    as _i26;
+import 'package:mint/routes/app_router.dart' as _i27;
 
 abstract class $AppRouter extends _i28.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -207,11 +207,17 @@ abstract class $AppRouter extends _i28.RootStackRouter {
         child: const _i20.ProfileCreditCardsPage(),
       );
     },
+    FavoriteDoctorsRoute.name: (routeData) {
+      return _i28.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i21.FavoriteDoctorsPage(),
+      );
+    },
     ProfilePersonalDataRoute.name: (routeData) {
       final args = routeData.argsAs<ProfilePersonalDataRouteArgs>();
       return _i28.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i21.ProfilePersonalDataPage(
+        child: _i22.ProfilePersonalDataPage(
           key: args.key,
           firstName: args.firstName,
           lastName: args.lastName,
@@ -223,14 +229,14 @@ abstract class $AppRouter extends _i28.RootStackRouter {
     ProfileRoute.name: (routeData) {
       return _i28.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i22.ProfilePage(),
+        child: const _i23.ProfilePage(),
       );
     },
     SpecialistDetailsRoute.name: (routeData) {
       final args = routeData.argsAs<SpecialistDetailsRouteArgs>();
       return _i28.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i23.SpecialistDetailsPage(
+        child: _i24.SpecialistDetailsPage(
           key: args.key,
           specialistModel: args.specialistModel,
         ),
@@ -240,7 +246,7 @@ abstract class $AppRouter extends _i28.RootStackRouter {
       final args = routeData.argsAs<SessionDetailsRouteArgs>();
       return _i28.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i24.SessionDetailsPage(
+        child: _i25.SessionDetailsPage(
           key: args.key,
           bookingData: args.bookingData,
         ),
@@ -249,19 +255,13 @@ abstract class $AppRouter extends _i28.RootStackRouter {
     SessionDetailsWrapperRoute.name: (routeData) {
       return _i28.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i28.WrappedRoute(child: const _i25.SessionDetailsWrapperPage()),
+        child: _i28.WrappedRoute(child: const _i26.SessionDetailsWrapperPage()),
       );
     },
     ProfileTabRoute.name: (routeData) {
       return _i28.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i26.ProfileTabPage(),
-      );
-    },
-    FavoriteDoctorsRoute.name: (routeData) {
-      return _i28.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i27.FavoriteDoctorsPage(),
+        child: const _i27.ProfileTabPage(),
       );
     },
   };
@@ -666,7 +666,21 @@ class ProfileCreditCardsRoute extends _i28.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.ProfilePersonalDataPage]
+/// [_i21.FavoriteDoctorsPage]
+class FavoriteDoctorsRoute extends _i28.PageRouteInfo<void> {
+  const FavoriteDoctorsRoute({List<_i28.PageRouteInfo>? children})
+      : super(
+          FavoriteDoctorsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavoriteDoctorsRoute';
+
+  static const _i28.PageInfo<void> page = _i28.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i22.ProfilePersonalDataPage]
 class ProfilePersonalDataRoute
     extends _i28.PageRouteInfo<ProfilePersonalDataRouteArgs> {
   ProfilePersonalDataRoute({
@@ -720,7 +734,7 @@ class ProfilePersonalDataRouteArgs {
 }
 
 /// generated route for
-/// [_i22.ProfilePage]
+/// [_i23.ProfilePage]
 class ProfileRoute extends _i28.PageRouteInfo<void> {
   const ProfileRoute({List<_i28.PageRouteInfo>? children})
       : super(
@@ -734,7 +748,7 @@ class ProfileRoute extends _i28.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i23.SpecialistDetailsPage]
+/// [_i24.SpecialistDetailsPage]
 class SpecialistDetailsRoute
     extends _i28.PageRouteInfo<SpecialistDetailsRouteArgs> {
   SpecialistDetailsRoute({
@@ -773,7 +787,7 @@ class SpecialistDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i24.SessionDetailsPage]
+/// [_i25.SessionDetailsPage]
 class SessionDetailsRoute extends _i28.PageRouteInfo<SessionDetailsRouteArgs> {
   SessionDetailsRoute({
     _i29.Key? key,
@@ -811,7 +825,7 @@ class SessionDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i25.SessionDetailsWrapperPage]
+/// [_i26.SessionDetailsWrapperPage]
 class SessionDetailsWrapperRoute extends _i28.PageRouteInfo<void> {
   const SessionDetailsWrapperRoute({List<_i28.PageRouteInfo>? children})
       : super(
@@ -825,7 +839,7 @@ class SessionDetailsWrapperRoute extends _i28.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i26.ProfileTabPage]
+/// [_i27.ProfileTabPage]
 class ProfileTabRoute extends _i28.PageRouteInfo<void> {
   const ProfileTabRoute({List<_i28.PageRouteInfo>? children})
       : super(
@@ -834,20 +848,6 @@ class ProfileTabRoute extends _i28.PageRouteInfo<void> {
         );
 
   static const String name = 'ProfileTabRoute';
-
-  static const _i28.PageInfo<void> page = _i28.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i27.FavoriteDoctorsPage]
-class FavoriteDoctorsRoute extends _i28.PageRouteInfo<void> {
-  const FavoriteDoctorsRoute({List<_i28.PageRouteInfo>? children})
-      : super(
-          FavoriteDoctorsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'FavoriteDoctorsRoute';
 
   static const _i28.PageInfo<void> page = _i28.PageInfo<void>(name);
 }

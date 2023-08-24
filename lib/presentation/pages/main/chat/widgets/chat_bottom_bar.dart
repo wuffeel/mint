@@ -33,10 +33,6 @@ class ChatBottomBar extends StatefulWidget {
 }
 
 class _ChatBottomBarState extends State<ChatBottomBar> {
-  final _recorderController = RecorderController()
-    ..updateFrequency = const Duration(milliseconds: 150)
-    ..bitRate = 48000;
-
   late final TextEditingController _textController;
   bool _isSendButtonVisible = false;
 
@@ -62,21 +58,11 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
   }
 
   void _startRecord() {
-    context
-        .read<AudioRecordBloc>()
-        .add(AudioRecordStartRequested(_recorderController));
+    context.read<AudioRecordBloc>().add(AudioRecordStartRequested());
   }
 
   void _stopRecord() {
-    context
-        .read<AudioRecordBloc>()
-        .add(AudioRecordStopRequested(_recorderController));
-  }
-
-  @override
-  void dispose() {
-    _recorderController.dispose();
-    super.dispose();
+    context.read<AudioRecordBloc>().add(AudioRecordStopRequested());
   }
 
   @override
@@ -109,7 +95,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                         return Padding(
                           padding: EdgeInsets.only(left: 16.w),
                           child: AudioWaveforms(
-                            recorderController: _recorderController,
+                            recorderController: state.controller,
                             size: Size(constraints.maxWidth, 30.h),
                             enableGesture: true,
                             decoration: BoxDecoration(

@@ -3,14 +3,8 @@ part of 'audio_record_bloc.dart';
 @immutable
 abstract class AudioRecordEvent {}
 
-class AudioRecordStartRequested extends AudioRecordEvent {
-  AudioRecordStartRequested(this.controller);
+class AudioRecordInitializeRequested extends AudioRecordEvent {}
 
-  final RecorderController controller;
-}
+class AudioRecordStartRequested extends AudioRecordEvent {}
 
-class AudioRecordStopRequested extends AudioRecordEvent {
-  AudioRecordStopRequested(this.controller);
-
-  final RecorderController controller;
-}
+class AudioRecordStopRequested extends AudioRecordEvent {}

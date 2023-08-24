@@ -12,6 +12,11 @@ class AudioRecordServiceImpl implements AudioRecordService {
   final AudioRecordRepository _audioRecordRepository;
 
   @override
+  RecorderController initializeRecorder() {
+    return _audioRecordRepository.initializeRecorder();
+  }
+
+  @override
   Future<void> startRecord(RecorderController controller) {
     return _audioRecordRepository.startRecord(controller);
   }

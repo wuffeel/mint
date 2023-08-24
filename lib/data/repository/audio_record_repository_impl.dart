@@ -8,6 +8,13 @@ import 'package:mint/data/repository/abstract/audio_record_repository.dart';
 @Injectable(as: AudioRecordRepository)
 class AudioRecordRepositoryImpl implements AudioRecordRepository {
   @override
+  RecorderController initializeRecorder() {
+    return RecorderController()
+      ..updateFrequency = const Duration(milliseconds: 150)
+      ..bitRate = 48000;
+  }
+
+  @override
   Future<void> startRecord(RecorderController controller) async {
     final permission = await controller.checkPermission();
     if (permission) await controller.record();

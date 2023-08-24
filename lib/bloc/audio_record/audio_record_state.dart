@@ -5,14 +5,26 @@ abstract class AudioRecordState {}
 
 class AudioRecordInitial extends AudioRecordState {}
 
-class AudioRecordStartSuccess extends AudioRecordState {}
+class AudioRecordInitializeSuccess extends AudioRecordState {
+  AudioRecordInitializeSuccess(this.controller);
 
-class AudioRecordStartFailure extends AudioRecordState {}
+  final RecorderController controller;
+}
 
-class AudioRecordStopSuccess extends AudioRecordState {
-  AudioRecordStopSuccess({this.message});
+class AudioRecordStartSuccess extends AudioRecordInitializeSuccess {
+  AudioRecordStartSuccess(super.controller);
+}
+
+class AudioRecordStartFailure extends AudioRecordInitializeSuccess {
+  AudioRecordStartFailure(super.controller);
+}
+
+class AudioRecordStopSuccess extends AudioRecordInitializeSuccess {
+  AudioRecordStopSuccess(super.controller, {this.message});
 
   final types.PartialAudio? message;
 }
 
-class AudioRecordStopFailure extends AudioRecordState {}
+class AudioRecordStopFailure extends AudioRecordInitializeSuccess {
+  AudioRecordStopFailure(super.controller);
+}

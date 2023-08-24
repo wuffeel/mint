@@ -47,7 +47,10 @@ class ChatPage extends StatelessWidget {
           create: (context) =>
               getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
         ),
-        BlocProvider(create: (context) => getIt<AudioRecordBloc>()),
+        BlocProvider(
+          create: (context) =>
+              getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
+        ),
       ],
       child: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {
