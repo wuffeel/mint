@@ -50,10 +50,10 @@ class _PreviousSessionsListState extends State<PreviousSessionsList> {
 
               if (sessionsList.isEmpty &&
                   state is! PreviousSessionsFetchLoading) {
-                return SliverToBoxAdapter(
+                return SliverFillRemaining(
+                  hasScrollBody: false,
                   child: NoItemsFound(
-                    title: context.l10n.noSpecialistsFound,
-                    subTitle: context.l10n.tryToSearchWithDifferentFilter,
+                    title: context.l10n.noPreviousSessionsFound,
                   ),
                 );
               }

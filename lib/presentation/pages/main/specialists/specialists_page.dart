@@ -110,7 +110,8 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                     if (state is SpecialistCatalogueFetchSuccess) {
                       if (state.specialistList.isEmpty &&
                           state is! SpecialistCatalogueLoading) {
-                        return SliverToBoxAdapter(
+                        return SliverFillRemaining(
+                          hasScrollBody: false,
                           child: NoItemsFound(
                             title: context.l10n.noSpecialistsFound,
                             subTitle:
@@ -140,7 +141,8 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                             );
                     }
                     if (state is SpecialistCatalogueFetchFailure) {
-                      return SliverToBoxAdapter(
+                      return SliverFillRemaining(
+                        hasScrollBody: false,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: ErrorTryAgainText(
