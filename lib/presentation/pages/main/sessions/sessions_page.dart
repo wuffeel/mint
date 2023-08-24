@@ -94,7 +94,7 @@ class _SessionsViewState extends State<_SessionsView> {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
+                padding: EdgeInsets.only(top: 16.h),
                 child: PageView(
                   controller: _pageController,
                   onPageChanged: (page) => setState(
@@ -105,13 +105,21 @@ class _SessionsViewState extends State<_SessionsView> {
                       onRefresh: _onSessionsRefresh,
                       child: UpcomingSessionsList(
                         isSliver: false,
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        padding: EdgeInsets.only(
+                          bottom: 16.h,
+                          left: 16.w,
+                          right: 16.w,
+                        ),
                       ),
                     ),
                     MintRefreshIndicator(
                       onRefresh: _onSessionsRefresh,
                       child: PreviousSessionsList(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        padding: EdgeInsets.only(
+                          bottom: 16.h,
+                          left: 16.w,
+                          right: 16.w,
+                        ),
                       ),
                     ),
                   ],
