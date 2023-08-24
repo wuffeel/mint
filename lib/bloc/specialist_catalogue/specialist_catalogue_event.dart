@@ -11,7 +11,11 @@ class SpecialistCatalogueFetchRequested extends SpecialistCatalogueEvent {
   final FilterPreferences preferences;
 }
 
-class SpecialistCatalogueRefreshRequested extends SpecialistCatalogueEvent {}
+class SpecialistCatalogueRefreshRequested extends SpecialistCatalogueEvent {
+  SpecialistCatalogueRefreshRequested({this.preferences});
+
+  final FilterPreferences? preferences;
+}
 
 class SpecialistCatalogueRatingUpdated extends SpecialistCatalogueEvent {
   SpecialistCatalogueRatingUpdated(this.updatedRating);

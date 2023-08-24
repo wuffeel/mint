@@ -29,9 +29,12 @@ class SpecialistCatalogueBloc
     _subscribeToRatingChange();
     on<SpecialistCatalogueFetchRequested>(
       _onSpecialistCatalogueFetch,
-      transformer: restartable(),
+      transformer: droppable(),
     );
-    on<SpecialistCatalogueRefreshRequested>(_onSpecialistCatalogueRefresh);
+    on<SpecialistCatalogueRefreshRequested>(
+      _onSpecialistCatalogueRefresh,
+      transformer: droppable(),
+    );
     on<SpecialistCatalogueRatingUpdated>(_onRatingUpdate);
   }
 
@@ -42,6 +45,12 @@ class SpecialistCatalogueBloc
 
   final SpecialistRatingController _ratingController;
   late final StreamSubscription<SpecialistRating> _ratingSubscription;
+
+  /// Pagination end cursor
+  String? _lastVisibleSpecialistId;
+
+  /// Number of specialists to fetch
+  static const _paginationLimit = 8;
 
   @override
   Future<void> close() async {
@@ -54,7 +63,7 @@ class SpecialistCatalogueBloc
   void _subscribeToAppliedFilterChange() {
     _appliedSubscription =
         _filterController.appliedFilters.listen((appliedFilters) {
-      add(SpecialistCatalogueFetchRequested(preferences: appliedFilters));
+      add(SpecialistCatalogueRefreshRequested(preferences: appliedFilters));
     });
   }
 
@@ -68,12 +77,20 @@ class SpecialistCatalogueBloc
     SpecialistCatalogueFetchRequested event,
     Emitter<SpecialistCatalogueState> emit,
   ) async {
+    final state = this.state;
+    if (state is! SpecialistCatalogueInitial) return;
     final preferences = event.preferences;
     try {
       await _fetchCatalogue(preferences, emit);
     } catch (error) {
       log('SpecialistCatalogueFetchError: $error');
-      emit(SpecialistCatalogueFetchFailure(preferences: preferences));
+      emit(
+        SpecialistCatalogueFetchFailure(
+          specialistList: state.specialistList,
+          hasReachedEnd: state.hasReachedEnd,
+          preferences: preferences,
+        ),
+      );
     }
   }
 
@@ -83,12 +100,19 @@ class SpecialistCatalogueBloc
   ) async {
     final state = this.state;
     if (state is! SpecialistCatalogueInitial) return;
-    final preferences = state.preferences;
+    final preferences = event.preferences ?? state.preferences;
     try {
+      _refreshPaginationState(emit);
       await _fetchCatalogue(preferences, emit);
     } catch (error) {
       log('SpecialistCatalogueRefreshError: $error');
-      emit(SpecialistCatalogueFetchFailure(preferences: preferences));
+      emit(
+        SpecialistCatalogueFetchFailure(
+          specialistList: state.specialistList,
+          hasReachedEnd: state.hasReachedEnd,
+          preferences: preferences,
+        ),
+      );
     }
   }
 
@@ -97,29 +121,41 @@ class SpecialistCatalogueBloc
     Emitter<SpecialistCatalogueState> emit,
   ) async {
     final state = this.state;
-    if (state is! SpecialistCatalogueInitial) return;
+    if (state is! SpecialistCatalogueInitial || state.hasReachedEnd) return;
 
     emit(
       SpecialistCatalogueLoading(
         specialistList: state.specialistList,
+        hasReachedEnd: state.hasReachedEnd,
         preferences: preferences,
       ),
     );
 
     final specialistCatalogue = await _fetchSpecialistCatalogueUseCase(
       preferences,
+      lastSpecialistId: _lastVisibleSpecialistId,
+      limit: _paginationLimit,
     );
     final specializations = preferences.specializations;
     emit(
       SpecialistCatalogueFetchSuccess(
         specialistList: specializations != null
-            ? specialistCatalogue.sortByMostOccurrences(
-                selectedSpecializations: specializations,
-              )
-            : specialistCatalogue,
+            ? [
+                ...state.specialistList,
+                ..._getSortedByMostOccurrencesList(
+                  specialistCatalogue,
+                  specializations,
+                )
+              ]
+            : [...state.specialistList, ...specialistCatalogue],
+        hasReachedEnd: specialistCatalogue.length < _paginationLimit,
         preferences: preferences,
       ),
     );
+
+    if (specialistCatalogue.isNotEmpty) {
+      _lastVisibleSpecialistId = specialistCatalogue.last.id;
+    }
   }
 
   void _onRatingUpdate(
@@ -146,8 +182,23 @@ class SpecialistCatalogueBloc
     emit(
       SpecialistCatalogueFetchSuccess(
         specialistList: updatedSpecialists,
+        hasReachedEnd: state.hasReachedEnd,
         preferences: state.preferences,
       ),
     );
+  }
+
+  List<SpecialistModel> _getSortedByMostOccurrencesList(
+    List<SpecialistModel> specialistCatalogue,
+    List<String> selectedSpecializations,
+  ) {
+    return specialistCatalogue.sortByMostOccurrences(
+      selectedSpecializations: selectedSpecializations,
+    );
+  }
+
+  void _refreshPaginationState(Emitter<SpecialistCatalogueState> emit) {
+    _lastVisibleSpecialistId = null;
+    emit(SpecialistCatalogueInitial());
   }
 }

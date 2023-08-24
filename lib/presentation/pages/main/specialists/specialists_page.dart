@@ -8,11 +8,13 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_action_button.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_bottom_sheet.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
+import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/mint_back_button.dart';
 import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
 import 'package:mint/presentation/widgets/no_items_found.dart';
 import 'package:mint/presentation/widgets/specialist_catalogue_container.dart';
+import 'package:mint/presentation/widgets/specialist_shimmer_sliver_list.dart';
 
 import '../../../../domain/entity/filter_preferences/filter_preferences.dart';
 import '../../../widgets/specialist_card_tile.dart';
@@ -26,6 +28,25 @@ class SpecialistsPage extends StatefulWidget {
 }
 
 class _SpecialistsPageState extends State<SpecialistsPage> {
+  final _paginationScroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _paginationScroll.addListener(() {
+      if (_paginationScroll.position.pixels >
+          _paginationScroll.position.maxScrollExtent * 0.8) {
+        _loadNextPage(context);
+      }
+    });
+  }
+
+  void _loadNextPage(BuildContext context) {
+    context.read<SpecialistCatalogueBloc>().add(
+          SpecialistCatalogueFetchRequested(),
+        );
+  }
+
   void _showFilterModalBottomSheet(BuildContext context) {
     context.read<SpecialistFilterBloc>().add(SpecialistFilterGetSelected());
     showModalBottomSheet<void>(
@@ -78,42 +99,59 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
             ),
           ],
         ),
-        body: SpecialistCatalogueContainer(
-          child: BlocBuilder<SpecialistCatalogueBloc, SpecialistCatalogueState>(
-            builder: (context, state) {
-              if (state is SpecialistCatalogueLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (state is SpecialistCatalogueFetchFailure) {
-                return ErrorTryAgainText(onRefresh: _refreshCatalogue);
-              }
-              if (state is SpecialistCatalogueFetchSuccess) {
-                if (state.specialistList.isEmpty) {
-                  return NoItemsFound(
-                    title: context.l10n.noSpecialistsFound,
-                    subTitle: context.l10n.tryToSearchWithDifferentFilter,
-                  );
-                }
-                return MintRefreshIndicator(
-                  onRefresh: _refreshCatalogue,
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverList.builder(
+        body: MintRefreshIndicator(
+          onRefresh: _refreshCatalogue,
+          child: SpecialistCatalogueContainer(
+            child: CustomScrollView(
+              controller: _paginationScroll,
+              slivers: <Widget>[
+                BlocBuilder<SpecialistCatalogueBloc, SpecialistCatalogueState>(
+                  builder: (context, state) {
+                    if (state is SpecialistCatalogueFetchSuccess) {
+                      if (state.specialistList.isEmpty &&
+                          state is! SpecialistCatalogueLoading) {
+                        return SliverToBoxAdapter(
+                          child: NoItemsFound(
+                            title: context.l10n.noSpecialistsFound,
+                            subTitle:
+                                context.l10n.tryToSearchWithDifferentFilter,
+                          ),
+                        );
+                      }
+                      return SliverList.builder(
                         itemCount: state.specialistList.length,
                         itemBuilder: (context, index) {
                           return SpecialistCardTile(
                             specialistModel: state.specialistList[index],
                           );
                         },
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
+                      );
+                    }
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                  },
+                ),
+                BlocBuilder<SpecialistCatalogueBloc, SpecialistCatalogueState>(
+                  builder: (context, state) {
+                    if (state is SpecialistCatalogueLoading) {
+                      return state.specialistList.isEmpty
+                          ? const SpecialistShimmerSliverList(itemCount: 8)
+                          : const SliverToBoxAdapter(
+                              child: Center(child: LoadingIndicator()),
+                            );
+                    }
+                    if (state is SpecialistCatalogueFetchFailure) {
+                      return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: ErrorTryAgainText(onRefresh: _refreshCatalogue),
+                        ),
+                      );
+                    }
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
