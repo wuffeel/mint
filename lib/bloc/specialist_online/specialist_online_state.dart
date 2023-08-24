@@ -14,6 +14,8 @@ class SpecialistOnlineFetchSuccess extends SpecialistOnlineState {
   });
 
   final List<SpecialistModel> specialistList;
+
+  /// Determines whether all specialists have been fetched
   final bool hasReachedEnd;
 }
 
