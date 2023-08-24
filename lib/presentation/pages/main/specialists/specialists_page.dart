@@ -143,7 +143,9 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                       return SliverToBoxAdapter(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.h),
-                          child: ErrorTryAgainText(onRefresh: _refreshCatalogue),
+                          child: ErrorTryAgainText(
+                            onRefresh: _refreshCatalogue,
+                          ),
                         ),
                       );
                     }
