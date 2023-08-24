@@ -8,6 +8,14 @@ class FetchPreviousSessionsUseCase {
 
   final BookingService _service;
 
-  Future<List<BookingData>> call(String userId) =>
-      _service.getPreviousSessions(userId);
+  Future<List<BookingData>> call(
+    String userId, {
+    String? lastBookingId,
+    int? limit,
+  }) =>
+      _service.getPreviousSessions(
+        userId,
+        lastBookingId: lastBookingId,
+        limit: limit,
+      );
 }

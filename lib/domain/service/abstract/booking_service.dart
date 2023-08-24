@@ -12,7 +12,11 @@ abstract class BookingService {
 
   Future<List<BookingData>> getUpcomingSessions(String userId);
 
-  Future<List<BookingData>> getPreviousSessions(String userId);
+  Future<List<BookingData>> getPreviousSessions(
+    String userId, {
+    String? lastBookingId,
+    int? limit,
+  });
 
   Future<BookingData?> getSession(String bookingId);
 }
