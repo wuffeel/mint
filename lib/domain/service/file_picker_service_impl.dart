@@ -12,7 +12,7 @@ import 'package:uuid/uuid.dart';
 
 @Injectable(as: FilePickerService)
 class FilePickerServiceImpl implements FilePickerService {
-  /// Handles file load.
+  /// Handles file load. Returns path to the file.
   ///
   /// Looks for local file existence by given [localFileId]. If it do not exist
   /// and [fileUri] is a hyperlink, starts the local-storing process. The file
@@ -22,7 +22,7 @@ class FilePickerServiceImpl implements FilePickerService {
   /// [onLoadingCallback] and [onLoadedCallback] used to represent the file
   /// local load process
   @override
-  Future<void> loadFile(
+  Future<String> loadFile(
     String localFileId,
     String fileUri, {
     void Function()? onLoadingCallback,
@@ -48,6 +48,8 @@ class FilePickerServiceImpl implements FilePickerService {
         if (onLoaded != null) onLoaded();
       }
     }
+
+    return localPath;
   }
 
   /// Looks for file at application document directory, which will be opened if
@@ -115,5 +117,28 @@ class FilePickerServiceImpl implements FilePickerService {
       return message;
     }
     return null;
+  }
+
+  @override
+  Future<types.PartialAudio> saveAudio(types.PartialAudio audioMessage) async {
+    final uuid = const Uuid().v4();
+    final uri = Uri.parse(audioMessage.uri);
+    final file = File.fromUri(uri);
+    final bytes = await file.readAsBytes();
+
+    final documentsDir = (await getApplicationDocumentsDirectory()).path;
+    final localPath = '$documentsDir/$uuid';
+    final localFile = File(localPath);
+
+    await localFile.writeAsBytes(bytes);
+
+    final message = types.PartialAudio(
+      duration: audioMessage.duration,
+      name: audioMessage.name,
+      size: audioMessage.size,
+      uri: uri.path,
+      metadata: {'uuid': uuid},
+    );
+    return message;
   }
 }

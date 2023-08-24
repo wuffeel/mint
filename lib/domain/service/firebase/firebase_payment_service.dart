@@ -22,6 +22,15 @@ class FirebasePaymentService implements PaymentService {
   final Factory<TransactionDataDto, TransactionData> _transactionDataToDto;
 
   @override
+  Future<List<CreditCardModel>> getPaymentCards(String userId) async {
+    final paymentCards = await _paymentRepository.getPaymentCards(userId);
+
+    if (paymentCards.isEmpty) return <CreditCardModel>[];
+
+    return paymentCards.map(_creditCardModelFromDto.create).toList();
+  }
+
+  @override
   Future<CreditCardModel> savePaymentMethod(
     String userId, {
     required bool isSaveForFuture,
@@ -34,12 +43,8 @@ class FirebasePaymentService implements PaymentService {
   }
 
   @override
-  Future<List<CreditCardModel>> getPaymentCards(String userId) async {
-    final paymentCards = await _paymentRepository.getPaymentCards(userId);
-
-    if (paymentCards.isEmpty) return <CreditCardModel>[];
-
-    return paymentCards.map(_creditCardModelFromDto.create).toList();
+  Future<void> deletePaymentMethod(String paymentMethodId) {
+    return _paymentRepository.deletePaymentMethod(paymentMethodId);
   }
 
   @override

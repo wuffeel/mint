@@ -13,7 +13,10 @@ import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class CreditCardBottomSheet extends StatelessWidget {
-  const CreditCardBottomSheet({super.key});
+  const CreditCardBottomSheet({super.key, this.hasSaveCard = true});
+
+  /// Defines if 'Save card for future use' button should be visible
+  final bool hasSaveCard;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +24,15 @@ class CreditCardBottomSheet extends StatelessWidget {
       listener: (context, state) {
         if (state is CreditCardSaveSuccess) context.router.pop();
       },
-      child: const _CreditCardBottomSheetView(),
+      child: _CreditCardBottomSheetView(hasSaveCard: hasSaveCard),
     );
   }
 }
 
 class _CreditCardBottomSheetView extends StatefulWidget {
-  const _CreditCardBottomSheetView();
+  const _CreditCardBottomSheetView({required this.hasSaveCard});
+
+  final bool hasSaveCard;
 
   @override
   State<_CreditCardBottomSheetView> createState() =>
@@ -43,9 +48,10 @@ class _CreditCardBottomSheetViewState
   bool get isButtonEnabled => _creditCardController.complete;
 
   void _saveCard() {
+    final saveCard = !widget.hasSaveCard || _isSaveCard;
     context
         .read<CreditCardBloc>()
-        .add(CreditCardSaveRequested(isSaveForFuture: _isSaveCard));
+        .add(CreditCardSaveRequested(isSaveForFuture: saveCard));
   }
 
   @override
@@ -92,44 +98,15 @@ class _CreditCardBottomSheetViewState
                         ),
                       ],
                       SizedBox(height: 16.h),
-                      Row(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.r),
-                            child: ColoredBox(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? MintColors.fillSecondaryLight
-                                      .withOpacity(0.15)
-                                  : MintColors.greyDark,
-                              child: SizedBox(
-                                width: 24.w,
-                                height: 24.h,
-                                child: Transform.scale(
-                                  scale: 1.4,
-                                  child: Checkbox(
-                                    value: _isSaveCard,
-                                    onChanged: (value) => setState(() {
-                                      if (value != null) _isSaveCard = value;
-                                    }),
-                                    activeColor:
-                                        Theme.of(context).colorScheme.primary,
-                                    side: BorderSide.none,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            l10n.saveCardData,
-                            style: MintTextStyles.body1.copyWith(
-                              color:
-                                  Theme.of(context).hintColor.withOpacity(0.6),
-                            ),
-                          ),
-                        ],
-                      ),
+                      if (widget.hasSaveCard)
+                        _SaveCardButton(
+                          isSaveCardState: _isSaveCard,
+                          onSaveCardStateChange: ({bool? value}) {
+                            setState(() {
+                              if (value != null) _isSaveCard = value;
+                            });
+                          },
+                        ),
                       const Spacer(),
                       SizedBox(height: 24.h),
                       if (state is CreditCardSaveLoading)
@@ -147,6 +124,52 @@ class _CreditCardBottomSheetViewState
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SaveCardButton extends StatelessWidget {
+  const _SaveCardButton({
+    required this.isSaveCardState,
+    required this.onSaveCardStateChange,
+  });
+
+  final bool isSaveCardState;
+  final void Function({bool? value}) onSaveCardStateChange;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.r),
+          child: ColoredBox(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? MintColors.fillSecondaryLight.withOpacity(0.15)
+                : MintColors.greyDark,
+            child: SizedBox(
+              width: 24.w,
+              height: 24.h,
+              child: Transform.scale(
+                scale: 1.4,
+                child: Checkbox(
+                  value: isSaveCardState,
+                  onChanged: (value) => onSaveCardStateChange(value: value),
+                  activeColor: Theme.of(context).colorScheme.primary,
+                  side: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 8.w),
+        Text(
+          context.l10n.saveCardData,
+          style: MintTextStyles.body1.copyWith(
+            color: Theme.of(context).hintColor.withOpacity(0.6),
+          ),
+        ),
+      ],
     );
   }
 }

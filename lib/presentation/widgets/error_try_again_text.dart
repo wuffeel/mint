@@ -5,10 +5,16 @@ import 'package:mint/presentation/widgets/refresh_button.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class ErrorTryAgainText extends StatelessWidget {
-  const ErrorTryAgainText({super.key, this.title, required this.onRefresh});
+  const ErrorTryAgainText({
+    super.key,
+    this.title,
+    required this.onRefresh,
+    this.refreshButtonColor,
+  });
 
   final String? title;
   final VoidCallback? onRefresh;
+  final Color? refreshButtonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,7 @@ class ErrorTryAgainText extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(width: 8.w),
-              RefreshButton(size: 24.r),
+              RefreshButton(size: 24.r, color: refreshButtonColor),
             ],
           ),
         )

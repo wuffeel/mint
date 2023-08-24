@@ -4,9 +4,13 @@ import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/user_model_dto/user_model_dto.dart';
 import 'package:mint/data/repository/abstract/user_repository.dart';
 
+import '../../../assembly/factory.dart';
+
 @Injectable(as: UserRepository)
 class FirebaseUserRepository implements UserRepository {
-  FirebaseUserRepository();
+  FirebaseUserRepository(this._modifiedUserDtoToMap);
+
+  final Factory<Map<String, dynamic>, UserModelDto> _modifiedUserDtoToMap;
 
   static const _userCollection = 'users';
 
@@ -27,11 +31,9 @@ class FirebaseUserRepository implements UserRepository {
     final userData = userDoc.data() as Map<String, dynamic>?;
 
     if (userData == null) {
-      await _addNewUser(user);
       return UserModelDto(id: user.uid, phoneNumber: user.phoneNumber);
     }
-    userData['id'] = user.uid;
-    return UserModelDto.fromJson(userData);
+    return UserModelDto.fromJsonWithId(userData, user.uid);
   }
 
   @override
@@ -44,17 +46,17 @@ class FirebaseUserRepository implements UserRepository {
     await _firebaseAuth.signOut();
   }
 
-  Future<void> _addNewUser(User user) async {
-    await _userCollectionRef.doc(user.uid).set({
-      'phoneNumber': user.phoneNumber,
-    });
-  }
-
   @override
   Future<UserModelDto?> getUserData(String userId) async {
     final userSnapshot = await _userCollectionRef.doc(userId).get();
     final user = userSnapshot.data() as Map<String, dynamic>?;
     if (user == null) return null;
-    return UserModelDto.fromJson(user);
+    return UserModelDto.fromJsonWithId(user, userSnapshot.id);
+  }
+
+  @override
+  Future<void> updateUserData(UserModelDto userDataDto) {
+    final userDataMap = _modifiedUserDtoToMap.create(userDataDto);
+    return _userCollectionRef.doc(userDataDto.id).update(userDataMap);
   }
 }

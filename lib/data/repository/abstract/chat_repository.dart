@@ -7,8 +7,6 @@ abstract class ChatRepository {
 
   Future<void> sendMessage(dynamic partialMessage, String roomId);
 
-  Future<void> updateMessage(dynamic message, String roomId);
-
   Future<void> deleteMessage(String roomId, String messageId);
 
   Future<void> onPreviewDataFetched(
@@ -16,4 +14,6 @@ abstract class ChatRepository {
     types.PreviewData previewData,
     String roomId,
   );
+
+  Future<Map<String, dynamic>?> fetchRoom(String roomId);
 }

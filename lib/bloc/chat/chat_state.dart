@@ -34,10 +34,6 @@ class ChatSendMessageFailure extends ChatFetchMessagesSuccess {
   ChatSendMessageFailure(super.messages, super.roomId);
 }
 
-class ChatUpdateMessageFailure extends ChatFetchMessagesSuccess {
-  ChatUpdateMessageFailure(super.messages, super.roomId);
-}
-
 class ChatDeleteMessageFailure extends ChatFetchMessagesSuccess {
   ChatDeleteMessageFailure(super.messages, super.roomId);
 }
@@ -46,6 +42,14 @@ class ChatPreviewDataApplyFailure extends ChatFetchMessagesSuccess {
   ChatPreviewDataApplyFailure(super.messages, super.roomId);
 }
 
+class ChatFilePickPermissionDenied extends ChatFetchMessagesSuccess {
+  ChatFilePickPermissionDenied(super.messages, super.roomId);
+}
+
 class ChatFileLoadFailure extends ChatFetchMessagesSuccess {
   ChatFileLoadFailure(super.messages, super.roomId);
+}
+
+class ChatSaveAudioFailure extends ChatFetchMessagesSuccess {
+  ChatSaveAudioFailure(super.messages, super.roomId);
 }

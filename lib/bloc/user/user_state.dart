@@ -9,14 +9,28 @@ class UserUnauthenticated extends UserState {}
 
 class UserAuthenticated extends UserState {}
 
+class UserLogOutSuccess extends UserState {}
+
+class UserLogOutFailure extends UserState {}
+
+class UserDataUpdateFailure extends UserState {}
+
+class UserFetchFailure extends UserState {}
+
 class UserFetchSuccess extends UserState {
   UserFetchSuccess(this.user);
 
   final UserModel user;
 }
 
-class UserFetchFailure extends UserState {}
+class UserDateUnselectedFailure extends UserFetchSuccess {
+  UserDateUnselectedFailure(super.user);
+}
 
-class UserLogOutSuccess extends UserState {}
+class UserDataUpdateLoading extends UserFetchSuccess {
+  UserDataUpdateLoading(super.user);
+}
 
-class UserLogOutFailure extends UserState {}
+class UserDataUpdateSuccess extends UserFetchSuccess {
+  UserDataUpdateSuccess(super.user);
+}

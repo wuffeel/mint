@@ -11,22 +11,47 @@ class FirebaseChatRepository implements ChatRepository {
   FirebaseChatRepository(this._chatUserFromMap);
 
   final _chatCoreInstance = FirebaseChatCore.instance;
+  final _firestoreInstance = FirebaseFirestore.instance;
+
+  static const _roomCollection = 'chat_rooms';
+  static const _chatUsersCollection = 'chat_users';
 
   final Factory<types.User, Map<String, dynamic>> _chatUserFromMap;
 
+  CollectionReference get _roomCollectionRef =>
+      _firestoreInstance.collection(_roomCollection);
+
+  CollectionReference get _chatUsersCollectionRef =>
+      _firestoreInstance.collection(_chatUsersCollection);
+
   @override
   Future<types.Room> createRoom(String userId, String specialistId) async {
-    final specialist = await FirebaseFirestore.instance
-        .collection('chat_users')
-        .doc(specialistId)
-        .get();
-    final data = specialist.data();
+    final specialist = await _chatUsersCollectionRef.doc(specialistId).get();
+    final data = specialist.data() as Map<String, dynamic>?;
+
     if (data == null) {
       return const types.Room(id: '', type: types.RoomType.direct, users: []);
     }
+
     data['id'] = specialist.id;
     final user = _chatUserFromMap.create(data);
     return _chatCoreInstance.createRoom(user);
+  }
+
+  @override
+  Future<Map<String, dynamic>?> fetchRoom(String roomId) async {
+    final roomSnap = await _roomCollectionRef.doc(roomId).get();
+    final data = roomSnap.data() as Map<String, dynamic>?;
+    if (data == null) return null;
+
+    final userIds = List<String>.from(data['userIds'] as List<dynamic>);
+
+    final users = await _getUsersFromIds(userIds);
+
+    data['id'] = roomSnap.id;
+    data['users'] = users;
+
+    return data;
   }
 
   @override
@@ -40,11 +65,6 @@ class FirebaseChatRepository implements ChatRepository {
   }
 
   @override
-  Future<void> updateMessage(dynamic message, String roomId) async {
-    return _chatCoreInstance.updateMessage(message as types.Message, roomId);
-  }
-
-  @override
   Future<void> deleteMessage(String roomId, String messageId) async {
     return _chatCoreInstance.deleteMessage(roomId, messageId);
   }
@@ -55,6 +75,25 @@ class FirebaseChatRepository implements ChatRepository {
     types.PreviewData previewData,
     String roomId,
   ) async {
-    return _chatCoreInstance.updateMessage(message, roomId);
+    return _chatCoreInstance.updateMessage(
+      message.copyWith(previewData: previewData),
+      roomId,
+    );
+  }
+
+  // Used here instead of factory to prevent circular dependency.
+  // The problem: ChatUserFromMap needs to use List<Users>, which are
+  // fetched with ChatService. ChatService dependent on ChatUserFromMap to
+  // transform Map data to types.Room, and ChatUserFromMap is dependent on
+  // ChatService to retrieve users info => injector throws Stack Overflow.
+  Future<List<types.User>> _getUsersFromIds(List<String> userIds) async {
+    final userFutures = userIds.map((userId) async {
+      final userSnap = await _chatUsersCollectionRef.doc(userId).get();
+      final data = userSnap.data() as Map<String, dynamic>?;
+      if (data == null) return null;
+      data['id'] = userSnap.id;
+      return _chatUserFromMap.create(data);
+    });
+    return (await Future.wait(userFutures)).whereType<types.User>().toList();
   }
 }

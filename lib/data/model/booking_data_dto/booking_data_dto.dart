@@ -27,6 +27,9 @@ class BookingDataDto with _$BookingDataDto {
   factory BookingDataDto.fromJson(Map<String, dynamic> json) =>
       _$BookingDataDtoFromJson(json);
 
+  factory BookingDataDto.fromJsonWithId(Map<String, dynamic> json, String id) =>
+      _$BookingDataDtoFromJson(<String, dynamic>{'id': id, ...json});
+
   Map<String, dynamic> toJsonWithoutId() => toJson()..remove('id');
 }
 

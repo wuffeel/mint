@@ -45,7 +45,11 @@ class _HomePageView extends StatelessWidget {
         final photo = user?.photoUrl;
         final themeDark = Theme.of(context).brightness == Brightness.dark;
         return Scaffold(
-          appBar: HomeAppBar(photo: photo, nameTag: user?.nameTag),
+          appBar: HomeAppBar(
+            photo: photo,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+          ),
           body: MintRefreshIndicator(
             onRefresh: () => _refreshPage(context),
             child: CustomScrollView(

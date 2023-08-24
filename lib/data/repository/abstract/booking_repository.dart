@@ -13,4 +13,6 @@ abstract class BookingRepository {
   Future<List<BookingDataDto>> getUpcomingSessions(String userId);
 
   Future<List<BookingDataDto>> getPreviousSessions(String userId);
+
+  Future<BookingDataDto?> getSession(String bookingId);
 }

@@ -12,14 +12,31 @@ import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
+import '../../../../bloc/notifications/notifications_bloc.dart';
+import '../../../../utils/notification_utils.dart';
+
 @RoutePage()
 class PinCodePage extends StatelessWidget {
   const PinCodePage({super.key});
 
-  void _pinCodeListener(BuildContext context, PinCodeState state) {
+  /// Navigates user to appropriate page on entering a pin-code.
+  ///
+  /// If user pressed notification that navigates to certain page, user will
+  /// be navigated only after entering a pin-code. Otherwise, navigates normally
+  /// to application's home-screen.
+  void _pinCodeListener(
+    BuildContext context,
+    PinCodeState state,
+    NotificationsState notificationsState,
+  ) {
     if (state is PinCodeSignUpConfirmSuccess ||
         state is PinCodeSignInConfirmSuccess) {
-      context.router.replace(const NavigationRoute());
+      if (!NotificationUtils.navigateByNotification(
+        context,
+        notificationsState,
+      )) {
+        context.router.replace(const NavigationRoute());
+      }
     } else if (state is PinCodeNewConfirmSuccess) {
       context.router.navigate(const NavigationRoute());
     }
@@ -27,9 +44,14 @@ class PinCodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PinCodeBloc, PinCodeState>(
-      listener: _pinCodeListener,
-      child: const _PinCodeView(),
+    return BlocBuilder<NotificationsBloc, NotificationsState>(
+      builder: (context, notificationsState) {
+        return BlocListener<PinCodeBloc, PinCodeState>(
+          listener: (context, state) =>
+              _pinCodeListener(context, state, notificationsState),
+          child: const _PinCodeView(),
+        );
+      },
     );
   }
 }
@@ -126,31 +148,37 @@ class _PinCodeViewState extends State<_PinCodeView> {
         width: double.infinity,
         child: BlocBuilder<PinCodeBloc, PinCodeState>(
           builder: (context, state) {
-            return Column(
+            return Stack(
+              alignment: Alignment.center,
               children: <Widget>[
-                SizedBox(height: 165.h),
-                Text(
-                  _getPageTitle(state),
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    height: 1.3,
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      _getPageTitle(state),
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
+                        height: 1.3,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    PinCodeWidget(length: 4, onCompleted: _onPinComplete),
+                  ],
                 ),
-                SizedBox(height: 8.h),
-                PinCodeWidget(length: 4, onCompleted: _onPinComplete),
-                const Spacer(),
                 if (_isBottomButtonShown(state))
-                  InkWell(
-                    onTap: () => _getBottomButtonCallback(state),
-                    child: Text(
-                      _getBottomButtonTitle(state),
-                      style: MintTextStyles.buttonsHuge.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                  Positioned(
+                    bottom: 37.h,
+                    child: InkWell(
+                      onTap: () => _getBottomButtonCallback(state),
+                      child: Text(
+                        _getBottomButtonTitle(state),
+                        style: MintTextStyles.buttonsHuge.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
                   ),
-                SizedBox(height: 37.h),
               ],
             );
           },

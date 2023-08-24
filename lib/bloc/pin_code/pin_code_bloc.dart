@@ -93,7 +93,11 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
 
   /// Check if previous pin code equal to confirmation pin code
   ///
-  /// If equal, update user's pin code in database
+  /// If equal:
+  ///
+  /// - if sign in => emit sign confirm state
+  /// - if sign up or pin code change => update user's pin code in database
+  /// and emit according success state
   ///
   /// If unequal, emit mismatch state
   Future<void> _onPinCodeConfirmRequest(

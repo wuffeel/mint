@@ -145,5 +145,36 @@
   "message": "Повідомлення",
   "bookAgain": "Забронювати знову",
   "attachImage": "Прикріпити зображення",
-  "attachFile": "Прикріпити файл"
+  "attachFile": "Прикріпити файл",
+  "today": "Сьогодні",
+  "permissionDeniedTitle": "У дозволі відмовлено",
+  "permissionDeniedContent": "Дозвіл не надано. Перейдіть до налаштувань і ввімкніть дозвіл",
+  "personalData": "Особисті дані",
+  "myCreditCards": "Мої кредитні картки",
+  "favoriteDoctors": "Обрані лікарі",
+  "notifications": "Сповіщення",
+  "patient": "Пацієнт",
+  "save": "Зберегти",
+  "firstName": "Ім'я",
+  "lastName": "Прізвище",
+  "dateOfBirth": "Дата народження",
+  "pleaseEnterFirstName": "Будь ласка, введіть ім'я",
+  "pleaseEnterLastName": "Будь ласка, введіть прізвище",
+  "pleaseEnterDateOfBirth": "Будь ласка, введіть дату народження",
+  "noPaymentCards": "Платіжні картки відсутні. Додайте картку для комфортної роботи",
+  "couldNotLoadCreditCard": "Не вдалося завантажити список кредитних карток",
+  "deleteCreditCard": "Видалити кредитну картку",
+  "doYouWantToDeleteCreditCard": "Бажаєте видалити кредитну картку",
+  "couldNotDeleteCreditCard": "Не вдалося видалити кредитну картку. Спробуйте знову",
+  "noFavoriteSpecialistsYet": "Улюблених спеціалістів ще немає",
+  "removeFavoriteTitle": "Видалити з улюблених",
+  "removeFavoriteContent": "Бажаєете видалити {specialistName} з улюблених",
+  "@removeFavoriteContent": {
+    "placeholders": {
+      "specialistName": {
+        "type": "String",
+        "example": "Олександр"
+      }
+    }
+  }
 }

@@ -10,3 +10,9 @@ class CreditCardSaveRequested extends CreditCardEvent {
 
   final bool isSaveForFuture;
 }
+
+class CreditCardDeleteRequested extends CreditCardEvent {
+  CreditCardDeleteRequested(this.paymentMethodId);
+
+  final String paymentMethodId;
+}

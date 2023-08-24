@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/checkout/widgets/mastercard_container.dart';
+import 'package:mint/presentation/widgets/undefined_credit_card_icon.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint/utils/credit_card_utils.dart';
 import 'package:mint/utils/extended_widget_list.dart';
 
 import '../../../../../gen/assets.gen.dart';
@@ -12,7 +14,8 @@ class CreditCardContainer extends StatelessWidget {
   const CreditCardContainer({
     super.key,
     required this.isSelected,
-    required this.cardLast4, required this.brand,
+    required this.cardLast4,
+    required this.brand,
   });
 
   final String cardLast4;
@@ -25,23 +28,10 @@ class CreditCardContainer extends StatelessWidget {
         : MintColors.greyLight.withOpacity(0.3);
   }
 
-  SvgGenImage? _getCardIconByNumber(String brand) {
-    switch (brand.toLowerCase()) {
-      case 'amex':
-      case 'americanexpress':
-        return Assets.svg.americanExpressIcon;
-      case 'visa':
-        return Assets.svg.visaIcon;
-      case 'mastercard':
-        return Assets.svg.mastercardIcon;
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final cardIcon = _getCardIconByNumber(brand);
+    final cardIcon = CreditCardUtils.getCardIconByBrand(brand);
     return Container(
       width: 127.w,
       decoration: BoxDecoration(
@@ -73,14 +63,10 @@ class CreditCardContainer extends StatelessWidget {
               ),
             )
           else
-            Assets.svg.questionMark.svg(
+            UndefinedCreditCardIcon(
               width: 17.w,
               height: 17.h,
-              fit: BoxFit.scaleDown,
-              colorFilter: ColorFilter.mode(
-                isSelected ? Colors.white : _getUnselectedColor(context),
-                BlendMode.srcIn,
-              ),
+              color: isSelected ? Colors.white : _getUnselectedColor(context),
             ),
           const Spacer(),
           Column(

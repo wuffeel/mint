@@ -82,7 +82,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       );
       final booking = await _bookingBookUseCase(bookingData);
       // Updating bookings stream here to get actual upcoming sessions info
-      _bookingController.addToNewBookingStream(bookingData);
+      _bookingController.addToNewBookingStream(booking);
       emit(BookingBookSuccess(booking));
     } catch (error) {
       log('BookingBookFailure: $error');

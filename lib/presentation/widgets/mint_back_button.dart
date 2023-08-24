@@ -6,9 +6,10 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 
 class MintBackButton extends StatelessWidget {
-  const MintBackButton({super.key, this.onPressed});
+  const MintBackButton({super.key, this.onPressed, this.color});
 
   final VoidCallback? onPressed;
+  final Color? color;
 
   SvgGenImage _getIcon(BuildContext context) {
     switch (Theme.of(context).platform) {
@@ -36,12 +37,15 @@ class MintBackButton extends StatelessWidget {
             alignment: Alignment.center,
             child: _getIcon(context).svg(
               colorFilter: ColorFilter.mode(
-                Theme.of(context).iconTheme.color ?? Colors.white,
+                color ?? Theme.of(context).iconTheme.color ?? Colors.white,
                 BlendMode.srcIn,
               ),
             ),
           ),
-          Text(context.l10n.back, style: MintTextStyles.body),
+          Text(
+            context.l10n.back,
+            style: MintTextStyles.body.copyWith(color: color),
+          ),
         ],
       ),
     );

@@ -4,17 +4,32 @@ import 'package:mint/data/repository/abstract/chat_repository.dart';
 import 'package:mint/domain/service/abstract/chat_service.dart';
 import 'package:mint/domain/service/abstract/storage_service.dart';
 
+import '../../../assembly/factory.dart';
+
 @Injectable(as: ChatService)
 class FirebaseChatService implements ChatService {
-  FirebaseChatService(this._chatRepository, this._storageService);
+  FirebaseChatService(
+    this._chatRepository,
+    this._storageService,
+    this._chatRoomFromMap,
+  );
 
   final ChatRepository _chatRepository;
 
   final StorageService _storageService;
 
+  final Factory<types.Room?, Map<String, dynamic>> _chatRoomFromMap;
+
   @override
   Future<types.Room> createRoom(String userId, String specialistId) {
     return _chatRepository.createRoom(userId, specialistId);
+  }
+
+  @override
+  Future<types.Room?> fetchRoom(String roomId) async {
+    final room = await _chatRepository.fetchRoom(roomId);
+    if (room == null) return null;
+    return _chatRoomFromMap.create(room);
   }
 
   @override
@@ -35,31 +50,24 @@ class FirebaseChatService implements ChatService {
     } else if (partialMessage is types.PartialFile) {
       return _handlePartialFileSend(partialMessage, roomId);
     } else if (partialMessage is types.PartialAudio) {
-      // TODO(wuffeel): handle audio storing
-      throw UnimplementedError();
+      return _handlePartialAudioSend(partialMessage, roomId);
     } else {
       return _chatRepository.sendMessage(partialMessage, roomId);
     }
   }
 
   @override
-  Future<void> updateMessage(dynamic message, String roomId) {
-    return _chatRepository.updateMessage(message, roomId);
-  }
-
-  @override
-  Future<void> deleteMessage(String roomId, dynamic message) {
+  Future<void> deleteMessage(String roomId, types.Message message) {
     if (message is types.ImageMessage) {
       _storageService.deleteStorageFile(message.uri);
     } else if (message is types.FileMessage) {
       _storageService.deleteStorageFile(message.uri);
     } else if (message is types.AudioMessage) {
-      // TODO(wuffeel): handle audio delete from storage
-      throw UnimplementedError();
+      _storageService.deleteStorageFile(message.uri);
     }
     return _chatRepository.deleteMessage(
       roomId,
-      (message as types.Message).id,
+      message.id,
     );
   }
 
@@ -109,6 +117,30 @@ class FirebaseChatService implements ChatService {
         await _storageService.uploadChatFile(filePath, fileId, roomId);
 
     final message = types.PartialFile(
+      name: partialMessage.name,
+      size: partialMessage.size,
+      uri: fileUrl,
+      metadata: partialMessage.metadata,
+    );
+
+    return _chatRepository.sendMessage(message, roomId);
+  }
+
+  /// Handles message send and stores the file in FirebaseStorage
+  Future<void> _handlePartialAudioSend(
+    types.PartialAudio partialMessage,
+    String roomId,
+  ) async {
+    final filePath = partialMessage.uri;
+
+    // File is stored with uuid as it's name
+    final uuid = partialMessage.metadata?['uuid'] as String?;
+    final fileId = uuid ?? partialMessage.name;
+    final fileUrl =
+        await _storageService.uploadChatFile(filePath, fileId, roomId);
+
+    final message = types.PartialAudio(
+      duration: partialMessage.duration,
       name: partialMessage.name,
       size: partialMessage.size,
       uri: fileUrl,

@@ -7,6 +7,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  audio_waveforms: ^1.0.4
   auto_route: ^7.5.0
   bloc: ^8.1.2
   bloc_concurrency: ^0.2.2
@@ -16,6 +17,7 @@ dependencies:
   file_picker: ^5.3.3
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
+  firebase_messaging: ^14.6.5
   firebase_storage: ^11.2.4
   flutter:
     sdk: flutter
@@ -23,15 +25,20 @@ dependencies:
   flutter_chat_types: ^3.6.2
   flutter_chat_ui: ^1.6.9
   flutter_dotenv: ^5.1.0
-  flutter_firebase_chat_core: ^1.6.7
-  flutter_libphonenumber: ^2.1.4
+  flutter_firebase_chat_core:
+    git:
+      url: https://github.com/wuffeel/flutter_firebase_chat_core.git
+      ref: main
+  flutter_local_notifications: ^15.1.0+1
   flutter_localizations:
     sdk: flutter
+  flutter_multi_formatter: ^2.11.7
   flutter_rating_bar:
     git:
       url: https://github.com/wuffeel/flutter_rating_bar.git
       ref: master
   flutter_screenutil: ^5.8.4
+  flutter_slidable: ^3.0.0
   flutter_sticky_header: ^0.6.5
   flutter_stripe: ^9.3.0
   flutter_svg: ^2.0.7

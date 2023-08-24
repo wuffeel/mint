@@ -6,19 +6,19 @@ import 'package:mint/l10n/l10n.dart';
 class MintAlertDialog extends StatelessWidget {
   const MintAlertDialog({
     super.key,
-    required this.actionTitle,
     this.isDestructiveAction = true,
     this.hasCancelButton = true,
     this.title,
     this.content,
+    this.actionTitle,
     this.onAction,
     this.cancelButtonTitle,
   });
 
-  final String actionTitle;
   final bool isDestructiveAction;
   final Widget? title;
   final Widget? content;
+  final String? actionTitle;
   final VoidCallback? onAction;
   final bool hasCancelButton;
   final String? cancelButtonTitle;
@@ -31,28 +31,31 @@ class MintAlertDialog extends StatelessWidget {
             title: title,
             content: content,
             actions: [
-              if (hasCancelButton) TextButton(
-                onPressed: () => context.router.pop(false),
-                child: Text(cancelButtonTitle ?? l10n.cancel),
-              ),
-              TextButton(
-                onPressed: onAction,
-                child: Text(actionTitle),
-              ),
+              if (hasCancelButton)
+                TextButton(
+                  onPressed: () => context.router.pop(false),
+                  child: Text(cancelButtonTitle ?? l10n.cancel),
+                ),
+              if (onAction != null)
+                TextButton(
+                  onPressed: onAction,
+                  child: Text(actionTitle ?? ''),
+                ),
             ],
           )
         : CupertinoAlertDialog(
             title: title,
             content: content,
             actions: [
-              if (hasCancelButton) CupertinoDialogAction(
-                onPressed: () => context.router.pop(false),
-                child: Text(cancelButtonTitle ?? l10n.cancel),
-              ),
-              CupertinoDialogAction(
+              if (hasCancelButton)
+                CupertinoDialogAction(
+                  onPressed: () => context.router.pop(false),
+                  child: Text(cancelButtonTitle ?? l10n.cancel),
+                ),
+              if (onAction != null) CupertinoDialogAction(
                 isDestructiveAction: isDestructiveAction,
                 onPressed: onAction,
-                child: Text(actionTitle),
+                child: Text(actionTitle ?? ''),
               ),
             ],
           );

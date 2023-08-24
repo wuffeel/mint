@@ -47,4 +47,13 @@ class FirebaseStorageRepository implements StorageRepository {
   Future<void> deleteStorageFile(String fileUrl) {
     return _storage.refFromURL(fileUrl).delete();
   }
+
+  @override
+  Future<String> uploadUserPhoto(String photoPath, String userId) async {
+    final file = File(photoPath);
+    final extension = file.path.split('.').last;
+    final storagePath = 'users/$userId.$extension';
+    await _storageRef.child(storagePath).putFile(file);
+    return storagePath;
+  }
 }

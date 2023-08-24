@@ -9,5 +9,7 @@ abstract class PaymentService {
     required bool isSaveForFuture,
   });
 
+  Future<void> deletePaymentMethod(String paymentMethodId);
+
   Future<void> payForSession(TransactionData transactionData);
 }

@@ -4,16 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
 import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_attach_bottom_sheet.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_audio_message.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_bottom_bar.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/chat_date_header.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_emoji_picker.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/message_bubble.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
+import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
 
@@ -21,19 +25,41 @@ import 'package:mint/utils/chat_utils.dart';
 class ChatPage extends StatelessWidget {
   const ChatPage({
     super.key,
-    required this.specialistModel,
     required this.room,
+    required this.specialistModel,
   });
 
-  final SpecialistModel specialistModel;
   final types.Room room;
+  final SpecialistModel specialistModel;
+
+  void _showPermissionDeniedDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => const PermissionDeniedDialog(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
-      child: _ChatView(specialistModel: specialistModel, room: room),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
+        ),
+      ],
+      child: BlocListener<ChatBloc, ChatState>(
+        listener: (context, state) {
+          if (state is ChatFilePickPermissionDenied) {
+            _showPermissionDeniedDialog(context);
+          }
+        },
+        child: _ChatView(specialistModel: specialistModel, room: room),
+      ),
     );
   }
 }
@@ -49,7 +75,6 @@ class _ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<_ChatView> {
-  final _focusNode = FocusNode();
   final _messageController = TextEditingController();
 
   var _tapPosition = Offset.zero;
@@ -60,20 +85,6 @@ class _ChatViewState extends State<_ChatView> {
   late final _user = widget.room.users.firstWhere(
     (e) => e.id != widget.specialistModel.id,
   );
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      setState(() {
-        _emojiPanelHidden = true;
-      });
-    }
-  }
 
   void _previewDataFetched(
     types.TextMessage message,
@@ -111,8 +122,14 @@ class _ChatViewState extends State<_ChatView> {
   /// Used to handle file open attached to [message] with [types.FileMessage]
   /// type
   void _handleMessageTap(BuildContext _, types.Message message) {
-    if (message is types.FileMessage) {
-      return context.read<ChatBloc>().add(ChatFileLoadRequested(message));
+    final shouldOpen = message is types.FileMessage;
+    if (message is types.FileMessage || message is types.AudioMessage) {
+      return context.read<ChatBloc>().add(
+            ChatFileLoadRequested(
+              message,
+              shouldOpen: shouldOpen,
+            ),
+          );
     }
   }
 
@@ -122,7 +139,6 @@ class _ChatViewState extends State<_ChatView> {
       context,
       message,
       _tapPosition,
-      onEdit: context.router.pop,
       onDelete: (message) {
         context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
         context.router.pop();
@@ -171,6 +187,12 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: _emojiPanelHidden,
@@ -188,11 +210,20 @@ class _ChatViewState extends State<_ChatView> {
               children: <Widget>[
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(_focusNode);
-                    },
                     onTapDown: _storeTapPosition,
                     child: ui.Chat(
+                      audioMessageBuilder: (
+                        audio, {
+                        required int messageWidth,
+                      }) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.w),
+                          child: ChatAudioMessage(
+                            audioMessage: audio,
+                            isSender: _user.id == audio.author.id,
+                          ),
+                        );
+                      },
                       bubbleBuilder: _bubbleBuilder,
                       customBottomWidget: ChatBottomBar(
                         controller: _messageController,
@@ -201,11 +232,14 @@ class _ChatViewState extends State<_ChatView> {
                           setState(() {
                             _emojiPanelHidden = !_emojiPanelHidden;
                           });
+                          // Removes keyboard if it is shown
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onAttach: _handleAttachmentPressed,
-                        onAudio: () {
-                          // TODO(wuffeel): implement audio attachment
+                        onAudioStop: (audioMessage) {
+                          context
+                              .read<ChatBloc>()
+                              .add(ChatSaveAudioRequested(audioMessage));
                         },
                         isEmojiSelected: !_emojiPanelHidden,
                         onTextFieldTap: () => setState(
@@ -213,11 +247,25 @@ class _ChatViewState extends State<_ChatView> {
                         ),
                       ),
                       dateLocale: context.l10n.localeName,
-                      dateHeaderBuilder: (_) => const SizedBox.shrink(),
+                      dateHeaderBuilder: (date) {
+                        return ChatDateHeader(
+                          date: date.dateTime,
+                          text: date.text,
+                        );
+                      },
+                      // 24 hours
+                      dateHeaderThreshold: 86400000,
                       emojiEnlargementBehavior: _emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
                           _hideBackgroundOnEmojiMessages,
                       messages: state.messages,
+                      onBackgroundTap: () {
+                        if (!_emojiPanelHidden) {
+                          setState(
+                            () => _emojiPanelHidden = true,
+                          );
+                        }
+                      },
                       onMessageTap: _handleMessageTap,
                       onMessageLongPress: _showMessageActionsMenu,
                       onPreviewDataFetched: _previewDataFetched,

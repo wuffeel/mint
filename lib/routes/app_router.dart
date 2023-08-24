@@ -39,7 +39,15 @@ class AppRouter extends $AppRouter {
                   ],
                 ),
                 AutoRoute(page: SessionsRoute.page),
-                AutoRoute(page: ProfileRoute.page),
+                AutoRoute(
+                  page: ProfileTabRoute.page,
+                  children: [
+                    AutoRoute(path: '', page: ProfileRoute.page),
+                    AutoRoute(page: ProfilePersonalDataRoute.page),
+                    AutoRoute(page: ProfileCreditCardsRoute.page),
+                    AutoRoute(page: FavoriteDoctorsRoute.page),
+                  ],
+                ),
               ],
             ),
             AutoRoute(page: PickUpSpecialistRoute.page),
@@ -62,4 +70,9 @@ class AppRouter extends $AppRouter {
           ],
         ),
       ];
+}
+
+@RoutePage()
+class ProfileTabPage extends AutoRouter {
+  const ProfileTabPage({super.key});
 }
