@@ -43,7 +43,6 @@ class _HomePageViewState extends State<_HomePageView> {
     _paginationScroll.addListener(() {
       if (_paginationScroll.position.pixels >
           _paginationScroll.position.maxScrollExtent * 0.8) {
-        // TODO(wuffeel): find another solution to prevent multiple event calls
         _loadNextPage(context);
       }
     });
