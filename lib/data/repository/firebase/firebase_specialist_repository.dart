@@ -203,9 +203,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   SpecialistModelDto? _specialistDtoFromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>?;
     if (data == null) return null;
-    data['id'] = snapshot.id;
-
-    return SpecialistModelDto.fromJson(data);
+    return SpecialistModelDto.fromJsonWithId(data, snapshot.id);
   }
 
   /// Returns list of specialists by given [snapshot]

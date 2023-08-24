@@ -1,9 +1,9 @@
-import 'dart:io';
-
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
 import 'package:mint/l10n/l10n.dart';
 
 import '../../../../../gen/assets.gen.dart';
@@ -33,13 +33,8 @@ class ChatBottomBar extends StatefulWidget {
 }
 
 class _ChatBottomBarState extends State<ChatBottomBar> {
-  final _recorderController = RecorderController()
-    ..updateFrequency = const Duration(milliseconds: 150)
-    ..bitRate = 48000;
-
   late final TextEditingController _textController;
   bool _isSendButtonVisible = false;
-  bool _isAudioRecording = false;
 
   @override
   void initState() {
@@ -55,105 +50,94 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
     });
   }
 
-  Future<void> _startRecord() async {
-    final permission = await _recorderController.checkPermission();
-    if (permission) {
-      await _recorderController.record();
-      setState(() => _isAudioRecording = true);
+  void _audioRecordBlocListener(AudioRecordState state) {
+    if (state is AudioRecordStopSuccess) {
+      final message = state.message;
+      if (message != null) widget.onAudioStop(message);
     }
   }
 
-  /// Stops recording and saves audio file. Calls onAudioStop function with
-  /// message formed by audio file info.
-  Future<void> _stopRecord() async {
-    setState(() => _isAudioRecording = false);
-    final audioPath = await _recorderController.stop();
-    if (audioPath != null) {
-      final file = File(audioPath);
-      final message = types.PartialAudio(
-        duration: _recorderController.recordedDuration,
-        name: file.path.split(Platform.pathSeparator).last,
-        size: file.lengthSync(),
-        uri: file.uri.toString(),
-      );
-      widget.onAudioStop(message);
-    }
+  void _startRecord() {
+    context.read<AudioRecordBloc>().add(AudioRecordStartRequested());
   }
 
-  @override
-  void dispose() {
-    _recorderController.dispose();
-    super.dispose();
+  void _stopRecord() {
+    context.read<AudioRecordBloc>().add(AudioRecordStopRequested());
   }
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.h),
-        child: Row(
-          children: <Widget>[
-            if (!_isAudioRecording)
-              Expanded(
-                child: _ChatToolbar(
-                  messageController: _textController,
-                  onAttachTap: widget.onAttach,
-                  onSendTap: widget.onSend,
-                  onEmojiTap: widget.onEmoji,
-                  onTextFieldTap: widget.onTextFieldTap,
-                  isEmojiSelected: widget.isEmojiSelected,
-                  isSendButtonVisible: _isSendButtonVisible,
+    return BlocConsumer<AudioRecordBloc, AudioRecordState>(
+      listener: (_, state) => _audioRecordBlocListener(state),
+      builder: (context, state) {
+        return ColoredBox(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.h),
+            child: Row(
+              children: <Widget>[
+                if (state is! AudioRecordStartSuccess)
+                  Expanded(
+                    child: _ChatToolbar(
+                      messageController: _textController,
+                      onAttachTap: widget.onAttach,
+                      onSendTap: widget.onSend,
+                      onEmojiTap: widget.onEmoji,
+                      onTextFieldTap: widget.onTextFieldTap,
+                      isEmojiSelected: widget.isEmojiSelected,
+                      isSendButtonVisible: _isSendButtonVisible,
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Padding(
+                          padding: EdgeInsets.only(left: 16.w),
+                          child: AudioWaveforms(
+                            recorderController: state.controller,
+                            size: Size(constraints.maxWidth, 30.h),
+                            enableGesture: true,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            margin: EdgeInsets.only(right: 10.w),
+                            padding: EdgeInsets.all(10.w),
+                            waveStyle: const WaveStyle(
+                              waveColor: Colors.white,
+                              showMiddleLine: false,
+                              extendWaveform: true,
+                              spacing: 6,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                Offstage(
+                  offstage: state is AudioRecordStartSuccess,
+                  child: IconButton(
+                    onPressed: _startRecord,
+                    icon: _BottomBarIcon(Assets.svg.microphoneIcon),
+                  ),
                 ),
-              )
-            else
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: AudioWaveforms(
-                        recorderController: _recorderController,
-                        size: Size(constraints.maxWidth, 30.h),
-                        enableGesture: true,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        margin: EdgeInsets.only(right: 10.w),
-                        padding: EdgeInsets.all(10.w),
-                        waveStyle: const WaveStyle(
-                          waveColor: Colors.white,
-                          showMiddleLine: false,
-                          extendWaveform: true,
-                          spacing: 6,
-                        ),
-                      ),
-                    );
-                  },
+                Offstage(
+                  offstage: state is! AudioRecordStartSuccess,
+                  child: IconButton(
+                    onPressed: _stopRecord,
+                    icon: Icon(
+                      Icons.stop_circle_rounded,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 24.w,
+                    ),
+                  ),
                 ),
-              ),
-            Offstage(
-              offstage: _isAudioRecording,
-              child: IconButton(
-                onPressed: _startRecord,
-                icon: _BottomBarIcon(Assets.svg.microphoneIcon),
-              ),
+              ],
             ),
-            Offstage(
-              offstage: !_isAudioRecording,
-              child: IconButton(
-                onPressed: _stopRecord,
-                icon: Icon(
-                  Icons.stop_circle_rounded,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 24.w,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

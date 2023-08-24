@@ -88,7 +88,6 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
             ..add(UpcomingSessionsFetchRequested()),
         ),
         BlocProvider(
-          lazy: false,
           create: (context) => getIt<NotificationsBloc>()
             ..add(NotificationsInitializeRequested()),
         ),

@@ -4,9 +4,13 @@ import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/user_model_dto/user_model_dto.dart';
 import 'package:mint/data/repository/abstract/user_repository.dart';
 
+import '../../../assembly/factory.dart';
+
 @Injectable(as: UserRepository)
 class FirebaseUserRepository implements UserRepository {
-  FirebaseUserRepository();
+  FirebaseUserRepository(this._modifiedUserDtoToMap);
+
+  final Factory<Map<String, dynamic>, UserModelDto> _modifiedUserDtoToMap;
 
   static const _userCollection = 'users';
 
@@ -29,8 +33,7 @@ class FirebaseUserRepository implements UserRepository {
     if (userData == null) {
       return UserModelDto(id: user.uid, phoneNumber: user.phoneNumber);
     }
-    userData['id'] = user.uid;
-    return UserModelDto.fromJson(userData);
+    return UserModelDto.fromJsonWithId(userData, user.uid);
   }
 
   @override
@@ -48,26 +51,12 @@ class FirebaseUserRepository implements UserRepository {
     final userSnapshot = await _userCollectionRef.doc(userId).get();
     final user = userSnapshot.data() as Map<String, dynamic>?;
     if (user == null) return null;
-    user['id'] = userSnapshot.id;
-    return UserModelDto.fromJson(user);
+    return UserModelDto.fromJsonWithId(user, userSnapshot.id);
   }
 
   @override
   Future<void> updateUserData(UserModelDto userDataDto) {
-    final dateOfBirth = userDataDto.dateOfBirth;
-    final dateTimestamp =
-        dateOfBirth != null ? Timestamp.fromDate(dateOfBirth) : null;
-
-    final userDataMap = {
-      'firstName': userDataDto.firstName,
-      'lastName': userDataDto.lastName,
-      'dateOfBirth': dateTimestamp,
-    };
-
-    final photoUrl = userDataDto.photoUrl;
-    if (photoUrl != null && !photoUrl.startsWith('http')) {
-      userDataMap['photoUrl'] = photoUrl;
-    }
+    final userDataMap = _modifiedUserDtoToMap.create(userDataDto);
     return _userCollectionRef.doc(userDataDto.id).update(userDataMap);
   }
 }

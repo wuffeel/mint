@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -6,18 +7,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:mint/data/model/fcm_token_dto/fcm_token_dto.dart';
+import 'package:mint/backbone/notification_type.dart';
 import 'package:mint/data/repository/abstract/notification_repository.dart';
-import 'package:mint/domain/controller/notification_controller.dart';
+import 'package:mint/utils/notification_to_short_string.dart';
 
-@Injectable(as: NotificationRepository)
+@LazySingleton(as: NotificationRepository)
 class FirebaseNotificationRepository implements NotificationRepository {
-  FirebaseNotificationRepository(this._notificationController);
-
-  final NotificationController _notificationController;
-
   final _messagingInstance = FirebaseMessaging.instance;
   final _firestoreInstance = FirebaseFirestore.instance;
+  final _localNotifications = FlutterLocalNotificationsPlugin();
   final _androidChannel = const AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
@@ -25,12 +23,31 @@ class FirebaseNotificationRepository implements NotificationRepository {
     importance: Importance.max,
   );
 
-  final _localNotifications = FlutterLocalNotificationsPlugin();
+  final _chatMessagesController = StreamController<String>.broadcast();
+  final _bookingMessagesController = StreamController<String>.broadcast();
 
   static const _tokenCollection = 'fcmTokens';
 
+  StreamSubscription<RemoteMessage>? _onMessageSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
+  StreamSubscription<String>? _onTokenRefreshSubscription;
+
   CollectionReference get _tokenCollectionRef =>
       _firestoreInstance.collection(_tokenCollection);
+
+  /// Returns a Stream that is called when user taps on notification related to
+  /// chat.
+  ///
+  /// The Stream contains roomId.
+  @override
+  Stream<String> get onChatRoomId => _chatMessagesController.stream;
+
+  /// Returns a Stream that is called when user taps on notification related to
+  /// consultation booked that is about to start.
+  ///
+  /// The Stream contains bookingId.
+  @override
+  Stream<String> get onBookingId => _bookingMessagesController.stream;
 
   @override
   Future<void> initializeNotifications(String userId) async {
@@ -41,41 +58,95 @@ class FirebaseNotificationRepository implements NotificationRepository {
     if (fcmToken == null) return;
     log('fcmToken: $fcmToken');
 
+    _subscribeToStreams();
     await _updateToken(fcmToken, userId);
     _listenTokenChange(userId);
 
-    await _handleAppNotifications();
+    await _handleTerminatedNotification();
     await _initializeLocalNotifications();
   }
 
-  void _listenTokenChange(String userId) {
-    _messagingInstance.onTokenRefresh.listen((fcmToken) {
-      _updateToken(fcmToken, userId);
-    }).onError((Object error) {
-      log('tokenRefreshError: $error');
-    });
+  /// Cancels all active stream subscriptions and closes the stream controllers
+  /// for chat and booking messages.
+  @override
+  Future<void> closeSubscriptions() async {
+    await _onMessageSubscription?.cancel();
+    await _onMessageOpenedAppSubscription?.cancel();
+    await _onTokenRefreshSubscription?.cancel();
   }
 
+  /// Sets up a listener for token refresh events.
+  void _listenTokenChange(String userId) {
+    _onTokenRefreshSubscription =
+        _messagingInstance.onTokenRefresh.listen((fcmToken) {
+      log('onTokenRefresh token: $fcmToken');
+      _setFcmToken(_tokenCollectionRef.doc(userId), userId);
+    })
+          ..onError((Object error) {
+            log('tokenRefreshError: $error');
+          });
+  }
+
+  /// Subscribes to incoming message streams using FirebaseMessaging.
+  ///
+  /// Sets up listeners for both foreground and background messages,
+  /// routed to their respective handlers.
+  void _subscribeToStreams() {
+    _onMessageSubscription = FirebaseMessaging.onMessage.listen(_handleMessage);
+    _onMessageOpenedAppSubscription =
+        FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
+  }
+
+  /// Handles incoming foreground messages for Android platform.
+  ///
+  /// See https://firebase.flutter.dev/docs/messaging/notifications/#foreground-notifications
+  Future<void> _handleMessage(RemoteMessage message) async {
+    final notification = message.notification;
+    final android = message.notification?.android;
+    if (notification == null || android == null) return;
+
+    log('onMessage: ${message.toMap()}');
+
+    final imageUrl = notification.android?.imageUrl;
+    String? base64Image;
+    if (imageUrl != null) base64Image = await _base64encodedImage(imageUrl);
+
+    await _localNotifications.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          icon: android.smallIcon,
+          largeIcon: base64Image != null
+              ? ByteArrayAndroidBitmap.fromBase64String(base64Image)
+              : null,
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+      payload: jsonEncode(message.toMap()),
+    );
+  }
+
+  /// Handles user navigation when a background notification is tapped.
+  Future<void> _handleMessageOpenedApp(RemoteMessage message) async {
+    log('onMessageOpenedApp: ${message.toMap()}');
+    _handleNotificationBasedOnType(message);
+  }
+
+  /// Updates the FCM token for a user in the Firestore database.
   Future<void> _updateToken(String fcmToken, String userId) async {
     final tokenDoc = _tokenCollectionRef.doc(userId);
     final tokenSnap = await tokenDoc.get();
 
-    if (!tokenSnap.exists || _shouldUpdateToken(tokenSnap, fcmToken)) {
-      await _setFcmToken(tokenDoc, fcmToken);
-    }
+    if (!tokenSnap.exists) await _setFcmToken(tokenDoc, fcmToken);
   }
 
-  bool _shouldUpdateToken(DocumentSnapshot tokenSnap, String fcmToken) {
-    final data = tokenSnap.data() as Map<String, dynamic>?;
-    if (data == null) return false;
-
-    final fcmTokenDto = FcmTokenDto.fromJson(data);
-    final expirationTime = DateTime.now().subtract(const Duration(days: 30));
-
-    return fcmTokenDto.createdAt.isBefore(expirationTime) ||
-        fcmTokenDto.token != fcmToken;
-  }
-
+  /// Sets the FCM token in the Firestore database with the current timestamp.
   Future<void> _setFcmToken(DocumentReference tokenDoc, String fcmToken) {
     return tokenDoc.set({
       'token': fcmToken,
@@ -83,84 +154,78 @@ class FirebaseNotificationRepository implements NotificationRepository {
     });
   }
 
-  Future<void> _handleAppNotifications() async {
-    // Handles user navigation on message tap for background notification.
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      log('onMessageOpenedApp: ${message.toMap()}');
-      final notificationType = message.data['notificationType'];
-      if (notificationType != null && notificationType == 'chat') {
-        _handleChatNotification(message);
-      } else if (notificationType == 'booking') {
-        _handleBookingNotification(message);
-      }
-    });
-
-    // Handling foreground notifications.
-    FirebaseMessaging.onMessage.listen((message) async {
-      final notification = message.notification;
-      final android = message.notification?.android;
-      if (notification == null || android == null) return;
-
-      log('onMessage: ${message.toMap()}');
-
-      final imageUrl = notification.android?.imageUrl;
-      String? base64Image;
-      if (imageUrl != null) base64Image = await _base64encodedImage(imageUrl);
-
-      await _localNotifications.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            _androidChannel.id,
-            _androidChannel.name,
-            channelDescription: _androidChannel.description,
-            icon: android.smallIcon,
-            largeIcon: base64Image != null
-                ? ByteArrayAndroidBitmap.fromBase64String(
-                    base64Image,
-                  )
-                : null,
-            importance: Importance.max,
-            priority: Priority.high,
-          ),
-        ),
-        payload: jsonEncode(message.toMap()),
-      );
-    });
-
-    // Terminated notification. Gets the notification info.
-    await _messagingInstance.getInitialMessage().then((terminatedMessage) {
-      if (terminatedMessage == null) return;
-      log('getInitialMessage: ${terminatedMessage.toMap()}');
-    });
+  /// Handles terminated notifications.
+  ///
+  /// Retrieves the initial notification message that triggered the app's
+  /// launch.
+  Future<void> _handleTerminatedNotification() async {
+    final terminatedMessage = await _messagingInstance.getInitialMessage();
+    if (terminatedMessage != null) {
+      _handleNotificationBasedOnType(terminatedMessage);
+    }
   }
 
+  /// Handles notifications by type.
+  ///
+  /// Processes incoming notifications based on their 'notificationType'
+  /// field.
+  /// If a matching notification type is found, the corresponding handler is
+  /// invoked.
+  void _handleNotificationBasedOnType(RemoteMessage message) {
+    final notificationType = message.data['notificationType'] as String?;
+    if (notificationType == null) return;
+    NotificationType? type;
+
+    for (final enumType in NotificationType.values) {
+      if (enumType.toShortString() == notificationType) {
+        type = enumType;
+        break;
+      }
+    }
+
+    if (type != null) {
+      switch (type) {
+        case NotificationType.chat:
+          _handleChatNotification(message);
+          break;
+        case NotificationType.booking:
+          _handleBookingNotification(message);
+          break;
+      }
+    }
+  }
+
+  /// Handles chat notifications.
+  ///
+  /// Retrieves the 'roomId' from the [message] data and adds it to the chat
+  /// stream for further processing.
   Future<void> _handleChatNotification(RemoteMessage message) async {
     final roomId = message.data['roomId'] as String?;
     if (roomId == null) return;
-    _notificationController.addToChatStream(roomId);
+    _chatMessagesController.add(roomId);
   }
 
+  /// Handles booking notifications.
+  ///
+  /// Retrieves the 'bookingId' from the [message] data and adds it to the
+  /// session stream for further processing.
   Future<void> _handleBookingNotification(RemoteMessage message) async {
-    // TODO(wuffeel): add back-end logic for booking messages
     final bookingId = message.data['bookingId'] as String?;
     if (bookingId == null) return;
-    _notificationController.addToSessionStream(bookingId);
+    _bookingMessagesController.add(bookingId);
   }
 
+  /// Initializes local notifications using [FlutterLocalNotificationsPlugin].
+  ///
+  /// Sets up the Android notification channel and handles tap event
+  /// on foreground notifications.
   Future<void> _initializeLocalNotifications() async {
     await _initializeIosForegroundNotifications();
 
-    const iOS = DarwinInitializationSettings();
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final initialized = await _localNotifications.initialize(
-      const InitializationSettings(
-        iOS: iOS,
-        android: android,
-      ),
+    await _localNotifications.initialize(
+      const InitializationSettings(android: android),
       onDidReceiveNotificationResponse: (response) {
         final payload = response.payload;
         if (payload == null) return;
@@ -168,22 +233,16 @@ class FirebaseNotificationRepository implements NotificationRepository {
           jsonDecode(payload) as Map<String, dynamic>,
         );
         log('foreground tap: ${message.toMap()}');
-        final notificationType = message.data['notificationType'];
-        if (notificationType != null && notificationType == 'chat') {
-          _handleChatNotification(message);
-        } else if (notificationType == 'booking') {
-          _handleBookingNotification(message);
-        }
+        _handleNotificationBasedOnType(message);
       },
     );
 
     final platform = _localNotifications.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
     await platform?.createNotificationChannel(_androidChannel);
-
-    log('localInitialized: $initialized');
   }
 
+  /// Configures foreground notification presentation options for iOS devices.
   Future<void> _initializeIosForegroundNotifications() {
     return _messagingInstance.setForegroundNotificationPresentationOptions(
       alert: true,
@@ -192,6 +251,8 @@ class FirebaseNotificationRepository implements NotificationRepository {
     );
   }
 
+  /// Retrieves an image from a [url] and converts it to a base64-encoded
+  /// string.
   Future<String> _base64encodedImage(String url) async {
     final response = await http.get(Uri.parse(url));
     final base64Data = base64Encode(response.bodyBytes);

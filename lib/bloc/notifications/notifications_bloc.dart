@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:mint/domain/controller/notification_controller.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/usecase/fetch_chat_room_use_case.dart';
@@ -15,25 +14,23 @@ import 'package:mint/domain/usecase/initialize_notifications_use_case.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/user_model/user_model.dart';
+import '../../domain/usecase/get_booking_notifications_stream_use_case.dart';
+import '../../domain/usecase/get_chat_notifications_stream_use_case.dart';
 
 part 'notifications_event.dart';
 
 part 'notifications_state.dart';
-
-typedef ChatNavigationData = ({
-  types.Room room,
-  SpecialistModel specialistModel,
-});
 
 @injectable
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc(
     this._initializeNotificationsUseCase,
     this._userController,
-    this._notificationController,
     this._fetchChatRoomUseCase,
     this._fetchSpecialistUseCase,
     this._fetchSessionDataUseCase,
+    this._getChatNotificationsStreamUseCase,
+    this._getBookingNotificationsStreamUseCase,
   ) : super(NotificationsInitial()) {
     _subscribeToDataEvents();
     on<NotificationsInitializeRequested>(_onInitializeNotifications);
@@ -48,10 +45,12 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   final FetchChatRoomUseCase _fetchChatRoomUseCase;
   final FetchSpecialistUseCase _fetchSpecialistUseCase;
   final FetchSessionDataUseCase _fetchSessionDataUseCase;
+  final GetChatNotificationsStreamUseCase _getChatNotificationsStreamUseCase;
+  final GetBookingNotificationsStreamUseCase
+      _getBookingNotificationsStreamUseCase;
 
   UserModel? _currentUser;
   final UserController _userController;
-  final NotificationController _notificationController;
 
   late final StreamSubscription<UserModel?> _userSubscription;
   late final StreamSubscription<String> _chatRoomSubscription;
@@ -61,11 +60,12 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     _userSubscription = _userController.user.listen((user) {
       _currentUser = user;
     });
-    _chatRoomSubscription = _notificationController.onChatRoom.listen((roomId) {
+    _chatRoomSubscription =
+        _getChatNotificationsStreamUseCase.onChatRoomId.listen((roomId) {
       add(NotificationsChatRoomRequested(roomId));
     });
     _sessionSubscription =
-        _notificationController.onSessionData.listen((bookingId) {
+        _getBookingNotificationsStreamUseCase.onBookingId.listen((bookingId) {
       add(NotificationsSessionDataRequested(bookingId));
     });
   }

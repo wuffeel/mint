@@ -90,8 +90,7 @@ class FirebaseBookingRepository implements BookingRepository {
     final bookingData = bookingSnap.data() as Map<String, dynamic>?;
     if (bookingData == null) return null;
 
-    bookingData['id'] = bookingSnap.id;
-    return BookingDataDto.fromJson(bookingData);
+    return BookingDataDto.fromJsonWithId(bookingData, bookingSnap.id);
   }
 
   /// Checks for existing book entry in Firebase.
@@ -148,8 +147,7 @@ class FirebaseBookingRepository implements BookingRepository {
         .map((consultation) {
           final data = consultation.data() as Map<String, dynamic>?;
           if (data == null) return null;
-          data['id'] = consultation.id;
-          return BookingDataDto.fromJson(data);
+          return BookingDataDto.fromJsonWithId(data, consultation.id);
         })
         .whereType<BookingDataDto>()
         .toList();
