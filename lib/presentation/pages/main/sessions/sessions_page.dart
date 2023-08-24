@@ -52,7 +52,9 @@ class _SessionsViewState extends State<_SessionsView> {
 
   void _onSessionsRefresh() {
     context.read<UpcomingSessionsBloc>().add(UpcomingSessionsFetchRequested());
-    context.read<PreviousSessionsBloc>().add(PreviousSessionsRefreshRequested());
+    context.read<PreviousSessionsBloc>().add(
+          PreviousSessionsRefreshRequested(),
+        );
   }
 
   @override
