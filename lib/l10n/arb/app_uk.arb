@@ -178,5 +178,8 @@
       }
     }
   },
-  "noPreviousSessionsFound": "Попередніх сеансів не знайдено"
+  "noPreviousSessionsFound": "Попередніх сеансів не знайдено",
+  "chooseYourTheme": "Оберіть тему",
+  "lightModeTitle": "Світла",
+  "darkModeTitle": "Темна"
 }

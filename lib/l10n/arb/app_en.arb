@@ -178,5 +178,8 @@
       }
     }
   },
-  "noPreviousSessionsFound": "No previous sessions found"
+  "noPreviousSessionsFound": "No previous sessions found",
+  "chooseYourTheme": "Choose your theme",
+  "lightModeTitle": "Light",
+  "darkModeTitle": "Dark"
 }

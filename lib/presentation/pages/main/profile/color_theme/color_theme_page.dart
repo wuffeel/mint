@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/colors.gen.dart';
+import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/profile/widgets/custom_switch.dart';
 import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/theme/mint_text_styles.dart';
@@ -18,7 +19,13 @@ class ColorThemePage extends StatefulWidget {
 }
 
 class _ColorThemePageState extends State<ColorThemePage> {
-  bool _value = false;
+  void _onColorThemeChange(bool themeState) {
+    context.read<ColorThemeBloc>().add(
+          ColorThemeSwitchRequested(
+            themeState ? ThemeMode.dark : ThemeMode.light,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class _ColorThemePageState extends State<ColorThemePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Choose your theme', style: MintTextStyles.headline),
+            Text(context.l10n.chooseYourTheme, style: MintTextStyles.headline),
             SizedBox(height: 16.h),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -38,20 +45,20 @@ class _ColorThemePageState extends State<ColorThemePage> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Light'),
-                    BlocBuilder<ColorThemeBloc, ColorThemeState>(
-                      builder: (context, state) {
-                        return CustomSwitch(
+                child: BlocBuilder<ColorThemeBloc, ColorThemeState>(
+                  builder: (context, state) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          state.theme == ThemeMode.light
+                              ? context.l10n.lightModeTitle
+                              : context.l10n.darkModeTitle,
+                          style: MintTextStyles.tab16,
+                        ),
+                        CustomSwitch(
                           value: state.theme == ThemeMode.dark,
-                          onChanged: (value) =>
-                              context.read<ColorThemeBloc>().add(
-                                    ColorThemeSwitchRequested(
-                                      value ? ThemeMode.dark : ThemeMode.light,
-                                    ),
-                                  ),
+                          onChanged: _onColorThemeChange,
                           width: 51.w,
                           height: 31.h,
                           switchWidth: 27.w,
@@ -59,10 +66,10 @@ class _ColorThemePageState extends State<ColorThemePage> {
                           enableColor: Colors.black,
                           disableColor:
                               MintColors.switchDisabledLight.withOpacity(0.16),
-                        );
-                      },
-                    )
-                  ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             )
