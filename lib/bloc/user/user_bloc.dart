@@ -27,6 +27,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         _userController.user,
         onData: (user) =>
             user != null ? UserFetchSuccess(user) : UserLogOutSuccess(),
+        onError: (error, _) {
+          log('UserFailure: $error');
+          return UserFetchFailure();
+        },
       ),
     );
     on<UserLogInCheckRequested>(_onUserLogInCheck);
@@ -98,7 +102,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       await _logOutUseCase();
       _userController.addToUserStream(null);
-    } catch (e) {
+    } catch (error) {
+      log('UserLogOutFailure: $error');
       emit(UserLogOutFailure());
     }
   }

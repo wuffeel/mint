@@ -9,7 +9,18 @@ class FirebaseNotificationService implements NotificationService {
   final NotificationRepository _notificationRepository;
 
   @override
+  Stream<String> get onBookingId => _notificationRepository.onBookingId;
+
+  @override
+  Stream<String> get onChatRoomId => _notificationRepository.onChatRoomId;
+
+  @override
   Future<void> initializeNotifications(String userId) {
     return _notificationRepository.initializeNotifications(userId);
+  }
+
+  @override
+  Future<void> closeSubscriptions() {
+    return _notificationRepository.closeSubscriptions();
   }
 }
