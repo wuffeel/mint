@@ -123,6 +123,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       // TODO(wuffeel): add notifications page
                     },
                   ),
+                  SizedBox(height: 8.h),
+                  ProfileButton(
+                    title: l10n.colorTheme,
+                    svgIcon: Assets.svg.colorThemeIcon,
+                    foregroundColor: Theme.of(context).primaryColor,
+                    onTap: () => context.router.push(const ColorThemeRoute()),
+                  ),
                   const Spacer(),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.h),
