@@ -114,17 +114,16 @@ class SpecialistOnlineBloc
         lastSpecialistId: _lastVisibleSpecialistId,
         limit: _paginationLimit,
       );
-      if (specialistList.isEmpty) {
-        emit(SpecialistOnlineFetchSuccess(const [], hasReachedEnd: true));
-        return;
-      }
-      _lastVisibleSpecialistId = specialistList.last.id;
       emit(
         SpecialistOnlineFetchSuccess(
           specialistList,
           hasReachedEnd: specialistList.length < _paginationLimit,
         ),
       );
+
+      if (specialistList.isNotEmpty) {
+        _lastVisibleSpecialistId = specialistList.last.id;
+      }
     } catch (error) {
       log('SpecialistOnlineFetchFailure: $error');
       emit(SpecialistOnlineFetchFailure());
@@ -147,23 +146,17 @@ class SpecialistOnlineBloc
         lastSpecialistId: _lastVisibleSpecialistId,
         limit: _paginationLimit,
       );
-      if (specialistList.isEmpty) {
-        emit(
-          SpecialistOnlineFetchSuccess(
-            state.specialistList,
-            hasReachedEnd: true,
-          ),
-        );
-        return;
-      }
-      _lastVisibleSpecialistId = specialistList.last.id;
-      log('length: ${specialistList.length}');
+
       emit(
         SpecialistOnlineFetchSuccess(
           [...state.specialistList, ...specialistList],
           hasReachedEnd: specialistList.length < _paginationLimit,
         ),
       );
+
+      if (specialistList.isNotEmpty) {
+        _lastVisibleSpecialistId = specialistList.last.id;
+      }
     } catch (error) {
       log('SpecialistOnlineFetchPageFailure: $error');
       emit(
