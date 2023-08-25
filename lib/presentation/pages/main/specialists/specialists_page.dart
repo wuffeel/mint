@@ -139,7 +139,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                   builder: (context, state) {
                     if (state is SpecialistCatalogueLoading) {
                       return state.specialistList.isEmpty
-                          ? const SpecialistShimmerSliverList(itemCount: 8)
+                          ? const SpecialistShimmerSliverList()
                           : const SliverToBoxAdapter(
                               child: Center(child: LoadingIndicator()),
                             );

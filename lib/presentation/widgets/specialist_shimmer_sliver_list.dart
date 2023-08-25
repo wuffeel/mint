@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mint/presentation/widgets/specialist_card_tile_skeleton.dart';
 
 class SpecialistShimmerSliverList extends StatelessWidget {
-  const SpecialistShimmerSliverList({super.key, this.itemCount = 5});
+  const SpecialistShimmerSliverList({super.key, this.itemCount = 8});
 
   final int itemCount;
 
