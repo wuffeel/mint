@@ -42,7 +42,7 @@ class SpecialistOnlineBloc
   String? _lastVisibleSpecialistId;
 
   /// Number of specialists to fetch
-  static const _paginationLimit = 6;
+  static const _paginationLimit = 8;
 
   void _subscribeToRatingChange() {
     _ratingSubscription = _ratingController.rating.listen((newRating) {

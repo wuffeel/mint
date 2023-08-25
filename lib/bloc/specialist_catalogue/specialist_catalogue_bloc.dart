@@ -50,7 +50,7 @@ class SpecialistCatalogueBloc
   String? _lastVisibleSpecialistId;
 
   /// Number of specialists to fetch
-  static const _paginationLimit = 8;
+  static const _paginationLimit = 10;
 
   @override
   Future<void> close() async {

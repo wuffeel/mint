@@ -44,7 +44,7 @@ class PreviousSessionsBloc
   String? _lastVisibleBookingId;
 
   /// Number of sessions to fetch
-  static const _paginationLimit = 8;
+  static const _paginationLimit = 12;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
