@@ -43,8 +43,6 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
       isEqualTo: true,
     );
 
-    log('lastId: $lastSpecialistId');
-
     if (lastSpecialistId != null) {
       final lastDoc =
           await _specialistCollectionRef.doc(lastSpecialistId).get();
