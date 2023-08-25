@@ -23,6 +23,7 @@ class AudioRecordRepositoryImpl implements AudioRecordRepository {
   @override
   Future<types.PartialAudio?> stopRecord(RecorderController controller) async {
     final audioPath = await controller.stop();
+    if (controller.recordedDuration.inSeconds == 0) return null;
     log(audioPath.toString());
     if (audioPath != null) {
       final file = File(audioPath);
