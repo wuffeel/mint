@@ -141,9 +141,8 @@ class FirebaseNotificationRepository implements NotificationRepository {
   /// Updates the FCM token for a user in the Firestore database.
   Future<void> _updateToken(String fcmToken, String userId) async {
     final tokenDoc = _tokenCollectionRef.doc(userId);
-    final tokenSnap = await tokenDoc.get();
 
-    if (!tokenSnap.exists) await _setFcmToken(tokenDoc, fcmToken);
+    await _setFcmToken(tokenDoc, fcmToken);
   }
 
   /// Sets the FCM token in the Firestore database with the current timestamp.
