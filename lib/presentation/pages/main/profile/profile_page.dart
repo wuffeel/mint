@@ -55,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: CustomScrollView(
         slivers: <Widget>[
           ProfileAppBar(
+            avatarSize: 110.w,
             minHeight: kToolbarHeight + MediaQuery.paddingOf(context).top,
             maxHeight: 244.h,
             collapseFactor: 0.5,
@@ -119,9 +120,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: l10n.notifications,
                     svgIcon: Assets.svg.notificationsBell,
                     foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () {
-                      // TODO(wuffeel): add notifications page
-                    },
+                    onTap: () => context.router.push(
+                      const NotificationSettingsRoute(),
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   ProfileButton(

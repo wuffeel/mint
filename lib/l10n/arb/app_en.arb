@@ -181,5 +181,7 @@
   "noPreviousSessionsFound": "No previous sessions found",
   "chooseYourTheme": "Choose your theme",
   "lightModeTitle": "Light",
-  "darkModeTitle": "Dark"
+  "darkModeTitle": "Dark",
+  "inAppNotificationsTitle": "In-app notifications",
+  "getNotifications": "Get notifications"
 }

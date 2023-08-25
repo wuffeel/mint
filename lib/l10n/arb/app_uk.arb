@@ -181,5 +181,7 @@
   "noPreviousSessionsFound": "Попередніх сеансів не знайдено",
   "chooseYourTheme": "Оберіть тему",
   "lightModeTitle": "Світла",
-  "darkModeTitle": "Темна"
+  "darkModeTitle": "Темна",
+  "inAppNotificationsTitle": "Сповіщення додатку",
+  "getNotifications": "Отримувати сповіщення"
 }

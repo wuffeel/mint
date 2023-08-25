@@ -6,22 +6,24 @@ class CustomSwitch extends StatefulWidget {
     super.key,
     required this.value,
     required this.onChanged,
-    this.enableColor,
-    this.disableColor,
+    this.enabledColor,
+    this.disabledColor,
     this.width,
     this.height,
     this.switchHeight,
     this.switchWidth,
+    this.onTap,
   });
 
   final bool value;
-  final Color? enableColor;
-  final Color? disableColor;
+  final Color? enabledColor;
+  final Color? disabledColor;
   final double? width;
   final double? height;
   final double? switchHeight;
   final double? switchWidth;
   final ValueChanged<bool> onChanged;
+  final VoidCallback? onTap;
 
   @override
   State<CustomSwitch> createState() => _CustomSwitchState();
@@ -50,29 +52,43 @@ class _CustomSwitchState extends State<CustomSwitch>
     );
   }
 
+  void _launchAnimation() {
+    if (_animationController.isCompleted) {
+      _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
+  }
+
+  void _onTap() {
+    widget.value == false
+        ? widget.onChanged(true)
+        : widget.onChanged(false);
+
+    final onTap = widget.onTap;
+    if (onTap != null) onTap();
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomSwitch oldWidget) {
+    if (oldWidget.value != widget.value) _launchAnimation();
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
         return GestureDetector(
-          onTap: () {
-            if (_animationController.isCompleted) {
-              _animationController.reverse();
-            } else {
-              _animationController.forward();
-            }
-            widget.value == false
-                ? widget.onChanged(true)
-                : widget.onChanged(false);
-          },
+          onTap: _onTap,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             width: widget.width ?? 48.0,
             height: widget.height ?? 24.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              color: widget.value ? widget.enableColor : widget.disableColor,
+              color: widget.value ? widget.enabledColor : widget.disabledColor,
             ),
             child: Padding(
               padding:

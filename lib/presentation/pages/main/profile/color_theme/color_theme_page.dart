@@ -63,8 +63,8 @@ class _ColorThemePageState extends State<ColorThemePage> {
                           height: 31.h,
                           switchWidth: 27.w,
                           switchHeight: 27.h,
-                          enableColor: Colors.black,
-                          disableColor:
+                          enabledColor: Colors.black,
+                          disabledColor:
                               MintColors.switchDisabledLight.withOpacity(0.16),
                         ),
                       ],
