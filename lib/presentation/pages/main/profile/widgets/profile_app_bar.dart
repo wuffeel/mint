@@ -109,7 +109,7 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
     final scaleFactor = 1 - percentage;
     final textScaleFactor = 1 - percentage * 0.6;
     final avatarRadius =
-        percentage >= collapseFactor ? 32.w : 110.w * scaleFactor;
+        percentage >= collapseFactor ? 32.w : avatarSize * scaleFactor;
 
     return _HeaderConfig(
       percentage: percentage,
