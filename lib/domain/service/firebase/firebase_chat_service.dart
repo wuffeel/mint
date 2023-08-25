@@ -64,7 +64,12 @@ class FirebaseChatService implements ChatService {
   Future<void> deleteMessage(String roomId, types.Message message) {
     final uuid = message.metadata?['uuid'] as String?;
     if (message is types.ImageMessage) {
-      _handleFileDeletion(message.uri, message.name, uuid);
+      _handleFileDeletion(
+        message.uri,
+        message.name,
+        uuid,
+        shouldDeleteLocal: false,
+      );
     } else if (message is types.FileMessage) {
       _handleFileDeletion(message.uri, message.name, uuid);
     } else if (message is types.AudioMessage) {
@@ -158,11 +163,14 @@ class FirebaseChatService implements ChatService {
   Future<void> _handleFileDeletion(
     String uri,
     String messageName,
-    String? uuid,
-  ) async {
+    String? uuid, {
+    bool shouldDeleteLocal = true,
+  }) async {
     await _storageService.deleteStorageFile(uri);
     final extension = getFileExtension(messageName);
     final fileName = uuid != null ? '$uuid.$extension' : messageName;
-    await _fileService.deleteLocalFile(fileName);
+    if (shouldDeleteLocal) {
+      await _fileService.deleteLocalFile(fileName);
+    }
   }
 }
