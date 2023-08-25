@@ -160,13 +160,15 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
     final user = _currentUser;
     if (user == null) return;
 
+    final state = this.state;
+    if (state is! PinCodeEnterSuccess) return;
+
     try {
       await _pinCodeChangeUseCase(user.id, null);
       emit(PinCodeResetSuccess());
-      emit(PinCodeInitial(PinCodeStatusInitial.signUp));
     } catch (error) {
       log('PinCodeResetFailure: $error');
-      emit(PinCodeResetFailure());
+      emit(PinCodeResetFailure(state.status, state.pinCode));
     }
   }
 }

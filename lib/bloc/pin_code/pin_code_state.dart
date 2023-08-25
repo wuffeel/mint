@@ -41,6 +41,10 @@ class PinCodeNewConfirmSuccess extends PinCodeEnterSuccess
   PinCodeNewConfirmSuccess(super.status, super.pinCode);
 }
 
-class PinCodeResetSuccess extends PinCodeState {}
+class PinCodeResetSuccess extends PinCodeInitial {
+  PinCodeResetSuccess() : super(PinCodeStatusInitial.signUp);
+}
 
-class PinCodeResetFailure extends PinCodeState {}
+class PinCodeResetFailure extends PinCodeEnterSuccess {
+  PinCodeResetFailure(super.status, super.pinCode);
+}
