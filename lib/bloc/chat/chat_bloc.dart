@@ -119,9 +119,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     final state = this.state;
-    if (state is! ChatFetchMessagesSuccess) return;
+    final user = _currentUser;
+    if (state is! ChatFetchMessagesSuccess || user == null) return;
 
     try {
+      final loadingMessage = types.CustomMessage(
+        id: '',
+        author: types.User(id: user.id),
+        type: types.MessageType.custom,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+      );
+      emit(
+        ChatMessageLoading([loadingMessage, ...state.messages], state.roomId),
+      );
       await _sendMessageUseCase(event.message, state.roomId);
     } catch (error) {
       log('ChatSendMessageFailure: $error');
@@ -159,7 +169,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
     } catch (error) {
       log('ChatPreviewDataApplyFailure: $error');
-      emit(ChatPreviewDataApplyFailure(state.messages, state.roomId));
     }
   }
 
