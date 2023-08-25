@@ -61,9 +61,7 @@ class _CustomSwitchState extends State<CustomSwitch>
   }
 
   void _onTap() {
-    widget.value == false
-        ? widget.onChanged(true)
-        : widget.onChanged(false);
+    widget.value == false ? widget.onChanged(true) : widget.onChanged(false);
 
     final onTap = widget.onTap;
     if (onTap != null) onTap();
@@ -112,7 +110,7 @@ class _CustomSwitchState extends State<CustomSwitch>
                         offset: const Offset(0, 3),
                         color: Colors.black.withOpacity(0.06),
                       ),
-                    ]
+                    ],
                   ),
                 ),
               ),
