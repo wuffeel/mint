@@ -12,6 +12,7 @@ import 'package:mint/presentation/pages/main/home/widgets/home_app_bar.dart';
 import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_button.dart';
 import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
 import 'package:mint/presentation/widgets/upcoming_sessions_list.dart';
+import 'package:mint/utils/pagination_utils.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -40,12 +41,7 @@ class _HomePageViewState extends State<_HomePageView> {
   @override
   void initState() {
     super.initState();
-    _paginationScroll.addListener(() {
-      if (_paginationScroll.position.pixels >
-          _paginationScroll.position.maxScrollExtent * 0.8) {
-        _loadNextPage(context);
-      }
-    });
+    _paginationScroll.addListener(_loadNextPage);
   }
 
   void _refreshPage(BuildContext context) {
@@ -54,8 +50,18 @@ class _HomePageViewState extends State<_HomePageView> {
     context.read<UpcomingSessionsBloc>().add(UpcomingSessionsFetchRequested());
   }
 
-  void _loadNextPage(BuildContext context) {
-    context.read<SpecialistOnlineBloc>().add(SpecialistOnlineFetchRequested());
+  void _loadNextPage() {
+    if (PaginationUtils.isOverScroll(_paginationScroll)) {
+      context
+          .read<SpecialistOnlineBloc>()
+          .add(SpecialistOnlineFetchRequested());
+    }
+  }
+
+  @override
+  void dispose() {
+    _paginationScroll.removeListener(_loadNextPage);
+    super.dispose();
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:mint/presentation/widgets/loading_indicator.dart';
 
 import '../../../../../bloc/previous_sessions/previous_sessions_bloc.dart';
 import '../../../../../routes/app_router.gr.dart';
+import '../../../../../utils/pagination_utils.dart';
 import '../../../../widgets/no_items_found.dart';
 import '../../home/widgets/upcoming_session_container.dart';
 
@@ -26,16 +27,21 @@ class _PreviousSessionsListState extends State<PreviousSessionsList> {
   @override
   void initState() {
     super.initState();
-    _paginationScroll.addListener(() {
-      if (_paginationScroll.position.pixels >
-          _paginationScroll.position.maxScrollExtent * 0.8) {
-        _loadNextPage(context);
-      }
-    });
+    _paginationScroll.addListener(_loadNextPage);
   }
 
-  void _loadNextPage(BuildContext context) {
-    context.read<PreviousSessionsBloc>().add(PreviousSessionsFetchRequested());
+  void _loadNextPage() {
+    if (PaginationUtils.isOverScroll(_paginationScroll)) {
+      context
+          .read<PreviousSessionsBloc>()
+          .add(PreviousSessionsFetchRequested());
+    }
+  }
+
+  @override
+  void dispose() {
+    _paginationScroll.removeListener(_loadNextPage);
+    super.dispose();
   }
 
   @override

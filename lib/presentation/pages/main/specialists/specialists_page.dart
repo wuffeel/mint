@@ -17,6 +17,7 @@ import 'package:mint/presentation/widgets/specialist_catalogue_container.dart';
 import 'package:mint/presentation/widgets/specialist_shimmer_sliver_list.dart';
 
 import '../../../../domain/entity/filter_preferences/filter_preferences.dart';
+import '../../../../utils/pagination_utils.dart';
 import '../../../widgets/specialist_card_tile.dart';
 
 @RoutePage()
@@ -33,18 +34,15 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
   @override
   void initState() {
     super.initState();
-    _paginationScroll.addListener(() {
-      if (_paginationScroll.position.pixels >
-          _paginationScroll.position.maxScrollExtent * 0.8) {
-        _loadNextPage(context);
-      }
-    });
+    _paginationScroll.addListener(_loadNextPage);
   }
 
-  void _loadNextPage(BuildContext context) {
-    context.read<SpecialistCatalogueBloc>().add(
-          SpecialistCatalogueFetchRequested(),
-        );
+  void _loadNextPage() {
+    if (PaginationUtils.isOverScroll(_paginationScroll)) {
+      context.read<SpecialistCatalogueBloc>().add(
+            SpecialistCatalogueFetchRequested(),
+          );
+    }
   }
 
   void _showFilterModalBottomSheet(BuildContext context) {
@@ -74,6 +72,12 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
 
   void _navigateBack(TabsRouter tabsRouter) {
     return tabsRouter.setActiveIndex(tabsRouter.previousIndex ?? 0);
+  }
+
+  @override
+  void dispose() {
+    _paginationScroll.removeListener(_loadNextPage);
+    super.dispose();
   }
 
   @override
