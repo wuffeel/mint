@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -185,8 +184,8 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
 class _CollapsedAppBar extends StatelessWidget {
   const _CollapsedAppBar({
     required this.headerConfig,
-    this.localPhotoUrl,
     required this.user,
+    this.localPhotoUrl,
   });
 
   final _HeaderConfig headerConfig;
@@ -198,7 +197,7 @@ class _CollapsedAppBar extends StatelessWidget {
     final phone = user.phoneNumber;
     return Row(
       children: <Widget>[
-        if (context.router.canPop())
+        if (ModalRoute.of(context)?.canPop ?? false)
           Padding(
             padding: EdgeInsets.only(left: 8.w),
             child: const MintBackButton(color: Colors.white),
@@ -251,7 +250,7 @@ class _ExpandedAppBar extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        if (context.router.canPop(ignoreParentRoutes: true))
+        if (ModalRoute.of(context)?.canPop ?? false)
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
