@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mint/presentation/widgets/mint_selection_button.dart';
+import 'package:mint/utils/layout_utils.dart';
 
 class MintSingleItemSelection<T> extends StatelessWidget {
   const MintSingleItemSelection({
@@ -41,28 +42,25 @@ class MintSingleItemSelection<T> extends StatelessWidget {
   /// The spacing between items vertically.
   final double? crossSpacing;
 
-  /// Calculates the spacing between items dynamically based on the
-  /// available width and the desired number of items per row.
-  ///
-  /// Result spacing can't be greater than [mainSpacing]
-  double _calculateSpacing(double maxWidth, int itemsPerRow) {
-    final desired = mainSpacing ?? 0;
-    final itemWidth = (maxWidth - desired * (itemsPerRow - 1)) / itemsPerRow;
-
-    final spacing = (maxWidth - itemWidth * itemsPerRow) / (itemsPerRow - 1);
-    return spacing.clamp(0, desired);
-  }
-
-  /// Calculates the width of each item based on the available width and the
-  /// spacing between items.
-  double _getItemWidth(double maxWidth, int itemsPerRow) {
-    final spacing = _calculateSpacing(maxWidth, itemsPerRow);
-    return (maxWidth - spacing * (itemsPerRow - 1)) / itemsPerRow;
-  }
-
   bool _isCellDisabled(T value) {
     final isDisabled = isItemDisabled;
     return isDisabled != null && isDisabled(value);
+  }
+
+  double _getItemSpacing(double maxWidth, int itemsPerRow) {
+    return LayoutUtils.calculateSpacing(
+      maxWidth,
+      itemsPerRow,
+      mainSpacing: mainSpacing,
+    );
+  }
+
+  double _getItemWidth(double maxWidth, int itemsPerRow) {
+    return LayoutUtils.getItemWidth(
+      maxWidth,
+      itemsPerRow,
+      mainSpacing: mainSpacing,
+    );
   }
 
   @override
@@ -72,7 +70,7 @@ class MintSingleItemSelection<T> extends StatelessWidget {
       builder: (context, constraints) {
         return Wrap(
           spacing: perRow != null
-              ? _calculateSpacing(constraints.maxWidth, perRow)
+              ? _getItemSpacing(constraints.maxWidth, perRow)
               : mainSpacing ?? 0,
           runSpacing: crossSpacing ?? 0,
           children: List.generate(
