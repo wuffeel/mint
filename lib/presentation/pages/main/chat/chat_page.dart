@@ -20,7 +20,6 @@ import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../bloc/permission/permission_bloc.dart';
 
