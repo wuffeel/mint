@@ -20,6 +20,9 @@ import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../../../bloc/permission/permission_bloc.dart';
 
 @RoutePage()
 class ChatPage extends StatelessWidget {
@@ -35,8 +38,19 @@ class ChatPage extends StatelessWidget {
   void _showPermissionDeniedDialog(BuildContext context) {
     showDialog<void>(
       context: context,
-      builder: (context) => const PermissionDeniedDialog(),
+      builder: (dialogContext) => PermissionDeniedDialog(
+        onAction: () {
+          context.read<PermissionBloc>().add(PermissionOpenSettingsRequested());
+          dialogContext.router.pop();
+        },
+      ),
     );
+  }
+
+  void _permissionCubitListener(BuildContext context, PermissionState state) {
+    if (state is PermissionPermanentlyDenied) {
+      _showPermissionDeniedDialog(context);
+    }
   }
 
   @override
@@ -51,13 +65,10 @@ class ChatPage extends StatelessWidget {
           create: (context) =>
               getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
         ),
+        BlocProvider(create: (context) => PermissionBloc()),
       ],
-      child: BlocListener<ChatBloc, ChatState>(
-        listener: (context, state) {
-          if (state is ChatFilePickPermissionDenied) {
-            _showPermissionDeniedDialog(context);
-          }
-        },
+      child: BlocListener<PermissionBloc, PermissionState>(
+        listener: _permissionCubitListener,
         child: _ChatView(specialistModel: specialistModel, room: room),
       ),
     );
@@ -112,6 +123,7 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   Future<void> _handleFileSelection() async {
+    context.read<PermissionBloc>().add(PermissionCheckStorageRequested());
     return context.read<ChatBloc>().add(ChatFilePickRequested());
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
+import 'package:mint/bloc/permission/permission_bloc.dart';
 import 'package:mint/l10n/l10n.dart';
 
 import '../../../../../gen/assets.gen.dart';
@@ -58,6 +59,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
   }
 
   void _startRecord() {
+    context.read<PermissionBloc>().add(PermissionCheckMicrophoneRequested());
     context.read<AudioRecordBloc>().add(AudioRecordStartRequested());
   }
 

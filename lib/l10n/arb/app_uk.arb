@@ -183,5 +183,6 @@
   "lightModeTitle": "Світла",
   "darkModeTitle": "Темна",
   "inAppNotificationsTitle": "Сповіщення додатку",
-  "getNotifications": "Отримувати сповіщення"
+  "getNotifications": "Отримувати сповіщення",
+  "goToSettings": "Налаштування"
 }

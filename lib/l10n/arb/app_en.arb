@@ -183,5 +183,6 @@
   "lightModeTitle": "Light",
   "darkModeTitle": "Dark",
   "inAppNotificationsTitle": "In-app notifications",
-  "getNotifications": "Get notifications"
+  "getNotifications": "Get notifications",
+  "goToSettings": "Go to Settings"
 }

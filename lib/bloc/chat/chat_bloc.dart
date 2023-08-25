@@ -198,9 +198,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (message != null) add(ChatSendMessageRequested(message));
     } catch (error) {
       log('ChatFilePickFailure: $error');
-      if (error.toString().contains('read_external_storage_denied')) {
-        emit(ChatFilePickPermissionDenied(state.messages, state.roomId));
-      }
     }
   }
 
