@@ -153,6 +153,7 @@
   "myCreditCards": "My credit cards",
   "favoriteDoctors": "Favorite doctors",
   "notifications": "Notifications",
+  "colorTheme": "Color theme",
   "patient": "Patient",
   "save": "Save",
   "firstName": "First name",
@@ -176,5 +177,12 @@
         "example": "Alexander"
       }
     }
-  }
+  },
+  "noPreviousSessionsFound": "No previous sessions found",
+  "chooseYourTheme": "Choose your theme",
+  "lightModeTitle": "Light",
+  "darkModeTitle": "Dark",
+  "inAppNotificationsTitle": "In-app notifications",
+  "getNotifications": "Get notifications",
+  "goToSettings": "Go to Settings"
 }

@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:mint/utils/file_utils.dart';
 
 import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/user_model/user_model.dart';
@@ -118,9 +119,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     final state = this.state;
-    if (state is! ChatFetchMessagesSuccess) return;
+    final user = _currentUser;
+    if (state is! ChatFetchMessagesSuccess || user == null) return;
 
     try {
+      final loadingMessage = types.CustomMessage(
+        id: '',
+        author: types.User(id: user.id),
+        type: types.MessageType.custom,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+      );
+      emit(
+        ChatMessageLoading([loadingMessage, ...state.messages], state.roomId),
+      );
       await _sendMessageUseCase(event.message, state.roomId);
     } catch (error) {
       log('ChatSendMessageFailure: $error');
@@ -158,7 +169,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
     } catch (error) {
       log('ChatPreviewDataApplyFailure: $error');
-      emit(ChatPreviewDataApplyFailure(state.messages, state.roomId));
     }
   }
 
@@ -188,9 +198,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (message != null) add(ChatSendMessageRequested(message));
     } catch (error) {
       log('ChatFilePickFailure: $error');
-      if (error.toString().contains('read_external_storage_denied')) {
-        emit(ChatFilePickPermissionDenied(state.messages, state.roomId));
-      }
     }
   }
 
@@ -217,10 +224,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               ? message.uri
               : null;
       if (messageName == null || messageUri == null) return;
-      final messagePath = uuid ?? messageName;
+      final extension = getFileExtension(messageName);
+      final messageId = uuid != null ? '$uuid.$extension' : messageName;
 
       await _loadFileUseCase(
-        messagePath,
+        messageId,
         messageUri,
         onLoadingCallback: () {
           final loadingMessageList = messageList.map((element) {
@@ -239,7 +247,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           emit(ChatFetchMessagesSuccess(loadedMessageList, state.roomId));
         },
       );
-      if (event.shouldOpen) await _openFileUseCase(messagePath);
+      if (event.shouldOpen) await _openFileUseCase(messageId);
     } catch (error) {
       log('ChatFileLoadFailure: $error');
       emit(ChatFileLoadFailure(messageList, state.roomId));

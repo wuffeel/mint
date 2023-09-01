@@ -10,14 +10,9 @@ import '../../../../../domain/entity/review_model/review_model.dart';
 import '../../../../../theme/mint_text_styles.dart';
 
 class UserReviewsSection extends StatelessWidget {
-  const UserReviewsSection({
-    super.key,
-    required this.onEdit,
-    required this.onDelete,
-  });
+  const UserReviewsSection({super.key, required this.onEdit});
 
   final void Function(ReviewModel) onEdit;
-  final void Function(ReviewModel) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +44,6 @@ class UserReviewsSection extends StatelessWidget {
                         reviewModel: review,
                         isUserReview: true,
                         onEdit: onEdit,
-                        onDelete: onDelete,
                       );
                     },
                     separatorBuilder: (_, __) => SizedBox(height: 10.h),

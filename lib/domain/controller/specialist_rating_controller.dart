@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 
 /// Record representation of specialists rating changed
-typedef SpecialistRating = (
+typedef SpecialistRating = ({
   double rating,
   int reviewCount,
   String specialistId,
-);
+});
 
 @lazySingleton
 class SpecialistRatingController {

@@ -4,3 +4,5 @@ part of 'previous_sessions_bloc.dart';
 abstract class PreviousSessionsEvent {}
 
 class PreviousSessionsFetchRequested extends PreviousSessionsEvent {}
+
+class PreviousSessionsRefreshRequested extends PreviousSessionsEvent {}

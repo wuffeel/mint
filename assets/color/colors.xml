@@ -32,4 +32,5 @@
     <color name="imageBackgroundDark">#E3E3E3</color>
     <color name="bottomSheetTopLine">#E0E0E0</color>
     <color name="slightlyBlue">#B2D7FF</color>
+    <color name="switchDisabledLight">#787880</color>
 </resources>

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/usecase/fetch_previous_sessions_use_case.dart';
@@ -22,7 +23,14 @@ class PreviousSessionsBloc
     this._userController,
   ) : super(PreviousSessionsInitial()) {
     _subscribeToUserChange();
-    on<PreviousSessionsFetchRequested>(_onPreviousFetch);
+    on<PreviousSessionsFetchRequested>(
+      _onPreviousFetch,
+      transformer: droppable(),
+    );
+    on<PreviousSessionsRefreshRequested>(
+      _onPreviousRefresh,
+      transformer: droppable(),
+    );
   }
 
   final FetchPreviousSessionsUseCase _fetchPreviousSessionsUseCase;
@@ -31,6 +39,12 @@ class PreviousSessionsBloc
   final UserController _userController;
 
   late final StreamSubscription<UserModel?> _userSubscription;
+
+  /// Pagination end cursor
+  String? _lastVisibleBookingId;
+
+  /// Number of sessions to fetch
+  static const _paginationLimit = 12;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
@@ -48,15 +62,50 @@ class PreviousSessionsBloc
     PreviousSessionsFetchRequested event,
     Emitter<PreviousSessionsState> emit,
   ) async {
+    final state = this.state;
     final user = _currentUser;
-    if (user == null) return;
+    if (user == null ||
+        state is! PreviousSessionsInitial ||
+        state.hasReachedEnd) return;
     try {
-      emit(PreviousSessionsFetchLoading());
-      final previousSessions = await _fetchPreviousSessionsUseCase(user.id);
-      emit(PreviousSessionsFetchSuccess(previousSessions));
+      emit(
+        PreviousSessionsFetchLoading(
+          previousList: state.previousList,
+          hasReachedEnd: state.hasReachedEnd,
+        ),
+      );
+      final previousSessions = await _fetchPreviousSessionsUseCase(
+        user.id,
+        lastBookingId: _lastVisibleBookingId,
+        limit: _paginationLimit,
+      );
+      emit(
+        PreviousSessionsFetchSuccess(
+          previousList: [...state.previousList, ...previousSessions],
+          hasReachedEnd: previousSessions.length < _paginationLimit,
+        ),
+      );
+
+      if (previousSessions.isNotEmpty) {
+        _lastVisibleBookingId = previousSessions.last.id;
+      }
     } catch (error) {
       log('PreviousSessionsFetchFailure: $error');
-      emit(PreviousSessionsFetchFailure());
+      emit(
+        PreviousSessionsFetchFailure(
+          previousList: state.previousList,
+          hasReachedEnd: state.hasReachedEnd,
+        ),
+      );
     }
+  }
+
+  void _onPreviousRefresh(
+    PreviousSessionsRefreshRequested event,
+    Emitter<PreviousSessionsState> emit,
+  ) {
+    _lastVisibleBookingId = null;
+    emit(PreviousSessionsInitial());
+    add(PreviousSessionsFetchRequested());
   }
 }

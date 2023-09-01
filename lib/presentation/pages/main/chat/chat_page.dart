@@ -21,6 +21,8 @@ import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dial
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
 
+import '../../../../bloc/permission/permission_bloc.dart';
+
 @RoutePage()
 class ChatPage extends StatelessWidget {
   const ChatPage({
@@ -35,8 +37,19 @@ class ChatPage extends StatelessWidget {
   void _showPermissionDeniedDialog(BuildContext context) {
     showDialog<void>(
       context: context,
-      builder: (context) => const PermissionDeniedDialog(),
+      builder: (dialogContext) => PermissionDeniedDialog(
+        onAction: () {
+          context.read<PermissionBloc>().add(PermissionOpenSettingsRequested());
+          dialogContext.router.pop();
+        },
+      ),
     );
+  }
+
+  void _permissionCubitListener(BuildContext context, PermissionState state) {
+    if (state is PermissionPermanentlyDenied) {
+      _showPermissionDeniedDialog(context);
+    }
   }
 
   @override
@@ -51,13 +64,10 @@ class ChatPage extends StatelessWidget {
           create: (context) =>
               getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
         ),
+        BlocProvider(create: (context) => PermissionBloc()),
       ],
-      child: BlocListener<ChatBloc, ChatState>(
-        listener: (context, state) {
-          if (state is ChatFilePickPermissionDenied) {
-            _showPermissionDeniedDialog(context);
-          }
-        },
+      child: BlocListener<PermissionBloc, PermissionState>(
+        listener: _permissionCubitListener,
         child: _ChatView(specialistModel: specialistModel, room: room),
       ),
     );
@@ -112,6 +122,7 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   Future<void> _handleFileSelection() async {
+    context.read<PermissionBloc>().add(PermissionCheckStorageRequested());
     return context.read<ChatBloc>().add(ChatFilePickRequested());
   }
 
@@ -135,15 +146,17 @@ class _ChatViewState extends State<_ChatView> {
 
   /// Shows pop-up menu on [_tapPosition] with 'Edit' and 'Delete' actions
   void _showMessageActionsMenu(BuildContext context, types.Message message) {
-    return ChatUtils.showMessageActionsMenu(
-      context,
-      message,
-      _tapPosition,
-      onDelete: (message) {
-        context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
-        context.router.pop();
-      },
-    );
+    if (_isSender(message.author.id)) {
+      return ChatUtils.showMessageActionsMenu(
+        context,
+        message,
+        _tapPosition,
+        onDelete: (message) {
+          context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
+          context.router.pop();
+        },
+      );
+    }
   }
 
   /// Stores [details] tap position in [_tapPosition] for further use by message
@@ -152,6 +165,7 @@ class _ChatViewState extends State<_ChatView> {
     _tapPosition = details.globalPosition;
   }
 
+  /// Callback for reloading chat on room fetch failure
   void _refreshChat() {
     context.read<ChatBloc>().add(ChatInitializeRequested(widget.room));
   }
@@ -164,13 +178,14 @@ class _ChatViewState extends State<_ChatView> {
       );
   }
 
+  /// Message bubble container
   Widget _bubbleBuilder(
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
   }) {
     final isLast = !nextMessageInGroup;
-    final isSender = message.author.id == _user.id;
+    final isSender = _isSender(message.author.id);
     final enlargeEmojis =
         _emojiEnlargementBehavior != ui.EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
@@ -185,6 +200,20 @@ class _ChatViewState extends State<_ChatView> {
       child: child,
     );
   }
+
+  /// Builder that returns circular progress indicator while [message] is being
+  /// uploaded to database
+  Widget _messageLoadingBuilder(
+    types.CustomMessage message, {
+    // ignore: avoid-unused-parameters
+    required int messageWidth,
+  }) =>
+      _MessageLoadingIndicator(
+        isSender: _isSender(message.author.id),
+      );
+
+  /// Determines whether [userId] is current user
+  bool _isSender(String userId) => _user.id == userId;
 
   @override
   void dispose() {
@@ -220,7 +249,7 @@ class _ChatViewState extends State<_ChatView> {
                           padding: EdgeInsets.all(8.w),
                           child: ChatAudioMessage(
                             audioMessage: audio,
-                            isSender: _user.id == audio.author.id,
+                            isSender: _isSender(audio.author.id),
                           ),
                         );
                       },
@@ -246,6 +275,7 @@ class _ChatViewState extends State<_ChatView> {
                           () => _emojiPanelHidden = true,
                         ),
                       ),
+                      customMessageBuilder: _messageLoadingBuilder,
                       dateLocale: context.l10n.localeName,
                       dateHeaderBuilder: (date) {
                         return ChatDateHeader(
@@ -293,6 +323,38 @@ class _ChatViewState extends State<_ChatView> {
           }
           return const Center(child: CircularProgressIndicator());
         },
+      ),
+    );
+  }
+}
+
+class _MessageLoadingIndicator extends StatelessWidget {
+  const _MessageLoadingIndicator({required this.isSender});
+
+  final bool isSender;
+
+  bool _isThemeDark(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
+
+  Color _getProperOpaqueColor(BuildContext context) {
+    return _isThemeDark(context)
+        ? Colors.white
+        : isSender
+            ? Colors.white
+            : Colors.black;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(8.w),
+      child: SizedBox(
+        height: 24.h,
+        width: 24.w,
+        child: CircularProgressIndicator(
+          color: _getProperOpaqueColor(context),
+          strokeWidth: 2,
+        ),
       ),
     );
   }

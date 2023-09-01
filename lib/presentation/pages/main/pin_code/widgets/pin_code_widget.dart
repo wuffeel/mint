@@ -15,12 +15,15 @@ class PinCodeWidget extends StatefulWidget {
     super.key,
     required this.length,
     required this.onCompleted,
+    this.mainSpacing,
   });
 
   final int length;
 
   /// Function that is called when pin-code entered reaches [length]
   final void Function(String) onCompleted;
+
+  final double? mainSpacing;
 
   @override
   State<PinCodeWidget> createState() => _PinCodeWidgetState();
@@ -125,17 +128,21 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                 ),
               ),
             SizedBox(height: isError ? 41.h : 63.h),
-            PinCodeKeyboard(
-              onNumTap: (number) {
-                if (_pinCode.length < widget.length) {
-                  _updatePinCode('$_pinCode$number');
-                }
-              },
-              onBackspace: () {
-                if (_pinCode.isNotEmpty) {
-                  _updatePinCode(_pinCode.substring(0, _pinCode.length - 1));
-                }
-              },
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 46.w),
+              child: PinCodeKeyboard(
+                onNumTap: (number) {
+                  if (_pinCode.length < widget.length) {
+                    _updatePinCode('$_pinCode$number');
+                  }
+                },
+                onBackspace: () {
+                  if (_pinCode.isNotEmpty) {
+                    _updatePinCode(_pinCode.substring(0, _pinCode.length - 1));
+                  }
+                },
+                mainSpacing: 24.w,
+              ),
             ),
           ],
         );

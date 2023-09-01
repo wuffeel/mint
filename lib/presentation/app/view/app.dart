@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint/bloc/color_theme/color_theme_bloc.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/gen/fonts.gen.dart';
 import 'package:mint/l10n/l10n.dart';
@@ -31,46 +33,61 @@ class App extends StatelessWidget {
       builder: (context, child) {
         return GestureDetector(
           onTap: () => _hideKeyboard(context),
-          child: MaterialApp.router(
-            theme: ThemeData(
-              fontFamily: MintFontFamily.inter,
-              primaryColor: Colors.black,
-              appBarTheme: MintThemeData.appBarThemeLight,
-              colorScheme: MintThemeData.colorSchemeLight,
-              textTheme: MintThemeData.textThemeLight,
-              iconTheme: MintThemeData.iconThemeLight,
-              hintColor: MintColors.greyLight,
-              elevatedButtonTheme: MintThemeData.elevatedButtonLight,
-              outlinedButtonTheme: MintThemeData.outlinedButtonLight,
-              scaffoldBackgroundColor: MintColors.scaffoldLight,
-              bottomNavigationBarTheme: MintThemeData.bottomNavigationBarLight,
-              dividerColor: MintColors.separatorLight,
-              sliderTheme: MintThemeData.sliderThemeLight,
-              tabBarTheme: MintThemeData.tabBarThemeLight,
-              inputDecorationTheme: MintThemeData.inputDecorationLight,
-              dividerTheme: const DividerThemeData(thickness: 1, space: 1),
+          child: BlocProvider(
+            create: (context) => ColorThemeBloc(),
+            child: BlocBuilder<ColorThemeBloc, ColorThemeState>(
+              builder: (context, state) {
+                return MaterialApp.router(
+                  theme: ThemeData(
+                    fontFamily: MintFontFamily.inter,
+                    primaryColor: Colors.black,
+                    appBarTheme: MintThemeData.appBarThemeLight,
+                    colorScheme: MintThemeData.colorSchemeLight,
+                    textTheme: MintThemeData.textThemeLight,
+                    iconTheme: MintThemeData.iconThemeLight,
+                    hintColor: MintColors.greyLight,
+                    elevatedButtonTheme: MintThemeData.elevatedButtonLight,
+                    outlinedButtonTheme: MintThemeData.outlinedButtonLight,
+                    scaffoldBackgroundColor: MintColors.scaffoldLight,
+                    bottomNavigationBarTheme:
+                        MintThemeData.bottomNavigationBarLight,
+                    dividerColor: MintColors.separatorLight,
+                    sliderTheme: MintThemeData.sliderThemeLight,
+                    tabBarTheme: MintThemeData.tabBarThemeLight,
+                    inputDecorationTheme: MintThemeData.inputDecorationLight,
+                    dividerTheme: const DividerThemeData(
+                      thickness: 1,
+                      space: 1,
+                    ),
+                  ),
+                  darkTheme: ThemeData(
+                    fontFamily: MintFontFamily.inter,
+                    primaryColor: Colors.white,
+                    appBarTheme: MintThemeData.appBarThemeDark,
+                    colorScheme: MintThemeData.colorSchemeDark,
+                    textTheme: MintThemeData.textThemeDark,
+                    iconTheme: MintThemeData.iconThemeDark,
+                    hintColor: MintColors.greyDark,
+                    elevatedButtonTheme: MintThemeData.elevatedButtonDark,
+                    outlinedButtonTheme: MintThemeData.outlinedButtonDark,
+                    scaffoldBackgroundColor: MintColors.scaffoldDark,
+                    bottomNavigationBarTheme:
+                        MintThemeData.bottomNavigationBarDark,
+                    dividerColor: MintColors.separatorDark.withOpacity(0.6),
+                    sliderTheme: MintThemeData.sliderThemeDark,
+                    tabBarTheme: MintThemeData.tabBarThemeDark,
+                    inputDecorationTheme: MintThemeData.inputDecorationDark,
+                    dividerTheme:
+                        const DividerThemeData(thickness: 1, space: 1),
+                  ),
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  themeMode: state.theme ?? ThemeMode.system,
+                  routerConfig: _appRouter.config(),
+                );
+              },
             ),
-            darkTheme: ThemeData(
-              fontFamily: MintFontFamily.inter,
-              primaryColor: Colors.white,
-              appBarTheme: MintThemeData.appBarThemeDark,
-              colorScheme: MintThemeData.colorSchemeDark,
-              textTheme: MintThemeData.textThemeDark,
-              iconTheme: MintThemeData.iconThemeDark,
-              hintColor: MintColors.greyDark,
-              elevatedButtonTheme: MintThemeData.elevatedButtonDark,
-              outlinedButtonTheme: MintThemeData.outlinedButtonDark,
-              scaffoldBackgroundColor: MintColors.scaffoldDark,
-              bottomNavigationBarTheme: MintThemeData.bottomNavigationBarDark,
-              dividerColor: MintColors.separatorDark.withOpacity(0.6),
-              sliderTheme: MintThemeData.sliderThemeDark,
-              tabBarTheme: MintThemeData.tabBarThemeDark,
-              inputDecorationTheme: MintThemeData.inputDecorationDark,
-              dividerTheme: const DividerThemeData(thickness: 1, space: 1),
-            ),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            routerConfig: _appRouter.config(),
           ),
         );
       },

@@ -6,17 +6,26 @@ import '../../entity/filter_preferences/filter_preferences.dart';
 abstract class SpecialistService {
   Future<SpecialistModel?> getSpecialist(String specialistId);
 
-  Future<List<SpecialistModel>> getSpecialistsOnline();
+  Future<List<SpecialistModel>> getSpecialistsOnline({
+    String? lastSpecialistId,
+    int? limit,
+  });
 
-  Future<List<SpecialistModel>> getFavoriteSpecialists(String userId);
+  Future<List<SpecialistModel>> getFavoriteSpecialists(
+    String userId, {
+    String? lastSpecialistId,
+    int? limit,
+  });
 
   Future<void> addToFavorite(String userId, String specialistId);
 
   Future<void> removeFromFavorite(String userId, String specialistId);
 
   Future<List<SpecialistModel>> getSpecialistCatalogue(
-    FilterPreferences filter,
-  );
+    FilterPreferences filter, {
+    String? lastSpecialistId,
+    int? limit,
+  });
 
   Future<List<ReviewModel>> getSpecialistReviews(String specialistId);
 

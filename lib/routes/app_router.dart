@@ -46,6 +46,8 @@ class AppRouter extends $AppRouter {
                     AutoRoute(page: ProfilePersonalDataRoute.page),
                     AutoRoute(page: ProfileCreditCardsRoute.page),
                     AutoRoute(page: FavoriteDoctorsRoute.page),
+                    AutoRoute(page: NotificationSettingsRoute.page),
+                    AutoRoute(page: ColorThemeRoute.page),
                   ],
                 ),
               ],

@@ -70,6 +70,10 @@ class $AssetsSvgGen {
   SvgGenImage get chevronRight =>
       const SvgGenImage('assets/svg/chevron_right.svg');
 
+  /// File path: assets/svg/color_theme_icon.svg
+  SvgGenImage get colorThemeIcon =>
+      const SvgGenImage('assets/svg/color_theme_icon.svg');
+
   /// File path: assets/svg/credit_cards.svg
   SvgGenImage get creditCards =>
       const SvgGenImage('assets/svg/credit_cards.svg');
@@ -178,6 +182,7 @@ class $AssetsSvgGen {
         chat,
         checkMark,
         chevronRight,
+        colorThemeIcon,
         creditCards,
         crossIcon,
         emojiIcon,

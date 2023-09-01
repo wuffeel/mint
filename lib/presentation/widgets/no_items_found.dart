@@ -13,10 +13,12 @@ class NoItemsFound extends StatelessWidget {
   Widget build(BuildContext context) {
     final sub = subTitle;
     return sub == null
-        ? Text(
-            title,
-            style: MintTextStyles.title1,
-            textAlign: TextAlign.center,
+        ? Center(
+            child: Text(
+              title,
+              style: MintTextStyles.title1,
+              textAlign: TextAlign.center,
+            ),
           )
         : Column(
             mainAxisAlignment: MainAxisAlignment.center,

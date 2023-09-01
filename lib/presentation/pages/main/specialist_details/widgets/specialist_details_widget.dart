@@ -51,7 +51,9 @@ class SpecialistDetailsWidget extends StatelessWidget {
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter,
               ),
-            ),
+            )
+          else
+            SizedBox(width: double.infinity, height: kToolbarHeight + 12.h),
           Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
             child: Column(
@@ -122,22 +124,24 @@ class SpecialistDetailsWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 23.h),
-                Text(
-                  l10n.specializations,
-                  style: MintTextStyles.headline1,
-                ),
-                SizedBox(height: 12.h),
-                Wrap(
-                  spacing: 8.w,
-                  runSpacing: 8.h,
-                  children: List.generate(
-                    specializations.length,
-                    (index) => SpecializationTile(
-                      title: specializations[index],
+                if (specializations.isNotEmpty) ...[
+                  SizedBox(height: 23.h),
+                  Text(
+                    l10n.specializations,
+                    style: MintTextStyles.headline1,
+                  ),
+                  SizedBox(height: 12.h),
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    children: List.generate(
+                      specializations.length,
+                      (index) => SpecializationTile(
+                        title: specializations[index],
+                      ),
                     ),
                   ),
-                ),
+                ],
                 SizedBox(height: 24.h),
               ],
             ),

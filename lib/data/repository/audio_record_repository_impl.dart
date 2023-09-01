@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
@@ -16,13 +17,14 @@ class AudioRecordRepositoryImpl implements AudioRecordRepository {
 
   @override
   Future<void> startRecord(RecorderController controller) async {
-    final permission = await controller.checkPermission();
-    if (permission) await controller.record();
+    await controller.record();
   }
 
   @override
   Future<types.PartialAudio?> stopRecord(RecorderController controller) async {
     final audioPath = await controller.stop();
+    if (controller.recordedDuration.inSeconds == 0) return null;
+    log(audioPath.toString());
     if (audioPath != null) {
       final file = File(audioPath);
       return types.PartialAudio(

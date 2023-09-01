@@ -12,18 +12,20 @@ import '../../entity/review_model/review_model.dart';
 
 @Injectable(as: SpecialistService)
 class FirebaseSpecialistService implements SpecialistService {
-  FirebaseSpecialistService(this._specialistRepository,
-      this._specialistModelFromDto,
-      this._filterPreferencesToDto,
-      this._reviewModelFromDto,
-      this._reviewDtoFromModel,);
+  FirebaseSpecialistService(
+    this._specialistRepository,
+    this._specialistModelFromDto,
+    this._filterPreferencesToDto,
+    this._reviewModelFromDto,
+    this._reviewDtoFromModel,
+  );
 
   final SpecialistRepository _specialistRepository;
 
   final Factory<Future<SpecialistModel>, SpecialistModelDto>
-  _specialistModelFromDto;
+      _specialistModelFromDto;
   final Factory<FilterPreferencesDto, FilterPreferences>
-  _filterPreferencesToDto;
+      _filterPreferencesToDto;
   final Factory<Future<ReviewModel?>, ReviewModelDto> _reviewModelFromDto;
   final Factory<ReviewModelDto, ReviewModel> _reviewDtoFromModel;
 
@@ -35,15 +37,29 @@ class FirebaseSpecialistService implements SpecialistService {
   }
 
   @override
-  Future<List<SpecialistModel>> getSpecialistsOnline() async {
-    final specialists = await _specialistRepository.getSpecialistsOnline();
+  Future<List<SpecialistModel>> getSpecialistsOnline({
+    String? lastSpecialistId,
+    int? limit,
+  }) async {
+    final specialists = await _specialistRepository.getSpecialistsOnline(
+      lastSpecialistId: lastSpecialistId,
+      limit: limit,
+    );
     return Future.wait(specialists.map(_specialistModelFromDto.create));
   }
 
   @override
-  Future<List<SpecialistModel>> getFavoriteSpecialists(String userId) async {
+  Future<List<SpecialistModel>> getFavoriteSpecialists(
+    String userId, {
+    String? lastSpecialistId,
+    int? limit,
+  }) async {
     final favoriteSpecialists =
-    await _specialistRepository.getFavoriteSpecialists(userId);
+        await _specialistRepository.getFavoriteSpecialists(
+      userId,
+      lastSpecialistId: lastSpecialistId,
+      limit: limit,
+    );
     return Future.wait(favoriteSpecialists.map(_specialistModelFromDto.create));
   }
 
@@ -59,10 +75,17 @@ class FirebaseSpecialistService implements SpecialistService {
 
   @override
   Future<List<SpecialistModel>> getSpecialistCatalogue(
-      FilterPreferences filter,) async {
+    FilterPreferences filter, {
+    String? lastSpecialistId,
+    int? limit,
+  }) async {
     final filterDto = _filterPreferencesToDto.create(filter);
     final specialistCatalogue =
-    await _specialistRepository.getSpecialistCatalogue(filterDto);
+        await _specialistRepository.getSpecialistCatalogue(
+      filterDto,
+      lastSpecialistId: lastSpecialistId,
+      limit: limit,
+    );
     return Future.wait(specialistCatalogue.map(_specialistModelFromDto.create));
   }
 

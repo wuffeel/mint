@@ -45,6 +45,7 @@ dependencies:
   freezed_annotation: ^2.2.0
   get_it: ^7.6.0
   http: ^0.13.6
+  hydrated_bloc: ^9.1.2
   image_picker: ^1.0.1
   injectable: ^2.1.2
   intl: ^0.18.0
@@ -53,6 +54,7 @@ dependencies:
   meta: ^1.9.1
   open_filex: ^4.3.2
   path_provider: ^2.0.15
+  permission_handler: ^10.4.3
   pinput: ^2.2.31
   rxdart: ^0.27.7
   shimmer: ^3.0.0

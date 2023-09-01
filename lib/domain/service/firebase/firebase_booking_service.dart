@@ -58,8 +58,17 @@ class FirebaseBookingService implements BookingService {
   }
 
   @override
-  Future<List<BookingData>> getPreviousSessions(String userId) async {
-    return _getSessions(userId, isUpcoming: false);
+  Future<List<BookingData>> getPreviousSessions(
+    String userId, {
+    String? lastBookingId,
+    int? limit,
+  }) async {
+    return _getSessions(
+      userId,
+      isUpcoming: false,
+      lastBookingId: lastBookingId,
+      limit: limit,
+    );
   }
 
   @override
@@ -72,10 +81,16 @@ class FirebaseBookingService implements BookingService {
   Future<List<BookingData>> _getSessions(
     String userId, {
     required bool isUpcoming,
+    String? lastBookingId,
+    int? limit,
   }) async {
     final sessions = isUpcoming
         ? await _bookingRepository.getUpcomingSessions(userId)
-        : await _bookingRepository.getPreviousSessions(userId);
+        : await _bookingRepository.getPreviousSessions(
+            userId,
+            lastBookingId: lastBookingId,
+            limit: limit,
+          );
 
     final sessionList = await Future.wait(
       sessions.map(_bookingDataFromDto.create),

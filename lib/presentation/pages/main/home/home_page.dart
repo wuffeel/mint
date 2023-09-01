@@ -12,6 +12,7 @@ import 'package:mint/presentation/pages/main/home/widgets/home_app_bar.dart';
 import 'package:mint/presentation/pages/main/home/widgets/pick_up_specialist_button.dart';
 import 'package:mint/presentation/widgets/mint_refresh_indicator.dart';
 import 'package:mint/presentation/widgets/upcoming_sessions_list.dart';
+import 'package:mint/utils/pagination_utils.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -20,21 +21,47 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<SpecialistOnlineBloc>()
-        ..add(
-          SpecialistOnlineFetchRequested(),
-        ),
+      create: (context) =>
+          getIt<SpecialistOnlineBloc>()..add(SpecialistOnlineFetchRequested()),
       child: const _HomePageView(),
     );
   }
 }
 
-class _HomePageView extends StatelessWidget {
+class _HomePageView extends StatefulWidget {
   const _HomePageView();
 
+  @override
+  State<_HomePageView> createState() => _HomePageViewState();
+}
+
+class _HomePageViewState extends State<_HomePageView> {
+  final _paginationScroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _paginationScroll.addListener(_loadNextPage);
+  }
+
   void _refreshPage(BuildContext context) {
-    context.read<SpecialistOnlineBloc>().add(SpecialistOnlineFetchRequested());
+    final specialistRefreshEvent = SpecialistOnlineRefreshRequested();
+    context.read<SpecialistOnlineBloc>().add(specialistRefreshEvent);
     context.read<UpcomingSessionsBloc>().add(UpcomingSessionsFetchRequested());
+  }
+
+  void _loadNextPage() {
+    if (PaginationUtils.isOverScroll(_paginationScroll)) {
+      context
+          .read<SpecialistOnlineBloc>()
+          .add(SpecialistOnlineFetchRequested());
+    }
+  }
+
+  @override
+  void dispose() {
+    _paginationScroll.removeListener(_loadNextPage);
+    super.dispose();
   }
 
   @override
@@ -53,6 +80,7 @@ class _HomePageView extends StatelessWidget {
           body: MintRefreshIndicator(
             onRefresh: () => _refreshPage(context),
             child: CustomScrollView(
+              controller: _paginationScroll,
               slivers: <Widget>[
                 // Makes StickyHeader unpinned if scrolled to the top of page
                 const SliverToBoxAdapter(child: SizedBox(height: 1)),

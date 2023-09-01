@@ -8,5 +8,9 @@ class FetchSpecialistsOnlineUseCase {
 
   final SpecialistService _service;
 
-  Future<List<SpecialistModel>> call() => _service.getSpecialistsOnline();
+  Future<List<SpecialistModel>> call({String? lastSpecialistId, int? limit}) =>
+      _service.getSpecialistsOnline(
+        lastSpecialistId: lastSpecialistId,
+        limit: limit,
+      );
 }

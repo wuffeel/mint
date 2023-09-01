@@ -71,8 +71,17 @@ class FirebaseBookingRepository implements BookingRepository {
   }
 
   @override
-  Future<List<BookingDataDto>> getPreviousSessions(String userId) async {
-    return _getSessions(userId, isUpcoming: false);
+  Future<List<BookingDataDto>> getPreviousSessions(
+    String userId, {
+    String? lastBookingId,
+    int? limit,
+  }) async {
+    return _getSessions(
+      userId,
+      isUpcoming: false,
+      lastBookingId: lastBookingId,
+      limit: limit,
+    );
   }
 
   @override
@@ -109,17 +118,30 @@ class FirebaseBookingRepository implements BookingRepository {
   Future<List<BookingDataDto>> _getSessions(
     String userId, {
     required bool isUpcoming,
+    String? lastBookingId,
+    int? limit,
   }) async {
     final nowUtc = DateTime.now().toUtc();
 
-    final query = isUpcoming
+    var query = isUpcoming
         ? _bookingsCollectionRef.where('endTime', isGreaterThan: nowUtc)
         : _bookingsCollectionRef.where('endTime', isLessThan: nowUtc);
 
-    final sessionsSnapshot = await query
+    query = query
         .where('userId', isEqualTo: userId)
-        .orderBy('endTime', descending: !isUpcoming)
-        .get();
+        .orderBy('endTime', descending: !isUpcoming);
+
+    if (limit != null) {
+      query = query.limit(limit);
+    }
+
+    if (lastBookingId != null) {
+      final lastBookingDoc =
+          await _bookingsCollectionRef.doc(lastBookingId).get();
+      query = query.startAfterDocument(lastBookingDoc);
+    }
+
+    final sessionsSnapshot = await query.get();
 
     return sessionsSnapshot.docs
         .map((consultation) {

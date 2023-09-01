@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -21,7 +22,14 @@ class SpecialistOnlineBloc
     this._ratingController,
   ) : super(SpecialistOnlineInitial()) {
     _subscribeToRatingChange();
-    on<SpecialistOnlineFetchRequested>(_onSpecialistsOnlineFetch);
+    on<SpecialistOnlineFetchRequested>(
+      _onSpecialistsOnlineFetch,
+      transformer: droppable(),
+    );
+    on<SpecialistOnlineRefreshRequested>(
+      _onSpecialistsOnlineRefresh,
+      transformer: droppable(),
+    );
     on<SpecialistOnlineRatingUpdated>(_onSpecialistReviewUpdate);
   }
 
@@ -29,6 +37,12 @@ class SpecialistOnlineBloc
 
   final SpecialistRatingController _ratingController;
   late final StreamSubscription<SpecialistRating> _ratingSubscription;
+
+  /// Pagination end cursor
+  String? _lastVisibleSpecialistId;
+
+  /// Number of specialists to fetch
+  static const _paginationLimit = 8;
 
   void _subscribeToRatingChange() {
     _ratingSubscription = _ratingController.rating.listen((newRating) {
@@ -46,14 +60,21 @@ class SpecialistOnlineBloc
     SpecialistOnlineFetchRequested event,
     Emitter<SpecialistOnlineState> emit,
   ) async {
-    try {
-      emit(SpecialistOnlineLoading());
-      final specialistList = await _fetchSpecialistsOnlineUseCase();
-      emit(SpecialistOnlineFetchSuccess(specialistList));
-    } catch (error) {
-      log('SpecialistOnlineFailure: $error');
-      emit(SpecialistOnlineFetchFailure());
-    }
+    final state = this.state;
+    if (state is SpecialistOnlineFetchSuccess && state.hasReachedEnd) return;
+
+    state is SpecialistOnlineFetchSuccess
+        ? await _fetchNextPage(state, emit)
+        : await _fetchFirstPage(emit);
+  }
+
+  void _onSpecialistsOnlineRefresh(
+    SpecialistOnlineRefreshRequested event,
+    Emitter<SpecialistOnlineState> emit,
+  ) {
+    _lastVisibleSpecialistId = null;
+    emit(SpecialistOnlineInitial());
+    add(SpecialistOnlineFetchRequested());
   }
 
   void _onSpecialistReviewUpdate(
@@ -67,13 +88,83 @@ class SpecialistOnlineBloc
     if (specialists.isEmpty) return;
 
     final updatedSpecialists = specialists.map((specialist) {
-      final rating = event.updatedRating;
-      if (specialist.id == rating.$3) {
-        return specialist.copyWith(rating: rating.$1, reviewCount: rating.$2);
+      final newRating = event.updatedRating;
+      if (specialist.id == newRating.specialistId) {
+        return specialist.copyWith(
+          rating: newRating.rating,
+          reviewCount: newRating.reviewCount,
+        );
       }
       return specialist;
     }).toList();
 
-    emit(SpecialistOnlineFetchSuccess(updatedSpecialists));
+    emit(
+      SpecialistOnlineFetchSuccess(
+        updatedSpecialists,
+        hasReachedEnd: state.hasReachedEnd,
+      ),
+    );
+  }
+
+  Future<void> _fetchFirstPage(Emitter<SpecialistOnlineState> emit) async {
+    try {
+      emit(SpecialistOnlineListLoading());
+
+      final specialistList = await _fetchSpecialistsOnlineUseCase(
+        lastSpecialistId: _lastVisibleSpecialistId,
+        limit: _paginationLimit,
+      );
+      emit(
+        SpecialistOnlineFetchSuccess(
+          specialistList,
+          hasReachedEnd: specialistList.length < _paginationLimit,
+        ),
+      );
+
+      if (specialistList.isNotEmpty) {
+        _lastVisibleSpecialistId = specialistList.last.id;
+      }
+    } catch (error) {
+      log('SpecialistOnlineFetchFailure: $error');
+      emit(SpecialistOnlineFetchFailure());
+    }
+  }
+
+  Future<void> _fetchNextPage(
+    SpecialistOnlineFetchSuccess state,
+    Emitter<SpecialistOnlineState> emit,
+  ) async {
+    try {
+      emit(
+        SpecialistOnlinePageLoading(
+          state.specialistList,
+          hasReachedEnd: state.hasReachedEnd,
+        ),
+      );
+
+      final specialistList = await _fetchSpecialistsOnlineUseCase(
+        lastSpecialistId: _lastVisibleSpecialistId,
+        limit: _paginationLimit,
+      );
+
+      emit(
+        SpecialistOnlineFetchSuccess(
+          [...state.specialistList, ...specialistList],
+          hasReachedEnd: specialistList.length < _paginationLimit,
+        ),
+      );
+
+      if (specialistList.isNotEmpty) {
+        _lastVisibleSpecialistId = specialistList.last.id;
+      }
+    } catch (error) {
+      log('SpecialistOnlineFetchPageFailure: $error');
+      emit(
+        SpecialistOnlineFetchPageFailure(
+          state.specialistList,
+          hasReachedEnd: state.hasReachedEnd,
+        ),
+      );
+    }
   }
 }

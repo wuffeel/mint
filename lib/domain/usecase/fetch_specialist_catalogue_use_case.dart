@@ -9,6 +9,14 @@ class FetchSpecialistCatalogueUseCase {
 
   final SpecialistService _service;
 
-  Future<List<SpecialistModel>> call(FilterPreferences filter) =>
-      _service.getSpecialistCatalogue(filter);
+  Future<List<SpecialistModel>> call(
+    FilterPreferences filter, {
+    String? lastSpecialistId,
+    int? limit,
+  }) =>
+      _service.getSpecialistCatalogue(
+        filter,
+        lastSpecialistId: lastSpecialistId,
+        limit: limit,
+      );
 }

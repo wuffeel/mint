@@ -18,7 +18,6 @@ part 'review_event.dart';
 
 part 'review_state.dart';
 
-// TODO(wuffeel): do we need a user controller here to handle user name changes?
 @injectable
 class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
   ReviewBloc(
@@ -241,9 +240,9 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
         specialistReviews.map((e) => e.rating).reduce((a, b) => a + b);
     final reviewCount = specialistReviews.length;
     final updatedRating = (
-      double.parse((newRating / reviewCount).toStringAsFixed(1)),
-      reviewCount,
-      specialistId,
+      rating: double.parse((newRating / reviewCount).toStringAsFixed(1)),
+      reviewCount: reviewCount,
+      specialistId: specialistId,
     );
     return updatedRating;
   }

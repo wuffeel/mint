@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:mint/domain/entity/experience_model.dart';
 import 'package:mint/utils/experience/abstract/experience_messages.dart';
@@ -11,6 +11,9 @@ class ExperienceLocalization {
     'en': EnExperience(),
     'uk': UkExperience(),
   };
+
+  /// Determines years number low bound to display 'Less than _X_ years' text
+  static const _lessThanLowBoundary = 1;
 
   /// Calculates the difference in years between a given date or date range
   /// and returns the appropriate localized message.
@@ -39,7 +42,7 @@ class ExperienceLocalization {
   }) {
     final locale0 = locale ?? _default;
     if (_timeAgoMessagesMap[locale0] == null) {
-      log(
+      dev.log(
         'Locale [$locale0] has not been added, using [$_default] as fallback. '
         'To add a locale use [setLocaleMessages]',
       );
@@ -52,24 +55,34 @@ class ExperienceLocalization {
       final to = experienceModel.experienceTo;
 
       if (from != null && to != null) {
-        final fromDiff = now.difference(from).inDays ~/ 365;
-        final toDiff = now.difference(to).inDays ~/ 365;
+        final fromDiff = _getExperienceYearsDiff(now, from);
+        final toDiff = _getExperienceYearsDiff(now, to);
         return messages.fromYearsToYears(toDiff, fromDiff);
       } else if (from != null) {
-        final fromDiff = now.difference(from).inDays ~/ 365;
+        final fromDiff = _getExperienceYearsDiff(now, from);
         return messages.lessThanYears(fromDiff);
       } else if (to != null) {
-        final toDiff = now.difference(to).inDays ~/ 365;
+        final toDiff = _getExperienceYearsDiff(now, to);
         return messages.moreThanYears(toDiff);
       }
     }
 
     if (date == null) return '';
-    final days = now.difference(date).inDays;
-    final years = days / 365;
+    final years = _getExperienceYears(now.difference(date).inDays);
 
-    return years < 1
-        ? messages.lessThanYears(years.round())
-        : messages.years(years.round());
+    return years < _lessThanLowBoundary
+        ? messages.lessThanYears(_lessThanLowBoundary)
+        : messages.years(years);
+  }
+
+  /// Returns experience years difference between [now] and [experienceDate]
+  /// provided
+  static int _getExperienceYearsDiff(DateTime now, DateTime experienceDate) {
+    return _getExperienceYears(now.difference(experienceDate).inDays);
+  }
+
+  /// Returns rounded experience years count based on [days] provided
+  static int _getExperienceYears(int days) {
+    return (days / 365).round();
   }
 }
