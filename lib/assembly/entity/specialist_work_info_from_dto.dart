@@ -68,11 +68,14 @@ class SpecialistWorkInfoFromDto
     for (final workHour in workHours.entries) {
       final weekday = workHour.key;
       final timeData = workHour.value;
+      final startOfWorkDay = timeData.start;
+      final endOfWorkDay = timeData.end;
+      if (startOfWorkDay == null || endOfWorkDay == null) continue;
 
       final startDateTime =
-          DateFormat('h:mm a').parse(timeData.start, true).toLocal();
+          DateFormat('h:mm a').parse(startOfWorkDay, true).toLocal();
       var endDateTime =
-          DateFormat('h:mm a').parse(timeData.end, true).toLocal();
+          DateFormat('h:mm a').parse(endOfWorkDay, true).toLocal();
 
       if (endDateTime.isBefore(startDateTime)) {
         endDateTime = endDateTime.add(const Duration(days: 1));

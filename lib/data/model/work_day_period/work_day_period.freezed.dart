@@ -20,8 +20,8 @@ WorkDayPeriod _$WorkDayPeriodFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$WorkDayPeriod {
-  String get start => throw _privateConstructorUsedError;
-  String get end => throw _privateConstructorUsedError;
+  String? get start => throw _privateConstructorUsedError;
+  String? get end => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $WorkDayPeriodCopyWith<$Res> {
           WorkDayPeriod value, $Res Function(WorkDayPeriod) then) =
       _$WorkDayPeriodCopyWithImpl<$Res, WorkDayPeriod>;
   @useResult
-  $Res call({String start, String end});
+  $Res call({String? start, String? end});
 }
 
 /// @nodoc
@@ -51,18 +51,18 @@ class _$WorkDayPeriodCopyWithImpl<$Res, $Val extends WorkDayPeriod>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? start = null,
-    Object? end = null,
+    Object? start = freezed,
+    Object? end = freezed,
   }) {
     return _then(_value.copyWith(
-      start: null == start
+      start: freezed == start
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
-              as String,
-      end: null == end
+              as String?,
+      end: freezed == end
           ? _value.end
           : end // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$_WorkDayPeriodCopyWith<$Res>
       __$$_WorkDayPeriodCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String start, String end});
+  $Res call({String? start, String? end});
 }
 
 /// @nodoc
@@ -89,18 +89,18 @@ class __$$_WorkDayPeriodCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? start = null,
-    Object? end = null,
+    Object? start = freezed,
+    Object? end = freezed,
   }) {
     return _then(_$_WorkDayPeriod(
-      start: null == start
+      start: freezed == start
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
-              as String,
-      end: null == end
+              as String?,
+      end: freezed == end
           ? _value.end
           : end // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -108,15 +108,15 @@ class __$$_WorkDayPeriodCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_WorkDayPeriod with DiagnosticableTreeMixin implements _WorkDayPeriod {
-  const _$_WorkDayPeriod({required this.start, required this.end});
+  const _$_WorkDayPeriod({this.start, this.end});
 
   factory _$_WorkDayPeriod.fromJson(Map<String, dynamic> json) =>
       _$$_WorkDayPeriodFromJson(json);
 
   @override
-  final String start;
+  final String? start;
   @override
-  final String end;
+  final String? end;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -160,17 +160,16 @@ class _$_WorkDayPeriod with DiagnosticableTreeMixin implements _WorkDayPeriod {
 }
 
 abstract class _WorkDayPeriod implements WorkDayPeriod {
-  const factory _WorkDayPeriod(
-      {required final String start,
-      required final String end}) = _$_WorkDayPeriod;
+  const factory _WorkDayPeriod({final String? start, final String? end}) =
+      _$_WorkDayPeriod;
 
   factory _WorkDayPeriod.fromJson(Map<String, dynamic> json) =
       _$_WorkDayPeriod.fromJson;
 
   @override
-  String get start;
+  String? get start;
   @override
-  String get end;
+  String? get end;
   @override
   @JsonKey(ignore: true)
   _$$_WorkDayPeriodCopyWith<_$_WorkDayPeriod> get copyWith =>

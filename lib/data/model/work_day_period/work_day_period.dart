@@ -7,10 +7,7 @@ part 'work_day_period.g.dart';
 
 @freezed
 class WorkDayPeriod with _$WorkDayPeriod {
-  const factory WorkDayPeriod({
-    required String start,
-    required String end,
-  }) = _WorkDayPeriod;
+  const factory WorkDayPeriod({String? start, String? end}) = _WorkDayPeriod;
 
   factory WorkDayPeriod.fromJson(Map<String, dynamic> json) =>
       _$WorkDayPeriodFromJson(json);
