@@ -1,10 +1,5 @@
 import '../domain/entity/specialist_model/specialist_model.dart';
 
-typedef SpecializationComparator = int Function(
-  SpecialistModel a,
-  SpecialistModel b,
-);
-
 extension SpecialistModelExtensions on List<SpecialistModel> {
   List<SpecialistModel> sortByMostOccurrences({
     required List<String> selectedSpecializations,
