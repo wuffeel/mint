@@ -8,16 +8,10 @@ class ModifiedUserDtoToMap
     implements Factory<Map<String, dynamic>, UserModelDto> {
   @override
   Map<String, dynamic> create(UserModelDto param) {
-    final resultMap = <String, dynamic>{
-      'firstName': param.firstName,
-      'lastName': param.lastName,
-      'dateOfBirth': param.dateOfBirth,
-    };
-    final photoUrl = param.photoUrl;
-    if (photoUrl != null && !photoUrl.startsWith('http')) {
-      resultMap['photoUrl'] = photoUrl;
-    }
+    final userMap = param.toJsonWithoutId();
 
-    return resultMap;
+    final photoUrl = param.photoUrl;
+    final isLink = photoUrl != null && !photoUrl.startsWith('http');
+    return isLink ? (userMap..remove('photoUrl')) : userMap;
   }
 }

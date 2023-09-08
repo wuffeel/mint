@@ -11,27 +11,27 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i95;
 
-import 'package:flutter_chat_types/flutter_chat_types.dart' as _i26;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as _i32;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:mint/assembly/entity/booking_data_from_dto.dart' as _i129;
-import 'package:mint/assembly/entity/chat_room_from_map.dart' as _i28;
-import 'package:mint/assembly/entity/chat_user_data_from_map.dart' as _i27;
-import 'package:mint/assembly/entity/credit_card_model_from_dto.dart' as _i31;
+import 'package:mint/assembly/entity/chat_room_from_map.dart' as _i34;
+import 'package:mint/assembly/entity/chat_user_data_from_map.dart' as _i33;
+import 'package:mint/assembly/entity/credit_card_model_from_dto.dart' as _i14;
 import 'package:mint/assembly/entity/pick_up_filter_from_dto.dart' as _i37;
 import 'package:mint/assembly/entity/review_model_from_dto.dart' as _i118;
-import 'package:mint/assembly/entity/specialist_filter_from_dto.dart' as _i40;
-import 'package:mint/assembly/entity/specialist_model_from_dto.dart' as _i101;
+import 'package:mint/assembly/entity/specialist_filter_from_dto.dart' as _i17;
+import 'package:mint/assembly/entity/specialist_model_from_dto.dart' as _i98;
 import 'package:mint/assembly/entity/specialist_work_info_from_dto.dart'
-    as _i34;
-import 'package:mint/assembly/entity/user_model_from_dto.dart' as _i98;
+    as _i40;
+import 'package:mint/assembly/entity/user_model_from_dto.dart' as _i101;
 import 'package:mint/assembly/factory.dart' as _i11;
-import 'package:mint/assembly/model/booking_data_to_dto.dart' as _i25;
-import 'package:mint/assembly/model/filter_preferences_to_dto.dart' as _i16;
-import 'package:mint/assembly/model/review_model_to_dto.dart' as _i19;
-import 'package:mint/assembly/model/transaction_data_to_dto.dart' as _i22;
-import 'package:mint/assembly/model/user_model_to_dto.dart' as _i97;
-import 'package:mint/assembly/modified_user_dto_to_map.dart' as _i13;
+import 'package:mint/assembly/model/booking_data_to_dto.dart' as _i31;
+import 'package:mint/assembly/model/filter_preferences_to_dto.dart' as _i22;
+import 'package:mint/assembly/model/review_model_to_dto.dart' as _i25;
+import 'package:mint/assembly/model/transaction_data_to_dto.dart' as _i28;
+import 'package:mint/assembly/model/user_model_to_dto.dart' as _i100;
+import 'package:mint/assembly/modified_user_dto_to_map.dart' as _i19;
 import 'package:mint/bloc/audio_message/audio_message_cubit.dart' as _i83;
 import 'package:mint/bloc/audio_record/audio_record_bloc.dart' as _i84;
 import 'package:mint/bloc/auth/auth_bloc.dart' as _i85;
@@ -57,23 +57,23 @@ import 'package:mint/bloc/upcoming_sessions/upcoming_sessions_bloc.dart'
     as _i150;
 import 'package:mint/bloc/user/user_bloc.dart' as _i140;
 import 'package:mint/bloc/work_info/work_info_bloc.dart' as _i151;
-import 'package:mint/data/model/booking_data_dto/booking_data_dto.dart' as _i23;
+import 'package:mint/data/model/booking_data_dto/booking_data_dto.dart' as _i29;
 import 'package:mint/data/model/credit_card_model_dto/credit_card_model_dto.dart'
-    as _i30;
+    as _i13;
 import 'package:mint/data/model/filter_preferences_dto/filter_preferences_dto.dart'
-    as _i14;
+    as _i20;
 import 'package:mint/data/model/pick_up_filter_dto/pick_up_filter_dto.dart'
     as _i36;
-import 'package:mint/data/model/review_model_dto/review_model_dto.dart' as _i17;
+import 'package:mint/data/model/review_model_dto/review_model_dto.dart' as _i23;
 import 'package:mint/data/model/specialist_filter_dto/specialist_filter_dto.dart'
-    as _i39;
+    as _i16;
 import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart'
-    as _i100;
+    as _i97;
 import 'package:mint/data/model/specialist_work_info_dto/specialist_work_info_dto.dart'
-    as _i33;
+    as _i39;
 import 'package:mint/data/model/transaction_data_dto/transaction_data_dto.dart'
-    as _i20;
-import 'package:mint/data/model/user_model_dto/user_model_dto.dart' as _i12;
+    as _i26;
+import 'package:mint/data/model/user_model_dto/user_model_dto.dart' as _i18;
 import 'package:mint/data/repository/abstract/audio_record_repository.dart'
     as _i4;
 import 'package:mint/data/repository/abstract/booking_repository.dart' as _i9;
@@ -115,22 +115,22 @@ import 'package:mint/domain/controller/pick_up_filter_controller.dart' as _i66;
 import 'package:mint/domain/controller/specialist_rating_controller.dart'
     as _i68;
 import 'package:mint/domain/controller/user_controller.dart' as _i78;
-import 'package:mint/domain/entity/booking_data/booking_data.dart' as _i24;
+import 'package:mint/domain/entity/booking_data/booking_data.dart' as _i30;
 import 'package:mint/domain/entity/credit_card_model/credit_card_model.dart'
-    as _i29;
+    as _i12;
 import 'package:mint/domain/entity/filter_preferences/filter_preferences.dart'
-    as _i15;
-import 'package:mint/domain/entity/pick_up_filter/pick_up_filter.dart' as _i35;
-import 'package:mint/domain/entity/review_model/review_model.dart' as _i18;
-import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart'
-    as _i38;
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
-    as _i99;
-import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart'
-    as _i32;
-import 'package:mint/domain/entity/transaction_data/transaction_data.dart'
     as _i21;
-import 'package:mint/domain/entity/user_model/user_model.dart' as _i96;
+import 'package:mint/domain/entity/pick_up_filter/pick_up_filter.dart' as _i35;
+import 'package:mint/domain/entity/review_model/review_model.dart' as _i24;
+import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart'
+    as _i15;
+import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
+    as _i96;
+import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart'
+    as _i38;
+import 'package:mint/domain/entity/transaction_data/transaction_data.dart'
+    as _i27;
+import 'package:mint/domain/entity/user_model/user_model.dart' as _i99;
 import 'package:mint/domain/service/abstract/audio_record_service.dart' as _i6;
 import 'package:mint/domain/service/abstract/booking_service.dart' as _i141;
 import 'package:mint/domain/service/abstract/chat_service.dart' as _i88;
@@ -243,36 +243,36 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i7.AudioRecordServiceImpl(gh<_i4.AudioRecordRepository>()));
     gh.lazySingleton<_i8.BookingController>(() => _i8.BookingController());
     gh.factory<_i9.BookingRepository>(() => _i10.FirebaseBookingRepository());
-    gh.factory<_i11.Factory<Map<String, dynamic>, _i12.UserModelDto>>(
-        () => _i13.ModifiedUserDtoToMap());
-    gh.factory<_i11.Factory<_i14.FilterPreferencesDto, _i15.FilterPreferences>>(
-        () => _i16.FilterPreferencesToDto());
-    gh.factory<_i11.Factory<_i17.ReviewModelDto, _i18.ReviewModel>>(
-        () => _i19.ReviewModelToDto());
-    gh.factory<_i11.Factory<_i20.TransactionDataDto, _i21.TransactionData>>(
-        () => _i22.TransactionDataToDto());
-    gh.factory<_i11.Factory<_i23.BookingDataDto, _i24.BookingData>>(
-        () => _i25.BookingDataToDto());
-    gh.factory<_i11.Factory<_i26.User, Map<String, dynamic>>>(
-        () => _i27.ChatUserDataFromMap());
-    gh.factory<_i11.Factory<_i26.Room?, Map<String, dynamic>>>(
-        () => _i28.ChatRoomFromMap());
-    gh.factory<_i11.Factory<_i29.CreditCardModel, _i30.CreditCardModelDto>>(
-        () => _i31.CreditCardModelFromDto());
-    gh.factory<
-            _i11.Factory<_i32.SpecialistWorkInfo, _i33.SpecialistWorkInfoDto>>(
-        () => _i34.SpecialistWorkInfoFromDto());
+    gh.factory<_i11.Factory<_i12.CreditCardModel, _i13.CreditCardModelDto>>(
+        () => _i14.CreditCardModelFromDto());
+    gh.factory<_i11.Factory<_i15.SpecialistFilter, _i16.SpecialistFilterDto>>(
+        () => _i17.SpecialistFilterFromDto());
+    gh.factory<_i11.Factory<Map<String, dynamic>, _i18.UserModelDto>>(
+        () => _i19.ModifiedUserDtoToMap());
+    gh.factory<_i11.Factory<_i20.FilterPreferencesDto, _i21.FilterPreferences>>(
+        () => _i22.FilterPreferencesToDto());
+    gh.factory<_i11.Factory<_i23.ReviewModelDto, _i24.ReviewModel>>(
+        () => _i25.ReviewModelToDto());
+    gh.factory<_i11.Factory<_i26.TransactionDataDto, _i27.TransactionData>>(
+        () => _i28.TransactionDataToDto());
+    gh.factory<_i11.Factory<_i29.BookingDataDto, _i30.BookingData>>(
+        () => _i31.BookingDataToDto());
+    gh.factory<_i11.Factory<_i32.User, Map<String, dynamic>>>(
+        () => _i33.ChatUserDataFromMap());
+    gh.factory<_i11.Factory<_i32.Room?, Map<String, dynamic>>>(
+        () => _i34.ChatRoomFromMap());
     gh.factory<_i11.Factory<_i35.PickUpFilter, _i36.PickUpFilterDto>>(
         () => _i37.PickUpFilterFromDto());
-    gh.factory<_i11.Factory<_i38.SpecialistFilter, _i39.SpecialistFilterDto>>(
-        () => _i40.SpecialistFilterFromDto());
+    gh.factory<
+            _i11.Factory<_i38.SpecialistWorkInfo, _i39.SpecialistWorkInfoDto>>(
+        () => _i40.SpecialistWorkInfoFromDto());
     gh.factory<_i41.FileRepository>(() => _i42.FileRepositoryImpl());
     gh.factory<_i43.FileService>(
         () => _i44.FileServiceImpl(gh<_i41.FileRepository>()));
     gh.factory<_i45.FilterRepository>(() => _i46.FirebaseFilterRepository());
     gh.factory<_i47.FilterService>(() => _i48.FirebaseFilterService(
           gh<_i45.FilterRepository>(),
-          gh<_i11.Factory<_i38.SpecialistFilter, _i39.SpecialistFilterDto>>(),
+          gh<_i11.Factory<_i15.SpecialistFilter, _i16.SpecialistFilterDto>>(),
           gh<_i11.Factory<_i35.PickUpFilter, _i36.PickUpFilterDto>>(),
         ));
     gh.factory<_i49.InitializeAudioRecorderUseCase>(() =>
@@ -288,8 +288,8 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i56.PaymentRepository>(() => _i57.FirebasePaymentRepository());
     gh.factory<_i58.PaymentService>(() => _i59.FirebasePaymentService(
           gh<_i56.PaymentRepository>(),
-          gh<_i11.Factory<_i29.CreditCardModel, _i30.CreditCardModelDto>>(),
-          gh<_i11.Factory<_i20.TransactionDataDto, _i21.TransactionData>>(),
+          gh<_i11.Factory<_i12.CreditCardModel, _i13.CreditCardModelDto>>(),
+          gh<_i11.Factory<_i26.TransactionDataDto, _i27.TransactionData>>(),
         ));
     gh.factory<_i60.PhoneAuthRepository>(() => _i61.FirebaseAuthRepository());
     gh.factory<_i62.PhoneAuthService>(
@@ -317,7 +317,7 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i77.TransactionPayUseCase(gh<_i58.PaymentService>()));
     gh.lazySingleton<_i78.UserController>(() => _i78.UserController());
     gh.factory<_i79.UserRepository>(() => _i80.FirebaseUserRepository(
-        gh<_i11.Factory<Map<String, dynamic>, _i12.UserModelDto>>()));
+        gh<_i11.Factory<Map<String, dynamic>, _i18.UserModelDto>>()));
     gh.factory<_i81.VerifyOtpUseCase>(
         () => _i81.VerifyOtpUseCase(gh<_i62.PhoneAuthService>()));
     gh.factory<_i82.VerifyPhoneUseCase>(
@@ -335,12 +335,12 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i78.UserController>(),
         ));
     gh.factory<_i86.ChatRepository>(() => _i87.FirebaseChatRepository(
-        gh<_i11.Factory<_i26.User, Map<String, dynamic>>>()));
+        gh<_i11.Factory<_i32.User, Map<String, dynamic>>>()));
     gh.factory<_i88.ChatService>(() => _i89.FirebaseChatService(
           gh<_i86.ChatRepository>(),
           gh<_i75.StorageService>(),
           gh<_i43.FileService>(),
-          gh<_i11.Factory<_i26.Room?, Map<String, dynamic>>>(),
+          gh<_i11.Factory<_i32.Room?, Map<String, dynamic>>>(),
         ));
     gh.factory<_i90.CreateChatRoomUseCase>(
         () => _i90.CreateChatRoomUseCase(gh<_i88.ChatService>()));
@@ -352,14 +352,14 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i93.CreditCardSaveUseCase(gh<_i58.PaymentService>()));
     gh.factory<_i94.DeleteMessageUseCase>(
         () => _i94.DeleteMessageUseCase(gh<_i88.ChatService>()));
-    gh.factory<_i11.Factory<_i95.Future<_i12.UserModelDto>, _i96.UserModel>>(
-        () => _i97.UserModelToDto(gh<_i75.StorageService>()));
-    gh.factory<_i11.Factory<_i95.Future<_i96.UserModel>, _i12.UserModelDto>>(
-        () => _i98.UserModelFromDto(gh<_i75.StorageService>()));
     gh.factory<
-            _i11.Factory<_i95.Future<_i99.SpecialistModel>,
-                _i100.SpecialistModelDto>>(
-        () => _i101.SpecialistModelFromDto(gh<_i75.StorageService>()));
+            _i11.Factory<_i95.Future<_i96.SpecialistModel>,
+                _i97.SpecialistModelDto>>(
+        () => _i98.SpecialistModelFromDto(gh<_i75.StorageService>()));
+    gh.factory<_i11.Factory<_i95.Future<_i18.UserModelDto>, _i99.UserModel>>(
+        () => _i100.UserModelToDto(gh<_i75.StorageService>()));
+    gh.factory<_i11.Factory<_i95.Future<_i99.UserModel>, _i18.UserModelDto>>(
+        () => _i101.UserModelFromDto(gh<_i75.StorageService>()));
     gh.factory<_i102.FetchChatRoomUseCase>(
         () => _i102.FetchChatRoomUseCase(gh<_i88.ChatService>()));
     gh.factory<_i103.FetchPickUpFilterUseCase>(
@@ -395,8 +395,8 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i114.UserService>(() => _i115.FirebaseUserService(
           gh<_i79.UserRepository>(),
-          gh<_i11.Factory<_i95.Future<_i96.UserModel>, _i12.UserModelDto>>(),
-          gh<_i11.Factory<_i95.Future<_i12.UserModelDto>, _i96.UserModel>>(),
+          gh<_i11.Factory<_i95.Future<_i99.UserModel>, _i18.UserModelDto>>(),
+          gh<_i11.Factory<_i95.Future<_i18.UserModelDto>, _i99.UserModel>>(),
           gh<_i53.NotificationService>(),
         ));
     gh.factory<_i116.ChatBloc>(() => _i116.ChatBloc(
@@ -419,7 +419,7 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i78.UserController>(),
         ));
     gh.factory<
-            _i11.Factory<_i95.Future<_i18.ReviewModel?>, _i17.ReviewModelDto>>(
+            _i11.Factory<_i95.Future<_i24.ReviewModel?>, _i23.ReviewModelDto>>(
         () => _i118.ReviewModelFromDto(gh<_i114.UserService>()));
     gh.factory<_i119.GetCurrentUserUseCase>(
         () => _i119.GetCurrentUserUseCase(gh<_i114.UserService>()));
@@ -430,13 +430,13 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i122.SpecialistService>(() => _i123.FirebaseSpecialistService(
           gh<_i69.SpecialistRepository>(),
           gh<
-              _i11.Factory<_i95.Future<_i99.SpecialistModel>,
-                  _i100.SpecialistModelDto>>(),
-          gh<_i11.Factory<_i14.FilterPreferencesDto, _i15.FilterPreferences>>(),
+              _i11.Factory<_i95.Future<_i96.SpecialistModel>,
+                  _i97.SpecialistModelDto>>(),
+          gh<_i11.Factory<_i20.FilterPreferencesDto, _i21.FilterPreferences>>(),
           gh<
-              _i11.Factory<_i95.Future<_i18.ReviewModel?>,
-                  _i17.ReviewModelDto>>(),
-          gh<_i11.Factory<_i17.ReviewModelDto, _i18.ReviewModel>>(),
+              _i11.Factory<_i95.Future<_i24.ReviewModel?>,
+                  _i23.ReviewModelDto>>(),
+          gh<_i11.Factory<_i23.ReviewModelDto, _i24.ReviewModel>>(),
         ));
     gh.factory<_i124.UpdateReviewUseCase>(
         () => _i124.UpdateReviewUseCase(gh<_i122.SpecialistService>()));
@@ -449,7 +449,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i128.DeleteReviewUseCase>(
         () => _i128.DeleteReviewUseCase(gh<_i122.SpecialistService>()));
     gh.factory<
-            _i11.Factory<_i95.Future<_i24.BookingData?>, _i23.BookingDataDto>>(
+            _i11.Factory<_i95.Future<_i30.BookingData?>, _i29.BookingDataDto>>(
         () => _i129.BookingDataFromDto(gh<_i122.SpecialistService>()));
     gh.factory<_i130.FetchFavoriteListUseCase>(
         () => _i130.FetchFavoriteListUseCase(gh<_i122.SpecialistService>()));
@@ -494,12 +494,12 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i141.BookingService>(() => _i142.FirebaseBookingService(
           gh<_i9.BookingRepository>(),
           gh<
-              _i11.Factory<_i32.SpecialistWorkInfo,
-                  _i33.SpecialistWorkInfoDto>>(),
-          gh<_i11.Factory<_i23.BookingDataDto, _i24.BookingData>>(),
+              _i11.Factory<_i38.SpecialistWorkInfo,
+                  _i39.SpecialistWorkInfoDto>>(),
+          gh<_i11.Factory<_i29.BookingDataDto, _i30.BookingData>>(),
           gh<
-              _i11.Factory<_i95.Future<_i24.BookingData?>,
-                  _i23.BookingDataDto>>(),
+              _i11.Factory<_i95.Future<_i30.BookingData?>,
+                  _i29.BookingDataDto>>(),
         ));
     gh.factory<_i143.FavoriteBloc>(() => _i143.FavoriteBloc(
           gh<_i78.UserController>(),
