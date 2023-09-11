@@ -12,9 +12,9 @@ _$_BookingDataDto _$$_BookingDataDtoFromJson(Map json) => _$_BookingDataDto(
       userId: json['userId'] as String,
       notes: json['notes'] as String,
       durationMinutes: json['durationMinutes'] as int,
-      bookTime: DateUtils.convertToDateTime(json['bookTime']),
-      endTime: DateUtils.convertToDateTime(json['endTime']),
-      createdAt: DateUtils.convertToDateTime(json['createdAt']),
+      bookTime: const DateTimeConverter().fromJson(json['bookTime']),
+      endTime: const DateTimeConverter().fromJson(json['endTime']),
+      createdAt: const DateTimeConverter().fromJson(json['createdAt']),
     );
 
 Map<String, dynamic> _$$_BookingDataDtoToJson(_$_BookingDataDto instance) =>
@@ -24,7 +24,7 @@ Map<String, dynamic> _$$_BookingDataDtoToJson(_$_BookingDataDto instance) =>
       'userId': instance.userId,
       'notes': instance.notes,
       'durationMinutes': instance.durationMinutes,
-      'bookTime': _toDateTime(instance.bookTime),
-      'endTime': _toDateTime(instance.endTime),
-      'createdAt': _toDateTime(instance.createdAt),
+      'bookTime': const DateTimeConverter().toJson(instance.bookTime),
+      'endTime': const DateTimeConverter().toJson(instance.endTime),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
     };

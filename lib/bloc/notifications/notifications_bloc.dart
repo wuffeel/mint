@@ -6,14 +6,13 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/usecase/fetch_chat_room_use_case.dart';
 import 'package:mint/domain/usecase/fetch_session_data_use_case.dart';
 import 'package:mint/domain/usecase/fetch_specialist_use_case.dart';
 import 'package:mint/domain/usecase/initialize_notifications_use_case.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../domain/controller/user_controller.dart';
-import '../../domain/entity/user_model/user_model.dart';
 import '../../domain/usecase/get_booking_notifications_stream_use_case.dart';
 import '../../domain/usecase/get_chat_notifications_stream_use_case.dart';
 
@@ -49,10 +48,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   final GetBookingNotificationsStreamUseCase
       _getBookingNotificationsStreamUseCase;
 
-  UserModel? _currentUser;
+  PatientUser? _currentUser;
   final UserController _userController;
 
-  late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<PatientUser?> _userSubscription;
   late final StreamSubscription<String> _chatRoomSubscription;
   late final StreamSubscription<String> _sessionSubscription;
 

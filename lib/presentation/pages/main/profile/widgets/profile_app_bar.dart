@@ -6,9 +6,9 @@ import 'package:mint/presentation/pages/main/profile/widgets/profile_avatar.dart
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/presentation/widgets/mint_back_button.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../../../bloc/user/user_bloc.dart';
-import '../../../../../domain/entity/user_model/user_model.dart';
 
 class ProfileAppBar extends StatelessWidget {
   const ProfileAppBar({
@@ -190,7 +190,7 @@ class _CollapsedAppBar extends StatelessWidget {
 
   final _HeaderConfig headerConfig;
   final String? localPhotoUrl;
-  final UserModel user;
+  final PatientUser user;
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +240,7 @@ class _ExpandedAppBar extends StatelessWidget {
   });
 
   final _HeaderConfig headerConfig;
-  final UserModel user;
+  final PatientUser user;
   final VoidCallback? onPickPhoto;
   final String? localPhotoUrl;
 

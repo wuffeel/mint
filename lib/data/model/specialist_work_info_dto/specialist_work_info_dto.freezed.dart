@@ -26,9 +26,9 @@ mixin _$SpecialistWorkInfoDto {
   String get specialistId => throw _privateConstructorUsedError;
   Map<String, WorkDayPeriod> get workHours =>
       throw _privateConstructorUsedError;
-  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
   List<DateTime> get excludedDays => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
   List<DateTime> get bookedTimes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,9 +48,9 @@ abstract class $SpecialistWorkInfoDtoCopyWith<$Res> {
       int consultationMinutes,
       String specialistId,
       Map<String, WorkDayPeriod> workHours,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           List<DateTime> excludedDays,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           List<DateTime> bookedTimes});
 }
 
@@ -117,9 +117,9 @@ abstract class _$$_SpecialistWorkInfoDtoCopyWith<$Res>
       int consultationMinutes,
       String specialistId,
       Map<String, WorkDayPeriod> workHours,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           List<DateTime> excludedDays,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           List<DateTime> bookedTimes});
 }
 
@@ -180,9 +180,9 @@ class _$_SpecialistWorkInfoDto
       required this.consultationMinutes,
       required this.specialistId,
       required final Map<String, WorkDayPeriod> workHours,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           final List<DateTime> excludedDays = const <DateTime>[],
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           final List<DateTime> bookedTimes = const <DateTime>[]})
       : _workHours = workHours,
         _excludedDays = excludedDays,
@@ -207,7 +207,7 @@ class _$_SpecialistWorkInfoDto
 
   final List<DateTime> _excludedDays;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
   List<DateTime> get excludedDays {
     if (_excludedDays is EqualUnmodifiableListView) return _excludedDays;
     // ignore: implicit_dynamic_type
@@ -216,7 +216,7 @@ class _$_SpecialistWorkInfoDto
 
   final List<DateTime> _bookedTimes;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
   List<DateTime> get bookedTimes {
     if (_bookedTimes is EqualUnmodifiableListView) return _bookedTimes;
     // ignore: implicit_dynamic_type
@@ -292,9 +292,9 @@ abstract class _SpecialistWorkInfoDto implements SpecialistWorkInfoDto {
       required final int consultationMinutes,
       required final String specialistId,
       required final Map<String, WorkDayPeriod> workHours,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           final List<DateTime> excludedDays,
-      @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+      @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
           final List<DateTime> bookedTimes}) = _$_SpecialistWorkInfoDto;
 
   factory _SpecialistWorkInfoDto.fromJson(Map<String, dynamic> json) =
@@ -309,10 +309,10 @@ abstract class _SpecialistWorkInfoDto implements SpecialistWorkInfoDto {
   @override
   Map<String, WorkDayPeriod> get workHours;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
   List<DateTime> get excludedDays;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTimeList)
+  @JsonKey(fromJson: DateTimeUtils.convertToDateTimeList)
   List<DateTime> get bookedTimes;
   @override
   @JsonKey(ignore: true)

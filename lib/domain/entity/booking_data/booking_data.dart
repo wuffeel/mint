@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint_core/mint_core.dart';
 
 part 'booking_data.freezed.dart';
 

@@ -1,9 +1,8 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/assembly/factory.dart';
-import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
 import 'package:mint/data/repository/abstract/specialist_repository.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/service/abstract/specialist_service.dart';
+import 'package:mint_core/mint_assembly.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../data/model/filter_preferences_dto/filter_preferences_dto.dart';
 import '../../../data/model/review_model_dto/review_model_dto.dart';

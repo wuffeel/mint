@@ -3,10 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/chat_repository.dart';
 import 'package:mint/domain/service/abstract/chat_service.dart';
 import 'package:mint/domain/service/abstract/file_service.dart';
-import 'package:mint/domain/service/abstract/storage_service.dart';
 import 'package:mint/utils/file_utils.dart';
-
-import '../../../assembly/factory.dart';
+import 'package:mint_core/mint_assembly.dart';
+import 'package:mint_core/mint_module.dart';
 
 @Injectable(as: ChatService)
 class FirebaseChatService implements ChatService {
@@ -37,7 +36,7 @@ class FirebaseChatService implements ChatService {
   }
 
   @override
-  Stream<List<types.Message>> getMessages(types.Room room) {
+  Future<Stream<List<types.Message>>> getMessages(types.Room room) {
     return _chatRepository.getMessages(room);
   }
 
@@ -168,7 +167,7 @@ class FirebaseChatService implements ChatService {
   }) async {
     await _storageService.deleteStorageFile(uri);
     final extension = getFileExtension(messageName);
-    final fileName = uuid != null ? '$uuid.$extension' : messageName;
+    final fileName = uuid != null ? '$uuid$extension' : messageName;
     if (shouldDeleteLocal) {
       await _fileService.deleteLocalFile(fileName);
     }

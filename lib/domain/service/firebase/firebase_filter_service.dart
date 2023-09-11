@@ -2,8 +2,8 @@ import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/pick_up_filter_dto/pick_up_filter_dto.dart';
 import 'package:mint/data/repository/abstract/filter_repository.dart';
 import 'package:mint/domain/service/abstract/filter_service.dart';
+import 'package:mint_core/mint_assembly.dart';
 
-import '../../../assembly/factory.dart';
 import '../../../data/model/specialist_filter_dto/specialist_filter_dto.dart';
 import '../../entity/pick_up_filter/pick_up_filter.dart';
 import '../../entity/specialist_filter/specialist_filter.dart';

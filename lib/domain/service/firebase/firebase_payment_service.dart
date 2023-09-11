@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/payment_repository.dart';
 import 'package:mint/domain/service/abstract/payment_service.dart';
+import 'package:mint_core/mint_assembly.dart';
 
-import '../../../assembly/factory.dart';
 import '../../../data/model/credit_card_model_dto/credit_card_model_dto.dart';
 import '../../../data/model/transaction_data_dto/transaction_data_dto.dart';
 import '../../entity/credit_card_model/credit_card_model.dart';

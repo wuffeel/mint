@@ -106,7 +106,7 @@ class FileRepositoryImpl implements FileRepository {
       final bytes = pickFile.bytes;
       if (bytes != null) {
         final extension = getFileExtension(pickFile.name);
-        await _writeFileAsBytes('$uuid.$extension', bytes);
+        await _writeFileAsBytes('$uuid$extension', bytes);
       }
 
       return message;
@@ -125,7 +125,7 @@ class FileRepositoryImpl implements FileRepository {
     final bytes = await file.readAsBytes();
 
     final extension = getFileExtension(audioMessage.name);
-    await _writeFileAsBytes('$uuid.$extension', bytes);
+    await _writeFileAsBytes('$uuid$extension', bytes);
 
     final message = types.PartialAudio(
       duration: audioMessage.duration,

@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/model/credit_card_model_dto/credit_card_model_dto.dart';
 import 'package:mint/data/repository/abstract/payment_repository.dart';
+import 'package:mint_core/mint_module.dart';
 
 import '../../model/transaction_data_dto/transaction_data_dto.dart';
 
 @Injectable(as: PaymentRepository)
 class FirebasePaymentRepository implements PaymentRepository {
-  final _functionsInstance = FirebaseFunctions.instance;
-  final _firestoreInstance = FirebaseFirestore.instance;
+  FirebasePaymentRepository(this._firebaseInitializer);
+
+  final FirebaseInitializer _firebaseInitializer;
+
   final _stripeInstance = Stripe.instance;
 
   static const _saveCardFunction = 'savePaymentMethod';
@@ -18,12 +20,16 @@ class FirebasePaymentRepository implements PaymentRepository {
   static const _fetchCardsFunction = 'fetchUserPaymentCards';
   static const _transactionsCollection = 'transactions';
 
-  CollectionReference get _transactionCollectionRef =>
-      _firestoreInstance.collection(_transactionsCollection);
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _transactionCollectionRef async {
+    return (await _firebaseInitializer.firestore)
+        .collection(_transactionsCollection);
+  }
 
   @override
   Future<List<CreditCardModelDto>> getPaymentCards(String userId) async {
-    final callable = _functionsInstance.httpsCallable(_fetchCardsFunction);
+    final functions = await _firebaseInitializer.functions;
+    final callable = functions.httpsCallable(_fetchCardsFunction);
 
     final result = await callable.call<List<dynamic>>({'userId': userId});
 
@@ -40,13 +46,15 @@ class FirebasePaymentRepository implements PaymentRepository {
     String userId, {
     required bool isSaveForFuture,
   }) async {
+    final functions = await _firebaseInitializer.functions;
+
     final paymentMethod = await _stripeInstance.createPaymentMethod(
       params: const PaymentMethodParams.card(
         paymentMethodData: PaymentMethodData(),
       ),
     );
 
-    final callable = _functionsInstance.httpsCallable(_saveCardFunction);
+    final callable = functions.httpsCallable(_saveCardFunction);
 
     final result = await callable.call<Map<String, dynamic>>({
       'userId': userId,
@@ -61,12 +69,15 @@ class FirebasePaymentRepository implements PaymentRepository {
 
   @override
   Future<void> deletePaymentMethod(String paymentMethodId) async {
-    final callable = _functionsInstance.httpsCallable(_deleteCardFunction);
+    final functions = await _firebaseInitializer.functions;
+
+    final callable = functions.httpsCallable(_deleteCardFunction);
     await callable.call<void>({'paymentMethodId': paymentMethodId});
   }
 
   @override
-  Future<void> payForSession(TransactionDataDto transactionData) {
-    return _transactionCollectionRef.add(transactionData.toJsonWithoutId());
+  Future<void> payForSession(TransactionDataDto transactionData) async {
+    final transactionCollection = await _transactionCollectionRef;
+    await transactionCollection.add(transactionData.toJsonWithoutId());
   }
 }

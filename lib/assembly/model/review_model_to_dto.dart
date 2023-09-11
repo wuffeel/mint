@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/assembly/factory.dart';
+import 'package:mint_core/mint_assembly.dart';
 
 import '../../data/model/review_model_dto/review_model_dto.dart';
 import '../../domain/entity/review_model/review_model.dart';

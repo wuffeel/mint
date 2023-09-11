@@ -6,14 +6,13 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/booking_controller.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
 import 'package:mint/domain/usecase/booking_cancel_use_case.dart';
 import 'package:mint/domain/usecase/booking_reschedule_use_case.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../domain/controller/user_controller.dart';
-import '../../domain/entity/user_model/user_model.dart';
 
 part 'booking_event.dart';
 
@@ -38,11 +37,11 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final BookingRescheduleUseCase _bookingRescheduleUseCase;
   final BookingCancelUseCase _bookingCancelUseCase;
 
-  UserModel? _currentUser;
+  PatientUser? _currentUser;
   final UserController _userController;
   final BookingController _bookingController;
 
-  late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<PatientUser?> _userSubscription;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {

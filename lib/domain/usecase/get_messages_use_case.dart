@@ -8,6 +8,5 @@ class GetMessagesUseCase {
 
   final ChatService _service;
 
-  Stream<List<Message>> call(Room room) =>
-      _service.getMessages(room);
+  Future<Stream<List<Message>>> call(Room room) => _service.getMessages(room);
 }

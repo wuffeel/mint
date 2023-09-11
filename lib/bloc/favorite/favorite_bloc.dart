@@ -5,11 +5,10 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/user_controller.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
-import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:mint/domain/usecase/add_to_favorite_use_case.dart';
 import 'package:mint/domain/usecase/fetch_favorite_list_use_case.dart';
 import 'package:mint/domain/usecase/remove_from_favorite_use_case.dart';
+import 'package:mint_core/mint_core.dart';
 
 part 'favorite_event.dart';
 
@@ -33,9 +32,9 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   final AddToFavoriteUseCase _addToFavoriteUseCase;
   final RemoveFromFavoriteUseCase _removeFromFavoriteUseCase;
 
-  UserModel? _currentUser;
+  PatientUser? _currentUser;
   final UserController _userController;
-  late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<PatientUser?> _userSubscription;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {

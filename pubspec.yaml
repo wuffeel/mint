@@ -43,16 +43,19 @@ dependencies:
   flutter_stripe: ^9.3.0
   flutter_svg: ^2.0.7
   freezed_annotation: ^2.2.0
-  get_it: ^7.6.0
+  get_it: ^7.6.4
   http: ^0.13.6
   hydrated_bloc: ^9.1.2
   image_picker: ^1.0.1
-  injectable: ^2.1.2
+  injectable: ^2.3.0
   intl: ^0.18.0
   json_annotation: ^4.8.1
   mask_text_input_formatter: ^2.5.0
   meta: ^1.9.1
+  mint_core:
+    path: '../mint_core'
   open_filex: ^4.3.2
+  path: ^1.8.3
   path_provider: ^2.0.15
   permission_handler: ^10.4.3
   pinput: ^2.2.31
@@ -71,7 +74,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^2.3.5
-  injectable_generator: ^2.1.6
+  injectable_generator: ^2.4.0
   json_serializable: ^6.7.1
   mocktail: ^0.3.0
   very_good_analysis: ^5.0.0

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/entity/user_model/user_model.dart';
-import 'package:mint/domain/service/abstract/user_service.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 @injectable
 class UserDataUpdateUseCase {
@@ -8,6 +8,11 @@ class UserDataUpdateUseCase {
 
   final UserService _service;
 
-  Future<UserModel> call(UserModel userData) =>
-      _service.updateUserData(userData);
+  Future<PatientUser> call(PatientUser userData) async {
+    final user = await _service.updateUserData(userData);
+    if (user is PatientUser) return user;
+    throw ArgumentError(
+      '[UserDataUpdateUseCase]: Wrong user type: ${user.runtimeType}',
+    );
+  }
 }

@@ -17,10 +17,10 @@ _$_SpecialistWorkInfoDto _$$_SpecialistWorkInfoDtoFromJson(Map json) =>
       ),
       excludedDays: json['excludedDays'] == null
           ? const <DateTime>[]
-          : DateUtils.convertToDateTimeList(json['excludedDays'] as List),
+          : DateTimeUtils.convertToDateTimeList(json['excludedDays'] as List),
       bookedTimes: json['bookedTimes'] == null
           ? const <DateTime>[]
-          : DateUtils.convertToDateTimeList(json['bookedTimes'] as List),
+          : DateTimeUtils.convertToDateTimeList(json['bookedTimes'] as List),
     );
 
 Map<String, dynamic> _$$_SpecialistWorkInfoDtoToJson(

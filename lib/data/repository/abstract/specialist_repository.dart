@@ -1,6 +1,6 @@
 import 'package:mint/data/model/filter_preferences_dto/filter_preferences_dto.dart';
 import 'package:mint/data/model/review_model_dto/review_model_dto.dart';
-import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
+import 'package:mint_core/mint_core.dart';
 
 abstract class SpecialistRepository {
   Future<SpecialistModelDto?> getSpecialist(String specialistId);

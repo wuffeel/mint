@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mint/utils/date_utils.dart';
+import 'package:mint_core/mint_utils.dart';
 
 part 'review_model_dto.freezed.dart';
 
@@ -13,8 +13,7 @@ class ReviewModelDto with _$ReviewModelDto {
     required String userId,
     required String specialistId,
     required double rating,
-    @JsonKey(fromJson: DateUtils.convertToDateTime)
-    required DateTime createdAt,
+    @DateTimeConverter() required DateTime createdAt,
     String? content,
   }) = _ReviewModelDto;
 

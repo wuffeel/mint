@@ -6,9 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/entity/transaction_data/transaction_data.dart';
 import 'package:mint/domain/usecase/transaction_pay_use_case.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../domain/controller/user_controller.dart';
-import '../../domain/entity/user_model/user_model.dart';
 
 part 'transaction_event.dart';
 
@@ -26,10 +26,10 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   final TransactionPayUseCase _transactionPayUseCase;
 
-  UserModel? _currentUser;
+  PatientUser? _currentUser;
   final UserController _userController;
 
-  late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<PatientUser?> _userSubscription;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {

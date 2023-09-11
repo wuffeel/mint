@@ -11,7 +11,7 @@ _$_ReviewModelDto _$$_ReviewModelDtoFromJson(Map json) => _$_ReviewModelDto(
       userId: json['userId'] as String,
       specialistId: json['specialistId'] as String,
       rating: (json['rating'] as num).toDouble(),
-      createdAt: DateUtils.convertToDateTime(json['createdAt']),
+      createdAt: const DateTimeConverter().fromJson(json['createdAt']),
       content: json['content'] as String?,
     );
 
@@ -21,6 +21,6 @@ Map<String, dynamic> _$$_ReviewModelDtoToJson(_$_ReviewModelDto instance) =>
       'userId': instance.userId,
       'specialistId': instance.specialistId,
       'rating': instance.rating,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'createdAt': const DateTimeConverter().toJson(instance.createdAt),
       'content': instance.content,
     };

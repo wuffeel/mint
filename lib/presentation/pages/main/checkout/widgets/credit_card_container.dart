@@ -6,7 +6,7 @@ import 'package:mint/presentation/pages/main/checkout/widgets/mastercard_contain
 import 'package:mint/presentation/widgets/undefined_credit_card_icon.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 import 'package:mint/utils/credit_card_utils.dart';
-import 'package:mint/utils/extended_widget_list.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
 

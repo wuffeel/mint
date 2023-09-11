@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../widgets/specialist_full_name_text.dart';

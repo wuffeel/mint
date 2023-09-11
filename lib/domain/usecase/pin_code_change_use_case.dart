@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/service/abstract/user_service.dart';
+import 'package:mint_core/mint_module.dart';
 
 @injectable
 class PinCodeChangeUseCase {

@@ -12,8 +12,6 @@ import 'package:auto_route/auto_route.dart' as _i30;
 import 'package:flutter/material.dart' as _i31;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as _i32;
 import 'package:mint/domain/entity/booking_data/booking_data.dart' as _i34;
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart'
-    as _i33;
 import 'package:mint/presentation/pages/auth/enter_phone/enter_phone_page.dart'
     as _i3;
 import 'package:mint/presentation/pages/auth/otp_page/otp_page.dart' as _i2;
@@ -65,6 +63,7 @@ import 'package:mint/presentation/pages/main/waiting_session/session_details_pag
 import 'package:mint/presentation/pages/main/waiting_session/session_details_wrapper_page.dart'
     as _i28;
 import 'package:mint/routes/app_router.dart' as _i29;
+import 'package:mint_core/mint_core.dart' as _i33;
 
 abstract class $AppRouter extends _i30.RootStackRouter {
   $AppRouter({super.navigatorKey});

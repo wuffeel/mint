@@ -25,11 +25,11 @@ mixin _$BookingDataDto {
   String get userId => throw _privateConstructorUsedError;
   String get notes => throw _privateConstructorUsedError;
   int get durationMinutes => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   DateTime get bookTime => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   DateTime get endTime => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,12 +50,9 @@ abstract class $BookingDataDtoCopyWith<$Res> {
       String userId,
       String notes,
       int durationMinutes,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          DateTime bookTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          DateTime endTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          DateTime createdAt});
+      @DateTimeConverter() DateTime bookTime,
+      @DateTimeConverter() DateTime endTime,
+      @DateTimeConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -131,12 +128,9 @@ abstract class _$$_BookingDataDtoCopyWith<$Res>
       String userId,
       String notes,
       int durationMinutes,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          DateTime bookTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          DateTime endTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          DateTime createdAt});
+      @DateTimeConverter() DateTime bookTime,
+      @DateTimeConverter() DateTime endTime,
+      @DateTimeConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -205,12 +199,9 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
       required this.userId,
       required this.notes,
       required this.durationMinutes,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          required this.bookTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          required this.endTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          required this.createdAt})
+      @DateTimeConverter() required this.bookTime,
+      @DateTimeConverter() required this.endTime,
+      @DateTimeConverter() required this.createdAt})
       : super._();
 
   factory _$_BookingDataDto.fromJson(Map<String, dynamic> json) =>
@@ -227,13 +218,13 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
   @override
   final int durationMinutes;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   final DateTime bookTime;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   final DateTime endTime;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   final DateTime createdAt;
 
   @override
@@ -296,17 +287,15 @@ class _$_BookingDataDto extends _BookingDataDto with DiagnosticableTreeMixin {
 
 abstract class _BookingDataDto extends BookingDataDto {
   const factory _BookingDataDto(
-      {required final String id,
-      required final String specialistId,
-      required final String userId,
-      required final String notes,
-      required final int durationMinutes,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          required final DateTime bookTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          required final DateTime endTime,
-      @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-          required final DateTime createdAt}) = _$_BookingDataDto;
+          {required final String id,
+          required final String specialistId,
+          required final String userId,
+          required final String notes,
+          required final int durationMinutes,
+          @DateTimeConverter() required final DateTime bookTime,
+          @DateTimeConverter() required final DateTime endTime,
+          @DateTimeConverter() required final DateTime createdAt}) =
+      _$_BookingDataDto;
   const _BookingDataDto._() : super._();
 
   factory _BookingDataDto.fromJson(Map<String, dynamic> json) =
@@ -323,13 +312,13 @@ abstract class _BookingDataDto extends BookingDataDto {
   @override
   int get durationMinutes;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   DateTime get bookTime;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   DateTime get endTime;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
+  @DateTimeConverter()
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)

@@ -20,7 +20,7 @@ class UserFetchFailure extends UserState {}
 class UserFetchSuccess extends UserState {
   UserFetchSuccess(this.user);
 
-  final UserModel user;
+  final PatientUser user;
 }
 
 class UserDateUnselectedFailure extends UserFetchSuccess {

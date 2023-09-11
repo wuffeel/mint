@@ -10,11 +10,15 @@ import 'package:injectable/injectable.dart';
 import 'package:mint/backbone/notification_type.dart';
 import 'package:mint/data/repository/abstract/notification_repository.dart';
 import 'package:mint/utils/notification_to_short_string.dart';
+import 'package:mint_core/mint_module.dart';
 
 @LazySingleton(as: NotificationRepository)
 class FirebaseNotificationRepository implements NotificationRepository {
+  FirebaseNotificationRepository(this._firebaseInitializer);
+
+  final FirebaseInitializer _firebaseInitializer;
   final _messagingInstance = FirebaseMessaging.instance;
-  final _firestoreInstance = FirebaseFirestore.instance;
+
   final _localNotifications = FlutterLocalNotificationsPlugin();
   final _androidChannel = const AndroidNotificationChannel(
     'high_importance_channel',
@@ -32,8 +36,10 @@ class FirebaseNotificationRepository implements NotificationRepository {
   StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
   StreamSubscription<String>? _onTokenRefreshSubscription;
 
-  CollectionReference get _tokenCollectionRef =>
-      _firestoreInstance.collection(_tokenCollection);
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _tokenCollectionRef async {
+    return (await _firebaseInitializer.firestore).collection(_tokenCollection);
+  }
 
   /// Returns a Stream that is called when user taps on notification related to
   /// chat.
@@ -78,9 +84,9 @@ class FirebaseNotificationRepository implements NotificationRepository {
   /// Sets up a listener for token refresh events.
   void _listenTokenChange(String userId) {
     _onTokenRefreshSubscription =
-        _messagingInstance.onTokenRefresh.listen((fcmToken) {
+        _messagingInstance.onTokenRefresh.listen((fcmToken) async {
       log('onTokenRefresh token: $fcmToken');
-      _setFcmToken(_tokenCollectionRef.doc(userId), userId);
+      await _setFcmToken((await _tokenCollectionRef).doc(userId), userId);
     })
           ..onError((Object error) {
             log('tokenRefreshError: $error');
@@ -140,9 +146,9 @@ class FirebaseNotificationRepository implements NotificationRepository {
 
   /// Updates the FCM token for a user in the Firestore database.
   Future<void> _updateToken(String fcmToken, String userId) async {
-    final tokenDoc = _tokenCollectionRef.doc(userId);
+    final tokenDoc = (await _tokenCollectionRef).doc(userId);
     final tokenSnap = await tokenDoc.get();
-    final token = (tokenSnap.data() as Map<String, dynamic>?)?['token'];
+    final token = tokenSnap.data()?['token'];
 
     if (!tokenSnap.exists || (token != null && token != fcmToken)) {
       await _setFcmToken(tokenDoc, fcmToken);

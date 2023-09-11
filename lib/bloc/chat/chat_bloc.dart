@@ -6,9 +6,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/utils/file_utils.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../domain/controller/user_controller.dart';
-import '../../domain/entity/user_model/user_model.dart';
 import '../../domain/usecase/create_chat_room_use_case.dart';
 import '../../domain/usecase/delete_message_use_case.dart';
 import '../../domain/usecase/get_messages_use_case.dart';
@@ -41,10 +41,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ) : super(ChatInitial()) {
     _subscribeToUserChange();
     on<ChatInitializeRequested>(
-      (event, emit) {
+      (event, emit) async {
         emit(ChatLoading());
         return emit.forEach(
-          _getMessagesUseCase(event.room),
+          await _getMessagesUseCase(event.room),
           onData: (messages) =>
               ChatFetchMessagesSuccess(messages, event.room.id),
           onError: (error, _) {
@@ -81,9 +81,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final OpenFileUseCase _openFileUseCase;
   final SaveAudioUseCase _saveAudioUseCase;
 
-  UserModel? _currentUser;
+  PatientUser? _currentUser;
   final UserController _userController;
-  late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<PatientUser?> _userSubscription;
 
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
@@ -225,7 +225,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               : null;
       if (messageName == null || messageUri == null) return;
       final extension = getFileExtension(messageName);
-      final messageId = uuid != null ? '$uuid.$extension' : messageName;
+      final messageId = uuid != null ? '$uuid$extension' : messageName;
 
       await _loadFileUseCase(
         messageId,

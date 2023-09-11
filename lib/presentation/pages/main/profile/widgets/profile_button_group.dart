@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/presentation/pages/main/profile/widgets/profile_button_container.dart';
-import 'package:mint/utils/extended_widget_list.dart';
+import 'package:mint_core/mint_utils.dart';
 
 class ProfileButtonGroup extends StatelessWidget {
   const ProfileButtonGroup({super.key, required this.children});

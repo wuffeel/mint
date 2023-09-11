@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/entity/user_model/user_model.dart';
-import 'package:mint/domain/service/abstract/user_service.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 @injectable
 class GetCurrentUserUseCase {
@@ -8,5 +8,9 @@ class GetCurrentUserUseCase {
 
   final UserService _service;
 
-  Future<UserModel?> call() => _service.getCurrentUser();
+  Future<PatientUser?> call() async {
+    final user = await _service.getCurrentUser();
+    if (user is PatientUser) return user;
+    return null;
+  }
 }

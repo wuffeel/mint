@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/domain/usecase/fetch_specialist_catalogue_use_case.dart';
 import 'package:mint/utils/specialist_model_extensions.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../domain/controller/applied_filter_controller.dart';
 import '../../domain/controller/specialist_rating_controller.dart';

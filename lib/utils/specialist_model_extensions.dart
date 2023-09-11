@@ -1,4 +1,4 @@
-import '../domain/entity/specialist_model/specialist_model.dart';
+import 'package:mint_core/mint_core.dart';
 
 extension SpecialistModelExtensions on List<SpecialistModel> {
   List<SpecialistModel> sortByMostOccurrences({

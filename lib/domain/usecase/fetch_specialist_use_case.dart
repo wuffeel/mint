@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:mint/domain/service/abstract/specialist_service.dart';
-
-import '../entity/specialist_model/specialist_model.dart';
+import 'package:mint_core/mint_core.dart';
 
 @injectable
 class FetchSpecialistUseCase {

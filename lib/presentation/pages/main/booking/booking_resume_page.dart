@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/booking_resume_details.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/exit_booking_dialog.dart';
@@ -16,6 +15,7 @@ import 'package:mint/presentation/widgets/multiline_text_field.dart';
 import 'package:mint/presentation/widgets/specialist_card_tile.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_core.dart';
 
 @RoutePage()
 class BookingResumePage extends StatelessWidget {

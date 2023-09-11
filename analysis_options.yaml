@@ -26,7 +26,7 @@ analyzer:
     - 'lib/bootstrap.dart'
 
     # injectable
-    - 'lib/injector/*.dart'
+    - '**.config.dart'
 
     # l10n
     - 'lib/l10n/*.dart'

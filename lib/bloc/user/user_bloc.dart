@@ -5,10 +5,10 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/user_controller.dart';
-import 'package:mint/domain/entity/user_model/user_model.dart';
 import 'package:mint/domain/usecase/get_current_user_use_case.dart';
 import 'package:mint/domain/usecase/log_out_use_case.dart';
 import 'package:mint/domain/usecase/user_data_update_use_case.dart';
+import 'package:mint_core/mint_core.dart';
 
 part 'user_event.dart';
 

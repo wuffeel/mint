@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/favorite_icon.dart';
 import 'package:mint/presentation/widgets/mint_alert_dialog.dart';
+import 'package:mint_core/mint_core.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../bloc/favorite/favorite_bloc.dart';

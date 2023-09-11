@@ -2,15 +2,18 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mint/data/model/specialist_model_dto/specialist_model_dto.dart';
 import 'package:mint/data/repository/abstract/specialist_repository.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 import '../../model/filter_preferences_dto/filter_preferences_dto.dart';
 import '../../model/review_model_dto/review_model_dto.dart';
 
 @Injectable(as: SpecialistRepository)
 class FirebaseSpecialistRepository implements SpecialistRepository {
-  final _firestoreInstance = FirebaseFirestore.instance;
+  FirebaseSpecialistRepository(this._firebaseInitializer);
+
+  final FirebaseInitializer _firebaseInitializer;
 
   static const _orderByDate = 'createdAt';
 
@@ -18,18 +21,24 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   static const _favoriteCollection = 'favorites';
   static const _reviewCollection = 'reviews';
 
-  CollectionReference get _specialistCollectionRef =>
-      _firestoreInstance.collection(_specialistCollection);
+  Future<FirebaseFirestore> get _firestore => _firebaseInitializer.firestore;
 
-  CollectionReference get _favoriteCollectionRef =>
-      _firestoreInstance.collection(_favoriteCollection);
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _specialistCollectionRef async =>
+          (await _firestore).collection(_specialistCollection);
 
-  CollectionReference get _reviewCollectionRef =>
-      _firestoreInstance.collection(_reviewCollection);
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _favoriteCollectionRef async =>
+          (await _firestore).collection(_favoriteCollection);
+
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _reviewCollectionRef async =>
+          (await _firestore).collection(_reviewCollection);
 
   @override
   Future<SpecialistModelDto?> getSpecialist(String specialistId) async {
-    final specialist = await _specialistCollectionRef.doc(specialistId).get();
+    final specialistCollection = await _specialistCollectionRef;
+    final specialist = await specialistCollection.doc(specialistId).get();
     return _specialistDtoFromSnapshot(specialist);
   }
 
@@ -38,14 +47,11 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     String? lastSpecialistId,
     int? limit,
   }) async {
-    var query = _specialistCollectionRef.where(
-      'isOnline',
-      isEqualTo: true,
-    );
+    final specialistCollection = await _specialistCollectionRef;
+    var query = specialistCollection.where('isOnline', isEqualTo: true);
 
     if (lastSpecialistId != null) {
-      final lastDoc =
-          await _specialistCollectionRef.doc(lastSpecialistId).get();
+      final lastDoc = await specialistCollection.doc(lastSpecialistId).get();
       query = query.startAfterDocument(lastDoc);
     }
 
@@ -62,12 +68,15 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     String? lastSpecialistId,
     int? limit,
   }) async {
-    var query = _favoriteCollectionRef
+    final favoriteCollection = await _favoriteCollectionRef;
+    final specialistCollection = await _specialistCollectionRef;
+
+    var query = favoriteCollection
         .where('userId', isEqualTo: userId)
         .orderBy(_orderByDate);
 
     if (lastSpecialistId != null) {
-      final lastSpecSnap = await _favoriteCollectionRef
+      final lastSpecSnap = await favoriteCollection
           .where('specialistId', isEqualTo: lastSpecialistId)
           .get();
       log('${lastSpecSnap.docs.map((e) => e.data())}');
@@ -83,21 +92,21 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     final favoriteSnapshot = await query.get();
 
     final favoriteIds = favoriteSnapshot.docs
-        .map((doc) => (doc.data() as Map<String, dynamic>?)?['specialistId'])
+        .map((doc) => doc.data()['specialistId'])
         .whereType<String>()
         .toList();
 
     if (favoriteIds.isEmpty) return [];
 
     final specialistSnapshot =
-        await _specialistCollectionRef.where('id', whereIn: favoriteIds).get();
+        await specialistCollection.where('id', whereIn: favoriteIds).get();
 
     return _specialistDtoListFromSnapshot(specialistSnapshot);
   }
 
   @override
-  Future<void> addToFavorite(String userId, String specialistId) {
-    return _favoriteCollectionRef.doc('$userId-$specialistId').set({
+  Future<void> addToFavorite(String userId, String specialistId) async {
+    return (await _favoriteCollectionRef).doc('$userId-$specialistId').set({
       'userId': userId,
       'specialistId': specialistId,
       'createdAt': DateTime.now(),
@@ -108,8 +117,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   Future<void> removeFromFavorite(
     String userId,
     String specialistId,
-  ) {
-    return _favoriteCollectionRef.doc('$userId-$specialistId').delete();
+  ) async {
+    return (await _favoriteCollectionRef).doc('$userId-$specialistId').delete();
   }
 
   @override
@@ -118,11 +127,11 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     String? lastSpecialistId,
     int? limit,
   }) async {
-    Query<Object?> query = _specialistCollectionRef;
+    final specialistCollection = await _specialistCollectionRef;
+    Query<Object?> query = specialistCollection;
 
     if (lastSpecialistId != null) {
-      final lastDoc =
-          await _specialistCollectionRef.doc(lastSpecialistId).get();
+      final lastDoc = await specialistCollection.doc(lastSpecialistId).get();
       query = query.startAfterDocument(lastDoc);
     }
 
@@ -160,41 +169,39 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
 
   @override
   Future<List<ReviewModelDto>> getSpecialistReviews(String specialistId) async {
-    final reviewsSnapshot = await _reviewCollectionRef
+    final reviewCollection = await _reviewCollectionRef;
+    final reviewsSnapshot = await reviewCollection
         .where('specialistId', isEqualTo: specialistId)
         .orderBy(_orderByDate, descending: true)
         .get();
 
-    return reviewsSnapshot.docs
-        .map((review) {
-          final data = review.data() as Map<String, dynamic>?;
-          if (data == null) return null;
-          return ReviewModelDto.fromJsonWithId(data, review.id);
-        })
-        .whereType<ReviewModelDto>()
-        .toList();
+    return reviewsSnapshot.docs.map((review) {
+      final data = review.data();
+      return ReviewModelDto.fromJsonWithId(data, review.id);
+    }).toList();
   }
 
   @override
   Future<ReviewModelDto> addSpecialistReview(
     ReviewModelDto reviewModelDto,
   ) async {
-    final resultReview = await _reviewCollectionRef.add(
+    final reviewCollection = await _reviewCollectionRef;
+    final resultReview = await reviewCollection.add(
       reviewModelDto.toJsonWithoutId(),
     );
     return reviewModelDto.copyWith(id: resultReview.id);
   }
 
   @override
-  Future<void> updateSpecialistReview(ReviewModelDto reviewModelDto) {
-    return _reviewCollectionRef
+  Future<void> updateSpecialistReview(ReviewModelDto reviewModelDto) async {
+    return (await _reviewCollectionRef)
         .doc(reviewModelDto.id)
         .set(reviewModelDto.toJsonWithoutId());
   }
 
   @override
-  Future<void> deleteSpecialistReview(ReviewModelDto reviewModelDto) {
-    return _reviewCollectionRef.doc(reviewModelDto.id).delete();
+  Future<void> deleteSpecialistReview(ReviewModelDto reviewModelDto) async {
+    return (await _reviewCollectionRef).doc(reviewModelDto.id).delete();
   }
 
   /// Returns specialist by given [snapshot]

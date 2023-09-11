@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/assembly/factory.dart';
+import 'package:mint_core/mint_assembly.dart';
 
 import '../../data/model/transaction_data_dto/transaction_data_dto.dart';
 import '../../domain/entity/transaction_data/transaction_data.dart';

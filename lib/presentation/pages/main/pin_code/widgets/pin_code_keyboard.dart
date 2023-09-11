@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/presentation/pages/main/pin_code/widgets/pin_number_button.dart';
-import 'package:mint/utils/layout_utils.dart';
+import 'package:mint_core/mint_utils.dart';
 
 class PinCodeKeyboard extends StatelessWidget {
   const PinCodeKeyboard({

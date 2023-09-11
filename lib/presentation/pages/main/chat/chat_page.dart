@@ -6,7 +6,6 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
 import 'package:mint/bloc/chat/chat_bloc.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
@@ -20,6 +19,7 @@ import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../../bloc/permission/permission_bloc.dart';
 

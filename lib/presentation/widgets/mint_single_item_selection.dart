@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mint/presentation/widgets/mint_selection_button.dart';
-import 'package:mint/utils/layout_utils.dart';
+import 'package:mint_core/mint_utils.dart';
 
 class MintSingleItemSelection<T> extends StatelessWidget {
   const MintSingleItemSelection({

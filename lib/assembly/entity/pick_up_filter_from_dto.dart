@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/assembly/factory.dart';
 import 'package:mint/domain/entity/price_range_model.dart';
+import 'package:mint_core/mint_assembly.dart';
 
 import '../../data/model/pick_up_filter_dto/pick_up_filter_dto.dart';
 import '../../domain/entity/pick_up_filter/pick_up_filter.dart';

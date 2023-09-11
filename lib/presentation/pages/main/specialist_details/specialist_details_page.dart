@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/review/review_bloc.dart';
 import 'package:mint/bloc/work_info/work_info_bloc.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/booking_bottom_sheet.dart';
@@ -16,6 +15,7 @@ import 'package:mint/presentation/pages/main/specialist_details/widgets/speciali
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/user_reviews_section.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../../domain/entity/review_model/review_model.dart';
 import '../../../../theme/mint_text_styles.dart';

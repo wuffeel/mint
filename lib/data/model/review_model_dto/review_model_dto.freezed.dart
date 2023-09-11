@@ -24,7 +24,7 @@ mixin _$ReviewModelDto {
   String get userId => throw _privateConstructorUsedError;
   String get specialistId => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  @DateTimeConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get content => throw _privateConstructorUsedError;
 
@@ -45,7 +45,7 @@ abstract class $ReviewModelDtoCopyWith<$Res> {
       String userId,
       String specialistId,
       double rating,
-      @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime createdAt,
+      @DateTimeConverter() DateTime createdAt,
       String? content});
 }
 
@@ -111,7 +111,7 @@ abstract class _$$_ReviewModelDtoCopyWith<$Res>
       String userId,
       String specialistId,
       double rating,
-      @JsonKey(fromJson: DateUtils.convertToDateTime) DateTime createdAt,
+      @DateTimeConverter() DateTime createdAt,
       String? content});
 }
 
@@ -170,7 +170,7 @@ class _$_ReviewModelDto extends _ReviewModelDto with DiagnosticableTreeMixin {
       required this.userId,
       required this.specialistId,
       required this.rating,
-      @JsonKey(fromJson: DateUtils.convertToDateTime) required this.createdAt,
+      @DateTimeConverter() required this.createdAt,
       this.content})
       : super._();
 
@@ -186,7 +186,7 @@ class _$_ReviewModelDto extends _ReviewModelDto with DiagnosticableTreeMixin {
   @override
   final double rating;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  @DateTimeConverter()
   final DateTime createdAt;
   @override
   final String? content;
@@ -249,8 +249,7 @@ abstract class _ReviewModelDto extends ReviewModelDto {
       required final String userId,
       required final String specialistId,
       required final double rating,
-      @JsonKey(fromJson: DateUtils.convertToDateTime)
-          required final DateTime createdAt,
+      @DateTimeConverter() required final DateTime createdAt,
       final String? content}) = _$_ReviewModelDto;
   const _ReviewModelDto._() : super._();
 
@@ -266,7 +265,7 @@ abstract class _ReviewModelDto extends ReviewModelDto {
   @override
   double get rating;
   @override
-  @JsonKey(fromJson: DateUtils.convertToDateTime)
+  @DateTimeConverter()
   DateTime get createdAt;
   @override
   String? get content;

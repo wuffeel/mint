@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/domain/entity/specialist_model/specialist_model.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
 import 'package:mint/presentation/widgets/mint_rating_bar.dart';
 import 'package:mint/presentation/widgets/specialist_experience_text.dart';
@@ -9,6 +8,7 @@ import 'package:mint/presentation/widgets/specialist_full_name_text.dart';
 import 'package:mint/presentation/widgets/specialist_photo_container.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_core.dart';
 
 class SpecialistCardTile extends StatelessWidget {
   const SpecialistCardTile({

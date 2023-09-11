@@ -10,7 +10,7 @@ import 'package:mint/presentation/widgets/bottom_sheet_app_bar.dart';
 import 'package:mint/presentation/widgets/bottom_sheet_fixed_container.dart';
 import 'package:mint/presentation/widgets/multiline_text_field.dart';
 import 'package:mint/theme/mint_text_styles.dart';
-import 'package:mint/utils/extended_widget_list.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../backbone/review_session.dart';
 import '../../domain/entity/review_model/review_model.dart';

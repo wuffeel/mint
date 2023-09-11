@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mint/domain/entity/user_model/user_model.dart';
+import 'package:mint_core/mint_core.dart';
 
 part 'review_model.freezed.dart';
 

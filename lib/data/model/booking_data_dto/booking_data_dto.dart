@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mint/utils/date_utils.dart';
+import 'package:mint_core/mint_utils.dart';
 
 part 'booking_data_dto.freezed.dart';
 
@@ -14,12 +14,9 @@ class BookingDataDto with _$BookingDataDto {
     required String userId,
     required String notes,
     required int durationMinutes,
-    @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-    required DateTime bookTime,
-    @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-    required DateTime endTime,
-    @JsonKey(fromJson: DateUtils.convertToDateTime, toJson: _toDateTime)
-    required DateTime createdAt,
+    @DateTimeConverter() required DateTime bookTime,
+    @DateTimeConverter() required DateTime endTime,
+    @DateTimeConverter() required DateTime createdAt,
   }) = _BookingDataDto;
 
   const BookingDataDto._();
@@ -32,7 +29,3 @@ class BookingDataDto with _$BookingDataDto {
 
   Map<String, dynamic> toJsonWithoutId() => toJson()..remove('id');
 }
-
-/// Used here because freezed generates toJson DateTime with toIsoString
-/// conversion
-DateTime _toDateTime(DateTime date) => date;

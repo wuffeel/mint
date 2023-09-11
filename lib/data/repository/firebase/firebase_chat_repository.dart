@@ -1,33 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/chat_repository.dart';
-
-import '../../../assembly/factory.dart';
+import 'package:mint_core/mint_assembly.dart';
+import 'package:mint_core/mint_module.dart';
 
 @Injectable(as: ChatRepository)
 class FirebaseChatRepository implements ChatRepository {
-  FirebaseChatRepository(this._chatUserFromMap);
+  FirebaseChatRepository(this._firebaseInitializer, this._chatUserFromMap);
 
-  final _chatCoreInstance = FirebaseChatCore.instance;
-  final _firestoreInstance = FirebaseFirestore.instance;
+  final FirebaseInitializer _firebaseInitializer;
 
   static const _roomCollection = 'chat_rooms';
   static const _chatUsersCollection = 'chat_users';
 
   final Factory<types.User, Map<String, dynamic>> _chatUserFromMap;
 
-  CollectionReference get _roomCollectionRef =>
-      _firestoreInstance.collection(_roomCollection);
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _roomCollectionRef async {
+    return (await _firebaseInitializer.firestore).collection(_roomCollection);
+  }
 
-  CollectionReference get _chatUsersCollectionRef =>
-      _firestoreInstance.collection(_chatUsersCollection);
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _chatUsersCollectionRef async {
+    return (await _firebaseInitializer.firestore)
+        .collection(_chatUsersCollection);
+  }
 
   @override
   Future<types.Room> createRoom(String userId, String specialistId) async {
-    final specialist = await _chatUsersCollectionRef.doc(specialistId).get();
-    final data = specialist.data() as Map<String, dynamic>?;
+    final chat = await _firebaseInitializer.chat;
+
+    final chatUsersCollection = await _chatUsersCollectionRef;
+    final specialist = await chatUsersCollection.doc(specialistId).get();
+    final data = specialist.data();
 
     if (data == null) {
       return const types.Room(id: '', type: types.RoomType.direct, users: []);
@@ -35,13 +41,14 @@ class FirebaseChatRepository implements ChatRepository {
 
     data['id'] = specialist.id;
     final user = _chatUserFromMap.create(data);
-    return _chatCoreInstance.createRoom(user);
+    return chat.createRoom(user);
   }
 
   @override
   Future<Map<String, dynamic>?> fetchRoom(String roomId) async {
-    final roomSnap = await _roomCollectionRef.doc(roomId).get();
-    final data = roomSnap.data() as Map<String, dynamic>?;
+    final roomCollection = await _roomCollectionRef;
+    final roomSnap = await roomCollection.doc(roomId).get();
+    final data = roomSnap.data();
     if (data == null) return null;
 
     final userIds = List<String>.from(data['userIds'] as List<dynamic>);
@@ -55,18 +62,19 @@ class FirebaseChatRepository implements ChatRepository {
   }
 
   @override
-  Stream<List<types.Message>> getMessages(types.Room room) {
-    return _chatCoreInstance.messages(room);
+  Future<Stream<List<types.Message>>> getMessages(types.Room room) async {
+    return (await _firebaseInitializer.chat).messages(room);
   }
 
   @override
   Future<void> sendMessage(dynamic partialMessage, String roomId) async {
-    return _chatCoreInstance.sendMessage(partialMessage, roomId);
+    final chat = await _firebaseInitializer.chat;
+    return chat.sendMessage(partialMessage, roomId);
   }
 
   @override
   Future<void> deleteMessage(String roomId, String messageId) async {
-    return _chatCoreInstance.deleteMessage(roomId, messageId);
+    return (await _firebaseInitializer.chat).deleteMessage(roomId, messageId);
   }
 
   @override
@@ -75,7 +83,7 @@ class FirebaseChatRepository implements ChatRepository {
     types.PreviewData previewData,
     String roomId,
   ) async {
-    return _chatCoreInstance.updateMessage(
+    return (await _firebaseInitializer.chat).updateMessage(
       message.copyWith(previewData: previewData),
       roomId,
     );
@@ -88,8 +96,9 @@ class FirebaseChatRepository implements ChatRepository {
   // ChatService to retrieve users info => injector throws Stack Overflow.
   Future<List<types.User>> _getUsersFromIds(List<String> userIds) async {
     final userFutures = userIds.map((userId) async {
-      final userSnap = await _chatUsersCollectionRef.doc(userId).get();
-      final data = userSnap.data() as Map<String, dynamic>?;
+      final chatUsersCollection = await _chatUsersCollectionRef;
+      final userSnap = await chatUsersCollection.doc(userId).get();
+      final data = userSnap.data();
       if (data == null) return null;
       data['id'] = userSnap.id;
       return _chatUserFromMap.create(data);

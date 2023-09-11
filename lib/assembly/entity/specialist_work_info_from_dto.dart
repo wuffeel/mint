@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
-import 'package:mint/assembly/factory.dart';
 import 'package:mint/data/model/work_day_period/work_day_period.dart';
+import 'package:mint_core/mint_assembly.dart';
 
 import '../../data/model/specialist_work_info_dto/specialist_work_info_dto.dart';
 import '../../domain/entity/specialist_work_info/specialist_work_info.dart';
