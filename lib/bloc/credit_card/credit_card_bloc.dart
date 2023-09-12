@@ -7,9 +7,9 @@ import 'package:meta/meta.dart';
 import 'package:mint/domain/usecase/credit_card_delete_use_case.dart';
 import 'package:mint/domain/usecase/credit_card_list_fetch_use_case.dart';
 import 'package:mint/domain/usecase/credit_card_save_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
-import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/credit_card_model/credit_card_model.dart';
 
 part 'credit_card_event.dart';
@@ -35,7 +35,7 @@ class CreditCardBloc extends Bloc<CreditCardEvent, CreditCardState> {
   final CreditCardDeleteUseCase _creditCardDeleteUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
 
   late final StreamSubscription<PatientUser?> _userSubscription;
 

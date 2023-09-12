@@ -5,7 +5,6 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
-import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
@@ -19,6 +18,7 @@ import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
 import '../../../../bloc/permission/permission_bloc.dart';
@@ -58,7 +58,7 @@ class ChatPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) =>
-              getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
+              getIt<ChatBlocPatient>()..add(ChatInitializeRequested(room)),
         ),
         BlocProvider(
           create: (context) =>
@@ -101,13 +101,13 @@ class _ChatViewState extends State<_ChatView> {
     types.PreviewData previewData,
   ) {
     return context
-        .read<ChatBloc>()
+        .read<ChatBlocPatient>()
         .add(ChatPreviewDataFetched(message, previewData));
   }
 
   void _handleSendPressed() {
     final message = types.PartialText(text: _messageController.text.trim());
-    context.read<ChatBloc>().add(ChatSendMessageRequested(message));
+    context.read<ChatBlocPatient>().add(ChatSendMessageRequested(message));
     _messageController.clear();
   }
 
@@ -123,11 +123,11 @@ class _ChatViewState extends State<_ChatView> {
 
   Future<void> _handleFileSelection() async {
     context.read<PermissionBloc>().add(PermissionCheckStorageRequested());
-    return context.read<ChatBloc>().add(ChatFilePickRequested());
+    return context.read<ChatBlocPatient>().add(ChatFilePickRequested());
   }
 
   Future<void> _handleImageSelection() async {
-    return context.read<ChatBloc>().add(ChatImagePickRequested());
+    return context.read<ChatBlocPatient>().add(ChatImagePickRequested());
   }
 
   /// Used to handle file open attached to [message] with [types.FileMessage]
@@ -135,7 +135,7 @@ class _ChatViewState extends State<_ChatView> {
   void _handleMessageTap(BuildContext _, types.Message message) {
     final shouldOpen = message is types.FileMessage;
     if (message is types.FileMessage || message is types.AudioMessage) {
-      return context.read<ChatBloc>().add(
+      return context.read<ChatBlocPatient>().add(
             ChatFileLoadRequested(
               message,
               shouldOpen: shouldOpen,
@@ -152,7 +152,9 @@ class _ChatViewState extends State<_ChatView> {
         message,
         _tapPosition,
         onDelete: (message) {
-          context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
+          context
+              .read<ChatBlocPatient>()
+              .add(ChatDeleteMessageRequested(message));
           context.router.pop();
         },
       );
@@ -167,7 +169,7 @@ class _ChatViewState extends State<_ChatView> {
 
   /// Callback for reloading chat on room fetch failure
   void _refreshChat() {
-    context.read<ChatBloc>().add(ChatInitializeRequested(widget.room));
+    context.read<ChatBlocPatient>().add(ChatInitializeRequested(widget.room));
   }
 
   void _onEmojiBackspace() {
@@ -226,7 +228,7 @@ class _ChatViewState extends State<_ChatView> {
     return Scaffold(
       resizeToAvoidBottomInset: _emojiPanelHidden,
       appBar: ChatAppBar(specialistModel: widget.specialistModel),
-      body: BlocBuilder<ChatBloc, ChatState>(
+      body: BlocBuilder<ChatBlocPatient, ChatState>(
         builder: (context, state) {
           if (state is ChatLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -267,7 +269,7 @@ class _ChatViewState extends State<_ChatView> {
                         onAttach: _handleAttachmentPressed,
                         onAudioStop: (audioMessage) {
                           context
-                              .read<ChatBloc>()
+                              .read<ChatBlocPatient>()
                               .add(ChatSaveAudioRequested(audioMessage));
                         },
                         isEmojiSelected: !_emojiPanelHidden,

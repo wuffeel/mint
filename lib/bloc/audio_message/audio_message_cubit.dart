@@ -5,8 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-
-import '../../domain/usecase/load_file_use_case.dart';
+import 'package:mint_core/mint_module.dart';
 
 part 'audio_message_state.dart';
 

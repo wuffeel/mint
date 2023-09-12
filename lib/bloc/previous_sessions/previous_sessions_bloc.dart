@@ -6,9 +6,9 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/usecase/fetch_previous_sessions_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
-import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/booking_data/booking_data.dart';
 
 part 'previous_sessions_event.dart';
@@ -36,7 +36,7 @@ class PreviousSessionsBloc
   final FetchPreviousSessionsUseCase _fetchPreviousSessionsUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
 
   late final StreamSubscription<PatientUser?> _userSubscription;
 

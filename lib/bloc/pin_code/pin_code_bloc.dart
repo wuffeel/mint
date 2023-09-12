@@ -5,8 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/backbone/pin_code_status_entered.dart';
-import 'package:mint/domain/controller/user_controller.dart';
 import 'package:mint/domain/usecase/pin_code_change_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
 import '../../backbone/pin_code_status_initial.dart';
@@ -38,7 +38,7 @@ class PinCodeBloc extends Bloc<PinCodeEvent, PinCodeState> {
   final PinCodeChangeUseCase _pinCodeChangeUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
   late final StreamSubscription<PatientUser?> _userSubscription;
 
   void _subscribeToUserChange() {

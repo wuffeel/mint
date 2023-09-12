@@ -6,9 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/controller/booking_controller.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
-import '../../domain/controller/user_controller.dart';
 import '../../domain/usecase/fetch_upcoming_sessions_use_case.dart';
 
 part 'upcoming_sessions_event.dart';
@@ -34,7 +34,7 @@ class UpcomingSessionsBloc
   final FetchUpcomingSessionsUseCase _fetchUpcomingSessionsUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
   final BookingController _bookingController;
 
   late final StreamSubscription<PatientUser?> _userSubscription;

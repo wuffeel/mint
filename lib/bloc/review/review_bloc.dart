@@ -8,9 +8,9 @@ import 'package:mint/domain/controller/specialist_rating_controller.dart';
 import 'package:mint/domain/usecase/add_review_use_case.dart';
 import 'package:mint/domain/usecase/fetch_specialist_reviews_use_case.dart';
 import 'package:mint/domain/usecase/update_review_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
-import '../../domain/controller/user_controller.dart';
 import '../../domain/entity/review_model/review_model.dart';
 import '../../domain/usecase/delete_review_use_case.dart';
 
@@ -42,7 +42,7 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
   final DeleteReviewUseCase _deleteReviewUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
   final SpecialistRatingController _specialistRatingController;
 
   late final StreamSubscription<PatientUser?> _userSubscription;
