@@ -146,13 +146,36 @@ class FirebaseNotificationRepository implements NotificationRepository {
 
   /// Updates the FCM token for a user in the Firestore database.
   Future<void> _updateToken(String fcmToken, String userId) async {
-    final tokenDoc = (await _tokenCollectionRef).doc(userId);
+    await _checkDifferentUser(fcmToken, userId);
+
+    final tokenCollection = await _tokenCollectionRef;
+    final tokenDoc = tokenCollection.doc(userId);
     final tokenSnap = await tokenDoc.get();
     final token = tokenSnap.data()?['token'];
 
     if (!tokenSnap.exists || (token != null && token != fcmToken)) {
       await _setFcmToken(tokenDoc, fcmToken);
     }
+  }
+
+  /// Checks and removes the association of an FCM [fcmToken] with a
+  /// [userId] if document ID differs from [userId].
+  ///
+  /// This function verifies if the provided [fcmToken] is currently associated
+  /// with any user. If the document ID of the token differs from [userId],
+  /// it deletes the existing token association.
+  Future<void> _checkDifferentUser(String fcmToken, String userId) async {
+    final tokenCollection = await _tokenCollectionRef;
+    final tokenSnap = await tokenCollection
+        .where('token', isEqualTo: fcmToken)
+        .limit(1)
+        .get();
+    if (tokenSnap.docs.isEmpty) {
+      return;
+    }
+    final tokenDoc = tokenSnap.docs.first;
+    if (tokenDoc.id == userId) return;
+    await tokenCollection.doc(tokenDoc.id).delete();
   }
 
   /// Sets the FCM token in the Firestore database with the current timestamp.
