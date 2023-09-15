@@ -8,8 +8,8 @@ class UserDataUpdateUseCase {
 
   final UserService _service;
 
-  Future<PatientUser> call(PatientUser userData) async {
-    final user = await _service.updateUserData(userData);
+  Future<PatientUser> call(PatientUser userData, {FileData? photoData}) async {
+    final user = await _service.updateUserData(userData, photoData: photoData);
     if (user is PatientUser) return user;
     throw ArgumentError(
       '[UserDataUpdateUseCase]: Wrong user type: ${user.runtimeType}',

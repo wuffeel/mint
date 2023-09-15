@@ -85,9 +85,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         firstName: event.firstName,
         lastName: event.lastName,
         dateOfBirth: event.dateOfBirth,
-        photoUrl: event.photoPath,
       );
-      final updatedUser = await _userDataUpdateUseCase(userData);
+      final updatedUser = await _userDataUpdateUseCase(
+        userData,
+        photoData: event.photoData,
+      );
       emit(UserDataUpdateSuccess(updatedUser));
     } catch (error) {
       log('UserDataUpdateFailure: $error');

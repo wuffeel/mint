@@ -17,7 +17,7 @@ class ProfileAppBar extends StatelessWidget {
     required this.maxHeight,
     this.collapseFactor = 0.8,
     this.onPickPhoto,
-    this.localPhotoUrl,
+    this.photoData,
     this.avatarSize = 110,
   })  : assert(
           collapseFactor > 0 && collapseFactor < 1,
@@ -54,8 +54,9 @@ class ProfileAppBar extends StatelessWidget {
 
   /// Used to display picked photo with [onPickPhoto] callback.
   ///
-  /// If null, current user's photo will be displayed.
-  final String? localPhotoUrl;
+  /// If null, current user's network photo or avatar placeholder will be
+  /// displayed.
+  final FileData? photoData;
 
   /// Circle avatar radius
   final double avatarSize;
@@ -69,7 +70,7 @@ class ProfileAppBar extends StatelessWidget {
         maxHeight: maxHeight,
         collapseFactor: collapseFactor,
         onPickPhoto: onPickPhoto,
-        localPhotoUrl: localPhotoUrl,
+        photoData: photoData,
       ),
       pinned: true,
     );
@@ -83,14 +84,14 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
     required this.maxHeight,
     required this.collapseFactor,
     this.onPickPhoto,
-    this.localPhotoUrl,
+    this.photoData,
   });
 
   final double minHeight;
   final double maxHeight;
   final double collapseFactor;
   final VoidCallback? onPickPhoto;
-  final String? localPhotoUrl;
+  final FileData? photoData;
   final double avatarSize;
 
   @override
@@ -157,12 +158,12 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
                 child: headerConfig.percentage >= collapseFactor
                     ? _CollapsedAppBar(
                         headerConfig: headerConfig,
-                        localPhotoUrl: localPhotoUrl,
+                        photoData: photoData,
                         user: state.user,
                       )
                     : _ExpandedAppBar(
                         headerConfig: headerConfig,
-                        localPhotoUrl: localPhotoUrl,
+                        photoData: photoData,
                         onPickPhoto: onPickPhoto,
                         user: state.user,
                       ),
@@ -185,11 +186,11 @@ class _CollapsedAppBar extends StatelessWidget {
   const _CollapsedAppBar({
     required this.headerConfig,
     required this.user,
-    this.localPhotoUrl,
+    this.photoData,
   });
 
   final _HeaderConfig headerConfig;
-  final String? localPhotoUrl;
+  final FileData? photoData;
   final PatientUser user;
 
   @override
@@ -206,7 +207,7 @@ class _CollapsedAppBar extends StatelessWidget {
         ProfileAvatar(
           size: headerConfig.avatarRadius,
           scaleFactor: headerConfig.scaleFactor,
-          localPhotoUrl: localPhotoUrl,
+          photoData: photoData,
           photoUrl: user.photoUrl,
         ),
         SizedBox(width: 8.w),
@@ -235,14 +236,14 @@ class _ExpandedAppBar extends StatelessWidget {
   const _ExpandedAppBar({
     required this.headerConfig,
     required this.user,
-    this.localPhotoUrl,
+    this.photoData,
     this.onPickPhoto,
   });
 
   final _HeaderConfig headerConfig;
   final PatientUser user;
   final VoidCallback? onPickPhoto;
-  final String? localPhotoUrl;
+  final FileData? photoData;
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +268,7 @@ class _ExpandedAppBar extends StatelessWidget {
               size: headerConfig.avatarRadius,
               scaleFactor: headerConfig.scaleFactor,
               onPickPhoto: onPickPhoto,
-              localPhotoUrl: localPhotoUrl,
+              photoData: photoData,
               photoUrl: user.photoUrl,
             ),
             SizedBox(height: 5.h),

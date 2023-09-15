@@ -14,13 +14,13 @@ class UserDataUpdateRequested extends UserEvent {
     required this.firstName,
     required this.lastName,
     required this.dateOfBirth,
-    required this.photoPath,
+    required this.photoData,
   });
 
   final String firstName;
   final String lastName;
   final DateTime? dateOfBirth;
-  final String? photoPath;
+  final FileData? photoData;
 }
 
 class UserPickPhotoRequested extends UserEvent {}

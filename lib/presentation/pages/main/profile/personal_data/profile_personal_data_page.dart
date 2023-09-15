@@ -7,6 +7,7 @@ import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/profile/personal_data/widgets/profile_date_of_birth.dart';
 import 'package:mint/presentation/pages/main/profile/widgets/profile_app_bar.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../../../bloc/user/user_bloc.dart';
 import '../../../../widgets/mint_text_form_field.dart';
@@ -67,7 +68,7 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
   final _lastNameController = TextEditingController();
   var _autoValidateMode = AutovalidateMode.disabled;
   late DateTime? _dateOfBirth = widget.dateOfBirth;
-  String? _photoPath;
+  FileData? _photoData;
 
   @override
   void initState() {
@@ -89,7 +90,7 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
       firstName: firstName,
       lastName: lastName,
       dateOfBirth: _dateOfBirth,
-      photoPath: _photoPath ?? widget.photoUrl,
+      photoData: _photoData,
     );
     context.read<UserBloc>().add(updateEvent);
   }
@@ -98,14 +99,17 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
     final image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
-    if (image != null) setState(() => _photoPath = image.path);
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      setState(() => _photoData = FileData(name: image.name, bytes: bytes));
+    }
   }
 
   bool get _dataChanged =>
       _firstNameController.text.trim() != widget.firstName ||
       _lastNameController.text.trim() != widget.lastName ||
       _dateOfBirth != widget.dateOfBirth ||
-      _photoPath != null;
+      _photoData != null;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +122,7 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
             maxHeight: 244.h,
             collapseFactor: 0.5,
             onPickPhoto: _onPickPhoto,
-            localPhotoUrl: _photoPath,
+            photoData: _photoData,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
