@@ -72,10 +72,13 @@ class _MessageCreatedAt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final created = createdAt;
     return Text(
-      DateFormat.Hm().format(
-        DateTime.fromMillisecondsSinceEpoch(createdAt ?? 0),
-      ),
+      created != null
+          ? DateFormat.Hm().format(
+              DateTime.fromMillisecondsSinceEpoch(created),
+            )
+          : '',
       style: TextStyle(
         fontSize: 10.sp,
         color: Theme.of(context).hintColor.withOpacity(0.6),
