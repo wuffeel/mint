@@ -12,10 +12,10 @@ class NotificationsInitializeSuccess extends NotificationsState {}
 class NotificationsInitializeFailure extends NotificationsState {}
 
 class NotificationsFetchChatRoomSuccess extends NotificationsState {
-  NotificationsFetchChatRoomSuccess(this.chatRoom, this.specialistModel);
+  NotificationsFetchChatRoomSuccess(this.chatRoom, this.patientId);
 
   final types.Room chatRoom;
-  final SpecialistModel specialistModel;
+  final String patientId;
 }
 
 class NotificationsFetchChatRoomFailure extends NotificationsState {}

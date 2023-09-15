@@ -25,6 +25,7 @@ class AudioMessageCubit extends Cubit<AudioMessageState> {
       final uuid =
           audioMessage.metadata?['uuid'] as String? ?? audioMessage.name;
       final audioPath = await _loadFileUseCase(uuid, audioMessage.uri);
+      if (audioPath == null) return;
       await playerController.preparePlayer(
         path: audioPath,
         noOfSamples: const PlayerWaveStyle().getSamplesForWidth(playerSize),

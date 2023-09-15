@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
@@ -21,6 +20,7 @@ import 'package:mint/utils/chat_utils.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
+import '../../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../../bloc/permission/permission_bloc.dart';
 
 @RoutePage()
@@ -28,11 +28,11 @@ class ChatPage extends StatelessWidget {
   const ChatPage({
     super.key,
     required this.room,
-    required this.specialistModel,
+    required this.senderId,
   });
 
   final types.Room room;
-  final SpecialistModel specialistModel;
+  final String senderId;
 
   void _showPermissionDeniedDialog(BuildContext context) {
     showDialog<void>(
@@ -68,17 +68,17 @@ class ChatPage extends StatelessWidget {
       ],
       child: BlocListener<PermissionBloc, PermissionState>(
         listener: _permissionCubitListener,
-        child: _ChatView(specialistModel: specialistModel, room: room),
+        child: _ChatView(room: room, senderId: senderId),
       ),
     );
   }
 }
 
 class _ChatView extends StatefulWidget {
-  const _ChatView({required this.specialistModel, required this.room});
+  const _ChatView({required this.room, required this.senderId});
 
-  final SpecialistModel specialistModel;
   final types.Room room;
+  final String senderId;
 
   @override
   State<_ChatView> createState() => _ChatViewState();
@@ -93,7 +93,11 @@ class _ChatViewState extends State<_ChatView> {
   final _hideBackgroundOnEmojiMessages = true;
 
   late final _user = widget.room.users.firstWhere(
-    (e) => e.id != widget.specialistModel.id,
+    (e) => e.id != widget.senderId,
+  );
+
+  late final _specialist = widget.room.users.firstWhere(
+    (e) => e.id == widget.senderId,
   );
 
   void _previewDataFetched(
@@ -227,7 +231,14 @@ class _ChatViewState extends State<_ChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: _emojiPanelHidden,
-      appBar: ChatAppBar(specialistModel: widget.specialistModel),
+      appBar: ChatAppBar(
+        user: UserModel(
+          id: _specialist.id,
+          firstName: _specialist.firstName,
+          lastName: _specialist.lastName,
+          photoUrl: _specialist.imageUrl,
+        ),
+      ),
       body: BlocBuilder<ChatBlocPatient, ChatState>(
         builder: (context, state) {
           if (state is ChatLoading) {
