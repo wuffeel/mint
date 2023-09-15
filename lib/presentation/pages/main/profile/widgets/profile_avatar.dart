@@ -43,7 +43,7 @@ class ProfileAvatar extends StatelessWidget {
                 size: size,
                 scaleFactor: scaleFactor,
                 onPickPhoto: onPickPhoto,
-                child: ClipOval(child: Image.network(photo)),
+                child: ClipOval(child: Image.network(photo, fit: BoxFit.cover)),
               )
             : _PhotoContainer(
                 size: size,
