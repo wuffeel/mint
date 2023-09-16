@@ -34,3 +34,11 @@ class UserDataUpdateLoading extends UserFetchSuccess {
 class UserDataUpdateSuccess extends UserFetchSuccess {
   UserDataUpdateSuccess(super.user);
 }
+
+class UserInitializePresenceSuccess extends UserFetchSuccess {
+  UserInitializePresenceSuccess(super.user);
+}
+
+class UserInitializePresenceFailure extends UserFetchSuccess {
+  UserInitializePresenceFailure(super.user);
+}

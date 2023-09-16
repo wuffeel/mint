@@ -5,6 +5,8 @@ abstract class UserEvent {}
 
 class UserDataListen extends UserEvent {}
 
+class UserInitializePresenceRequested extends UserEvent {}
+
 class UserLogInCheckRequested extends UserEvent {}
 
 class UserDataRequested extends UserEvent {}

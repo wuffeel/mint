@@ -73,7 +73,9 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<UserBloc>()..add(UserDataListen()),
+          create: (context) => getIt<UserBloc>()
+            ..add(UserDataListen())
+            ..add(UserInitializePresenceRequested()),
         ),
         BlocProvider(
           create: (context) =>

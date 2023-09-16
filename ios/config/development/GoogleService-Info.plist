@@ -6,6 +6,8 @@
 	<string>197105291532-bmnisi0eb40v999kibfjt0dvibre7g3b.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.197105291532-bmnisi0eb40v999kibfjt0dvibre7g3b</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>197105291532-7e8j7pfc575dig67dgkl0ot3pqfgksur.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCCwmMXO_uIBqP4M2dnNOjptfyqcWiY8zo</string>
 	<key>GCM_SENDER_ID</key>
@@ -30,5 +32,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:197105291532:ios:9d9a9ab983774f3b9ff929</string>
+	<key>DATABASE_URL</key>
+	<string>https://mint-development-b5d54-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

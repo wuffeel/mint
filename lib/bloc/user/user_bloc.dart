@@ -9,6 +9,7 @@ import 'package:mint/domain/usecase/log_out_use_case.dart';
 import 'package:mint/domain/usecase/user_data_update_use_case.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 part 'user_event.dart';
 
@@ -20,6 +21,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     this._getCurrentUserUseCase,
     this._logOutUseCase,
     this._userDataUpdateUseCase,
+    this._initializeUserPresenceUseCase,
     this._userController,
   ) : super(UserLoading()) {
     on<UserDataListen>(
@@ -33,6 +35,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         },
       ),
     );
+    on<UserInitializePresenceRequested>(_onUserInitializePresence);
     on<UserLogInCheckRequested>(_onUserLogInCheck);
     on<UserDataRequested>(_onUserDataRequested);
     on<UserDataUpdateRequested>(_onUserDataUpdate);
@@ -42,6 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final LogOutUseCase _logOutUseCase;
   final UserDataUpdateUseCase _userDataUpdateUseCase;
+  final InitializeUserPresenceUseCase _initializeUserPresenceUseCase;
 
   final UserController<PatientUser?> _userController;
 
@@ -69,6 +73,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } catch (error) {
       log('UserFetchFailure: $error');
       emit(UserFetchFailure());
+    }
+  }
+
+  Future<void> _onUserInitializePresence(
+    UserInitializePresenceRequested event,
+    Emitter<UserState> emit,
+  ) async {
+    final state = this.state;
+    if (state is! UserFetchSuccess) return;
+    final user = state.user;
+    try {
+      await _initializeUserPresenceUseCase(user.id);
+      emit(UserInitializePresenceSuccess(user));
+    } catch (error) {
+      log('UserInitializePresenceFailure: $error');
+      emit(UserInitializePresenceFailure(user));
     }
   }
 
