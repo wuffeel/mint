@@ -65,6 +65,7 @@ class ChatPage extends StatelessWidget {
               getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
         ),
         BlocProvider(create: (context) => PermissionBloc()),
+        BlocProvider(create: (context) => getIt<PresenceMessageBloc>()),
       ],
       child: BlocListener<PermissionBloc, PermissionState>(
         listener: _permissionCubitListener,
@@ -184,6 +185,17 @@ class _ChatViewState extends State<_ChatView> {
       );
   }
 
+  void _markMessageAsRead(String messageId) {
+    final chatState = context.read<ChatBlocPatient>().state;
+    if (chatState is! ChatMessageLoading) {
+      final markAsRead = PresenceMessageMarkAsRead(
+        roomId: widget.room.id,
+        messageId: messageId,
+      );
+      context.read<PresenceMessageBloc>().add(markAsRead);
+    }
+  }
+
   /// Message bubble container
   Widget _bubbleBuilder(
     Widget child, {
@@ -196,6 +208,8 @@ class _ChatViewState extends State<_ChatView> {
         _emojiEnlargementBehavior != ui.EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
             ui.isConsistsOfEmojis(_emojiEnlargementBehavior, message);
+
+    if (!isSender) _markMessageAsRead(message.id);
 
     return MessageBubble(
       isLast: isLast,
