@@ -186,14 +186,11 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   void _markMessageAsRead(String messageId) {
-    final chatState = context.read<ChatBlocPatient>().state;
-    if (chatState is! ChatMessageLoading) {
-      final markAsRead = PresenceMessageMarkAsRead(
-        roomId: widget.room.id,
-        messageId: messageId,
-      );
-      context.read<PresenceMessageBloc>().add(markAsRead);
-    }
+    final markAsRead = PresenceMessageMarkAsRead(
+      roomId: widget.room.id,
+      messageId: messageId,
+    );
+    context.read<PresenceMessageBloc>().add(markAsRead);
   }
 
   /// Message bubble container
@@ -210,7 +207,7 @@ class _ChatViewState extends State<_ChatView> {
             ui.isConsistsOfEmojis(_emojiEnlargementBehavior, message);
 
     final status = message.status;
-    final seen = status != null && status != types.Status.seen;
+    final seen = status != null && status == types.Status.seen;
     if (!isSender && !seen) _markMessageAsRead(message.id);
 
     return MessageBubble(
