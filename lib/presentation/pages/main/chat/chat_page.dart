@@ -291,10 +291,10 @@ class _ChatViewState extends State<_ChatView> {
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onAttach: _handleAttachmentPressed,
-                        onAudioStop: (audioMessage) {
+                        onAudioStop: (audioPath, duration) {
                           context
                               .read<ChatBlocPatient>()
-                              .add(ChatSaveAudioRequested(audioMessage));
+                              .add(ChatSaveAudioRequested(audioPath, duration));
                         },
                         isEmojiSelected: !_emojiPanelHidden,
                         onTextFieldTap: () => setState(

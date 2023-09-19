@@ -1,5 +1,4 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:mint/domain/service/abstract/audio_record_service.dart';
 
@@ -22,7 +21,9 @@ class AudioRecordServiceImpl implements AudioRecordService {
   }
 
   @override
-  Future<types.PartialAudio?> stopRecord(RecorderController controller) {
+  Future<({String audioPath, Duration duration})?> stopRecord(
+    RecorderController controller,
+  ) {
     return _audioRecordRepository.stopRecord(controller);
   }
 }

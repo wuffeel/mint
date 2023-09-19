@@ -20,9 +20,14 @@ class AudioRecordStartFailure extends AudioRecordInitializeSuccess {
 }
 
 class AudioRecordStopSuccess extends AudioRecordInitializeSuccess {
-  AudioRecordStopSuccess(super.controller, {this.message});
+  AudioRecordStopSuccess(
+    super.controller, {
+    this.audioPath,
+    this.duration,
+  });
 
-  final types.PartialAudio? message;
+  final String? audioPath;
+  final Duration? duration;
 }
 
 class AudioRecordStopFailure extends AudioRecordInitializeSuccess {
