@@ -361,6 +361,11 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// By default, [chunkSize] is set to 10, which aligns with Firestore limit
   /// for most queries.
   List<List<T>> _chunkList<T>(List<T> list, {int chunkSize = 10}) {
+    assert(
+      chunkSize > 0 && chunkSize <= 10,
+      '[chunkSize can not be set more than 10 due to Firestore limit]',
+    );
+
     final chunked = <List<T>>[];
     var currentIndex = 0;
 
