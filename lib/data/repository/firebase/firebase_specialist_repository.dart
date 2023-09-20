@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/specialist_repository.dart';
@@ -79,7 +77,6 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
       final lastSpecSnap = await favoriteCollection
           .where('specialistId', isEqualTo: lastSpecialistId)
           .get();
-      log('${lastSpecSnap.docs.map((e) => e.data())}');
       if (lastSpecSnap.docs.isNotEmpty && lastSpecSnap.docs.length == 1) {
         query = query.startAfterDocument(lastSpecSnap.docs.first);
       }
@@ -274,7 +271,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
       return [query];
     }
 
-    final chunked = _chunkList(specializations, 10);
+    final chunked = _chunkList(specializations);
 
     return chunked.map((element) {
       return query.where('specializations', arrayContainsAny: element);
@@ -360,7 +357,10 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   /// Divides [list] into sub-lists, each of length equal to [chunkSize]
-  List<List<T>> _chunkList<T>(List<T> list, int chunkSize) {
+  ///
+  /// By default, [chunkSize] is set to 10, which aligns with Firestore limit
+  /// for most queries.
+  List<List<T>> _chunkList<T>(List<T> list, {int chunkSize = 10}) {
     final chunked = <List<T>>[];
     var currentIndex = 0;
 
