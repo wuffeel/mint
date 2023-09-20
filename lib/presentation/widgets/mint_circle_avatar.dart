@@ -20,9 +20,8 @@ class MintCircleAvatar extends StatelessWidget {
     return photo != null
         ? CircleAvatar(
             radius: radius,
-            child: ClipOval(
-              child: Image.network(photo),
-            ),
+            backgroundColor: backgroundColor,
+            backgroundImage: NetworkImage(photo),
           )
         : CircleAvatar(
             radius: radius,
