@@ -130,6 +130,7 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   AudioFileWaveforms(
+                    key: Key(widget.audioMessage.id),
                     size: Size(_playerSize, widget.height ?? 40.h),
                     playerController: _playerController,
                     animationDuration: const Duration(milliseconds: 300),
@@ -137,7 +138,9 @@ class _ChatAudioMessageState extends State<ChatAudioMessage>
                       fixedWaveColor: _getProperTranslucentColor(),
                       liveWaveColor: _getProperOpaqueColor(),
                     ),
-                    waveformData: _playerController.waveformData,
+                    waveformData: state is! AudioMessageNoWaveform
+                        ? _playerController.waveformData
+                        : List.generate(40, (index) => 0.05),
                     waveformType: WaveformType.fitWidth,
                   ),
                   SizedBox(height: 4.h),

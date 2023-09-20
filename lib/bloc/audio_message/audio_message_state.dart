@@ -9,4 +9,6 @@ class AudioMessageLoading extends AudioMessageState {}
 
 class AudioMessageLoadSuccess extends AudioMessageState {}
 
+class AudioMessageNoWaveform extends AudioMessageLoadSuccess {}
+
 class AudioMessageLoadFailure extends AudioMessageState {}
