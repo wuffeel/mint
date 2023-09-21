@@ -18,6 +18,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   static const _specialistCollection = 'specialists';
   static const _favoriteCollection = 'favorites';
   static const _reviewCollection = 'reviews';
+  static const _usersCollection = 'users';
 
   Future<FirebaseFirestore> get _firestore => _firebaseInitializer.firestore;
 
@@ -26,12 +27,12 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
           (await _firestore).collection(_specialistCollection);
 
   Future<CollectionReference<Map<String, dynamic>>>
-      get _favoriteCollectionRef async =>
-          (await _firestore).collection(_favoriteCollection);
-
-  Future<CollectionReference<Map<String, dynamic>>>
       get _reviewCollectionRef async =>
           (await _firestore).collection(_reviewCollection);
+
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _usersCollectionRef async =>
+          (await _firestore).collection(_usersCollection);
 
   @override
   Future<SpecialistModelDto?> getSpecialist(String specialistId) async {
@@ -61,61 +62,53 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   @override
+  Future<List<String>> getFavoriteSpecialistsIds(String userId) async {
+    final usersCollection = await _usersCollectionRef;
+    final favoriteIdsSnap =
+        await usersCollection.doc(userId).collection(_favoriteCollection).get();
+    return favoriteIdsSnap.docs.map((e) => e.id).toList();
+  }
+
+  @override
   Future<List<SpecialistModelDto>> getFavoriteSpecialists(
-    String userId, {
-    String? lastSpecialistId,
-    int? limit,
-  }) async {
-    final favoriteCollection = await _favoriteCollectionRef;
+    List<String> favoriteIds,
+  ) async {
     final specialistCollection = await _specialistCollectionRef;
+    final chunkedIds = _chunkList(favoriteIds);
 
-    var query = favoriteCollection
-        .where('userId', isEqualTo: userId)
-        .orderBy(_orderByDate);
+    final querySnapshots = chunkedIds.map(
+      (chunk) => specialistCollection
+          .where(FieldPath.documentId, whereIn: chunk)
+          .get(),
+    );
 
-    if (lastSpecialistId != null) {
-      final lastSpecSnap = await favoriteCollection
-          .where('specialistId', isEqualTo: lastSpecialistId)
-          .get();
-      if (lastSpecSnap.docs.isNotEmpty && lastSpecSnap.docs.length == 1) {
-        query = query.startAfterDocument(lastSpecSnap.docs.first);
-      }
-    }
+    final results = await Future.wait(querySnapshots);
 
-    if (limit != null) {
-      query = query.limit(limit);
-    }
-
-    final favoriteSnapshot = await query.get();
-
-    final favoriteIds = favoriteSnapshot.docs
-        .map((doc) => doc.data()['specialistId'])
-        .whereType<String>()
+    return results
+        .expand(
+          (e) => e.docs.map((e) {
+            return SpecialistModelDto.fromJsonWithId(e.data(), e.id);
+          }),
+        )
         .toList();
-
-    if (favoriteIds.isEmpty) return [];
-
-    final specialistSnapshot =
-        await specialistCollection.where('id', whereIn: favoriteIds).get();
-
-    return _specialistDtoListFromSnapshot(specialistSnapshot);
   }
 
   @override
   Future<void> addToFavorite(String userId, String specialistId) async {
-    return (await _favoriteCollectionRef).doc('$userId-$specialistId').set({
-      'userId': userId,
-      'specialistId': specialistId,
-      'createdAt': DateTime.now(),
-    });
+    return (await _usersCollectionRef)
+        .doc(userId)
+        .collection(_favoriteCollection)
+        .doc(specialistId)
+        .set({'createdAt': FieldValue.serverTimestamp()});
   }
 
   @override
-  Future<void> removeFromFavorite(
-    String userId,
-    String specialistId,
-  ) async {
-    return (await _favoriteCollectionRef).doc('$userId-$specialistId').delete();
+  Future<void> removeFromFavorite(String userId, String specialistId) async {
+    return (await _usersCollectionRef)
+        .doc(userId)
+        .collection(_favoriteCollection)
+        .doc(specialistId)
+        .delete();
   }
 
   @override

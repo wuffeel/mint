@@ -11,11 +11,11 @@ abstract class SpecialistService {
     int? limit,
   });
 
+  Future<List<String>> getFavoriteSpecialistsIds(String userId);
+
   Future<List<SpecialistModel>> getFavoriteSpecialists(
-    String userId, {
-    String? lastSpecialistId,
-    int? limit,
-  });
+    List<String> favoriteIds,
+  );
 
   Future<void> addToFavorite(String userId, String specialistId);
 

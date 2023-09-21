@@ -83,7 +83,7 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
         ),
         BlocProvider(
           create: (context) =>
-              getIt<FavoriteBloc>()..add(FavoriteFetchRequested()),
+              getIt<FavoriteBloc>()..add(FavoriteFetchIdsRequested()),
         ),
         BlocProvider(
           create: (context) => getIt<UpcomingSessionsBloc>()

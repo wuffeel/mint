@@ -64,7 +64,7 @@ dependencies:
   shimmer: ^3.0.0
   sliver_tools: ^0.2.12
   table_calendar: ^3.0.9
-  uuid: ^3.0.7
+  uuid: 3.0.1
 
 dev_dependencies:
   auto_route_generator: ^7.1.1

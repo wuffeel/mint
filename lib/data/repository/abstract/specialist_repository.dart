@@ -10,11 +10,11 @@ abstract class SpecialistRepository {
     int? limit,
   });
 
+  Future<List<String>> getFavoriteSpecialistsIds(String userId);
+
   Future<List<SpecialistModelDto>> getFavoriteSpecialists(
-    String userId, {
-    String? lastSpecialistId,
-    int? limit,
-  });
+    List<String> favoriteIds,
+  );
 
   Future<void> addToFavorite(String userId, String specialistId);
 

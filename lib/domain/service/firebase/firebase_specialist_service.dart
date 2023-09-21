@@ -48,17 +48,16 @@ class FirebaseSpecialistService implements SpecialistService {
   }
 
   @override
+  Future<List<String>> getFavoriteSpecialistsIds(String userId) async {
+    return _specialistRepository.getFavoriteSpecialistsIds(userId);
+  }
+
+  @override
   Future<List<SpecialistModel>> getFavoriteSpecialists(
-    String userId, {
-    String? lastSpecialistId,
-    int? limit,
-  }) async {
+    List<String> favoriteIds,
+  ) async {
     final favoriteSpecialists =
-        await _specialistRepository.getFavoriteSpecialists(
-      userId,
-      lastSpecialistId: lastSpecialistId,
-      limit: limit,
-    );
+        await _specialistRepository.getFavoriteSpecialists(favoriteIds);
     return Future.wait(favoriteSpecialists.map(_specialistModelFromDto.create));
   }
 
