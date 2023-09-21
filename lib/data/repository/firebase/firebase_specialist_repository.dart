@@ -118,7 +118,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     int? limit,
   }) async {
     final specialistCollection = await _specialistCollectionRef;
-    Query<Object?> query = specialistCollection;
+    Query<Map<String, dynamic>> query = specialistCollection;
 
     if (lastSpecialistId != null) {
       final lastDoc = await specialistCollection.doc(lastSpecialistId).get();
@@ -195,15 +195,17 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   /// Returns specialist by given [snapshot]
-  SpecialistModelDto? _specialistDtoFromSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>?;
+  SpecialistModelDto? _specialistDtoFromSnapshot(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final data = snapshot.data();
     if (data == null) return null;
     return SpecialistModelDto.fromJsonWithId(data, snapshot.id);
   }
 
   /// Returns list of specialists by given [snapshot]
   List<SpecialistModelDto> _specialistDtoListFromSnapshot(
-    QuerySnapshot snapshot,
+    QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
     if (snapshot.docs.isEmpty) return [];
     return snapshot.docs
@@ -215,7 +217,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Used to fetch specialists catalogue with either price or experience
   /// filter combined with specializations provided in [query]
   Future<List<SpecialistModelDto>> _appliedFiltersResult(
-    Query<Object?> query,
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) async {
     var filteredQuery = query;
@@ -229,7 +231,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns separately proceeded price and experience queries results
   /// with specializations provided in [query] merged
   Future<List<SpecialistModelDto>> _separateFilterResultsMerged(
-    Query<Object?> query,
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) async {
     final priceFilter = _getPriceFilter(query, filter).orderBy('price');
@@ -255,8 +257,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Firestore array query limitation
   ///
   /// If filter's specializations null or empty, returns list only with [query]
-  List<Query<Object?>> _getSpecializationsQueries(
-    Query<Object?> query,
+  List<Query<Map<String, dynamic>>> _getSpecializationsQueries(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     final specializations = filter.specializations;
@@ -274,8 +276,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns query with filter by price, without orderBy
   ///
   /// If filter's lowPrice and highPrice both null, returns [query]
-  Query<Object?> _getPriceFilter(
-    Query<Object?> query,
+  Query<Map<String, dynamic>> _getPriceFilter(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     var updated = query;
@@ -296,8 +298,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns query with filter by experience, without orderBy
   ///
   /// If filter's experienceFrom and experienceTo both null, returns [query]
-  Query<Object?> _getExperienceFilter(
-    Query<Object?> query,
+  Query<Map<String, dynamic>> _getExperienceFilter(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     var updated = query;
@@ -322,8 +324,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns either order by price or experience
   ///
   /// Use it only if confident that query do not have both filters in one query
-  Query<Object?> _getFilterOrderBy(
-    Query<Object?> query,
+  Query<Map<String, dynamic>> _getFilterOrderBy(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     if (filter.lowPrice != null || filter.highPrice != null) {
