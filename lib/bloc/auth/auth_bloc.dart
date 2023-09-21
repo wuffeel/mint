@@ -66,16 +66,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthPhoneVerificationLoading());
     try {
-      final phoneCodeSentData = await _verifyPhoneUseCase(
-        phoneNumber: event.phoneNumber,
-      );
-      emit(AuthPhoneVerificationSuccess(event.phoneNumber, phoneCodeSentData));
+      final phone = event.phoneNumber.trim();
+      final phoneCodeSentData = await _verifyPhoneUseCase(phoneNumber: phone);
+      emit(AuthPhoneVerificationSuccess(phone, phoneCodeSentData));
     } catch (error) {
       log('PhoneVerificationFailure: $error');
       if (error.toString().contains('invalid-phone-number')) {
         emit(AuthPhoneVerificationInvalidPhone());
       } else if (error.toString().contains('too-many-requests')) {
         emit(AuthPhoneVerificationTooManyRequests());
+      } else if (error is AuthUserTypeException) {
+        emit(AuthPhoneVerificationWrongUserType());
       } else {
         emit(AuthPhoneVerificationFailure());
       }

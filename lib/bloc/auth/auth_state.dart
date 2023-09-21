@@ -9,6 +9,8 @@ class AuthPhoneVerificationLoading extends AuthState {}
 
 class AuthPhoneVerificationInvalidPhone extends AuthState {}
 
+class AuthPhoneVerificationWrongUserType extends AuthState {}
+
 class AuthPhoneVerificationFailure extends AuthState {}
 
 class AuthPhoneVerificationTooManyRequests extends AuthState {}

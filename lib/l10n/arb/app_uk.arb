@@ -40,6 +40,7 @@
   "whichTopicsAreYouInterestedIn": "Які теми вас цікавлять?",
   "somethingWentWrongSendingCode": "Під час надсилання коду на телефон сталася помилка. Спробуйте ще раз пізніше",
   "tooMuchRequests": "Забагато запитів на підтвердження телефону. Спробуйте ще раз пізніше",
+  "phoneNumberAssociatedWithOtherUser": "Номер телефону пов'язано з іншим користувачем",
   "filterTitle": "Фільтри",
   "clear": "Очистити",
   "allFilter": "Усі",
