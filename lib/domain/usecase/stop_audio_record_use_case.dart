@@ -1,5 +1,4 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/domain/service/abstract/audio_record_service.dart';
 
@@ -9,6 +8,8 @@ class StopAudioRecordUseCase {
 
   final AudioRecordService _service;
 
-  Future<PartialAudio?> call(RecorderController controller) =>
+  Future<({String audioPath, Duration duration})?> call(
+    RecorderController controller,
+  ) =>
       _service.stopRecord(controller);
 }

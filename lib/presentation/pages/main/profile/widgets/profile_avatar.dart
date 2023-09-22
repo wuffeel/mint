@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../gen/colors.gen.dart';
@@ -13,7 +12,7 @@ class ProfileAvatar extends StatelessWidget {
     required this.scaleFactor,
     this.photoUrl,
     this.onPickPhoto,
-    this.localPhotoUrl,
+    this.photoData,
   });
 
   final double size;
@@ -23,26 +22,28 @@ class ProfileAvatar extends StatelessWidget {
   /// Network url to user's photo.
   final String? photoUrl;
 
-  /// Url to locally picked image file.
-  final String? localPhotoUrl;
+  /// Locally picked image bytes.
+  final FileData? photoData;
 
   @override
   Widget build(BuildContext context) {
     final photo = photoUrl;
-    final localPhoto = localPhotoUrl;
+    final localPhoto = photoData;
     return localPhoto != null
         ? _PhotoContainer(
             size: size,
             scaleFactor: scaleFactor,
             onPickPhoto: onPickPhoto,
-            child: ClipOval(child: Image.file(File(localPhoto))),
+            child: ClipOval(
+              child: Image.memory(localPhoto.bytes, fit: BoxFit.cover),
+            ),
           )
         : photo != null
             ? _PhotoContainer(
                 size: size,
                 scaleFactor: scaleFactor,
                 onPickPhoto: onPickPhoto,
-                child: ClipOval(child: Image.network(photo)),
+                child: ClipOval(child: Image.network(photo, fit: BoxFit.cover)),
               )
             : _PhotoContainer(
                 size: size,

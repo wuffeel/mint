@@ -8,11 +8,11 @@ import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/booking_bottom_sheet.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/add_review_sliver_button.dart';
+import 'package:mint/presentation/pages/main/specialist_details/widgets/fade_sliver_app_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/opaque_tab_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/review_sliver_list.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_book_button.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_details_widget.dart';
-import 'package:mint/presentation/pages/main/specialist_details/widgets/specialist_sliver_app_bar.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/user_reviews_section.dart';
 import 'package:mint/presentation/widgets/favorite_button.dart';
 import 'package:mint_core/mint_core.dart';
@@ -158,7 +158,7 @@ class _SpecialistDetailsViewState extends State<_SpecialistDetailsView> {
                     handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                       context,
                     ),
-                    sliver: SpecialistSliverAppBar(
+                    sliver: FadeSliverAppBar(
                       scrollController: _nestedScrollController,
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,

@@ -1,32 +1,52 @@
 part of 'favorite_bloc.dart';
 
+enum FavoriteLoadingType { ids, specialists }
+
 @immutable
 abstract class FavoriteState {}
 
 class FavoriteInitial extends FavoriteState {}
 
-class FavoriteLoading extends FavoriteState {}
+class FavoriteLoading extends FavoriteState {
+  FavoriteLoading(this.loadingType);
+
+  final FavoriteLoadingType loadingType;
+}
+
+class FavoriteFetchIdsFailure extends FavoriteState {}
+
+class FavoriteFetchSpecialistsFailure extends FavoriteState {}
 
 class FavoriteFetchSuccess extends FavoriteState {
-  FavoriteFetchSuccess(this.favoriteList);
+  FavoriteFetchSuccess(
+    this.favoriteIdsList, {
+    this.favoriteSpecialists = const [],
+  });
 
-  final List<SpecialistModel> favoriteList;
+  final List<String> favoriteIdsList;
+  final List<SpecialistModel> favoriteSpecialists;
 }
 
-class FavoriteAddSuccess extends FavoriteFetchSuccess {
-  FavoriteAddSuccess(super.favoriteList);
+class FavoriteToggleLoading extends FavoriteFetchSuccess {
+  FavoriteToggleLoading(
+    super.favoriteList, {
+    required super.favoriteSpecialists,
+  });
 }
 
-class FavoriteAddFailure extends FavoriteFetchSuccess {
-  FavoriteAddFailure(super.favoriteList);
+class FavoriteToggleSuccess extends FavoriteFetchSuccess {
+  FavoriteToggleSuccess(
+    super.favoriteList, {
+    required super.favoriteSpecialists,
+  });
 }
 
-class FavoriteRemoveSuccess extends FavoriteFetchSuccess {
-  FavoriteRemoveSuccess(super.favoriteList);
-}
+class FavoriteToggleFailure extends FavoriteFetchSuccess {
+  FavoriteToggleFailure(
+    super.favoriteList, {
+    required super.favoriteSpecialists,
+    required this.isFavorite,
+  });
 
-class FavoriteRemoveFailure extends FavoriteFetchSuccess {
-  FavoriteRemoveFailure(super.favoriteList);
+  final bool isFavorite;
 }
-
-class FavoriteFetchFailure extends FavoriteState {}

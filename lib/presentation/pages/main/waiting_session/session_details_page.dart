@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/bloc/work_info/work_info_bloc.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
 import 'package:mint/injector/injector.dart';
@@ -15,6 +14,7 @@ import 'package:mint/presentation/widgets/mint_app_bar.dart';
 import 'package:mint/presentation/widgets/specialist_booking_tile.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_bloc.dart';
 
 import '../../../../bloc/booking/booking_bloc.dart';
 import '../booking/booking_bottom_sheet.dart';
@@ -28,13 +28,13 @@ class SessionDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<ChatBloc>(),
-      child: BlocListener<ChatBloc, ChatState>(
+      create: (context) => getIt<ChatBlocPatient>(),
+      child: BlocListener<ChatBlocPatient, ChatState>(
         listener: (context, state) {
           if (state is ChatFetchRoomSuccess) {
             context.router.push(
               ChatRoute(
-                specialistModel: bookingData.specialistModel,
+                senderId: bookingData.specialistModel.id,
                 room: state.room,
               ),
             );
@@ -147,7 +147,7 @@ class _SessionDetailsView extends StatelessWidget {
       _showExpiredSessionDialog(context);
     }
     context
-        .read<ChatBloc>()
+        .read<ChatBlocPatient>()
         .add(ChatFetchRoomRequested(bookingData.specialistModel.id));
   }
 

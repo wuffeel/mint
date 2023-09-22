@@ -4,11 +4,12 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:mint/domain/controller/user_controller.dart';
 import 'package:mint/domain/usecase/get_current_user_use_case.dart';
 import 'package:mint/domain/usecase/log_out_use_case.dart';
 import 'package:mint/domain/usecase/user_data_update_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 part 'user_event.dart';
 
@@ -20,6 +21,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     this._getCurrentUserUseCase,
     this._logOutUseCase,
     this._userDataUpdateUseCase,
+    this._initializeUserPresenceUseCase,
     this._userController,
   ) : super(UserLoading()) {
     on<UserDataListen>(
@@ -33,6 +35,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         },
       ),
     );
+    on<UserInitializePresenceRequested>(_onUserInitializePresence);
     on<UserLogInCheckRequested>(_onUserLogInCheck);
     on<UserDataRequested>(_onUserDataRequested);
     on<UserDataUpdateRequested>(_onUserDataUpdate);
@@ -42,8 +45,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final LogOutUseCase _logOutUseCase;
   final UserDataUpdateUseCase _userDataUpdateUseCase;
+  final InitializeUserPresenceUseCase _initializeUserPresenceUseCase;
 
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
 
   Future<void> _onUserLogInCheck(
     UserLogInCheckRequested event,
@@ -72,6 +76,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  Future<void> _onUserInitializePresence(
+    UserInitializePresenceRequested event,
+    Emitter<UserState> emit,
+  ) async {
+    final state = this.state;
+    if (state is! UserFetchSuccess) return;
+    final user = state.user;
+    try {
+      await _initializeUserPresenceUseCase(user.id);
+      emit(UserInitializePresenceSuccess(user));
+    } catch (error) {
+      log('UserInitializePresenceFailure: $error');
+      emit(UserInitializePresenceFailure(user));
+    }
+  }
+
   Future<void> _onUserDataUpdate(
     UserDataUpdateRequested event,
     Emitter<UserState> emit,
@@ -85,9 +105,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         firstName: event.firstName,
         lastName: event.lastName,
         dateOfBirth: event.dateOfBirth,
-        photoUrl: event.photoPath,
       );
-      final updatedUser = await _userDataUpdateUseCase(userData);
+      final updatedUser = await _userDataUpdateUseCase(
+        userData,
+        photoData: event.photoData,
+      );
       emit(UserDataUpdateSuccess(updatedUser));
     } catch (error) {
       log('UserDataUpdateFailure: $error');

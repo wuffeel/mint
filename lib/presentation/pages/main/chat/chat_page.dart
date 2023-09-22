@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
-import 'package:mint/bloc/chat/chat_bloc.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/chat_app_bar.dart';
@@ -19,8 +18,10 @@ import 'package:mint/presentation/pages/main/chat/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/pages/main/chat/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
 import 'package:mint/utils/chat_utils.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
+import '../../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../../bloc/permission/permission_bloc.dart';
 
 @RoutePage()
@@ -28,11 +29,11 @@ class ChatPage extends StatelessWidget {
   const ChatPage({
     super.key,
     required this.room,
-    required this.specialistModel,
+    required this.senderId,
   });
 
   final types.Room room;
-  final SpecialistModel specialistModel;
+  final String senderId;
 
   void _showPermissionDeniedDialog(BuildContext context) {
     showDialog<void>(
@@ -58,27 +59,28 @@ class ChatPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) =>
-              getIt<ChatBloc>()..add(ChatInitializeRequested(room)),
+              getIt<ChatBlocPatient>()..add(ChatInitializeRequested(room)),
         ),
         BlocProvider(
           create: (context) =>
               getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
         ),
         BlocProvider(create: (context) => PermissionBloc()),
+        BlocProvider(create: (context) => getIt<PresenceMessageBloc>()),
       ],
       child: BlocListener<PermissionBloc, PermissionState>(
         listener: _permissionCubitListener,
-        child: _ChatView(specialistModel: specialistModel, room: room),
+        child: _ChatView(room: room, senderId: senderId),
       ),
     );
   }
 }
 
 class _ChatView extends StatefulWidget {
-  const _ChatView({required this.specialistModel, required this.room});
+  const _ChatView({required this.room, required this.senderId});
 
-  final SpecialistModel specialistModel;
   final types.Room room;
+  final String senderId;
 
   @override
   State<_ChatView> createState() => _ChatViewState();
@@ -93,7 +95,11 @@ class _ChatViewState extends State<_ChatView> {
   final _hideBackgroundOnEmojiMessages = true;
 
   late final _user = widget.room.users.firstWhere(
-    (e) => e.id != widget.specialistModel.id,
+    (e) => e.id != widget.senderId,
+  );
+
+  late final _specialist = widget.room.users.firstWhere(
+    (e) => e.id == widget.senderId,
   );
 
   void _previewDataFetched(
@@ -101,13 +107,13 @@ class _ChatViewState extends State<_ChatView> {
     types.PreviewData previewData,
   ) {
     return context
-        .read<ChatBloc>()
+        .read<ChatBlocPatient>()
         .add(ChatPreviewDataFetched(message, previewData));
   }
 
   void _handleSendPressed() {
     final message = types.PartialText(text: _messageController.text.trim());
-    context.read<ChatBloc>().add(ChatSendMessageRequested(message));
+    context.read<ChatBlocPatient>().add(ChatSendMessageRequested(message));
     _messageController.clear();
   }
 
@@ -123,11 +129,11 @@ class _ChatViewState extends State<_ChatView> {
 
   Future<void> _handleFileSelection() async {
     context.read<PermissionBloc>().add(PermissionCheckStorageRequested());
-    return context.read<ChatBloc>().add(ChatFilePickRequested());
+    return context.read<ChatBlocPatient>().add(ChatFilePickRequested());
   }
 
   Future<void> _handleImageSelection() async {
-    return context.read<ChatBloc>().add(ChatImagePickRequested());
+    return context.read<ChatBlocPatient>().add(ChatImagePickRequested());
   }
 
   /// Used to handle file open attached to [message] with [types.FileMessage]
@@ -135,7 +141,7 @@ class _ChatViewState extends State<_ChatView> {
   void _handleMessageTap(BuildContext _, types.Message message) {
     final shouldOpen = message is types.FileMessage;
     if (message is types.FileMessage || message is types.AudioMessage) {
-      return context.read<ChatBloc>().add(
+      return context.read<ChatBlocPatient>().add(
             ChatFileLoadRequested(
               message,
               shouldOpen: shouldOpen,
@@ -152,7 +158,9 @@ class _ChatViewState extends State<_ChatView> {
         message,
         _tapPosition,
         onDelete: (message) {
-          context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
+          context
+              .read<ChatBlocPatient>()
+              .add(ChatDeleteMessageRequested(message));
           context.router.pop();
         },
       );
@@ -167,7 +175,7 @@ class _ChatViewState extends State<_ChatView> {
 
   /// Callback for reloading chat on room fetch failure
   void _refreshChat() {
-    context.read<ChatBloc>().add(ChatInitializeRequested(widget.room));
+    context.read<ChatBlocPatient>().add(ChatInitializeRequested(widget.room));
   }
 
   void _onEmojiBackspace() {
@@ -176,6 +184,14 @@ class _ChatViewState extends State<_ChatView> {
       ..selection = TextSelection.fromPosition(
         TextPosition(offset: _messageController.text.length),
       );
+  }
+
+  void _markMessageAsRead(String messageId) {
+    final markAsRead = PresenceMessageMarkAsRead(
+      roomId: widget.room.id,
+      messageId: messageId,
+    );
+    context.read<PresenceMessageBloc>().add(markAsRead);
   }
 
   /// Message bubble container
@@ -190,6 +206,10 @@ class _ChatViewState extends State<_ChatView> {
         _emojiEnlargementBehavior != ui.EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
             ui.isConsistsOfEmojis(_emojiEnlargementBehavior, message);
+
+    final status = message.status;
+    final seen = status != null && status == types.Status.seen;
+    if (!isSender && !seen) _markMessageAsRead(message.id);
 
     return MessageBubble(
       isLast: isLast,
@@ -225,8 +245,15 @@ class _ChatViewState extends State<_ChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: _emojiPanelHidden,
-      appBar: ChatAppBar(specialistModel: widget.specialistModel),
-      body: BlocBuilder<ChatBloc, ChatState>(
+      appBar: ChatAppBar(
+        user: UserModel(
+          id: _specialist.id,
+          firstName: _specialist.firstName,
+          lastName: _specialist.lastName,
+          photoUrl: _specialist.imageUrl,
+        ),
+      ),
+      body: BlocBuilder<ChatBlocPatient, ChatState>(
         builder: (context, state) {
           if (state is ChatLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -265,10 +292,10 @@ class _ChatViewState extends State<_ChatView> {
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onAttach: _handleAttachmentPressed,
-                        onAudioStop: (audioMessage) {
+                        onAudioStop: (audioPath, duration) {
                           context
-                              .read<ChatBloc>()
-                              .add(ChatSaveAudioRequested(audioMessage));
+                              .read<ChatBlocPatient>()
+                              .add(ChatSaveAudioRequested(audioPath, duration));
                         },
                         isEmojiSelected: !_emojiPanelHidden,
                         onTextFieldTap: () => setState(
@@ -302,6 +329,17 @@ class _ChatViewState extends State<_ChatView> {
                       onSendPressed: (_) {
                         // TODO(wuffel): implemented in customBottomWidget
                       },
+                      scrollToUnreadOptions: ui.ScrollToUnreadOptions(
+                        lastReadMessageId:
+                            state.messages.lastWhereOrNull((msg) {
+                          final status = msg.status;
+                          if (msg.author.id == _user.id) return false;
+                          return status != null && status != types.Status.seen;
+                        })?.id,
+                        scrollDelay: const Duration(milliseconds: 20),
+                        scrollDuration: const Duration(milliseconds: 100),
+                        scrollOnOpen: true,
+                      ),
                       theme: MintChatTheme(context),
                       textMessageOptions: const ui.TextMessageOptions(
                         isTextSelectable: false,

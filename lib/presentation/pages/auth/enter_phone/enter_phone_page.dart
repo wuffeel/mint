@@ -36,20 +36,22 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   }
 
   String? _getErrorText(AuthState state) {
+    final l10n = context.l10n;
     if (state is AuthPhoneVerificationInvalidPhone) {
-      return context.l10n.invalidPhoneNumber;
+      return l10n.invalidPhoneNumber;
     } else if (state is AuthPhoneVerificationTooManyRequests) {
-      return context.l10n.tooMuchRequests;
+      return l10n.tooMuchRequests;
+    } else if (state is AuthPhoneVerificationWrongUserType) {
+      return l10n.phoneNumberAssociatedWithOtherUser;
     } else if (state is AuthPhoneVerificationFailure) {
-      return context.l10n.somethingWentWrongTryAgain;
+      return l10n.somethingWentWrongTryAgain;
     }
     return null;
   }
 
   void _verifyPhone() {
-    context.read<AuthBloc>().add(
-          AuthPhoneVerificationRequested(_phoneController.text),
-        );
+    final phone = _phoneController.text;
+    context.read<AuthBloc>().add(AuthPhoneVerificationRequested(phone));
   }
 
   void _phoneListener(BuildContext context, AuthState state) {

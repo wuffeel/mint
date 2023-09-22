@@ -6,9 +6,9 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/data/model/phone_code_sent_data.dart';
-import 'package:mint/domain/controller/user_controller.dart';
 import 'package:mint/domain/usecase/verify_otp_use_case.dart';
 import 'package:mint/domain/usecase/verify_phone_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
 part 'auth_event.dart';
@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final VerifyOtpUseCase _verifyOtpUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
   late final StreamSubscription<PatientUser?> _userSubscription;
 
   void _subscribeToUserChange() {
@@ -66,16 +66,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthPhoneVerificationLoading());
     try {
-      final phoneCodeSentData = await _verifyPhoneUseCase(
-        phoneNumber: event.phoneNumber,
-      );
-      emit(AuthPhoneVerificationSuccess(event.phoneNumber, phoneCodeSentData));
+      final phone = event.phoneNumber.trim();
+      final phoneCodeSentData = await _verifyPhoneUseCase(phoneNumber: phone);
+      emit(AuthPhoneVerificationSuccess(phone, phoneCodeSentData));
     } catch (error) {
       log('PhoneVerificationFailure: $error');
       if (error.toString().contains('invalid-phone-number')) {
         emit(AuthPhoneVerificationInvalidPhone());
       } else if (error.toString().contains('too-many-requests')) {
         emit(AuthPhoneVerificationTooManyRequests());
+      } else if (error is AuthUserTypeException) {
+        emit(AuthPhoneVerificationWrongUserType());
       } else {
         emit(AuthPhoneVerificationFailure());
       }

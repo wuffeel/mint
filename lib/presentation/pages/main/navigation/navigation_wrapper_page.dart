@@ -73,7 +73,9 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<UserBloc>()..add(UserDataListen()),
+          create: (context) => getIt<UserBloc>()
+            ..add(UserDataListen())
+            ..add(UserInitializePresenceRequested()),
         ),
         BlocProvider(
           create: (context) =>
@@ -81,7 +83,7 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
         ),
         BlocProvider(
           create: (context) =>
-              getIt<FavoriteBloc>()..add(FavoriteFetchRequested()),
+              getIt<FavoriteBloc>()..add(FavoriteFetchIdsRequested()),
         ),
         BlocProvider(
           create: (context) => getIt<UpcomingSessionsBloc>()

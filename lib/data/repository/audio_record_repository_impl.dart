@@ -1,8 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/audio_record_repository.dart';
 
@@ -21,20 +17,13 @@ class AudioRecordRepositoryImpl implements AudioRecordRepository {
   }
 
   @override
-  Future<types.PartialAudio?> stopRecord(RecorderController controller) async {
+  Future<({String audioPath, Duration duration})?> stopRecord(
+    RecorderController controller,
+  ) async {
     final audioPath = await controller.stop();
-    if (controller.recordedDuration.inSeconds == 0) return null;
-    log(audioPath.toString());
-    if (audioPath != null) {
-      final file = File(audioPath);
-      return types.PartialAudio(
-        duration: controller.recordedDuration,
-        name: file.path.split(Platform.pathSeparator).last,
-        size: file.lengthSync(),
-        uri: file.uri.toString(),
-      );
+    if (audioPath == null || controller.recordedDuration.inSeconds == 0) {
+      return null;
     }
-
-    return null;
+    return (audioPath: audioPath, duration: controller.recordedDuration);
   }
 }

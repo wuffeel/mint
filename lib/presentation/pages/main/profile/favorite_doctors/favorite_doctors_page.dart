@@ -14,8 +14,21 @@ import '../../../../../bloc/favorite/favorite_bloc.dart';
 class FavoriteDoctorsPage extends StatelessWidget {
   const FavoriteDoctorsPage({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: context.read<FavoriteBloc>()
+        ..add(FavoriteFetchSpecialistsRequested()),
+      child: const _FavoriteDoctorsView(),
+    );
+  }
+}
+
+class _FavoriteDoctorsView extends StatelessWidget {
+  const _FavoriteDoctorsView();
+
   void _fetchFavorites(BuildContext context) {
-    context.read<FavoriteBloc>().add(FavoriteFetchRequested());
+    context.read<FavoriteBloc>().add(FavoriteFetchSpecialistsRequested());
   }
 
   @override
@@ -28,7 +41,13 @@ class FavoriteDoctorsPage extends StatelessWidget {
           slivers: <Widget>[
             BlocBuilder<FavoriteBloc, FavoriteState>(
               builder: (context, state) {
-                if (state is FavoriteFetchFailure) {
+                if (state is FavoriteLoading &&
+                    state.loadingType == FavoriteLoadingType.specialists) {
+                  return const _SliverCenter(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is FavoriteFetchSpecialistsFailure) {
                   return _SliverCenter(
                     child: ErrorTryAgainText(
                       onRefresh: () => _fetchFavorites(context),
@@ -36,7 +55,7 @@ class FavoriteDoctorsPage extends StatelessWidget {
                   );
                 }
                 if (state is FavoriteFetchSuccess) {
-                  final favoriteList = state.favoriteList;
+                  final favoriteList = state.favoriteSpecialists;
                   if (favoriteList.isEmpty) {
                     return _SliverCenter(
                       child: NoItemsFound(

@@ -6,13 +6,12 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint/domain/entity/booking_data/booking_data.dart';
-import 'package:mint/domain/usecase/fetch_chat_room_use_case.dart';
 import 'package:mint/domain/usecase/fetch_session_data_use_case.dart';
-import 'package:mint/domain/usecase/fetch_specialist_use_case.dart';
 import 'package:mint/domain/usecase/initialize_notifications_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
-import '../../domain/controller/user_controller.dart';
 import '../../domain/usecase/get_booking_notifications_stream_use_case.dart';
 import '../../domain/usecase/get_chat_notifications_stream_use_case.dart';
 
@@ -26,7 +25,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     this._initializeNotificationsUseCase,
     this._userController,
     this._fetchChatRoomUseCase,
-    this._fetchSpecialistUseCase,
     this._fetchSessionDataUseCase,
     this._getChatNotificationsStreamUseCase,
     this._getBookingNotificationsStreamUseCase,
@@ -42,14 +40,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   final InitializeNotificationsUseCase _initializeNotificationsUseCase;
   final FetchChatRoomUseCase _fetchChatRoomUseCase;
-  final FetchSpecialistUseCase _fetchSpecialistUseCase;
   final FetchSessionDataUseCase _fetchSessionDataUseCase;
   final GetChatNotificationsStreamUseCase _getChatNotificationsStreamUseCase;
   final GetBookingNotificationsStreamUseCase
       _getBookingNotificationsStreamUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
 
   late final StreamSubscription<PatientUser?> _userSubscription;
   late final StreamSubscription<String> _chatRoomSubscription;
@@ -103,14 +100,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       final room = await _fetchChatRoomUseCase(event.roomId);
       if (room == null || user == null) return;
 
-      final specialist = room.users.singleWhere(
-        (roomUser) => roomUser.id != user.id,
-      );
-      final specialistModel = await _fetchSpecialistUseCase(specialist.id);
-
-      if (specialistModel == null) return;
-
-      emit(NotificationsFetchChatRoomSuccess(room, specialistModel));
+      emit(NotificationsFetchChatRoomSuccess(room, user.id));
     } catch (error) {
       log('NotificationsFetchChatRoomFailure: $error');
       emit(NotificationsFetchChatRoomFailure());

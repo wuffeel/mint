@@ -3,16 +3,13 @@ part of 'favorite_bloc.dart';
 @immutable
 abstract class FavoriteEvent {}
 
-class FavoriteFetchRequested extends FavoriteEvent {}
+class FavoriteFetchIdsRequested extends FavoriteEvent {}
 
-class FavoriteAddRequested extends FavoriteEvent {
-  FavoriteAddRequested(this.specialistModel);
+class FavoriteFetchSpecialistsRequested extends FavoriteEvent {}
 
-  final SpecialistModel specialistModel;
-}
-
-class FavoriteRemoveRequested extends FavoriteEvent {
-  FavoriteRemoveRequested(this.specialistModel);
+class FavoriteToggleRequested extends FavoriteEvent {
+  FavoriteToggleRequested(this.specialistModel, {required this.isFavorite});
 
   final SpecialistModel specialistModel;
+  final bool isFavorite;
 }

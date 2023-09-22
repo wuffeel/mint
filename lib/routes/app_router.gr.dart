@@ -125,7 +125,7 @@ abstract class $AppRouter extends _i30.RootStackRouter {
         child: _i9.ChatPage(
           key: args.key,
           room: args.room,
-          specialistModel: args.specialistModel,
+          senderId: args.senderId,
         ),
       );
     },
@@ -400,14 +400,14 @@ class ChatRoute extends _i30.PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     _i31.Key? key,
     required _i32.Room room,
-    required _i33.SpecialistModel specialistModel,
+    required String senderId,
     List<_i30.PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
           args: ChatRouteArgs(
             key: key,
             room: room,
-            specialistModel: specialistModel,
+            senderId: senderId,
           ),
           initialChildren: children,
         );
@@ -422,18 +422,18 @@ class ChatRouteArgs {
   const ChatRouteArgs({
     this.key,
     required this.room,
-    required this.specialistModel,
+    required this.senderId,
   });
 
   final _i31.Key? key;
 
   final _i32.Room room;
 
-  final _i33.SpecialistModel specialistModel;
+  final String senderId;
 
   @override
   String toString() {
-    return 'ChatRouteArgs{key: $key, room: $room, specialistModel: $specialistModel}';
+    return 'ChatRouteArgs{key: $key, room: $room, senderId: $senderId}';
   }
 }
 

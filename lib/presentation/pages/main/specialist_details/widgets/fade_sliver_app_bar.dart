@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/presentation/pages/main/specialist_details/widgets/fade_on_scroll.dart';
 
-class SpecialistSliverAppBar extends StatefulWidget {
-  const SpecialistSliverAppBar({
+class FadeSliverAppBar extends StatefulWidget {
+  const FadeSliverAppBar({
     super.key,
     required this.scrollController,
     this.flexibleSpace,
@@ -23,6 +22,7 @@ class SpecialistSliverAppBar extends StatefulWidget {
   final ScrollController scrollController;
   final Widget? flexibleSpace;
   final Widget? leading;
+  final double? leadingWidth;
   final bool automaticallyImplyLeading;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
@@ -32,13 +32,12 @@ class SpecialistSliverAppBar extends StatefulWidget {
   final bool pinned;
   final bool snap;
   final double toolbarHeight;
-  final double? leadingWidth;
 
   @override
-  State<SpecialistSliverAppBar> createState() => _SpecialistSliverAppBarState();
+  State<FadeSliverAppBar> createState() => _FadeSliverAppBarState();
 }
 
-class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
+class _FadeSliverAppBarState extends State<FadeSliverAppBar> {
   /// Used to set the key for initially displayed widget, the size of which
   /// will be calculated
   final GlobalKey _initialWidgetKey = GlobalKey();
@@ -89,7 +88,7 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
   }
 
   @override
-  void didUpdateWidget(covariant SpecialistSliverAppBar oldWidget) {
+  void didUpdateWidget(covariant FadeSliverAppBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     _updateFlexibleSpaceHeight();
   }
@@ -97,7 +96,8 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
   @override
   Widget build(BuildContext context) {
     // Needed to lay out the flexibleSpace the first time,
-    // so we can calculate its intrinsic height
+    // so we can calculate its intrinsic height and to
+    // display placeholder until widget is loaded
     if (_flexibleSpaceHeight == 0) {
       return SliverToBoxAdapter(
         child: Stack(
@@ -120,7 +120,7 @@ class _SpecialistSliverAppBarState extends State<SpecialistSliverAppBar> {
                   elevation: 0,
                   automaticallyImplyLeading: widget.automaticallyImplyLeading,
                   leading: widget.leading,
-                  leadingWidth: 80.w,
+                  leadingWidth: widget.leadingWidth,
                   actions: widget.actions,
                   toolbarHeight: widget.toolbarHeight,
                 ),

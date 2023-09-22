@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -72,9 +71,15 @@ class AudioRecordBloc extends Bloc<AudioRecordEvent, AudioRecordState> {
     if (state is! AudioRecordInitializeSuccess) return;
 
     try {
-      final audioMessage = await _stopAudioRecordUseCase(state.controller);
-      if (audioMessage != null) {
-        emit(AudioRecordStopSuccess(state.controller, message: audioMessage));
+      final audioData = await _stopAudioRecordUseCase(state.controller);
+      if (audioData != null) {
+        emit(
+          AudioRecordStopSuccess(
+            state.controller,
+            audioPath: audioData.audioPath,
+            duration: audioData.duration,
+          ),
+        );
         return;
       }
       emit(AudioRecordStopSuccess(state.controller));

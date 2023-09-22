@@ -10,9 +10,9 @@ import 'package:mint/domain/errors/booking_duplicate_exception.dart';
 import 'package:mint/domain/usecase/booking_book_use_case.dart';
 import 'package:mint/domain/usecase/booking_cancel_use_case.dart';
 import 'package:mint/domain/usecase/booking_reschedule_use_case.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
-import '../../domain/controller/user_controller.dart';
 
 part 'booking_event.dart';
 
@@ -38,7 +38,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final BookingCancelUseCase _bookingCancelUseCase;
 
   PatientUser? _currentUser;
-  final UserController _userController;
+  final UserController<PatientUser?> _userController;
   final BookingController _bookingController;
 
   late final StreamSubscription<PatientUser?> _userSubscription;

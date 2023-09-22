@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/waiting_session/widgets/session_details_action.dart';
+import 'package:mint_core/mint_bloc.dart';
 
-import '../../../../../bloc/chat/chat_bloc.dart';
 import '../../../../../gen/assets.gen.dart';
 
 class SessionDetailsActionList extends StatelessWidget {
@@ -32,7 +32,7 @@ class SessionDetailsActionList extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 15.h),
-            child: BlocBuilder<ChatBloc, ChatState>(
+            child: BlocBuilder<ChatBlocPatient, ChatState>(
               builder: (context, state) {
                 return Row(
                   children: <Widget>[

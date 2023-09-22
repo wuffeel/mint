@@ -1,7 +1,6 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/bloc/audio_record/audio_record_bloc.dart';
 import 'package:mint/bloc/permission/permission_bloc.dart';
@@ -25,7 +24,7 @@ class ChatBottomBar extends StatefulWidget {
   final VoidCallback onSend;
   final VoidCallback onEmoji;
   final VoidCallback onAttach;
-  final void Function(types.PartialAudio) onAudioStop;
+  final void Function(String audioPath, Duration duration) onAudioStop;
   final bool isEmojiSelected;
   final VoidCallback? onTextFieldTap;
 
@@ -53,8 +52,11 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
 
   void _audioRecordBlocListener(AudioRecordState state) {
     if (state is AudioRecordStopSuccess) {
-      final message = state.message;
-      if (message != null) widget.onAudioStop(message);
+      final audioPath = state.audioPath;
+      final duration = state.duration;
+      if (audioPath != null && duration != null) {
+        widget.onAudioStop(audioPath, duration);
+      }
     }
   }
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint/data/repository/abstract/specialist_repository.dart';
@@ -20,6 +18,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   static const _specialistCollection = 'specialists';
   static const _favoriteCollection = 'favorites';
   static const _reviewCollection = 'reviews';
+  static const _usersCollection = 'users';
 
   Future<FirebaseFirestore> get _firestore => _firebaseInitializer.firestore;
 
@@ -28,12 +27,12 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
           (await _firestore).collection(_specialistCollection);
 
   Future<CollectionReference<Map<String, dynamic>>>
-      get _favoriteCollectionRef async =>
-          (await _firestore).collection(_favoriteCollection);
-
-  Future<CollectionReference<Map<String, dynamic>>>
       get _reviewCollectionRef async =>
           (await _firestore).collection(_reviewCollection);
+
+  Future<CollectionReference<Map<String, dynamic>>>
+      get _usersCollectionRef async =>
+          (await _firestore).collection(_usersCollection);
 
   @override
   Future<SpecialistModelDto?> getSpecialist(String specialistId) async {
@@ -63,62 +62,53 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   @override
+  Future<List<String>> getFavoriteSpecialistsIds(String userId) async {
+    final usersCollection = await _usersCollectionRef;
+    final favoriteIdsSnap =
+        await usersCollection.doc(userId).collection(_favoriteCollection).get();
+    return favoriteIdsSnap.docs.map((e) => e.id).toList();
+  }
+
+  @override
   Future<List<SpecialistModelDto>> getFavoriteSpecialists(
-    String userId, {
-    String? lastSpecialistId,
-    int? limit,
-  }) async {
-    final favoriteCollection = await _favoriteCollectionRef;
+    List<String> favoriteIds,
+  ) async {
     final specialistCollection = await _specialistCollectionRef;
+    final chunkedIds = _chunkList(favoriteIds);
 
-    var query = favoriteCollection
-        .where('userId', isEqualTo: userId)
-        .orderBy(_orderByDate);
+    final querySnapshots = chunkedIds.map(
+      (chunk) => specialistCollection
+          .where(FieldPath.documentId, whereIn: chunk)
+          .get(),
+    );
 
-    if (lastSpecialistId != null) {
-      final lastSpecSnap = await favoriteCollection
-          .where('specialistId', isEqualTo: lastSpecialistId)
-          .get();
-      log('${lastSpecSnap.docs.map((e) => e.data())}');
-      if (lastSpecSnap.docs.isNotEmpty && lastSpecSnap.docs.length == 1) {
-        query = query.startAfterDocument(lastSpecSnap.docs.first);
-      }
-    }
+    final results = await Future.wait(querySnapshots);
 
-    if (limit != null) {
-      query = query.limit(limit);
-    }
-
-    final favoriteSnapshot = await query.get();
-
-    final favoriteIds = favoriteSnapshot.docs
-        .map((doc) => doc.data()['specialistId'])
-        .whereType<String>()
+    return results
+        .expand(
+          (e) => e.docs.map((e) {
+            return SpecialistModelDto.fromJsonWithId(e.data(), e.id);
+          }),
+        )
         .toList();
-
-    if (favoriteIds.isEmpty) return [];
-
-    final specialistSnapshot =
-        await specialistCollection.where('id', whereIn: favoriteIds).get();
-
-    return _specialistDtoListFromSnapshot(specialistSnapshot);
   }
 
   @override
   Future<void> addToFavorite(String userId, String specialistId) async {
-    return (await _favoriteCollectionRef).doc('$userId-$specialistId').set({
-      'userId': userId,
-      'specialistId': specialistId,
-      'createdAt': DateTime.now(),
-    });
+    return (await _usersCollectionRef)
+        .doc(userId)
+        .collection(_favoriteCollection)
+        .doc(specialistId)
+        .set({'createdAt': FieldValue.serverTimestamp()});
   }
 
   @override
-  Future<void> removeFromFavorite(
-    String userId,
-    String specialistId,
-  ) async {
-    return (await _favoriteCollectionRef).doc('$userId-$specialistId').delete();
+  Future<void> removeFromFavorite(String userId, String specialistId) async {
+    return (await _usersCollectionRef)
+        .doc(userId)
+        .collection(_favoriteCollection)
+        .doc(specialistId)
+        .delete();
   }
 
   @override
@@ -128,7 +118,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     int? limit,
   }) async {
     final specialistCollection = await _specialistCollectionRef;
-    Query<Object?> query = specialistCollection;
+    Query<Map<String, dynamic>> query = specialistCollection;
 
     if (lastSpecialistId != null) {
       final lastDoc = await specialistCollection.doc(lastSpecialistId).get();
@@ -205,15 +195,17 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   /// Returns specialist by given [snapshot]
-  SpecialistModelDto? _specialistDtoFromSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>?;
+  SpecialistModelDto? _specialistDtoFromSnapshot(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final data = snapshot.data();
     if (data == null) return null;
     return SpecialistModelDto.fromJsonWithId(data, snapshot.id);
   }
 
   /// Returns list of specialists by given [snapshot]
   List<SpecialistModelDto> _specialistDtoListFromSnapshot(
-    QuerySnapshot snapshot,
+    QuerySnapshot<Map<String, dynamic>> snapshot,
   ) {
     if (snapshot.docs.isEmpty) return [];
     return snapshot.docs
@@ -225,7 +217,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Used to fetch specialists catalogue with either price or experience
   /// filter combined with specializations provided in [query]
   Future<List<SpecialistModelDto>> _appliedFiltersResult(
-    Query<Object?> query,
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) async {
     var filteredQuery = query;
@@ -239,7 +231,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns separately proceeded price and experience queries results
   /// with specializations provided in [query] merged
   Future<List<SpecialistModelDto>> _separateFilterResultsMerged(
-    Query<Object?> query,
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) async {
     final priceFilter = _getPriceFilter(query, filter).orderBy('price');
@@ -265,8 +257,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Firestore array query limitation
   ///
   /// If filter's specializations null or empty, returns list only with [query]
-  List<Query<Object?>> _getSpecializationsQueries(
-    Query<Object?> query,
+  List<Query<Map<String, dynamic>>> _getSpecializationsQueries(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     final specializations = filter.specializations;
@@ -274,7 +266,7 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
       return [query];
     }
 
-    final chunked = _chunkList(specializations, 10);
+    final chunked = _chunkList(specializations);
 
     return chunked.map((element) {
       return query.where('specializations', arrayContainsAny: element);
@@ -284,8 +276,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns query with filter by price, without orderBy
   ///
   /// If filter's lowPrice and highPrice both null, returns [query]
-  Query<Object?> _getPriceFilter(
-    Query<Object?> query,
+  Query<Map<String, dynamic>> _getPriceFilter(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     var updated = query;
@@ -306,8 +298,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns query with filter by experience, without orderBy
   ///
   /// If filter's experienceFrom and experienceTo both null, returns [query]
-  Query<Object?> _getExperienceFilter(
-    Query<Object?> query,
+  Query<Map<String, dynamic>> _getExperienceFilter(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     var updated = query;
@@ -332,8 +324,8 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   /// Returns either order by price or experience
   ///
   /// Use it only if confident that query do not have both filters in one query
-  Query<Object?> _getFilterOrderBy(
-    Query<Object?> query,
+  Query<Map<String, dynamic>> _getFilterOrderBy(
+    Query<Map<String, dynamic>> query,
     FilterPreferencesDto filter,
   ) {
     if (filter.lowPrice != null || filter.highPrice != null) {
@@ -360,7 +352,15 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   }
 
   /// Divides [list] into sub-lists, each of length equal to [chunkSize]
-  List<List<T>> _chunkList<T>(List<T> list, int chunkSize) {
+  ///
+  /// By default, [chunkSize] is set to 10, which aligns with Firestore limit
+  /// for most queries.
+  List<List<T>> _chunkList<T>(List<T> list, {int chunkSize = 10}) {
+    assert(
+      chunkSize > 0 && chunkSize <= 10,
+      '[chunkSize can not be set more than 10 due to Firestore limit]',
+    );
+
     final chunked = <List<T>>[];
     var currentIndex = 0;
 

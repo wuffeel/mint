@@ -34,11 +34,10 @@ class FavoriteButton extends StatelessWidget {
 
   void _handleFavorite(BuildContext context, bool isFavorite) {
     if (showDialogOnFavoriteRemove && isFavorite) {
-      final specialistName = specialistModel.firstName;
       showDialog<void>(
         context: context,
         builder: (dialogContext) => _RemoveFavoriteDialog(
-          specialistName: specialistName,
+          specialistName: specialistModel.firstName,
           onAction: () {
             _toggleFavorite(context, isFavorite);
             dialogContext.router.pop();
@@ -51,13 +50,9 @@ class FavoriteButton extends StatelessWidget {
   }
 
   void _toggleFavorite(BuildContext context, bool isFavorite) {
-    isFavorite
-        ? context
-            .read<FavoriteBloc>()
-            .add(FavoriteRemoveRequested(specialistModel))
-        : context
-            .read<FavoriteBloc>()
-            .add(FavoriteAddRequested(specialistModel));
+    context
+        .read<FavoriteBloc>()
+        .add(FavoriteToggleRequested(specialistModel, isFavorite: isFavorite));
   }
 
   @override
@@ -65,9 +60,7 @@ class FavoriteButton extends StatelessWidget {
     return BlocBuilder<FavoriteBloc, FavoriteState>(
       builder: (context, state) {
         if (state is FavoriteFetchSuccess) {
-          final isFavorite = state.favoriteList.any(
-            (specialist) => specialist.id == specialistModel.id,
-          );
+          final isFavorite = state.favoriteIdsList.contains(specialistModel.id);
           return isIconButton
               ? IconButton(
                   onPressed: () => _handleFavorite(context, isFavorite),
