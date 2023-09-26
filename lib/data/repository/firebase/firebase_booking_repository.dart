@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mint/data/model/specialist_work_info_dto/specialist_work_info_dto.dart';
 import 'package:mint/data/repository/abstract/booking_repository.dart';
 import 'package:mint/domain/errors/booking_duplicate_exception.dart';
+import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_module.dart';
 
 import '../../model/booking_data_dto/booking_data_dto.dart';

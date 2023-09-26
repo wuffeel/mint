@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/domain/service/abstract/booking_service.dart';
+import 'package:mint_core/mint_core.dart';
 
 @injectable
 class SpecialistWorkInfoFetchUseCase {

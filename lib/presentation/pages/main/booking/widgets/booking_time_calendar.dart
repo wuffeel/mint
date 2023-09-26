@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/booking/widgets/book_date_container.dart';
 import 'package:mint/presentation/widgets/mint_single_item_selection.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 import 'package:mint/utils/calendar_utils.dart';
+import 'package:mint_core/mint_core.dart';
 
 class BookingTimeCalendar extends StatefulWidget {
   const BookingTimeCalendar({

@@ -1,5 +1,6 @@
+import 'package:mint_core/mint_core.dart';
+
 import '../../model/booking_data_dto/booking_data_dto.dart';
-import '../../model/specialist_work_info_dto/specialist_work_info_dto.dart';
 
 abstract class BookingRepository {
   Future<SpecialistWorkInfoDto> getSpecialistWorkInfo(String specialistId);

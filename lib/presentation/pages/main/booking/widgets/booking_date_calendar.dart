@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:mint/domain/entity/specialist_work_info/specialist_work_info.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/utils/calendar_utils.dart';
+import 'package:mint_core/mint_core.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../theme/mint_text_styles.dart';
