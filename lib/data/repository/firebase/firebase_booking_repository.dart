@@ -8,8 +8,10 @@ import 'package:mint_core/mint_module.dart';
 import '../../model/booking_data_dto/booking_data_dto.dart';
 
 @Injectable(as: BookingRepository)
-class FirebaseBookingRepository implements BookingRepository {
-  FirebaseBookingRepository(this._firebaseInitializer);
+class FirebaseBookingRepository extends FirebaseBookingRepositoryBase
+    implements BookingRepository {
+  FirebaseBookingRepository(this._firebaseInitializer)
+      : super(_firebaseInitializer);
 
   final FirebaseInitializer _firebaseInitializer;
 

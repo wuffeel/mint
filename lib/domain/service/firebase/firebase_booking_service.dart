@@ -3,18 +3,20 @@ import 'package:mint/data/repository/abstract/booking_repository.dart';
 import 'package:mint/domain/service/abstract/booking_service.dart';
 import 'package:mint_core/mint_assembly.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 import '../../../data/model/booking_data_dto/booking_data_dto.dart';
 import '../../entity/booking_data/booking_data.dart';
 
 @Injectable(as: BookingService)
-class FirebaseBookingService implements BookingService {
+class FirebaseBookingService extends FirebaseBookingServiceBase
+    implements BookingService {
   FirebaseBookingService(
     this._bookingRepository,
     this._specialistWorkInfoFromDto,
     this._bookingDataToDto,
     this._bookingDataFromDto,
-  );
+  ) : super(_bookingRepository, _specialistWorkInfoFromDto);
 
   final BookingRepository _bookingRepository;
 
