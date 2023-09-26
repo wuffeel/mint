@@ -4,8 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:mint_core/mint_core.dart';
-
-import '../../domain/usecase/specialist_work_info_fetch_use_case.dart';
+import 'package:mint_core/mint_module.dart';
 
 part 'work_info_event.dart';
 
