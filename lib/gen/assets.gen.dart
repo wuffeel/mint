@@ -63,6 +63,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/chat.svg
   SvgGenImage get chat => const SvgGenImage('assets/svg/chat.svg');
 
+  /// File path: assets/svg/chat_icon.svg
+  SvgGenImage get chatIcon => const SvgGenImage('assets/svg/chat_icon.svg');
+
   /// File path: assets/svg/check_mark.svg
   SvgGenImage get checkMark => const SvgGenImage('assets/svg/check_mark.svg');
 
@@ -180,6 +183,7 @@ class $AssetsSvgGen {
         cameraIcon,
         changePin,
         chat,
+        chatIcon,
         checkMark,
         chevronRight,
         colorThemeIcon,
