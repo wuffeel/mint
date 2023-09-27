@@ -33,7 +33,7 @@ class SessionDetailsPage extends StatelessWidget {
         listener: (context, state) {
           if (state is ChatFetchRoomSuccess) {
             context.router.push(
-              ChatRoute(
+              ChatRoomRoute(
                 senderId: bookingData.specialistModel.id,
                 room: state.room,
               ),
