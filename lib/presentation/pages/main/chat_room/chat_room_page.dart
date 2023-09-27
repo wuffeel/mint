@@ -95,11 +95,11 @@ class _ChatViewState extends State<_ChatView> {
   final _hideBackgroundOnEmojiMessages = true;
 
   late final _user = widget.room.users.firstWhere(
-    (e) => e.id != widget.senderId,
+    (e) => e.id == widget.senderId,
   );
 
   late final _specialist = widget.room.users.firstWhere(
-    (e) => e.id == widget.senderId,
+    (e) => e.id != widget.senderId,
   );
 
   void _previewDataFetched(
