@@ -185,5 +185,10 @@
   "darkModeTitle": "Темна",
   "inAppNotificationsTitle": "Сповіщення додатку",
   "getNotifications": "Отримувати сповіщення",
-  "goToSettings": "Налаштування"
+  "goToSettings": "Налаштування",
+  "voiceMessage": "Голосове повідомлення",
+  "imageMessage": "Зображення",
+  "noMessagesYet": "Ще немає повідомлень",
+  "noChatsYet": "Поки що немає чатів",
+  "toStartNewChat": "Щоб розпочати новий чат, забронюйте спеціаліста та натисніть кнопку 'Чат'"
 }

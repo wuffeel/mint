@@ -185,5 +185,10 @@
   "darkModeTitle": "Dark",
   "inAppNotificationsTitle": "In-app notifications",
   "getNotifications": "Get notifications",
-  "goToSettings": "Go to Settings"
+  "goToSettings": "Go to Settings",
+  "voiceMessage": "Voice message",
+  "imageMessage": "Image",
+  "noMessagesYet": "No messages yet",
+  "noChatsYet": "No chats yet",
+  "toStartNewChat": "To start new chat, book a specialist and click 'Chat' button"
 }
