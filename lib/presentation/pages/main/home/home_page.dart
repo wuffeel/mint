@@ -72,11 +72,7 @@ class _HomePageViewState extends State<_HomePageView> {
         final photo = user?.photoUrl;
         final themeDark = Theme.of(context).brightness == Brightness.dark;
         return Scaffold(
-          appBar: HomeAppBar(
-            photo: photo,
-            firstName: user?.firstName,
-            lastName: user?.lastName,
-          ),
+          appBar: HomeAppBar(photo: photo, fullName: user?.fullName),
           body: MintRefreshIndicator(
             onRefresh: () => _refreshPage(context),
             child: CustomScrollView(
