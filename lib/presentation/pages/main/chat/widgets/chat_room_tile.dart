@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_circle_avatar.dart';
 import 'package:mint_core/mint_utils.dart';
@@ -41,22 +40,6 @@ class ChatRoomTile extends StatelessWidget {
       return l10n.voiceMessage;
     }
     return '';
-  }
-
-  String _getUpdatedAtDateTime(BuildContext context, int updatedAt) {
-    final updatedDate = DateTime.fromMillisecondsSinceEpoch(updatedAt);
-    final now = DateTime.now();
-    final isToday = DateTimeUtils.isSameDay(now, updatedDate);
-    final daysDifference = now.difference(updatedDate).inDays;
-    final locale = context.l10n.localeName;
-
-    if (isToday) {
-      return DateFormat.Hm(locale).format(updatedDate);
-    } else if (daysDifference < 7) {
-      return DateFormat.E(locale).format(updatedDate);
-    } else {
-      return DateFormat.yMd(locale).format(updatedDate);
-    }
   }
 
   String? get _fullName => user.firstName != null && user.lastName != null
@@ -114,7 +97,10 @@ class ChatRoomTile extends StatelessWidget {
                 children: <Widget>[
                   if (lastDate != null)
                     Text(
-                      _getUpdatedAtDateTime(context, lastDate),
+                      ChatUtils.chatRoomLastDateToString(
+                        lastDate,
+                        locale: l10n.localeName,
+                      ),
                       style: TextStyle(fontSize: 14.sp),
                     ),
                   if (unreadCount != 0)

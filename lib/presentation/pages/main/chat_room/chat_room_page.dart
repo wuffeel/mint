@@ -17,12 +17,13 @@ import 'package:mint/presentation/pages/main/chat_room/widgets/message_bubble.da
 import 'package:mint/presentation/pages/main/chat_room/widgets/mint_chat_theme.dart';
 import 'package:mint/presentation/pages/main/chat_room/widgets/permission_denied_dialog.dart';
 import 'package:mint/presentation/widgets/error_try_again_text.dart';
-import 'package:mint/utils/chat_utils.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../../bloc/permission/permission_bloc.dart';
+import '../../../../theme/mint_text_styles.dart';
 
 @RoutePage()
 class ChatRoomPage extends StatelessWidget {
@@ -153,16 +154,21 @@ class _ChatViewState extends State<_ChatView> {
   /// Shows pop-up menu on [_tapPosition] with 'Edit' and 'Delete' actions
   void _showMessageActionsMenu(BuildContext context, types.Message message) {
     if (_isSender(message.author.id)) {
+      final l10n = context.l10n;
       return ChatUtils.showMessageActionsMenu(
         context,
         message,
         _tapPosition,
-        onDelete: (message) {
-          context
-              .read<ChatBlocPatient>()
-              .add(ChatDeleteMessageRequested(message));
-          context.router.pop();
-        },
+        items: <PopupMenuEntry<void>>[
+          PopupMenuItem(
+            onTap: () {
+              context
+                  .read<ChatBlocPatient>()
+                  .add(ChatDeleteMessageRequested(message));
+            },
+            child: Text(l10n.delete, style: MintTextStyles.headline1),
+          ),
+        ],
       );
     }
   }
