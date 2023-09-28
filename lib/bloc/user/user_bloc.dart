@@ -113,7 +113,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserDataUpdateSuccess(updatedUser));
     } catch (error) {
       log('UserDataUpdateFailure: $error');
-      emit(UserDataUpdateFailure());
+      emit(UserDataUpdateFailure(state.user));
     }
   }
 
@@ -121,12 +121,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserLogOutRequested event,
     Emitter<UserState> emit,
   ) async {
+    final state = this.state;
+    if (state is! UserFetchSuccess) return;
+
     try {
       await _logOutUseCase();
       _userController.addToUserStream(null);
     } catch (error) {
       log('UserLogOutFailure: $error');
-      emit(UserLogOutFailure());
+      emit(UserLogOutFailure(state.user));
     }
   }
 }
