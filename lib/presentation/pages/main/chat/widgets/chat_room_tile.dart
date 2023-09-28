@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_circle_avatar.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../theme/mint_text_styles.dart';
 
@@ -14,6 +15,7 @@ class ChatRoomTile extends StatelessWidget {
     required this.lastMessage,
     required this.onTap,
     this.unreadCount = 0,
+    this.roomLastDate,
   });
 
   /// The user with whom the current user is engaged in a conversation.
@@ -21,6 +23,7 @@ class ChatRoomTile extends StatelessWidget {
 
   final types.Message? lastMessage;
   final VoidCallback? onTap;
+  final int? roomLastDate;
   final int unreadCount;
 
   String _getLastMessageContent(
@@ -40,6 +43,22 @@ class ChatRoomTile extends StatelessWidget {
     return '';
   }
 
+  String _getUpdatedAtDateTime(BuildContext context, int updatedAt) {
+    final updatedDate = DateTime.fromMillisecondsSinceEpoch(updatedAt);
+    final now = DateTime.now();
+    final isToday = DateTimeUtils.isSameDay(now, updatedDate);
+    final daysDifference = now.difference(updatedDate).inDays;
+    final locale = context.l10n.localeName;
+
+    if (isToday) {
+      return DateFormat.Hm(locale).format(updatedDate);
+    } else if (daysDifference < 7) {
+      return DateFormat.E(locale).format(updatedDate);
+    } else {
+      return DateFormat.yMd(locale).format(updatedDate);
+    }
+  }
+
   String? get _fullName => user.firstName != null && user.lastName != null
       ? '${user.firstName} ${user.lastName}'
       : null;
@@ -48,7 +67,8 @@ class ChatRoomTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final message = lastMessage;
-    final updatedAt = lastMessage?.updatedAt;
+    final lastDate =
+        lastMessage?.updatedAt ?? lastMessage?.createdAt ?? roomLastDate;
     return InkWell(
       onTap: onTap,
       child: SizedBox(
@@ -93,11 +113,9 @@ class ChatRoomTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  if (updatedAt != null)
+                  if (lastDate != null)
                     Text(
-                      DateFormat.Hm().format(
-                        DateTime.fromMillisecondsSinceEpoch(updatedAt),
-                      ),
+                      _getUpdatedAtDateTime(context, lastDate),
                       style: TextStyle(fontSize: 14.sp),
                     ),
                   if (unreadCount != 0)

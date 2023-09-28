@@ -98,6 +98,7 @@ class _ChatView extends StatelessWidget {
                           : null,
                       onTap: () => _navigateToChat(context, room, senderId),
                       unreadCount: _getUnreadCount(state, user.id),
+                      roomLastDate: room.updatedAt ?? room.updatedAt,
                     );
                   },
                 );
