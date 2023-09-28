@@ -109,7 +109,6 @@ class ChatRoomTile extends StatelessWidget {
             FractionallySizedBox(
               heightFactor: 0.75,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
