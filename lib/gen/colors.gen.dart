@@ -67,6 +67,9 @@ class MintColors {
   /// Color: #696969
   static const Color imageBackgroundLight = Color(0xFF696969);
 
+  /// Color: #28303F
+  static const Color notificationTileIconColor = Color(0xFF28303F);
+
   /// Color: #232323
   static const Color numberDark = Color(0xFF232323);
 

@@ -190,5 +190,9 @@
   "imageMessage": "Image",
   "noMessagesYet": "No messages yet",
   "noChatsYet": "No chats yet",
-  "toStartNewChat": "To start new chat, book a specialist and click 'Chat' button"
+  "toStartNewChat": "To start new chat, book a specialist and click 'Chat' button",
+  "youDoNotHaveAnyNotifications": "You do not have any notifications",
+  "justNow": "Just now",
+  "sentA": "sent a",
+  "youHaveBookedConsultationOn": "You have booked a consultation on"
 }

@@ -115,6 +115,10 @@ class $AssetsSvgGen {
   SvgGenImage get microphoneIcon =>
       const SvgGenImage('assets/svg/microphone_icon.svg');
 
+  /// File path: assets/svg/notification_tile_icon.svg
+  SvgGenImage get notificationTileIcon =>
+      const SvgGenImage('assets/svg/notification_tile_icon.svg');
+
   /// File path: assets/svg/notifications_bell.svg
   SvgGenImage get notificationsBell =>
       const SvgGenImage('assets/svg/notifications_bell.svg');
@@ -198,6 +202,7 @@ class $AssetsSvgGen {
         mastercardColored,
         mastercardIcon,
         microphoneIcon,
+        notificationTileIcon,
         notificationsBell,
         personalData,
         pickUpSpecialist,
