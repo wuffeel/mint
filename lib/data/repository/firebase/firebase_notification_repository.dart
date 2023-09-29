@@ -251,6 +251,8 @@ class FirebaseNotificationRepository implements NotificationRepository {
   ///
   /// Sets up the Android notification channel and handles tap event
   /// on foreground notifications.
+  ///
+  /// https://firebase.flutter.dev/docs/messaging/notifications/#foreground-notifications
   Future<void> _initializeLocalNotifications() async {
     await _initializeIosForegroundNotifications();
 
