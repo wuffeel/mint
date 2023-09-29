@@ -155,7 +155,9 @@ class FirebaseNotificationRepository implements NotificationRepository {
     final tokenSnap = await tokenDoc.get();
     final token = tokenSnap.data()?['token'];
 
-    if (!tokenSnap.exists || (token != null && token != fcmToken)) {
+    if (!tokenSnap.exists ||
+        token == null ||
+        (token != null && token != fcmToken)) {
       await _setFcmToken(tokenDoc, fcmToken);
     }
   }
