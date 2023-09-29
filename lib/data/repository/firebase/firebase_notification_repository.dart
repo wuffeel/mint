@@ -65,11 +65,12 @@ class FirebaseNotificationRepository implements NotificationRepository {
     log('fcmToken: $fcmToken');
 
     _subscribeToStreams();
-    await _updateToken(fcmToken, userId);
-    _listenTokenChange(userId);
-
-    await _handleTerminatedNotification();
-    await _initializeLocalNotifications();
+    await Future.wait([
+      _updateToken(fcmToken, userId),
+      _listenTokenChange(userId),
+      _handleTerminatedNotification(),
+      _initializeLocalNotifications(),
+    ]);
   }
 
   /// Cancels all active stream subscriptions and closes the stream controllers
@@ -82,11 +83,12 @@ class FirebaseNotificationRepository implements NotificationRepository {
   }
 
   /// Sets up a listener for token refresh events.
-  void _listenTokenChange(String userId) {
+  Future<void> _listenTokenChange(String userId) async {
+    final tokenCollection = await _tokenCollectionRef;
     _onTokenRefreshSubscription =
         _messagingInstance.onTokenRefresh.listen((fcmToken) async {
       log('onTokenRefresh token: $fcmToken');
-      await _setFcmToken((await _tokenCollectionRef).doc(userId), userId);
+      await _setFcmToken(tokenCollection.doc(userId), userId);
     })
           ..onError((Object error) {
             log('tokenRefreshError: $error');
