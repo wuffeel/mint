@@ -18,8 +18,10 @@ import '../../../widgets/mint_app_bar.dart';
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
-  void _appNotificationsBlocListener(BuildContext context,
-      AppNotificationsState state,) {
+  void _appNotificationsBlocListener(
+    BuildContext context,
+    AppNotificationsState state,
+  ) {
     if (state is AppNotificationsFetchChatRoomSuccess) {
       context.router.replace(
         ChatRoomRoute(room: state.room, senderId: state.senderId),
@@ -60,54 +62,93 @@ class _NotificationsView extends StatelessWidget {
               // TODO(wuffeel): add onClear callback
             },
             style: TextButton.styleFrom(
-              foregroundColor: Theme
-                  .of(context)
-                  .primaryColor,
+              foregroundColor: Theme.of(context).primaryColor,
             ),
             child: Text(l10n.clear),
           ),
         ],
       ),
-      body: BlocBuilder<AppNotificationsBlocPatient, AppNotificationsState>(
-        builder: (context, state) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              BlocBuilder<AppNotificationsBlocPatient, AppNotificationsState>(
-                builder: (context, state) {
-                  if (state is AppNotificationsFetchSuccess) {
-                    final todayNotifications = state.todayNotifications;
-                    final previousNotifications = state.previousNotifications;
-                    if (todayNotifications.isEmpty &&
-                        previousNotifications.isEmpty) {
-                      return SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Center(
-                          child: Text(
-                            context.l10n.youDoNotHaveAnyNotifications,
-                          ),
-                        ),
-                      );
-                    }
-                    if (todayNotifications.isNotEmpty) {
-                      return _NotificationGroupList(
-                        groupTitle: l10n.today,
-                        notificationList: todayNotifications,
-                      );
-                    }
-                    if (previousNotifications.isNotEmpty) {
-                      return _NotificationGroupList(
-                        groupTitle: l10n.previous,
-                        notificationList: previousNotifications,
-                      );
-                    }
-                  }
-                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                },
-              ),
-            ],
-          );
-        },
+      body: const CustomScrollView(
+        slivers: <Widget>[
+          _EmptyNotifications(),
+          _TodayNotifications(),
+          _PreviousNotifications(),
+        ],
       ),
+    );
+  }
+}
+
+class _EmptyNotifications extends StatelessWidget {
+  const _EmptyNotifications();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
+        bool>(
+      selector: (state) {
+        return state is AppNotificationsFetchSuccess &&
+            state.todayNotifications.isEmpty &&
+            state.previousNotifications.isEmpty;
+      },
+      builder: (context, isEmpty) => isEmpty
+          ? SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: Text(
+                  context.l10n.youDoNotHaveAnyNotifications,
+                  style: MintTextStyles.body,
+                ),
+              ),
+            )
+          : const SliverToBoxAdapter(child: SizedBox.shrink()),
+    );
+  }
+}
+
+class _TodayNotifications extends StatelessWidget {
+  const _TodayNotifications();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
+        List<NotificationModel>>(
+      selector: (state) {
+        return state is AppNotificationsFetchSuccess
+            ? state.todayNotifications
+            : <NotificationModel>[];
+      },
+      builder: (context, todayNotifications) => todayNotifications.isNotEmpty
+          ? _NotificationGroupList(
+              groupTitle: l10n.today,
+              notificationList: todayNotifications,
+            )
+          : const SliverToBoxAdapter(child: SizedBox.shrink()),
+    );
+  }
+}
+
+class _PreviousNotifications extends StatelessWidget {
+  const _PreviousNotifications();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
+        List<NotificationModel>>(
+      selector: (state) {
+        return state is AppNotificationsFetchSuccess
+            ? state.previousNotifications
+            : <NotificationModel>[];
+      },
+      builder: (context, previousNotifications) =>
+          previousNotifications.isNotEmpty
+              ? _NotificationGroupList(
+                  groupTitle: l10n.previous,
+                  notificationList: previousNotifications,
+                )
+              : const SliverToBoxAdapter(child: SizedBox.shrink()),
     );
   }
 }
@@ -125,7 +166,7 @@ class _NotificationGroupList extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiSliver(
       children: <Widget>[
-        SliverToBoxAdapter(child: SizedBox(height: 30.h)),
+        SliverToBoxAdapter(child: SizedBox(height: 20.h)),
         SliverPadding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           sliver: SliverToBoxAdapter(

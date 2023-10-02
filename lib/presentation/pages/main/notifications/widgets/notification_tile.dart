@@ -201,7 +201,7 @@ class _BookingNotification extends StatelessWidget {
   final BookingNotification notification;
 
   String _getBookingDate(BuildContext context, DateTime date) {
-    return DateFormat('MMM d, Hm', context.l10n.localeName).format(date);
+    return DateFormat('MMM d, HH:mm', context.l10n.localeName).format(date);
   }
 
   @override
@@ -213,7 +213,7 @@ class _BookingNotification extends StatelessWidget {
         children: [
           TextSpan(text: '${l10n.youHaveBookedConsultationOn} ', style: style),
           TextSpan(
-            text: _getBookingDate(context, notification.createdAt),
+            text: _getBookingDate(context, notification.bookTime),
             style: style.copyWith(fontWeight: FontWeight.w500),
           ),
         ],
