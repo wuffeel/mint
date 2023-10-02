@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/notifications/widgets/notification_tile.dart';
 import 'package:mint/routes/app_router.gr.dart';
@@ -36,18 +35,21 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AppNotificationsBlocPatient>(),
-      child: BlocListener<AppNotificationsBlocPatient, AppNotificationsState>(
-        listener: _appNotificationsBlocListener,
-        child: const _NotificationsView(),
-      ),
+    return BlocListener<AppNotificationsBlocPatient, AppNotificationsState>(
+      listener: _appNotificationsBlocListener,
+      child: const _NotificationsView(),
     );
   }
 }
 
 class _NotificationsView extends StatelessWidget {
   const _NotificationsView();
+
+  void _markMessagesAsCleared(BuildContext context) {
+    context
+        .read<AppNotificationsBlocPatient>()
+        .add(AppNotificationsClearRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +60,7 @@ class _NotificationsView extends StatelessWidget {
         title: Text(l10n.notifications, style: MintTextStyles.title2),
         actions: <Widget>[
           TextButton(
-            onPressed: () {
-              // TODO(wuffeel): add onClear callback
-            },
+            onPressed: () => _markMessagesAsCleared(context),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).primaryColor,
             ),
@@ -86,11 +86,9 @@ class _EmptyNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
         bool>(
-      selector: (state) {
-        return state is AppNotificationsFetchSuccess &&
-            state.todayNotifications.isEmpty &&
-            state.previousNotifications.isEmpty;
-      },
+      selector: (state) =>
+          state.todayNotifications.isEmpty &&
+          state.previousNotifications.isEmpty,
       builder: (context, isEmpty) => isEmpty
           ? SliverFillRemaining(
               hasScrollBody: false,
@@ -114,11 +112,7 @@ class _TodayNotifications extends StatelessWidget {
     final l10n = context.l10n;
     return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
         List<NotificationModel>>(
-      selector: (state) {
-        return state is AppNotificationsFetchSuccess
-            ? state.todayNotifications
-            : <NotificationModel>[];
-      },
+      selector: (state) => state.todayNotifications,
       builder: (context, todayNotifications) => todayNotifications.isNotEmpty
           ? _NotificationGroupList(
               groupTitle: l10n.today,
@@ -137,11 +131,7 @@ class _PreviousNotifications extends StatelessWidget {
     final l10n = context.l10n;
     return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
         List<NotificationModel>>(
-      selector: (state) {
-        return state is AppNotificationsFetchSuccess
-            ? state.previousNotifications
-            : <NotificationModel>[];
-      },
+      selector: (state) => state.previousNotifications,
       builder: (context, previousNotifications) =>
           previousNotifications.isNotEmpty
               ? _NotificationGroupList(

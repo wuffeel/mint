@@ -1,12 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/gen/colors.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/widgets/mint_circle_avatar.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_bloc.dart';
 
+import '../../../../../bloc/app_notifications/app_notifications_bloc_patient.dart';
 import '../../../../../routes/app_router.gr.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -52,7 +55,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           IconButton(
             onPressed: () => context.router.push(const NotificationsRoute()),
-            icon: const _NotificationBell(hasNotifications: false),
+            icon: const _NotificationBell(),
           ),
         ],
       ),
@@ -61,9 +64,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _NotificationBell extends StatelessWidget {
-  const _NotificationBell({required this.hasNotifications});
-
-  final bool hasNotifications;
+  const _NotificationBell();
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +80,20 @@ class _NotificationBell extends StatelessWidget {
       ),
     );
 
-    return !hasNotifications
-        ? bellWidget
-        : Badge(smallSize: 9, child: bellWidget);
+    return BlocBuilder<AppNotificationsBlocPatient, AppNotificationsState>(
+      builder: (context, state) {
+        if (state.unreadNotificationCount != 0) {
+          return Badge(
+            smallSize: 9,
+            label: Text(
+              state.unreadNotificationCount.toString(),
+              style: const TextStyle(color: Colors.white),
+            ),
+            child: bellWidget,
+          );
+        }
+        return bellWidget;
+      },
+    );
   }
 }

@@ -73,6 +73,11 @@ class NotificationTile extends StatelessWidget {
     BuildContext context,
     NotificationModel notification,
   ) {
+    if (notification.status != AppNotificationStatus.seen) {
+      context
+          .read<AppNotificationsBlocPatient>()
+          .add(AppNotificationsMarkAsReadRequested(notification.id));
+    }
     return switch (notification) {
       ChatNotification() => _onChatNotificationClick(context, notification),
       BookingNotification() => _onBookingNotificationClick(
@@ -123,7 +128,7 @@ class NotificationTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _NotificationContent(notification: notification),
+                        _NotificationMessage(notification: notification),
                         SizedBox(height: 4.h),
                         Text(
                           _getCreatedAtString(context, notification.createdAt),
@@ -142,6 +147,38 @@ class NotificationTile extends StatelessWidget {
             ),
           )
         : const SizedBox.shrink();
+  }
+}
+
+class _NotificationMessage extends StatelessWidget {
+  const _NotificationMessage({required this.notification});
+
+  final NotificationModel notification;
+
+  bool _isMessageLoading(BuildContext context) {
+    final state = context.read<AppNotificationsBlocPatient>().state;
+    return state.loadingMessageId != null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return notification.status != AppNotificationStatus.seen &&
+            !_isMessageLoading(context)
+        ? Row(
+            children: <Widget>[
+              Expanded(child: _NotificationContent(notification: notification)),
+              SizedBox(width: 8.w),
+              Container(
+                width: 6.w,
+                height: 6.h,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ],
+          )
+        : _NotificationContent(notification: notification);
   }
 }
 
@@ -268,9 +305,7 @@ class _LoadingNotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
         bool>(
-      selector: (state) =>
-          state is AppNotificationsMessageLoading &&
-          state.notificationId == notificationId,
+      selector: (state) => state.loadingMessageId == notificationId,
       builder: (context, isLoading) => isLoading
           ? Row(
               children: <Widget>[

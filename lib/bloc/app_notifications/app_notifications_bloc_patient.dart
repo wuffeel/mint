@@ -16,6 +16,8 @@ class AppNotificationsBlocPatient extends AppNotificationsBloc<PatientUser?> {
   AppNotificationsBlocPatient(
     super.getAppNotificationStreamUseCase,
     super.fetchChatRoomUseCase,
+    super.markAppNotificationAsReadUseCase,
+    super.clearAppNotificationsUseCase,
     super.userController,
     this._fetchBookingDataUseCase,
   ) {
@@ -28,25 +30,38 @@ class AppNotificationsBlocPatient extends AppNotificationsBloc<PatientUser?> {
     AppNotificationsFetchBookingDataRequested event,
     Emitter<AppNotificationsState> emit,
   ) async {
-    final state = this.state;
-    if (state is! AppNotificationsFetchSuccess) return;
-
     try {
-      final loadingState = AppNotificationsMessageLoading(
-        state.todayNotifications,
-        state.previousNotifications,
-        event.notificationId,
-      );
-      emit(loadingState);
+      emit(state.copyWith(loadingMessageId: event.notificationId));
       final bookingData = await _fetchBookingDataUseCase(event.bookingId);
       if (bookingData == null) {
-        emit(AppNotificationsFetchBookingDataFailure());
+        emit(_failureState(AppNotificationsFailureEnum.bookingData));
         return;
       }
-      emit(AppNotificationsFetchBookingDataSuccess(bookingData));
+
+      emit(
+        AppNotificationsFetchBookingDataSuccess(
+          bookingData,
+          todayNotifications: state.todayNotifications,
+          previousNotifications: state.previousNotifications,
+          unreadNotificationCount: state.unreadNotificationCount,
+          isInitialized: state.isInitialized,
+        ),
+      );
     } catch (error) {
       log('AppNotificationsFetchBookingDataFailure: $error');
-      emit(AppNotificationsFetchBookingDataFailure());
+      emit(_failureState(AppNotificationsFailureEnum.bookingData));
     }
   }
+
+  AppNotificationsFailure _failureState(
+    AppNotificationsFailureEnum failureState,
+  ) =>
+      AppNotificationsFailure(
+        failureState,
+        todayNotifications: state.todayNotifications,
+        previousNotifications: state.previousNotifications,
+        unreadNotificationCount: state.unreadNotificationCount,
+        loadingMessageId: state.loadingMessageId,
+        isInitialized: state.isInitialized,
+      );
 }
