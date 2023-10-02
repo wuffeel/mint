@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:mint/bloc/app_notifications/app_notifications_bloc_patient.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/l10n/l10n.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
 class NotificationTile extends StatelessWidget {
-  const NotificationTile({super.key, required this.notification, this.svgIcon});
+  const NotificationTile({
+    super.key,
+    required this.notification,
+    this.svgIcon,
+    this.padding,
+  });
 
   final NotificationModel notification;
   final SvgGenImage? svgIcon;
+  final EdgeInsetsGeometry? padding;
 
   /// Formats a [DateTime] value into a human-readable string representing the
   /// creation date or time difference from the current time.
@@ -60,35 +69,77 @@ class NotificationTile extends StatelessWidget {
     }
   }
 
+  void _onNotificationClick(
+    BuildContext context,
+    NotificationModel notification,
+  ) {
+    return switch (notification) {
+      ChatNotification() => _onChatNotificationClick(context, notification),
+      BookingNotification() => _onBookingNotificationClick(
+          context,
+          notification,
+        ),
+    };
+  }
+
+  void _onChatNotificationClick(
+    BuildContext context,
+    ChatNotification notification,
+  ) {
+    final event = AppNotificationsFetchChatRoomRequested(
+      notification.id,
+      notification.roomId,
+    );
+    context.read<AppNotificationsBlocPatient>().add(event);
+  }
+
+  void _onBookingNotificationClick(
+    BuildContext context,
+    BookingNotification notification,
+  ) {
+    final event = AppNotificationsFetchBookingDataRequested(
+      notification.id,
+      notification.bookingId,
+    );
+    context.read<AppNotificationsBlocPatient>().add(event);
+  }
+
   @override
   Widget build(BuildContext context) {
     return notification is ChatNotification ||
             notification is BookingNotification
-        ? Row(
-            children: <Widget>[
-              _NotificationCircleAvatar(
-                svgIcon: svgIcon,
-                photoUrl: notification.photoUrl,
-              ),
-              SizedBox(width: 20.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _NotificationContent(notification: notification),
-                    SizedBox(height: 4.h),
-                    Text(
-                      _getCreatedAtString(context, notification.createdAt),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Theme.of(context).hintColor.withOpacity(0.6),
-                        letterSpacing: -0.25,
-                      ),
+        ? InkWell(
+            onTap: () => _onNotificationClick(context, notification),
+            child: Padding(
+              padding: padding ?? EdgeInsets.zero,
+              child: Row(
+                children: <Widget>[
+                  _NotificationCircleAvatar(
+                    svgIcon: svgIcon,
+                    photoUrl: notification.photoUrl,
+                  ),
+                  SizedBox(width: 20.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _NotificationContent(notification: notification),
+                        SizedBox(height: 4.h),
+                        Text(
+                          _getCreatedAtString(context, notification.createdAt),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Theme.of(context).hintColor.withOpacity(0.6),
+                            letterSpacing: -0.25,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ],
+                  ),
+                  _LoadingNotificationWidget(notificationId: notification.id),
+                ],
+              ),
+            ),
           )
         : const SizedBox.shrink();
   }
@@ -130,9 +181,9 @@ class _ChatNotification extends StatelessWidget {
             text: '${fullName ?? l10n.patient} ',
             style: style.copyWith(fontWeight: FontWeight.w500),
           ),
-          TextSpan(text: l10n.sentA, style: style),
+          TextSpan(text: '${l10n.sentA} ', style: style),
           TextSpan(
-            text: l10n.message,
+            text: l10n.message.toLowerCase(),
             style: style.copyWith(
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w500,
@@ -205,5 +256,35 @@ class _NotificationCircleAvatar extends StatelessWidget {
               ),
             ),
           );
+  }
+}
+
+class _LoadingNotificationWidget extends StatelessWidget {
+  const _LoadingNotificationWidget({required this.notificationId});
+
+  final String notificationId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
+        bool>(
+      selector: (state) =>
+          state is AppNotificationsMessageLoading &&
+          state.notificationId == notificationId,
+      builder: (context, isLoading) => isLoading
+          ? Row(
+              children: <Widget>[
+                SizedBox(width: 8.w),
+                SizedBox(
+                  width: 16.w,
+                  height: 16.h,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ),
+              ],
+            )
+          : const SizedBox.shrink(),
+    );
   }
 }

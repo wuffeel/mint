@@ -1,26 +1,45 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mint/injector/injector.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/notifications/widgets/notification_tile.dart';
+import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+import '../../../../bloc/app_notifications/app_notifications_bloc_patient.dart';
 import '../../../widgets/mint_app_bar.dart';
 
 @RoutePage()
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
+  void _appNotificationsBlocListener(BuildContext context,
+      AppNotificationsState state,) {
+    if (state is AppNotificationsFetchChatRoomSuccess) {
+      context.router.replace(
+        ChatRoomRoute(room: state.room, senderId: state.senderId),
+      );
+    }
+    if (state is AppNotificationsFetchBookingDataSuccess) {
+      context.router.replace(
+        SessionDetailsRoute(bookingData: state.bookingData),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AppNotificationsBlocPatient>(),
-      child: const _NotificationsView(),
+      child: BlocListener<AppNotificationsBlocPatient, AppNotificationsState>(
+        listener: _appNotificationsBlocListener,
+        child: const _NotificationsView(),
+      ),
     );
   }
 }
@@ -41,7 +60,9 @@ class _NotificationsView extends StatelessWidget {
               // TODO(wuffeel): add onClear callback
             },
             style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme
+                  .of(context)
+                  .primaryColor,
             ),
             child: Text(l10n.clear),
           ),
@@ -102,23 +123,26 @@ class _NotificationGroupList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 30.w),
-      sliver: MultiSliver(
-        children: <Widget>[
-          SliverToBoxAdapter(child: SizedBox(height: 30.h)),
-          SliverToBoxAdapter(
+    return MultiSliver(
+      children: <Widget>[
+        SliverToBoxAdapter(child: SizedBox(height: 30.h)),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          sliver: SliverToBoxAdapter(
             child: Text(groupTitle, style: MintTextStyles.headline),
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 15.h)),
-          SliverList.builder(
-            itemCount: notificationList.length,
-            itemBuilder: (context, index) {
-              return NotificationTile(notification: notificationList[index]);
-            },
-          ),
-        ],
-      ),
+        ),
+        SliverToBoxAdapter(child: SizedBox(height: 15.h)),
+        SliverList.builder(
+          itemCount: notificationList.length,
+          itemBuilder: (context, index) {
+            return NotificationTile(
+              notification: notificationList[index],
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 30.w),
+            );
+          },
+        ),
+      ],
     );
   }
 }
