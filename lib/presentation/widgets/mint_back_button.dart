@@ -30,6 +30,7 @@ class MintBackButton extends StatelessWidget {
       onTap: onPressed ?? context.router.pop,
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
             width: 24.w,
