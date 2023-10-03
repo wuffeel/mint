@@ -88,11 +88,15 @@ class _NotificationsView extends StatelessWidget {
           ),
         ],
       ),
-      body: const CustomScrollView(
+      body: CustomScrollView(
         slivers: <Widget>[
-          _EmptyNotifications(),
-          _TodayNotifications(),
-          _PreviousNotifications(),
+          const _EmptyNotifications(),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 20.h),
+            sliver: MultiSliver(
+              children: const [_TodayNotifications(), _PreviousNotifications()],
+            ),
+          ),
         ],
       ),
     );
@@ -146,6 +150,14 @@ class _TodayNotifications extends StatelessWidget {
 class _PreviousNotifications extends StatelessWidget {
   const _PreviousNotifications();
 
+  EdgeInsetsGeometry _getGroupPadding(BuildContext context) {
+    final todayNotifications =
+        context.read<AppNotificationsBlocPatient>().state.todayNotifications;
+    return todayNotifications.isNotEmpty
+        ? EdgeInsets.only(top: 20.h)
+        : EdgeInsets.zero;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -154,9 +166,12 @@ class _PreviousNotifications extends StatelessWidget {
       selector: (state) => state.previousNotifications,
       builder: (context, previousNotifications) =>
           previousNotifications.isNotEmpty
-              ? _NotificationGroupList(
-                  groupTitle: l10n.previous,
-                  notificationList: previousNotifications,
+              ? SliverPadding(
+                  padding: _getGroupPadding(context),
+                  sliver: _NotificationGroupList(
+                    groupTitle: l10n.previous,
+                    notificationList: previousNotifications,
+                  ),
                 )
               : const SliverToBoxAdapter(child: SizedBox.shrink()),
     );
@@ -176,7 +191,6 @@ class _NotificationGroupList extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiSliver(
       children: <Widget>[
-        SliverToBoxAdapter(child: SizedBox(height: 20.h)),
         SliverPadding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           sliver: SliverToBoxAdapter(
