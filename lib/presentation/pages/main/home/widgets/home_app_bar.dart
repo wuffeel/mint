@@ -84,6 +84,7 @@ class _NotificationBell extends StatelessWidget {
       builder: (context, state) {
         if (state.unreadNotificationCount != 0) {
           return Badge(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             smallSize: 9,
             label: Text(
               state.unreadNotificationCount.toString(),
