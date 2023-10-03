@@ -8,6 +8,7 @@ import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_utils.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../../bloc/app_notifications/app_notifications_bloc_patient.dart';
@@ -94,7 +95,12 @@ class _NotificationsView extends StatelessWidget {
           SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 20.h),
             sliver: MultiSliver(
-              children: const [_TodayNotifications(), _PreviousNotifications()],
+              children: <Widget>[
+                const _TodayNotifications(),
+                const _PreviousNotifications(),
+              ]..insertBetween(
+                  SliverToBoxAdapter(child: SizedBox(height: 20.h)),
+                ),
             ),
           ),
         ],
@@ -150,14 +156,6 @@ class _TodayNotifications extends StatelessWidget {
 class _PreviousNotifications extends StatelessWidget {
   const _PreviousNotifications();
 
-  EdgeInsetsGeometry _getGroupPadding(BuildContext context) {
-    final todayNotifications =
-        context.read<AppNotificationsBlocPatient>().state.todayNotifications;
-    return todayNotifications.isNotEmpty
-        ? EdgeInsets.only(top: 20.h)
-        : EdgeInsets.zero;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -166,12 +164,9 @@ class _PreviousNotifications extends StatelessWidget {
       selector: (state) => state.previousNotifications,
       builder: (context, previousNotifications) =>
           previousNotifications.isNotEmpty
-              ? SliverPadding(
-                  padding: _getGroupPadding(context),
-                  sliver: _NotificationGroupList(
-                    groupTitle: l10n.previous,
-                    notificationList: previousNotifications,
-                  ),
+              ? _NotificationGroupList(
+                  groupTitle: l10n.previous,
+                  notificationList: previousNotifications,
                 )
               : const SliverToBoxAdapter(child: SizedBox.shrink()),
     );
