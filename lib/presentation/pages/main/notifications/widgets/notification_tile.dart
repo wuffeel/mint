@@ -111,42 +111,38 @@ class NotificationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return notification is ChatNotification ||
-            notification is BookingNotification
-        ? InkWell(
-            onTap: () => _onNotificationClick(context, notification),
-            child: Padding(
-              padding: padding ?? EdgeInsets.zero,
-              child: Row(
+    return InkWell(
+      onTap: () => _onNotificationClick(context, notification),
+      child: Padding(
+        padding: padding ?? EdgeInsets.zero,
+        child: Row(
+          children: <Widget>[
+            _NotificationCircleAvatar(
+              svgIcon: svgIcon,
+              photoUrl: notification.photoUrl,
+            ),
+            SizedBox(width: 20.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _NotificationCircleAvatar(
-                    svgIcon: svgIcon,
-                    photoUrl: notification.photoUrl,
-                  ),
-                  SizedBox(width: 20.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _NotificationMessage(notification: notification),
-                        SizedBox(height: 4.h),
-                        Text(
-                          _getCreatedAtString(context, notification.createdAt),
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Theme.of(context).hintColor.withOpacity(0.6),
-                            letterSpacing: -0.25,
-                          ),
-                        ),
-                      ],
+                  _NotificationMessage(notification: notification),
+                  SizedBox(height: 4.h),
+                  Text(
+                    _getCreatedAtString(context, notification.createdAt),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Theme.of(context).hintColor.withOpacity(0.6),
+                      letterSpacing: -0.25,
                     ),
                   ),
-                  _LoadingNotificationWidget(notificationId: notification.id),
                 ],
               ),
             ),
-          )
-        : const SizedBox.shrink();
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -155,30 +151,21 @@ class _NotificationMessage extends StatelessWidget {
 
   final NotificationModel notification;
 
-  bool _isMessageLoading(BuildContext context) {
-    final state = context.read<AppNotificationsBlocPatient>().state;
-    return state.loadingMessageId != null;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return notification.status != AppNotificationStatus.seen &&
-            !_isMessageLoading(context)
-        ? Row(
-            children: <Widget>[
-              Expanded(child: _NotificationContent(notification: notification)),
-              SizedBox(width: 8.w),
-              Container(
-                width: 6.w,
-                height: 6.h,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ],
-          )
-        : _NotificationContent(notification: notification);
+    return Row(
+      children: <Widget>[
+        Expanded(child: _NotificationContent(notification: notification)),
+        SizedBox(width: 8.w),
+        SizedBox(
+          width: 16.w,
+          height: 16.h,
+          child: Align(
+            child: _NotificationStatusWidget(notification: notification),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -296,30 +283,28 @@ class _NotificationCircleAvatar extends StatelessWidget {
   }
 }
 
-class _LoadingNotificationWidget extends StatelessWidget {
-  const _LoadingNotificationWidget({required this.notificationId});
+class _NotificationStatusWidget extends StatelessWidget {
+  const _NotificationStatusWidget({required this.notification});
 
-  final String notificationId;
+  final NotificationModel notification;
 
   @override
   Widget build(BuildContext context) {
     return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
         bool>(
-      selector: (state) => state.loadingMessageId == notificationId,
+      selector: (state) => state.loadingMessageId == notification.id,
       builder: (context, isLoading) => isLoading
-          ? Row(
-              children: <Widget>[
-                SizedBox(width: 8.w),
-                SizedBox(
-                  width: 16.w,
-                  height: 16.h,
-                  child: const CircularProgressIndicator(
-                    strokeWidth: 2,
+          ? const CircularProgressIndicator(strokeWidth: 2)
+          : notification.status != AppNotificationStatus.seen
+              ? Container(
+                  width: 6.w,
+                  height: 6.h,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
                   ),
-                ),
-              ],
-            )
-          : const SizedBox.shrink(),
+                )
+              : const SizedBox.shrink(),
     );
   }
 }

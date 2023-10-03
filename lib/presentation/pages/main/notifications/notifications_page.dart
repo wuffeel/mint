@@ -166,12 +166,15 @@ class _NotificationGroupList extends StatelessWidget {
         SliverToBoxAdapter(child: SizedBox(height: 15.h)),
         SliverList.builder(
           itemCount: notificationList.length,
-          itemBuilder: (context, index) {
-            return NotificationTile(
-              notification: notificationList[index],
-              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 30.w),
-            );
-          },
+          itemBuilder: (context, index) => NotificationTile(
+            notification: notificationList[index],
+            padding: EdgeInsets.only(
+              top: 8.h,
+              bottom: 8.h,
+              left: 30.w,
+              right: 14.w,
+            ),
+          ),
         ),
       ],
     );
