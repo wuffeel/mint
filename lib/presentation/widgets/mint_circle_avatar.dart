@@ -8,11 +8,13 @@ class MintCircleAvatar extends StatelessWidget {
     required this.radius,
     required this.backgroundColor,
     this.photoUrl,
+    this.child,
   });
 
   final double radius;
   final Color backgroundColor;
   final String? photoUrl;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class MintCircleAvatar extends StatelessWidget {
             radius: radius,
             backgroundColor: backgroundColor,
             backgroundImage: NetworkImage(photo),
+            child: child,
           )
         : CircleAvatar(
             radius: radius,

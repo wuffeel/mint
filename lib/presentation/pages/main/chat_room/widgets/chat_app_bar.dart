@@ -18,6 +18,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final fullName = user.fullName;
+    final photoUrl = user.photoUrl;
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
@@ -36,6 +37,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
               radius: 14.w,
               photoUrl: user.photoUrl,
               backgroundColor: Theme.of(context).colorScheme.secondary,
+              child: photoUrl != null
+                  ? ClipOval(child: Image.network(photoUrl))
+                  : null,
             ),
           ),
         ],
