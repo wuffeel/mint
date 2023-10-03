@@ -194,5 +194,6 @@
   "youDoNotHaveAnyNotifications": "You do not have any notifications",
   "justNow": "Just now",
   "sentA": "sent a",
-  "youHaveBookedConsultationOn": "You have booked a consultation on"
+  "youHaveBookedConsultationOn": "You have booked a consultation on",
+  "couldNotFindSession": "Could not find session"
 }

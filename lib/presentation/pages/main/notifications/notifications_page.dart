@@ -31,6 +31,26 @@ class NotificationsPage extends StatelessWidget {
         SessionDetailsRoute(bookingData: state.bookingData),
       );
     }
+    if (state is AppNotificationsFailure) {
+      final l10n = context.l10n;
+      switch (state.failureState) {
+        case AppNotificationsFailureEnum.markAsRead:
+          return;
+        case AppNotificationsFailureEnum.clear:
+        case AppNotificationsFailureEnum.fetchChat:
+          _showFailureSnackBar(context, l10n.somethingWentWrongTryAgain);
+          break;
+        case AppNotificationsFailureEnum.bookingData:
+          _showFailureSnackBar(context, l10n.couldNotFindSession);
+          break;
+      }
+    }
+  }
+
+  void _showFailureSnackBar(BuildContext context, String content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(content)),
+    );
   }
 
   @override

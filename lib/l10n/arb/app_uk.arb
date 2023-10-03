@@ -194,5 +194,6 @@
   "youDoNotHaveAnyNotifications": "У вас немає сповіщень",
   "justNow": "Щойно",
   "sentA": "надіслав(-ла)",
-  "youHaveBookedConsultationOn": "Ви забронювали консультацію на"
+  "youHaveBookedConsultationOn": "Ви забронювали консультацію на",
+  "couldNotFindSession": "Не вдалося знайти сеанс"
 }
