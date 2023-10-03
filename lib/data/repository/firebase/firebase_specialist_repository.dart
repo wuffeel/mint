@@ -64,8 +64,11 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   @override
   Future<List<String>> getFavoriteSpecialistsIds(String userId) async {
     final usersCollection = await _usersCollectionRef;
-    final favoriteIdsSnap =
-        await usersCollection.doc(userId).collection(_favoriteCollection).get();
+    final favoriteIdsSnap = await usersCollection
+        .doc(userId)
+        .collection(_favoriteCollection)
+        .orderBy('createdAt', descending: true)
+        .get();
     return favoriteIdsSnap.docs.map((e) => e.id).toList();
   }
 
@@ -84,13 +87,15 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
 
     final results = await Future.wait(querySnapshots);
 
-    return results
+    final flattenedResults = results
         .expand(
-          (e) => e.docs.map((e) {
-            return SpecialistModelDto.fromJsonWithId(e.data(), e.id);
-          }),
+          (snap) => snap.docs.map(
+            (doc) => SpecialistModelDto.fromJsonWithId(doc.data(), doc.id),
+          ),
         )
         .toList();
+
+    return _orderedFavoriteSpecialists(favoriteIds, flattenedResults);
   }
 
   @override
@@ -371,5 +376,21 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     }
 
     return chunked;
+  }
+
+  /// Sorts [unorderedFavorites] in the same order as [favoriteIds].
+  List<SpecialistModelDto> _orderedFavoriteSpecialists(
+    List<String> favoriteIds,
+    List<SpecialistModelDto> unorderedFavorites,
+  ) {
+    final resultById = <String, SpecialistModelDto>{};
+    for (final result in unorderedFavorites) {
+      resultById[result.id] = result;
+    }
+
+    return favoriteIds
+        .map((id) => resultById[id])
+        .whereType<SpecialistModelDto>()
+        .toList();
   }
 }
