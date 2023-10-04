@@ -93,7 +93,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                             color: Theme.of(context).hintColor.withOpacity(0.6),
                           ),
                           textAlign: TextAlign.center,
-                        )
+                        ),
                       ],
                     ),
                   ],
@@ -145,7 +145,7 @@ class SpecialistDetailsWidget extends StatelessWidget {
                 SizedBox(height: 24.h),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -111,7 +111,7 @@ class CreditCardContainer extends StatelessWidget {
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
     );

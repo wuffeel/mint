@@ -85,7 +85,7 @@ class DoctorsOnlineSliverList extends StatelessWidget {
                   }
                   return const SliverToBoxAdapter(child: SizedBox.shrink());
                 },
-              )
+              ),
             ],
           ),
         ),

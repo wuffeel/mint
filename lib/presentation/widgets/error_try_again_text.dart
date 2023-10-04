@@ -43,7 +43,7 @@ class ErrorTryAgainText extends StatelessWidget {
               RefreshButton(size: 24.r, color: refreshButtonColor),
             ],
           ),
-        )
+        ),
       ],
     );
   }

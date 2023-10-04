@@ -183,7 +183,7 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
                                   color: Theme.of(context).colorScheme.error,
                                 ),
                               ),
-                            )
+                            ),
                           ],
                           const Spacer(),
                           SizedBox(height: 16.h),
@@ -204,7 +204,7 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );

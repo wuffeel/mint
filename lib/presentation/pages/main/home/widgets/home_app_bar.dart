@@ -49,7 +49,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 '@${_getNameTag(context, fullName)}',
                 style: MintTextStyles.headline1.copyWith(height: 1),
               ),
-            )
+            ),
           ],
         ),
         actions: [

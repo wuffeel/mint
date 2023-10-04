@@ -145,7 +145,7 @@ class SpecialistCatalogueBloc
                 ..._getSortedByMostOccurrencesList(
                   specialistCatalogue,
                   specializations,
-                )
+                ),
               ]
             : [...state.specialistList, ...specialistCatalogue],
         hasReachedEnd: specialistCatalogue.length < _paginationLimit,

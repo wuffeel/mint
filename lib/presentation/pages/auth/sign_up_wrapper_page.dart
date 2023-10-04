@@ -32,7 +32,7 @@ class SignUpWrapperPage extends AutoRouter implements AutoRouteWrapper {
                 context.router.replace(const NavigationWrapperRoute());
               }
             },
-          )
+          ),
         ],
         child: this,
       ),

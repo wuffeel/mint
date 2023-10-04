@@ -29,7 +29,7 @@ class SpecialistCardTile extends StatelessWidget {
         SpecialistsWrapperRoute(
           children: [
             const SpecialistsRoute(),
-            SpecialistDetailsRoute(specialistModel: specialistModel)
+            SpecialistDetailsRoute(specialistModel: specialistModel),
           ],
         ),
       ),

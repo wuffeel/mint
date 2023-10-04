@@ -93,7 +93,7 @@ class CheckoutDetailsPage extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

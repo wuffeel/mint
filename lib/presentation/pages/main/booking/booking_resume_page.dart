@@ -209,7 +209,7 @@ class _BookingResumePageState extends State<_BookingResumeView> {
                       SizedBox(height: 26.h),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

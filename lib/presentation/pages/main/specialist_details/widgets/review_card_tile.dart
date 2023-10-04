@@ -123,7 +123,7 @@ class ReviewCardTile extends StatelessWidget {
               ),
               maxLines: 5,
             ),
-          ]
+          ],
         ],
       ),
     );
