@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mint/l10n/l10n.dart';
-import 'package:mint/utils/experience/experience_localization.dart';
+import 'package:mint_core/mint_utils.dart';
 
 class SpecialistExperienceText extends StatelessWidget {
   const SpecialistExperienceText({

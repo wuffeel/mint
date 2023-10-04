@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
-import 'package:mint/domain/entity/experience_model.dart';
 import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart';
 import 'package:mint_core/mint_assembly.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../data/model/specialist_filter_dto/specialist_filter_dto.dart';
 
