@@ -47,7 +47,7 @@ class NotificationTile extends StatelessWidget {
   ) {
     final locale = context.l10n.localeName;
     if (todayDateOnly.difference(DateTimeUtils.toDateOnly(date)).inDays < 7) {
-      return DateFormat.E(locale).format(date);
+      return DateFormat('E, HH:mm', locale).format(date);
     } else {
       return DateFormat.yMd(locale).format(date);
     }

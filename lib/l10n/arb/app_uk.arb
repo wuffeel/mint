@@ -195,5 +195,6 @@
   "justNow": "Щойно",
   "sentA": "надіслав(-ла)",
   "youHaveBookedConsultationOn": "Ви забронювали консультацію на",
-  "couldNotFindSession": "Не вдалося знайти сеанс"
+  "couldNotFindSession": "Не вдалося знайти сеанс",
+  "markAllAsRead": "Позначити все як прочитане"
 }

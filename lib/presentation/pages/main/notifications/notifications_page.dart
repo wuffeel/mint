@@ -66,12 +66,6 @@ class NotificationsPage extends StatelessWidget {
 class _NotificationsView extends StatelessWidget {
   const _NotificationsView();
 
-  void _markMessagesAsCleared(BuildContext context) {
-    context
-        .read<AppNotificationsBlocPatient>()
-        .add(AppNotificationsClearRequested());
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -79,15 +73,7 @@ class _NotificationsView extends StatelessWidget {
       appBar: MintAppBar(
         centerTitle: true,
         title: Text(l10n.notifications, style: MintTextStyles.title2),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => _markMessagesAsCleared(context),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).primaryColor,
-            ),
-            child: Text(l10n.clear),
-          ),
-        ],
+        actions: const <Widget>[_MarkAllAsReadButton()],
       ),
       body: CustomScrollView(
         slivers: <Widget>[
@@ -206,6 +192,37 @@ class _NotificationGroupList extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _MarkAllAsReadButton extends StatelessWidget {
+  const _MarkAllAsReadButton();
+
+  void _markMessagesAsCleared(BuildContext context) {
+    context
+        .read<AppNotificationsBlocPatient>()
+        .add(AppNotificationsClearRequested());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return BlocSelector<AppNotificationsBlocPatient, AppNotificationsState,
+        bool>(
+      selector: (state) => state.unreadNotificationCount != 0,
+      builder: (context, hasUnread) {
+        return hasUnread
+            ? IconButton(
+                onPressed: () => _markMessagesAsCleared(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).primaryColor,
+                ),
+                icon: const Icon(Icons.check_circle_outline),
+                tooltip: l10n.markAllAsRead,
+              )
+            : const SizedBox.shrink();
+      },
     );
   }
 }
