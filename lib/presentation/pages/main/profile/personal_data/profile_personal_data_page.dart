@@ -105,6 +105,13 @@ class _ProfilePersonalDataViewState extends State<_ProfilePersonalDataView> {
     }
   }
 
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    super.dispose();
+  }
+
   bool get _dataChanged =>
       _firstNameController.text.trim() != widget.firstName ||
       _lastNameController.text.trim() != widget.lastName ||
