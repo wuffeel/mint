@@ -145,7 +145,7 @@ class _UnreadMessagesCircle extends StatelessWidget {
         padding: EdgeInsets.all(6.w),
         child: Text(
           unreadCount.toString(),
-          style: TextStyle(fontSize: 14.sp),
+          style: TextStyle(fontSize: 14.sp, color: Colors.white),
         ),
       ),
     );
