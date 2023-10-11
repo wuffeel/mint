@@ -25,6 +25,12 @@ class SpecialistDetailsWidget extends StatelessWidget {
         : '($reviews ${l10n.reviewsMultipleCount})';
   }
 
+  Color _getBackgroundImageColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? MintColors.imageBackgroundDark.withOpacity(0.1)
+        : Colors.white;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -39,17 +45,14 @@ class SpecialistDetailsWidget extends StatelessWidget {
             Container(
               height: 322.h,
               width: double.infinity,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: MintColors.imageBackgroundLight.withOpacity(0.15),
+                color: _getBackgroundImageColor(context),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30.r),
                   bottomRight: Radius.circular(30.r),
                 ),
-              ),
-              child: Image.network(
-                photo,
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
+                image: DecorationImage(image: NetworkImage(photo)),
               ),
             )
           else
