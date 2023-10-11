@@ -146,6 +146,10 @@ class $AssetsSvgGen {
   SvgGenImage get sessionsIcon =>
       const SvgGenImage('assets/svg/sessions_icon.svg');
 
+  /// File path: assets/svg/specialist_icon.svg
+  SvgGenImage get specialistIcon =>
+      const SvgGenImage('assets/svg/specialist_icon.svg');
+
   /// File path: assets/svg/specialists_icon.svg
   SvgGenImage get specialistsIcon =>
       const SvgGenImage('assets/svg/specialists_icon.svg');
@@ -210,6 +214,7 @@ class $AssetsSvgGen {
         profileIcon,
         questionMark,
         sessionsIcon,
+        specialistIcon,
         specialistsIcon,
         starIcon,
         starIconFilled,
