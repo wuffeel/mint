@@ -61,7 +61,7 @@ class AppNotificationsBlocPatient extends AppNotificationsBloc<PatientUser?> {
         todayNotifications: state.todayNotifications,
         previousNotifications: state.previousNotifications,
         unreadNotificationCount: state.unreadNotificationCount,
-        loadingMessageId: state.loadingMessageId,
+        loadingMessageId: null,
         isInitialized: state.isInitialized,
       );
 }
