@@ -13,6 +13,7 @@ class ChatRoomTile extends StatelessWidget {
     required this.user,
     required this.lastMessage,
     required this.onTap,
+    this.isTyping = false,
     this.unreadCount = 0,
     this.roomLastDate,
   });
@@ -22,6 +23,7 @@ class ChatRoomTile extends StatelessWidget {
 
   final types.Message? lastMessage;
   final VoidCallback? onTap;
+  final bool isTyping;
   final int? roomLastDate;
   final int unreadCount;
 
@@ -77,9 +79,11 @@ class ChatRoomTile extends StatelessWidget {
                       style: MintTextStyles.headline1,
                     ),
                     Text(
-                      message != null
-                          ? _getLastMessageContent(context, message)
-                          : l10n.noMessagesYet,
+                      isTyping
+                          ? '${l10n.typing.toLowerCase()}...'
+                          : message != null
+                              ? _getLastMessageContent(context, message)
+                              : l10n.noMessagesYet,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 14.sp),
                       maxLines: 1,

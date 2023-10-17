@@ -196,5 +196,6 @@
   "sentA": "sent a",
   "youHaveBookedConsultationOn": "You have booked a consultation on",
   "couldNotFindSession": "Could not find session",
-  "markAllAsRead": "Mark all as read"
+  "markAllAsRead": "Mark all as read",
+  "typing": "Typing"
 }

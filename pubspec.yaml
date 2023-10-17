@@ -8,18 +8,18 @@ environment:
 
 dependencies:
   audio_waveforms: ^1.0.4
-  auto_route: ^7.5.0
+  auto_route: 7.5.0
   bloc: ^8.1.2
   bloc_concurrency: ^0.2.2
-  cloud_firestore: ^4.8.2
-  cloud_functions: ^4.3.4
+  cloud_firestore: 4.9.0
+  cloud_functions: 4.4.0
   collection: ^1.17.1
   emoji_picker_flutter: ^1.6.1
   file_picker: ^5.3.3
-  firebase_auth: ^4.6.3
-  firebase_core: ^2.14.0
-  firebase_messaging: ^14.6.5
-  firebase_storage: ^11.2.4
+  firebase_auth: 4.8.0
+  firebase_core: 2.15.1
+  firebase_messaging: 14.6.5
+  firebase_storage: 11.2.6
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3

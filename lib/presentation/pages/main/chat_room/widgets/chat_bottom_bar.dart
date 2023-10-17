@@ -18,6 +18,7 @@ class ChatBottomBar extends StatefulWidget {
     required this.onAudioStop,
     this.isEmojiSelected = false,
     this.onTextFieldTap,
+    this.onTextChanged,
   });
 
   final TextEditingController controller;
@@ -27,6 +28,7 @@ class ChatBottomBar extends StatefulWidget {
   final void Function(String audioPath, Duration duration) onAudioStop;
   final bool isEmojiSelected;
   final VoidCallback? onTextFieldTap;
+  final void Function(String)? onTextChanged;
 
   @override
   State<ChatBottomBar> createState() => _ChatBottomBarState();
@@ -90,6 +92,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                       onTextFieldTap: widget.onTextFieldTap,
                       isEmojiSelected: widget.isEmojiSelected,
                       isSendButtonVisible: _isSendButtonVisible,
+                      onTextChanged: widget.onTextChanged,
                     ),
                   )
                 else
@@ -155,6 +158,7 @@ class _ChatToolbar extends StatelessWidget {
     required this.isEmojiSelected,
     required this.isSendButtonVisible,
     this.onTextFieldTap,
+    this.onTextChanged,
   });
 
   final TextEditingController messageController;
@@ -164,6 +168,7 @@ class _ChatToolbar extends StatelessWidget {
   final bool isEmojiSelected;
   final bool isSendButtonVisible;
   final VoidCallback? onTextFieldTap;
+  final void Function(String)? onTextChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -219,6 +224,7 @@ class _ChatToolbar extends StatelessWidget {
               ),
               hintText: context.l10n.message,
             ),
+            onChanged: onTextChanged,
           ),
         ),
       ],

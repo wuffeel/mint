@@ -54,6 +54,8 @@ class ChatRoomPage extends StatelessWidget {
     }
   }
 
+  String get _otherUserId => room.users.firstWhere((e) => e.id != senderId).id;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -68,6 +70,12 @@ class ChatRoomPage extends StatelessWidget {
         ),
         BlocProvider(create: (context) => PermissionBloc()),
         BlocProvider(create: (context) => getIt<PresenceMessageBloc>()),
+        BlocProvider(
+          create: (context) => getIt<ChatTypingBloc>()
+            ..add(ChatTypingInitializeRequested(senderId, room.id))
+            ..add(ChatTypingInitializeRequested(_otherUserId, room.id)),
+          lazy: false,
+        ),
       ],
       child: BlocListener<PermissionBloc, PermissionState>(
         listener: _permissionCubitListener,
@@ -92,16 +100,145 @@ class _ChatViewState extends State<_ChatView> {
 
   var _tapPosition = Offset.zero;
   var _emojiPanelHidden = true;
+
+  types.User get _specialist => widget.room.users.firstWhere(
+        (e) => e.id != widget.senderId,
+      );
+
+  /// Stores [details] tap position in [_tapPosition] for further use by message
+  /// actions pop-up menu
+  void _storeTapPosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
+
+  /// Callback for reloading chat on room fetch failure
+  void _refreshChat() {
+    context.read<ChatBlocPatient>().add(ChatInitializeRequested(widget.room));
+  }
+
+  void _onEmojiBackspace() {
+    _messageController
+      ..text = _messageController.text.characters.toString()
+      ..selection = TextSelection.fromPosition(
+        TextPosition(offset: _messageController.text.length),
+      );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: _emojiPanelHidden,
+      appBar: ChatAppBar(
+        user: UserModel(
+          id: _specialist.id,
+          firstName: _specialist.firstName,
+          lastName: _specialist.lastName,
+          photoUrl: _specialist.imageUrl,
+        ),
+      ),
+      body: BlocBuilder<ChatBlocPatient, ChatState>(
+        builder: (context, state) {
+          if (state is ChatLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is ChatInitializeFailure) {
+            return ErrorTryAgainText(onRefresh: _refreshChat);
+          }
+          if (state is ChatFetchMessagesSuccess) {
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  child: GestureDetector(
+                    onTapDown: _storeTapPosition,
+                    child: _ChatWidget(
+                      state: state,
+                      room: widget.room,
+                      senderId: widget.senderId,
+                      messageController: _messageController,
+                      tapPosition: _tapPosition,
+                      onBackgroundTap: () {
+                        if (!_emojiPanelHidden) {
+                          setState(
+                            () => _emojiPanelHidden = true,
+                          );
+                        }
+                      },
+                      onEmojiTap: () {
+                        setState(() {
+                          _emojiPanelHidden = !_emojiPanelHidden;
+                        });
+                        // Removes keyboard if it is shown
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      onTextFieldTap: () => setState(
+                        () => _emojiPanelHidden = true,
+                      ),
+                      emojiPanelHidden: _emojiPanelHidden,
+                    ),
+                  ),
+                ),
+                if (!_emojiPanelHidden)
+                  SizedBox(
+                    height: 300.h,
+                    child: ChatEmojiPicker(
+                      controller: _messageController,
+                      onBackSpace: _onEmojiBackspace,
+                    ),
+                  ),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
+  }
+}
+
+class _ChatWidget extends StatefulWidget {
+  const _ChatWidget({
+    required this.state,
+    required this.room,
+    required this.senderId,
+    required this.messageController,
+    required this.tapPosition,
+    required this.onBackgroundTap,
+    required this.onEmojiTap,
+    required this.onTextFieldTap,
+    required this.emojiPanelHidden,
+  });
+
+  final ChatFetchMessagesSuccess state;
+  final types.Room room;
+  final String senderId;
+  final TextEditingController messageController;
+  final Offset tapPosition;
+  final VoidCallback onBackgroundTap;
+  final VoidCallback onEmojiTap;
+  final VoidCallback onTextFieldTap;
+  final bool emojiPanelHidden;
+
+  @override
+  State<_ChatWidget> createState() => _ChatWidgetState();
+}
+
+class _ChatWidgetState extends State<_ChatWidget> {
   final _emojiEnlargementBehavior = ui.EmojiEnlargementBehavior.single;
   final _hideBackgroundOnEmojiMessages = true;
 
-  late final _user = widget.room.users.firstWhere(
-    (e) => e.id == widget.senderId,
-  );
+  types.User get _user => widget.room.users.firstWhere(
+        (e) => e.id == widget.senderId,
+      );
 
-  late final _specialist = widget.room.users.firstWhere(
-    (e) => e.id != widget.senderId,
-  );
+  types.User get _receiver => widget.room.users.firstWhere(
+        (e) => e.id != widget.senderId,
+      );
 
   void _previewDataFetched(
     types.TextMessage message,
@@ -113,9 +250,15 @@ class _ChatViewState extends State<_ChatView> {
   }
 
   void _handleSendPressed() {
-    final message = types.PartialText(text: _messageController.text.trim());
+    final message = types.PartialText(
+      text: widget.messageController.text.trim(),
+    );
     context.read<ChatBlocPatient>().add(ChatSendMessageRequested(message));
-    _messageController.clear();
+
+    final typingEndEvent = ChatTypingEndRequested(_user.id, widget.room.id);
+    context.read<ChatTypingBloc>().add(typingEndEvent);
+
+    widget.messageController.clear();
   }
 
   void _handleAttachmentPressed() {
@@ -151,14 +294,19 @@ class _ChatViewState extends State<_ChatView> {
     }
   }
 
-  /// Shows pop-up menu on [_tapPosition] with 'Edit' and 'Delete' actions
+  void _handleTypingStart(String text) {
+    final typingStartEvent = ChatTypingStartRequested(_user.id, widget.room.id);
+    context.read<ChatTypingBloc>().add(typingStartEvent);
+  }
+
+  /// Shows pop-up menu on tapPosition with 'Edit' and 'Delete' actions
   void _showMessageActionsMenu(BuildContext context, types.Message message) {
     if (_isSender(message.author.id)) {
       final l10n = context.l10n;
       return ChatUtils.showMessageActionsMenu(
         context,
         message,
-        _tapPosition,
+        widget.tapPosition,
         items: <PopupMenuEntry<void>>[
           PopupMenuItem(
             onTap: () {
@@ -171,25 +319,6 @@ class _ChatViewState extends State<_ChatView> {
         ],
       );
     }
-  }
-
-  /// Stores [details] tap position in [_tapPosition] for further use by message
-  /// actions pop-up menu
-  void _storeTapPosition(TapDownDetails details) {
-    _tapPosition = details.globalPosition;
-  }
-
-  /// Callback for reloading chat on room fetch failure
-  void _refreshChat() {
-    context.read<ChatBlocPatient>().add(ChatInitializeRequested(widget.room));
-  }
-
-  void _onEmojiBackspace() {
-    _messageController
-      ..text = _messageController.text.characters.toString()
-      ..selection = TextSelection.fromPosition(
-        TextPosition(offset: _messageController.text.length),
-      );
   }
 
   void _markMessageAsRead(String messageId) {
@@ -242,132 +371,81 @@ class _ChatViewState extends State<_ChatView> {
   bool _isSender(String userId) => _user.id == userId;
 
   @override
-  void dispose() {
-    super.dispose();
-    _messageController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: _emojiPanelHidden,
-      appBar: ChatAppBar(
-        user: UserModel(
-          id: _specialist.id,
-          firstName: _specialist.firstName,
-          lastName: _specialist.lastName,
-          photoUrl: _specialist.imageUrl,
-        ),
-      ),
-      body: BlocBuilder<ChatBlocPatient, ChatState>(
-        builder: (context, state) {
-          if (state is ChatLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is ChatInitializeFailure) {
-            return ErrorTryAgainText(onRefresh: _refreshChat);
-          }
-          if (state is ChatFetchMessagesSuccess) {
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    onTapDown: _storeTapPosition,
-                    child: ui.Chat(
-                      audioMessageBuilder: (
-                        audio, {
-                        required int messageWidth,
-                      }) {
-                        return Padding(
-                          padding: EdgeInsets.all(8.w),
-                          child: ChatAudioMessage(
-                            audioMessage: audio,
-                            isSender: _isSender(audio.author.id),
-                          ),
-                        );
-                      },
-                      bubbleBuilder: _bubbleBuilder,
-                      customBottomWidget: ChatBottomBar(
-                        controller: _messageController,
-                        onSend: _handleSendPressed,
-                        onEmoji: () {
-                          setState(() {
-                            _emojiPanelHidden = !_emojiPanelHidden;
-                          });
-                          // Removes keyboard if it is shown
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
-                        onAttach: _handleAttachmentPressed,
-                        onAudioStop: (audioPath, duration) {
-                          context
-                              .read<ChatBlocPatient>()
-                              .add(ChatSaveAudioRequested(audioPath, duration));
-                        },
-                        isEmojiSelected: !_emojiPanelHidden,
-                        onTextFieldTap: () => setState(
-                          () => _emojiPanelHidden = true,
-                        ),
-                      ),
-                      customMessageBuilder: _messageLoadingBuilder,
-                      dateLocale: context.l10n.localeName,
-                      dateHeaderBuilder: (date) {
-                        return ChatDateHeader(
-                          date: date.dateTime,
-                          text: date.text,
-                        );
-                      },
-                      // 24 hours
-                      dateHeaderThreshold: 86400000,
-                      emojiEnlargementBehavior: _emojiEnlargementBehavior,
-                      hideBackgroundOnEmojiMessages:
-                          _hideBackgroundOnEmojiMessages,
-                      messages: state.messages,
-                      onBackgroundTap: () {
-                        if (!_emojiPanelHidden) {
-                          setState(
-                            () => _emojiPanelHidden = true,
-                          );
-                        }
-                      },
-                      onMessageTap: _handleMessageTap,
-                      onMessageLongPress: _showMessageActionsMenu,
-                      onPreviewDataFetched: _previewDataFetched,
-                      onSendPressed: (_) {
-                        // TODO(wuffel): implemented in customBottomWidget
-                      },
-                      scrollToUnreadOptions: ui.ScrollToUnreadOptions(
-                        lastReadMessageId:
-                            state.messages.lastWhereOrNull((msg) {
-                          final status = msg.status;
-                          if (msg.author.id == _user.id) return false;
-                          return status != null && status != types.Status.seen;
-                        })?.id,
-                        scrollDelay: const Duration(milliseconds: 20),
-                        scrollDuration: const Duration(milliseconds: 100),
-                        scrollOnOpen: true,
-                      ),
-                      theme: MintChatTheme(context),
-                      textMessageOptions: const ui.TextMessageOptions(
-                        isTextSelectable: false,
-                      ),
-                      user: _user,
-                    ),
-                  ),
-                ),
-                if (!_emojiPanelHidden)
-                  SizedBox(
-                    height: 300.h,
-                    child: ChatEmojiPicker(
-                      controller: _messageController,
-                      onBackSpace: _onEmojiBackspace,
-                    ),
-                  ),
-              ],
+    return BlocSelector<ChatTypingBloc, ChatTypingState, bool?>(
+      selector: (typingState) =>
+          typingState.typingMap[widget.room.id]?[_receiver.id],
+      builder: (context, isReceiverTyping) {
+        return ui.Chat(
+          audioMessageBuilder: (
+            audio, {
+            required int messageWidth,
+          }) {
+            return Padding(
+              padding: EdgeInsets.all(8.w),
+              child: ChatAudioMessage(
+                audioMessage: audio,
+                isSender: _isSender(audio.author.id),
+              ),
             );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+          },
+          bubbleBuilder: _bubbleBuilder,
+          customBottomWidget: ChatBottomBar(
+            controller: widget.messageController,
+            onSend: _handleSendPressed,
+            onEmoji: widget.onEmojiTap,
+            onAttach: _handleAttachmentPressed,
+            onAudioStop: (audioPath, duration) {
+              context
+                  .read<ChatBlocPatient>()
+                  .add(ChatSaveAudioRequested(audioPath, duration));
+            },
+            isEmojiSelected: !widget.emojiPanelHidden,
+            onTextFieldTap: widget.onTextFieldTap,
+            onTextChanged: _handleTypingStart,
+          ),
+          customMessageBuilder: _messageLoadingBuilder,
+          dateLocale: context.l10n.localeName,
+          dateHeaderBuilder: (date) {
+            return ChatDateHeader(
+              date: date.dateTime,
+              text: date.text,
+            );
+          },
+          // 24 hours
+          dateHeaderThreshold: 86400000,
+          emojiEnlargementBehavior: _emojiEnlargementBehavior,
+          hideBackgroundOnEmojiMessages: _hideBackgroundOnEmojiMessages,
+          messages: widget.state.messages,
+          onBackgroundTap: widget.onBackgroundTap,
+          onMessageTap: _handleMessageTap,
+          onMessageLongPress: _showMessageActionsMenu,
+          onPreviewDataFetched: _previewDataFetched,
+          onSendPressed: (_) {
+            // implemented in customBottomWidget
+          },
+          scrollToUnreadOptions: ui.ScrollToUnreadOptions(
+            lastReadMessageId: widget.state.messages.lastWhereOrNull((msg) {
+              final status = msg.status;
+              if (msg.author.id == _user.id) return false;
+              return status != null && status != types.Status.seen;
+            })?.id,
+            scrollDelay: const Duration(milliseconds: 20),
+            scrollDuration: const Duration(milliseconds: 100),
+            scrollOnOpen: true,
+          ),
+          theme: MintChatTheme(context),
+          textMessageOptions: const ui.TextMessageOptions(
+            isTextSelectable: false,
+          ),
+          typingIndicatorOptions: ui.TypingIndicatorOptions(
+            animationSpeed: const Duration(seconds: 1),
+            typingUsers:
+                isReceiverTyping != null && isReceiverTyping ? [_receiver] : [],
+          ),
+          user: _user,
+        );
+      },
     );
   }
 }
