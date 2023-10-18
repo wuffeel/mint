@@ -90,6 +90,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/filter_icon.svg
   SvgGenImage get filterIcon => const SvgGenImage('assets/svg/filter_icon.svg');
 
+  /// File path: assets/svg/google_icon.svg
+  SvgGenImage get googleIcon => const SvgGenImage('assets/svg/google_icon.svg');
+
   /// File path: assets/svg/heart_icon.svg
   SvgGenImage get heartIcon => const SvgGenImage('assets/svg/heart_icon.svg');
 
@@ -199,6 +202,7 @@ class $AssetsSvgGen {
         crossIcon,
         emojiIcon,
         filterIcon,
+        googleIcon,
         heartIcon,
         heartIconFilled,
         homeIcon,

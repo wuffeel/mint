@@ -197,5 +197,7 @@
   "youHaveBookedConsultationOn": "You have booked a consultation on",
   "couldNotFindSession": "Could not find session",
   "markAllAsRead": "Mark all as read",
-  "typing": "Typing"
+  "typing": "Typing",
+  "signInWithGoogle": "Sign in with Google",
+  "accountIsAttachedToOtherUser": "Account is attached to other user"
 }

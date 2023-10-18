@@ -10,6 +10,9 @@ import 'package:mint/presentation/pages/auth/enter_phone/widgets/phone_text_fiel
 import 'package:mint/presentation/widgets/loading_indicator.dart';
 import 'package:mint/routes/app_router.gr.dart';
 import 'package:mint/theme/mint_text_styles.dart';
+import 'package:mint_core/mint_bloc.dart';
+
+import '../../../../gen/assets.gen.dart';
 
 @RoutePage()
 class EnterPhonePage extends StatefulWidget {
@@ -115,6 +118,10 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                       const Spacer(),
                       SizedBox(height: 20.h),
                       const EnterPhoneSignInText(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        child: const _GoogleSignInButton(),
+                      ),
                       SizedBox(
                         height: MediaQuery.paddingOf(context).bottom + 20.h,
                       ),
@@ -124,6 +131,39 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _GoogleSignInButton extends StatelessWidget {
+  const _GoogleSignInButton();
+
+  void _signInWithGoogle(BuildContext context) {
+    context.read<GoogleAuthBloc>().add(GoogleAuthSignInRequested());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () => _signInWithGoogle(context),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Assets.svg.googleIcon.svg(
+              width: 24,
+              height: 24,
+              fit: BoxFit.scaleDown,
+            ),
+            SizedBox(width: 8.w),
+            Text(
+              context.l10n.signInWithGoogle,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
         ),
       ),
     );

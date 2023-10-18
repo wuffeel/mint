@@ -197,5 +197,7 @@
   "youHaveBookedConsultationOn": "Ви забронювали консультацію на",
   "couldNotFindSession": "Не вдалося знайти сеанс",
   "markAllAsRead": "Позначити все як прочитане",
-  "typing": "Друкує"
+  "typing": "Друкує",
+  "signInWithGoogle": "Увійти з Google",
+  "accountIsAttachedToOtherUser": "Акаунт пов'язаний з іншим користувачем"
 }
