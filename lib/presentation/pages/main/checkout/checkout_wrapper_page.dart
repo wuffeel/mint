@@ -5,7 +5,7 @@ import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/injector/injector.dart';
 
 @RoutePage()
-class CheckoutWrapperPage extends AutoRouter with AutoRouteWrapper {
+class CheckoutWrapperPage extends AutoRouter implements AutoRouteWrapper {
   const CheckoutWrapperPage({super.key});
 
   @override

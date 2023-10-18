@@ -5,7 +5,7 @@ import 'package:mint/bloc/booking/booking_bloc.dart';
 import 'package:mint/injector/injector.dart';
 
 @RoutePage()
-class SessionDetailsWrapperPage extends AutoRouter with AutoRouteWrapper {
+class SessionDetailsWrapperPage extends AutoRouter implements AutoRouteWrapper {
   const SessionDetailsWrapperPage({super.key});
 
   @override

@@ -7,7 +7,7 @@ import '../../../../bloc/specialist_filter/specialist_filter_bloc.dart';
 import '../../../../injector/injector.dart';
 
 @RoutePage()
-class SpecialistsWrapperPage extends AutoRouter with AutoRouteWrapper {
+class SpecialistsWrapperPage extends AutoRouter implements AutoRouteWrapper {
   const SpecialistsWrapperPage({super.key});
 
   @override

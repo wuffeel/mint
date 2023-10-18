@@ -8,7 +8,7 @@ import '../../../../bloc/auth/auth_bloc.dart';
 import '../../../../gen/colors.gen.dart';
 
 @RoutePage()
-class PinCodeWrapperPage extends AutoRouter with AutoRouteWrapper {
+class PinCodeWrapperPage extends AutoRouter implements AutoRouteWrapper {
   const PinCodeWrapperPage({super.key});
 
   @override
