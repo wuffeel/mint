@@ -27,6 +27,19 @@ class MintChatTheme extends DefaultChatTheme {
           ),
           receivedMessageLinkDescriptionTextStyle: MintTextStyles.body1
               .copyWith(color: Theme.of(context).primaryColor),
+          typingIndicatorTheme: TypingIndicatorTheme(
+            animatedCirclesColor: neutral1,
+            animatedCircleSize: 5,
+            bubbleBorder: const BorderRadius.all(Radius.circular(27)),
+            bubbleColor: Theme.of(context).scaffoldBackgroundColor,
+            countAvatarColor: primary,
+            countTextColor: secondary,
+            multipleUserTextStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: neutral2,
+            ),
+          ),
         );
 
   static bool _isThemeDark(BuildContext context) {
