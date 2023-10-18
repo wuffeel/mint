@@ -370,6 +370,13 @@ class _ChatWidgetState extends State<_ChatWidget> {
   /// Determines whether [userId] is current user
   bool _isSender(String userId) => _user.id == userId;
 
+  types.User _getTypingUser(BuildContext context) {
+    final firstName = _receiver.firstName;
+    return firstName != null
+        ? _receiver
+        : _receiver.copyWith(firstName: context.l10n.patient);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ChatTypingBloc, ChatTypingState, bool?>(
@@ -440,8 +447,9 @@ class _ChatWidgetState extends State<_ChatWidget> {
           ),
           typingIndicatorOptions: ui.TypingIndicatorOptions(
             animationSpeed: const Duration(seconds: 1),
-            typingUsers:
-                isReceiverTyping != null && isReceiverTyping ? [_receiver] : [],
+            typingUsers: isReceiverTyping != null && isReceiverTyping
+                ? [_getTypingUser(context)]
+                : [],
           ),
           user: _user,
         );
