@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   audio_waveforms: ^1.0.4
-  auto_route: ^7.5.0
+  auto_route: 7.5.0
   bloc: ^8.1.2
   bloc_concurrency: ^0.2.2
   cloud_firestore: ^4.8.2
