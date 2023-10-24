@@ -30,10 +30,11 @@ class MintBackButton extends StatelessWidget {
       onTap: onPressed ?? context.router.pop,
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
-            width: 28.w,
-            height: 28.h,
+            width: 24.w,
+            height: 24.h,
             alignment: Alignment.center,
             child: _getIcon(context).svg(
               colorFilter: ColorFilter.mode(

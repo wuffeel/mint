@@ -7,9 +7,9 @@ import 'package:mint/domain/entity/specialist_filter/specialist_filter.dart';
 import 'package:mint/l10n/l10n.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_price_slider.dart';
 import 'package:mint/presentation/pages/main/specialists/widgets/filter_single_item_selection.dart';
-import 'package:mint/utils/experience/experience_localization.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_utils.dart';
 
-import '../../../../../domain/entity/experience_model.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../widgets/mint_multi_item_selection.dart';
 

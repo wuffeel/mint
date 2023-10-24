@@ -157,7 +157,7 @@ class _SpecialistsPageState extends State<SpecialistsPage> {
                     }
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   },
-                )
+                ),
               ],
             ),
           ),

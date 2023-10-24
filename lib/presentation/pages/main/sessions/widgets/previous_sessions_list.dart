@@ -103,7 +103,7 @@ class _PreviousSessionsListState extends State<PreviousSessionsList> {
             }
             return const SliverToBoxAdapter(child: SizedBox.shrink());
           },
-        )
+        ),
       ],
     );
   }

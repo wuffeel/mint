@@ -11,16 +11,16 @@ class UserAuthenticated extends UserState {}
 
 class UserLogOutSuccess extends UserState {}
 
-class UserLogOutFailure extends UserState {}
-
-class UserDataUpdateFailure extends UserState {}
-
 class UserFetchFailure extends UserState {}
 
 class UserFetchSuccess extends UserState {
   UserFetchSuccess(this.user);
 
   final PatientUser user;
+}
+
+class UserLogOutFailure extends UserFetchSuccess {
+  UserLogOutFailure(super.user);
 }
 
 class UserDateUnselectedFailure extends UserFetchSuccess {
@@ -33,6 +33,10 @@ class UserDataUpdateLoading extends UserFetchSuccess {
 
 class UserDataUpdateSuccess extends UserFetchSuccess {
   UserDataUpdateSuccess(super.user);
+}
+
+class UserDataUpdateFailure extends UserFetchSuccess {
+  UserDataUpdateFailure(super.user);
 }
 
 class UserInitializePresenceSuccess extends UserFetchSuccess {

@@ -76,7 +76,7 @@ class _FavoriteDoctorsView extends StatelessWidget {
                 }
                 return const SliverToBoxAdapter(child: SizedBox.shrink());
               },
-            )
+            ),
           ],
         ),
       ),

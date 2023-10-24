@@ -59,7 +59,7 @@ class UpcomingSessionContainer extends StatelessWidget {
                     style: MintTextStyles.footnoteMedium.copyWith(
                       color: Theme.of(context).hintColor.withOpacity(0.6),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

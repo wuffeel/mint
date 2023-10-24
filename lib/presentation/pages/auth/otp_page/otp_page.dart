@@ -151,7 +151,7 @@ class _OtpPageState extends State<OtpPage> {
                                       .hintColor
                                       .withOpacity(0.6),
                                 ),
-                              )
+                              ),
                             ],
                           ],
                         ),

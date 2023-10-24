@@ -45,7 +45,7 @@ class ForgotPinOtpWrapperPage extends StatelessWidget
               );
             }
           },
-        )
+        ),
       ],
       child: this,
     );

@@ -63,6 +63,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/chat.svg
   SvgGenImage get chat => const SvgGenImage('assets/svg/chat.svg');
 
+  /// File path: assets/svg/chat_icon.svg
+  SvgGenImage get chatIcon => const SvgGenImage('assets/svg/chat_icon.svg');
+
   /// File path: assets/svg/check_mark.svg
   SvgGenImage get checkMark => const SvgGenImage('assets/svg/check_mark.svg');
 
@@ -112,6 +115,10 @@ class $AssetsSvgGen {
   SvgGenImage get microphoneIcon =>
       const SvgGenImage('assets/svg/microphone_icon.svg');
 
+  /// File path: assets/svg/notification_tile_icon.svg
+  SvgGenImage get notificationTileIcon =>
+      const SvgGenImage('assets/svg/notification_tile_icon.svg');
+
   /// File path: assets/svg/notifications_bell.svg
   SvgGenImage get notificationsBell =>
       const SvgGenImage('assets/svg/notifications_bell.svg');
@@ -138,6 +145,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/sessions_icon.svg
   SvgGenImage get sessionsIcon =>
       const SvgGenImage('assets/svg/sessions_icon.svg');
+
+  /// File path: assets/svg/specialist_icon.svg
+  SvgGenImage get specialistIcon =>
+      const SvgGenImage('assets/svg/specialist_icon.svg');
 
   /// File path: assets/svg/specialists_icon.svg
   SvgGenImage get specialistsIcon =>
@@ -180,6 +191,7 @@ class $AssetsSvgGen {
         cameraIcon,
         changePin,
         chat,
+        chatIcon,
         checkMark,
         chevronRight,
         colorThemeIcon,
@@ -194,6 +206,7 @@ class $AssetsSvgGen {
         mastercardColored,
         mastercardIcon,
         microphoneIcon,
+        notificationTileIcon,
         notificationsBell,
         personalData,
         pickUpSpecialist,
@@ -201,6 +214,7 @@ class $AssetsSvgGen {
         profileIcon,
         questionMark,
         sessionsIcon,
+        specialistIcon,
         specialistsIcon,
         starIcon,
         starIconFilled,

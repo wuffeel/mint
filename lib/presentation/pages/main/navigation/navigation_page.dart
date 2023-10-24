@@ -14,6 +14,7 @@ class NavigationPage extends StatelessWidget {
         HomeRoute(),
         SpecialistsRoute(),
         SessionsRoute(),
+        ChatRoute(),
         ProfileRoute(),
       ],
       animationDuration: Duration.zero,

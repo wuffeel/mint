@@ -125,7 +125,7 @@ class _FadeSliverAppBarState extends State<FadeSliverAppBar> {
                   toolbarHeight: widget.toolbarHeight,
                 ),
               ),
-            )
+            ),
           ],
         ),
       );

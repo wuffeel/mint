@@ -38,10 +38,13 @@ class SpecialistPhotoContainer extends StatelessWidget {
             : null,
       ),
       child: photo == null
-          ? Assets.svg.questionMark.svg(
+          ? Assets.svg.specialistIcon.svg(
               width: size / 2.5,
               height: size / 2.5,
-              fit: BoxFit.scaleDown,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).primaryColor,
+                BlendMode.srcIn,
+              ),
             )
           : null,
     );

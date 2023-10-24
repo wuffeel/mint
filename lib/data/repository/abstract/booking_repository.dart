@@ -1,14 +1,11 @@
+import 'package:mint_core/mint_module.dart';
+
 import '../../model/booking_data_dto/booking_data_dto.dart';
-import '../../model/specialist_work_info_dto/specialist_work_info_dto.dart';
 
-abstract class BookingRepository {
-  Future<SpecialistWorkInfoDto> getSpecialistWorkInfo(String specialistId);
-
+abstract class BookingRepository extends BookingRepositoryBase {
   Future<BookingDataDto> bookSpecialist(BookingDataDto bookingData);
 
   Future<void> bookReschedule(BookingDataDto newBookingData);
-
-  Future<void> cancelBooking(String bookingId);
 
   Future<List<BookingDataDto>> getUpcomingSessions(String userId);
 

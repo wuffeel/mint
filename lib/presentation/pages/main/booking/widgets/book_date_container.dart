@@ -53,7 +53,7 @@ class BookDateContainer extends StatelessWidget {
                 style: MintTextStyles.caption1,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

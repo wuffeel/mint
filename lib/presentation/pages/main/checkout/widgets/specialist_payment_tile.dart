@@ -65,7 +65,7 @@ class SpecialistPaymentTile extends StatelessWidget {
                 color: Theme.of(context).hintColor.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
-            )
+            ),
           ],
         ),
       ],

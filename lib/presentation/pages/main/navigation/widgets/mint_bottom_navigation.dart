@@ -3,80 +3,65 @@ import 'package:flutter/material.dart';
 import 'package:mint/gen/assets.gen.dart';
 import 'package:mint/l10n/l10n.dart';
 
+import '../../../../../gen/colors.gen.dart';
+
 class MintBottomNavigation extends StatelessWidget {
   const MintBottomNavigation({super.key, required this.tabsRouter});
 
   final TabsRouter tabsRouter;
 
-  List<BottomNavigationBarItem> _items(BuildContext context) {
-    final unselectedColor =
-        Theme.of(context).bottomNavigationBarTheme.unselectedItemColor;
-    final selectedColor =
-        Theme.of(context).bottomNavigationBarTheme.selectedItemColor;
-    if (selectedColor == null || unselectedColor == null) return [];
+  /// Defines a mapping between [SvgGenImage] assets and their corresponding
+  /// labels.
+  Map<SvgGenImage, String> _pages(BuildContext context) {
+    return {
+      Assets.svg.homeIcon: context.l10n.home,
+      Assets.svg.specialistsIcon: context.l10n.specialists,
+      Assets.svg.sessionsIcon: context.l10n.sessions,
+      Assets.svg.chatIcon: context.l10n.chat,
+      Assets.svg.profileIcon: context.l10n.profile,
+    };
+  }
 
-    return <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-        icon: Assets.svg.homeIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(unselectedColor, BlendMode.srcIn),
-        ),
-        activeIcon: Assets.svg.homeIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
-        ),
-        label: context.l10n.home,
-      ),
-      BottomNavigationBarItem(
-        icon: Assets.svg.specialistsIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(unselectedColor, BlendMode.srcIn),
-        ),
-        activeIcon: Assets.svg.specialistsIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
-        ),
-        label: context.l10n.specialists,
-      ),
-      BottomNavigationBarItem(
-        icon: Assets.svg.sessionsIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(unselectedColor, BlendMode.srcIn),
-        ),
-        activeIcon: Assets.svg.sessionsIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
-        ),
-        label: context.l10n.sessions,
-      ),
-      BottomNavigationBarItem(
-        icon: Assets.svg.profileIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(unselectedColor, BlendMode.srcIn),
-        ),
-        activeIcon: Assets.svg.profileIcon.svg(
-          width: 24,
-          height: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(selectedColor, BlendMode.srcIn),
-        ),
-        label: context.l10n.profile,
-      ),
-    ];
+  /// Builds a list of [BottomNavigationBarItem] based on [_pages]
+  List<BottomNavigationBarItem> _navigationItems(BuildContext context) {
+    final unselectedColor = _unselectedColor(context);
+    final selectedColor = _selectedColor(context);
+
+    return _pages(context).entries.map((entry) {
+      final asset = entry.key;
+      final label = entry.value;
+      return BottomNavigationBarItem(
+        icon: _BottomBarSvgWidget(asset, color: unselectedColor),
+        activeIcon: _BottomBarSvgWidget(asset, color: selectedColor),
+        label: label,
+      );
+    }).toList();
+  }
+
+  Color _unselectedColor(BuildContext context) {
+    return Theme.of(context).bottomNavigationBarTheme.unselectedItemColor ??
+        _getFallbackUnselectedItemColor(context);
+  }
+
+  Color _selectedColor(BuildContext context) {
+    return Theme.of(context).bottomNavigationBarTheme.selectedItemColor ??
+        _getFallbackSelectedItemColor(context);
+  }
+
+  Color _getFallbackUnselectedItemColor(BuildContext context) {
+    return _isThemeDark(context)
+        ? MintColors.greyDark.withOpacity(0.6)
+        : MintColors.greyLight.withOpacity(0.6);
+  }
+
+  Color _getFallbackSelectedItemColor(BuildContext context) {
+    return _isThemeDark(context)
+        ? MintColors.primaryDarkBlueColor
+        : MintColors.primaryLightBlueColor;
+  }
+
+  bool _isThemeDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
   }
 
   @override
@@ -90,8 +75,25 @@ class MintBottomNavigation extends StatelessWidget {
         currentIndex: tabsRouter.activeIndex,
         onTap: tabsRouter.setActiveIndex,
         elevation: 0,
-        items: _items(context),
+        items: _navigationItems(context),
       ),
+    );
+  }
+}
+
+class _BottomBarSvgWidget extends StatelessWidget {
+  const _BottomBarSvgWidget(this.asset, {required this.color});
+
+  final SvgGenImage asset;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return asset.svg(
+      width: 24,
+      height: 24,
+      fit: BoxFit.scaleDown,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
     );
   }
 }

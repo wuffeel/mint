@@ -39,6 +39,7 @@ class AppRouter extends $AppRouter {
                   ],
                 ),
                 AutoRoute(page: SessionsRoute.page),
+                AutoRoute(page: ChatRoute.page),
                 AutoRoute(
                   page: ProfileTabRoute.page,
                   children: [
@@ -53,6 +54,7 @@ class AppRouter extends $AppRouter {
               ],
             ),
             AutoRoute(page: PickUpSpecialistRoute.page),
+            AutoRoute(page: NotificationsRoute.page),
             AutoRoute(
               page: CheckoutWrapperRoute.page,
               children: [
@@ -68,7 +70,7 @@ class AppRouter extends $AppRouter {
                 AutoRoute(page: BookingResumeRoute.page),
               ],
             ),
-            AutoRoute(page: ChatRoute.page),
+            AutoRoute(page: ChatRoomRoute.page),
           ],
         ),
       ];

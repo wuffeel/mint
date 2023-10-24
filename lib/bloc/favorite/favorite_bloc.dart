@@ -136,8 +136,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       favoriteIds.remove(specialistId);
       favoriteSpecialists.removeWhere((e) => e.id == specialistId);
     } else {
-      favoriteIds.add(specialistId);
-      favoriteSpecialists.add(specialistModel);
+      favoriteIds.insert(0, specialistId);
+      favoriteSpecialists.insert(0, specialistModel);
     }
 
     return FavoriteFetchSuccess(

@@ -64,16 +64,16 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             sliver: SliverFillRemaining(
               hasScrollBody: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 19.h),
-                  ProfileButtonGroup(
-                    children: [
-                      BlocBuilder<UserBloc, UserState>(
-                        builder: (context, state) {
-                          if (state is UserFetchSuccess) {
-                            return InkWell(
+              child: BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if (state is UserFetchSuccess) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 19.h),
+                        ProfileButtonGroup(
+                          children: [
+                            InkWell(
                               onTap: () => _onPersonalData(
                                 firstName: state.user.firstName,
                                 lastName: state.user.lastName,
@@ -84,65 +84,66 @@ class _ProfilePageState extends State<ProfilePage> {
                                 title: l10n.personalData,
                                 svgIcon: Assets.svg.personalData,
                               ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                      InkWell(
-                        onTap: _onPinChange,
-                        child: ProfileButtonContent(
-                          title: l10n.changePinCode,
-                          svgIcon: Assets.svg.changePin,
+                            ),
+                            InkWell(
+                              onTap: _onPinChange,
+                              child: ProfileButtonContent(
+                                title: l10n.changePinCode,
+                                svgIcon: Assets.svg.changePin,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24.h),
-                  ProfileButton(
-                    title: l10n.myCreditCards,
-                    svgIcon: Assets.svg.creditCards,
-                    foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () =>
-                        context.router.push(const ProfileCreditCardsRoute()),
-                  ),
-                  SizedBox(height: 8.h),
-                  ProfileButton(
-                    title: l10n.favoriteDoctors,
-                    svgIcon: Assets.svg.heartIcon,
-                    foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () => context.router.push(
-                      const FavoriteDoctorsRoute(),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  ProfileButton(
-                    title: l10n.notifications,
-                    svgIcon: Assets.svg.notificationsBell,
-                    foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () => context.router.push(
-                      const NotificationSettingsRoute(),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  ProfileButton(
-                    title: l10n.colorTheme,
-                    svgIcon: Assets.svg.colorThemeIcon,
-                    foregroundColor: Theme.of(context).primaryColor,
-                    onTap: () => context.router.push(const ColorThemeRoute()),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    child: ProfileButton(
-                      title: l10n.logOut,
-                      svgIcon: Assets.svg.logout,
-                      isChevronVisible: false,
-                      foregroundColor: MintColors.error,
-                      onTap: _onLogout,
-                    ),
-                  ),
-                ],
+                        SizedBox(height: 24.h),
+                        ProfileButton(
+                          title: l10n.myCreditCards,
+                          svgIcon: Assets.svg.creditCards,
+                          foregroundColor: Theme.of(context).primaryColor,
+                          onTap: () => context.router
+                              .push(const ProfileCreditCardsRoute()),
+                        ),
+                        SizedBox(height: 8.h),
+                        ProfileButton(
+                          title: l10n.favoriteDoctors,
+                          svgIcon: Assets.svg.heartIcon,
+                          foregroundColor: Theme.of(context).primaryColor,
+                          onTap: () => context.router.push(
+                            const FavoriteDoctorsRoute(),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        ProfileButton(
+                          title: l10n.notifications,
+                          svgIcon: Assets.svg.notificationsBell,
+                          foregroundColor: Theme.of(context).primaryColor,
+                          onTap: () => context.router.push(
+                            const NotificationSettingsRoute(),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        ProfileButton(
+                          title: l10n.colorTheme,
+                          svgIcon: Assets.svg.colorThemeIcon,
+                          foregroundColor: Theme.of(context).primaryColor,
+                          onTap: () =>
+                              context.router.push(const ColorThemeRoute()),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: ProfileButton(
+                            title: l10n.logOut,
+                            svgIcon: Assets.svg.logout,
+                            isChevronVisible: false,
+                            foregroundColor: MintColors.error,
+                            onTap: _onLogout,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
             ),
           ),

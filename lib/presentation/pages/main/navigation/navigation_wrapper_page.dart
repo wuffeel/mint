@@ -11,6 +11,7 @@ import 'package:mint/utils/notification_utils.dart';
 
 import '../../../../backbone/pin_code_status_entered.dart';
 import '../../../../backbone/pin_code_status_initial.dart';
+import '../../../../bloc/app_notifications/app_notifications_bloc_patient.dart';
 import '../../../../bloc/upcoming_sessions/upcoming_sessions_bloc.dart';
 
 @RoutePage()
@@ -93,6 +94,7 @@ class NavigationWrapperPage extends AutoRouter implements AutoRouteWrapper {
           create: (context) => getIt<NotificationsBloc>()
             ..add(NotificationsInitializeRequested()),
         ),
+        BlocProvider(create: (context) => getIt<AppNotificationsBlocPatient>()),
       ],
       child: MultiBlocListener(
         listeners: [

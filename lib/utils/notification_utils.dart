@@ -35,7 +35,7 @@ class NotificationUtils {
   ) {
     context.router.replaceAll([
       const NavigationRoute(),
-      ChatRoute(room: state.chatRoom, senderId: state.patientId),
+      ChatRoomRoute(room: state.chatRoom, senderId: state.patientId),
     ]);
     _resetNotificationsState(context);
   }

@@ -33,4 +33,5 @@
     <color name="bottomSheetTopLine">#E0E0E0</color>
     <color name="slightlyBlue">#B2D7FF</color>
     <color name="switchDisabledLight">#787880</color>
+    <color name="notificationTileIconColor">#28303F</color>
 </resources>

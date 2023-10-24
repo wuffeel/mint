@@ -110,7 +110,7 @@ class _NotificationSettingsViewState extends State<_NotificationSettingsView>
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

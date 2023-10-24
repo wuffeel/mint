@@ -72,7 +72,7 @@ class _ColorThemePageState extends State<ColorThemePage> {
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
