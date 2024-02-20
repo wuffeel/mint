@@ -44,5 +44,5 @@ flutter run
 ## Firebase
 
 To setup Firebase project, update 
-- `google-services.json` under `android/app`
+- `google-services.json` under `android/app/src/{flavor}`
 - `GoogleService-Info.plist` under `ios/config/{flavor}`
